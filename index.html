@@ -1,0 +1,907 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Decision Lab</title>
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+  <div class="app">
+    <header class="topbar">
+      <div class="brand">
+        <div class="brand-mark"></div>
+        <div>
+          <div class="title">Decision Lab</div>
+          <div class="subtitle">Scenario-based decision training</div>
+        </div>
+      </div>
+      <div class="controls">
+        <button id="teacherToggle" class="ghost">Teacher Mode</button>
+        <button id="openSettings" class="ghost hidden">Settings</button>
+        <button id="exportSession" class="ghost hidden">Export</button>
+        <button id="exportCsv" class="ghost hidden">Export CSV</button>
+      </div>
+    </header>
+
+    <main class="layout">
+      <section class="panel" id="introPanel">
+        <h1>Welcome</h1>
+        <div class="intro-meta">
+          <span id="currentDate"></span>
+          <span class="dot">•</span>
+          <span id="currentScenarioLabel">Boundary Test</span>
+        </div>
+        <div class="welcome-logo" aria-hidden="true"></div>
+        <div class="course-summary">
+          <strong>Modern Manners & Mental Fortitude</strong>
+          This course builds real-life decision skills for youth and adults: self-control under pressure,
+          respectful communication, and choosing the long view. It turns stressful moments into practice
+          so learners can pause, think, and choose intentionally.
+          <br /><br />
+          How it helps: students gain confidence for real situations at school, home, work, and online.
+          Adults get a shared language to coach, model, and reinforce good choices.
+          <br /><br />
+          Instructions: choose a scenario, make a decision, then explain it using unit language.
+          Use the three boxes: Tool (self‑regulation), Concept (unit idea), and Why (reasoning).
+          Scenarios unlock daily and rotate weekly.
+        </div>
+        <p class="lead">Practice higher-stakes decisions safely. Choose a scenario, make a choice, then justify it using unit language.</p>
+        <div class="year-preview">
+          <div class="year-preview-header">
+            <h3>Preview</h3>
+            <p>Scenarios unlock daily (Mon–Sun). Future scenarios are blurred until their unlock date.</p>
+            <div class="preview-tabs">
+              <button type="button" class="tab-button active" data-tab="month">Month</button>
+            </div>
+            <div id="monthTabs" class="month-tabs"></div>
+          </div>
+          <div id="yearPreview">
+            <div id="monthPreview"></div>
+            <div id="yearPreviewGrid" class="hidden"></div>
+          </div>
+        </div>
+        <div class="unit-language">
+          <h3>Unit Language (Required)</h3>
+          <p>Good justifications use at least 3 elements: one self-regulation tool, one concept, and one why statement.</p>
+          <ul>
+            <li>Tools: stop and pause, breathe, step back, name the feeling, delay the reaction, ask for help, check the facts, reframe, set a boundary, use a checklist, slow down to speed up, repair.</li>
+            <li>Concepts: decision-making, self-regulation, impulse control, trade-off, short-term vs long-term, consequences, stakes, risk vs reward, values, goals, priorities, boundaries, responsibility, accountability, choice ownership, impact on others.</li>
+            <li>Why stems: I chose this because, My goal is, The trade-off is, The short-term gain is, but the long-term cost is, The biggest risk is, The consequence I’m trying to avoid is, This protects my boundary by, I’m taking responsibility by, I would pause first and then, If this happens again, I will.</li>
+          </ul>
+        </div>
+        <div class="stack">
+          <label class="field">
+            <span>Student name</span>
+            <input id="studentName" type="text" placeholder="First and last" />
+          </label>
+          <label class="field">
+            <span>Grade</span>
+            <input id="studentGrade" type="text" placeholder="e.g., 7th, 10th, 12th" />
+          </label>
+          <label class="field">
+            <span>Age</span>
+            <input id="studentAge" type="number" min="10" max="20" placeholder="e.g., 13" />
+          </label>
+        </div>
+        <div class="scenario-grid" id="scenarioGrid"></div>
+      </section>
+
+      <section class="panel hidden" id="gamePanel">
+        <div class="scenario-header">
+          <div>
+            <h2 id="scenarioTitle"></h2>
+            <p id="scenarioSummary"></p>
+            <div class="tags" id="scenarioTags"></div>
+          </div>
+          <div class="meters">
+            <div class="meter">
+              <span>Budget</span>
+              <div class="bar"><div id="budgetBar"></div></div>
+            </div>
+            <div class="meter">
+              <span>Time</span>
+              <div class="bar"><div id="timeBar"></div></div>
+            </div>
+            <div class="meter">
+              <span>Trust</span>
+              <div class="bar"><div id="trustBar"></div></div>
+            </div>
+          </div>
+        </div>
+
+        <div class="step">
+          <div class="prompt" id="stepPrompt"></div>
+          <div class="choices" id="choices"></div>
+
+          <label class="field">
+            <span>Tool (self-regulation strategy)
+              <button class="info-badge" type="button" aria-label="What counts as a tool?" data-tooltip="A tool is a self-regulation action you use to slow down or stay in control (pause, breathe, ask for help, check the facts, set a boundary).">?</button>
+            </span>
+            <textarea id="toolAnswer" rows="2" placeholder="Example: I would pause and check the facts."></textarea>
+          </label>
+          <label class="field">
+            <span>Concept (unit idea)
+              <button class="info-badge" type="button" aria-label="What counts as a concept?" data-tooltip="A concept is a unit idea that explains the situation (trade-off, short-term vs long-term, consequences, stakes, risk vs reward, values, goals, boundaries, responsibility).">?</button>
+            </span>
+            <textarea id="conceptAnswer" rows="2" placeholder="Example: The trade-off is short-term relief vs long-term trust."></textarea>
+          </label>
+          <label class="field">
+            <span>Why (reasoning)
+              <button class="info-badge" type="button" aria-label="What counts as a why statement?" data-tooltip="A why statement explains your reason and goal (I chose this because..., My goal is..., The biggest risk is..., This protects my boundary by...).">?</button>
+            </span>
+            <textarea id="whyAnswer" rows="3" placeholder="Example: I chose this because my goal is to protect credibility."></textarea>
+            <small class="hint">Use unit language in each box. Each box is required.</small>
+          </label>
+
+          <div class="actions">
+            <button id="submitDecision" class="primary">Submit</button>
+            <button id="nextStep" class="ghost hidden">Next</button>
+          </div>
+        </div>
+
+        <div class="feedback hidden" id="feedbackPanel">
+          <h3>Feedback</h3>
+          <div id="consequence"></div>
+          <div id="scorecard"></div>
+        </div>
+      </section>
+
+      <section class="panel hidden" id="aiPanel">
+        <div class="ai-header">
+          <h3>Role-play Partner</h3>
+          <div class="toggle">
+            <input type="checkbox" id="aiToggle" />
+            <label for="aiToggle">Enable AI role-play</label>
+          </div>
+        </div>
+        <div class="chat" id="chat"></div>
+        <div class="chat-input">
+          <input id="chatMessage" type="text" placeholder="Ask the stakeholder a question" />
+          <button id="sendChat">Send</button>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <dialog id="settingsDialog" class="settings">
+    <form method="dialog">
+      <h3>AI Settings</h3>
+      <p class="muted">Leave blank to use the built-in scripted role-play.</p>
+      <label class="field">
+        <span>AI endpoint URL</span>
+        <input id="endpointUrl" type="url" placeholder="https://your-endpoint.example/chat" />
+      </label>
+      <label class="field">
+        <span>API key (optional)</span>
+        <input id="apiKey" type="password" placeholder="Stored locally" />
+      </label>
+      <label class="field">
+        <span>Model name (optional)</span>
+        <input id="modelName" type="text" placeholder="model-id" />
+      </label>
+      <menu>
+        <button class="ghost" value="cancel">Close</button>
+        <button id="saveSettings" class="primary" value="default">Save</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <script id="scenariosData" type="application/json">{
+  "scenarios": [
+    {
+      "id": "after_school_job",
+      "title": "After-School Job Dilemma",
+      "summary": "You need money for a family bill, but your manager schedules you during a major exam week.",
+      "stakes": ["Employment", "Family finances", "Academic performance"],
+      "roles": ["Student", "Manager", "Parent"],
+      "startStep": "step1",
+      "meters": { "budget": 60, "time": 40, "trust": 50 },
+      "steps": {
+        "step1": {
+          "prompt": "Your manager schedules you for two extra shifts during exam week. You need the money, but the exams are major.",
+          "stakeholder": "Manager",
+          "aiPrompts": [
+            "I can only give these shifts to someone who is reliable. Can you do it?",
+            "Let me know quickly. I have to finalize the schedule today."
+          ],
+          "choices": [
+            {
+              "id": "accept",
+              "text": "Accept all shifts and plan to study late.",
+              "consequence": "You earn money but lose study time and feel stressed.",
+              "meterImpact": { "budget": 15, "time": -20, "trust": 5 },
+              "nextStep": "step2"
+            },
+            {
+              "id": "negotiate",
+              "text": "Negotiate for one shift and explain your exam week.",
+              "consequence": "You balance income and study time, but the manager is uncertain.",
+              "meterImpact": { "budget": 8, "time": -8, "trust": 3 },
+              "nextStep": "step2"
+            },
+            {
+              "id": "decline",
+              "text": "Decline and focus on exams.",
+              "consequence": "You protect study time but lose income.",
+              "meterImpact": { "budget": -10, "time": 12, "trust": -2 },
+              "nextStep": "step2"
+            }
+          ]
+        },
+        "step2": {
+          "prompt": "A parent asks how you will cover the family bill this month.",
+          "stakeholder": "Parent",
+          "aiPrompts": [
+            "We need to know your plan so we can cover the gap.",
+            "I want you to succeed in school, but we also have to pay the bill."
+          ],
+          "choices": [
+            {
+              "id": "budget",
+              "text": "Propose a budget plan and ask for temporary support.",
+              "consequence": "The parent feels heard and agrees to help short-term.",
+              "meterImpact": { "budget": 10, "time": 5, "trust": 10 },
+              "nextStep": "step3"
+            },
+            {
+              "id": "overpromise",
+              "text": "Promise to cover it without a clear plan.",
+              "consequence": "You avoid conflict now but risk breaking trust later.",
+              "meterImpact": { "budget": 0, "time": -4, "trust": -8 },
+              "nextStep": "step3"
+            },
+            {
+              "id": "ask_delay",
+              "text": "Ask to delay the payment and focus on exams.",
+              "consequence": "You buy time but increase financial pressure.",
+              "meterImpact": { "budget": -6, "time": 6, "trust": -3 },
+              "nextStep": "step3"
+            }
+          ]
+        },
+        "step3": {
+          "prompt": "Your friend offers to share answers for one exam to reduce stress.",
+          "stakeholder": "Friend",
+          "aiPrompts": [
+            "No one will know. It just makes this week easier.",
+            "You have too much on your plate. Take the help."
+          ],
+          "choices": [
+            {
+              "id": "refuse",
+              "text": "Refuse and explain your values and long-term goals.",
+              "consequence": "You keep integrity and lower long-term risk.",
+              "meterImpact": { "budget": 0, "time": -2, "trust": 8 },
+              "nextStep": "end"
+            },
+            {
+              "id": "accept",
+              "text": "Accept the answers to reduce stress.",
+              "consequence": "Short-term relief but major academic and trust risks.",
+              "meterImpact": { "budget": 0, "time": 6, "trust": -15 },
+              "nextStep": "end"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "group_project_conflict",
+      "title": "Group Project Breakdown",
+      "summary": "Your team is behind and one member is disengaged right before the due date.",
+      "stakes": ["Grades", "Team trust", "Time pressure"],
+      "roles": ["Student", "Teammate", "Teacher"],
+      "startStep": "step1",
+      "meters": { "budget": 45, "time": 35, "trust": 55 },
+      "steps": {
+        "step1": {
+          "prompt": "One teammate has not done their section. The project is due in 48 hours.",
+          "stakeholder": "Teammate",
+          "aiPrompts": [
+            "I was busy. I can do it tonight, just give me time.",
+            "Please don’t tell the teacher yet."
+          ],
+          "choices": [
+            {
+              "id": "coach",
+              "text": "Set a clear deadline and offer help to finish tonight.",
+              "consequence": "You keep collaboration but add work to your schedule.",
+              "meterImpact": { "budget": 0, "time": -10, "trust": 6 },
+              "nextStep": "step2"
+            },
+            {
+              "id": "reassign",
+              "text": "Reassign their section to other team members.",
+              "consequence": "The project quality improves, but resentment grows.",
+              "meterImpact": { "budget": 0, "time": -8, "trust": -6 },
+              "nextStep": "step2"
+            },
+            {
+              "id": "escalate",
+              "text": "Tell the teacher immediately and document the issue.",
+              "consequence": "You protect your grade, but it affects team relationships.",
+              "meterImpact": { "budget": 0, "time": -4, "trust": -4 },
+              "nextStep": "step2"
+            }
+          ]
+        },
+        "step2": {
+          "prompt": "The teammate sends a partial draft. It is not high quality.",
+          "stakeholder": "Teammate",
+          "aiPrompts": [
+            "I did what I could. It’s not perfect, but it’s something.",
+            "Can you just fix it?"
+          ],
+          "choices": [
+            {
+              "id": "revise",
+              "text": "Revise it and give feedback for next time.",
+              "consequence": "You secure the grade but carry extra workload.",
+              "meterImpact": { "budget": 0, "time": -12, "trust": 5 },
+              "nextStep": "step3"
+            },
+            {
+              "id": "negotiate",
+              "text": "Ask them to revise with specific expectations.",
+              "consequence": "You reinforce accountability but risk delays.",
+              "meterImpact": { "budget": 0, "time": -6, "trust": 2 },
+              "nextStep": "step3"
+            },
+            {
+              "id": "replace",
+              "text": "Replace their section without discussion.",
+              "consequence": "Quality improves but trust takes a hit.",
+              "meterImpact": { "budget": 0, "time": -8, "trust": -8 },
+              "nextStep": "step3"
+            }
+          ]
+        },
+        "step3": {
+          "prompt": "The teacher asks for a reflection on how the team handled the conflict.",
+          "stakeholder": "Teacher",
+          "aiPrompts": [
+            "Be honest. How did your team handle responsibility and communication?",
+            "What would you do differently next time?"
+          ],
+          "choices": [
+            {
+              "id": "reflect",
+              "text": "Describe the conflict and your conflict-resolution strategy.",
+              "consequence": "You show growth and apply unit language.",
+              "meterImpact": { "budget": 0, "time": 3, "trust": 8 },
+              "nextStep": "end"
+            },
+            {
+              "id": "deflect",
+              "text": "Avoid details and keep it surface-level.",
+              "consequence": "You miss a chance to show learning.",
+              "meterImpact": { "budget": 0, "time": 2, "trust": -4 },
+              "nextStep": "end"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "online_pressure",
+      "title": "Online Pressure and Reputation",
+      "summary": "A rumor spreads online and you are asked to respond publicly.",
+      "stakes": ["Reputation", "Safety", "Peer pressure"],
+      "roles": ["Student", "Peer", "Coach"],
+      "startStep": "step1",
+      "meters": { "budget": 50, "time": 50, "trust": 40 },
+      "steps": {
+        "step1": {
+          "prompt": "A rumor about you is spreading in a group chat. People want a response now.",
+          "stakeholder": "Peer",
+          "aiPrompts": [
+            "You should clap back. Everyone is watching.",
+            "If you stay quiet, people will think it’s true."
+          ],
+          "choices": [
+            {
+              "id": "pause",
+              "text": "Pause, gather facts, and set a plan before responding.",
+              "consequence": "You reduce risk and stay in control.",
+              "meterImpact": { "budget": 0, "time": -4, "trust": 6 },
+              "nextStep": "step2"
+            },
+            {
+              "id": "respond_fast",
+              "text": "Respond immediately and defend yourself.",
+              "consequence": "You feel relief but may escalate the situation.",
+              "meterImpact": { "budget": 0, "time": -6, "trust": -4 },
+              "nextStep": "step2"
+            },
+            {
+              "id": "ignore",
+              "text": "Ignore the messages and hope it fades.",
+              "consequence": "You avoid conflict but lose control of the narrative.",
+              "meterImpact": { "budget": 0, "time": 4, "trust": -6 },
+              "nextStep": "step2"
+            }
+          ]
+        },
+        "step2": {
+          "prompt": "A teammate asks if the rumor is true and if it affects your role.",
+          "stakeholder": "Coach",
+          "aiPrompts": [
+            "I need to know if this is a team issue. What’s your plan?",
+            "Help me understand the facts."
+          ],
+          "choices": [
+            {
+              "id": "facts",
+              "text": "Explain the facts calmly and outline your response plan.",
+              "consequence": "You build trust and show leadership.",
+              "meterImpact": { "budget": 0, "time": -3, "trust": 10 },
+              "nextStep": "step3"
+            },
+            {
+              "id": "defensive",
+              "text": "Get defensive and blame others.",
+              "consequence": "Trust drops and the issue escalates.",
+              "meterImpact": { "budget": 0, "time": -2, "trust": -10 },
+              "nextStep": "step3"
+            }
+          ]
+        },
+        "step3": {
+          "prompt": "You decide how to respond publicly. Your post will be seen by peers and adults.",
+          "stakeholder": "Peer",
+          "aiPrompts": [
+            "Think about how this will look a week from now.",
+            "Do you want to post at all, or use a private message?"
+          ],
+          "choices": [
+            {
+              "id": "private",
+              "text": "Address it privately and focus on repairing trust.",
+              "consequence": "You reduce public drama but need patience.",
+              "meterImpact": { "budget": 0, "time": -4, "trust": 8 },
+              "nextStep": "end"
+            },
+            {
+              "id": "public",
+              "text": "Post a calm public response with facts and boundaries.",
+              "consequence": "You show leadership but risk further attention.",
+              "meterImpact": { "budget": 0, "time": -6, "trust": 4 },
+              "nextStep": "end"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "family_budget_emergency",
+      "title": "Family Budget Emergency",
+      "summary": "A sudden expense hits your household and you are asked to help decide priorities.",
+      "stakes": ["Family stability", "Financial responsibility", "Long-term planning"],
+      "roles": ["Student", "Parent", "Sibling"],
+      "startStep": "step1",
+      "meters": { "budget": 35, "time": 55, "trust": 60 },
+      "steps": {
+        "step1": {
+          "prompt": "A car repair bill arrives. The family budget is short this month.",
+          "stakeholder": "Parent",
+          "aiPrompts": [
+            "We need to decide what to cut this month. What’s your plan?",
+            "I’m stressed. We have to choose wisely."
+          ],
+          "choices": [
+            {
+              "id": "prioritize",
+              "text": "List essential expenses and propose cuts to non-essentials.",
+              "consequence": "The plan reduces risk and keeps essentials covered.",
+              "meterImpact": { "budget": 12, "time": -4, "trust": 6 },
+              "nextStep": "step2"
+            },
+            {
+              "id": "avoid",
+              "text": "Avoid the conversation and hope it works out.",
+              "consequence": "Short-term comfort but long-term risk increases.",
+              "meterImpact": { "budget": -6, "time": 2, "trust": -8 },
+              "nextStep": "step2"
+            },
+            {
+              "id": "loan",
+              "text": "Suggest a short-term loan without reviewing the terms.",
+              "consequence": "Immediate relief but potential future burden.",
+              "meterImpact": { "budget": 6, "time": -6, "trust": -4 },
+              "nextStep": "step2"
+            }
+          ]
+        },
+        "step2": {
+          "prompt": "A sibling asks to keep a planned event that costs money.",
+          "stakeholder": "Sibling",
+          "aiPrompts": [
+            "It’s not fair. I already invited people.",
+            "Can’t we just do this one thing?"
+          ],
+          "choices": [
+            {
+              "id": "compromise",
+              "text": "Offer a lower-cost alternative and explain the trade-off.",
+              "consequence": "You protect relationships and the budget.",
+              "meterImpact": { "budget": 6, "time": -2, "trust": 8 },
+              "nextStep": "step3"
+            },
+            {
+              "id": "no",
+              "text": "Say no without explanation.",
+              "consequence": "You save money but damage trust.",
+              "meterImpact": { "budget": 8, "time": 0, "trust": -10 },
+              "nextStep": "step3"
+            }
+          ]
+        },
+        "step3": {
+          "prompt": "You need to explain the plan to the family.",
+          "stakeholder": "Parent",
+          "aiPrompts": [
+            "How will you explain this plan so everyone buys in?",
+            "What will you do if people push back?"
+          ],
+          "choices": [
+            {
+              "id": "communicate",
+              "text": "Communicate the plan and ask for input.",
+              "consequence": "Shared ownership increases follow-through.",
+              "meterImpact": { "budget": 2, "time": -2, "trust": 8 },
+              "nextStep": "end"
+            },
+            {
+              "id": "dictate",
+              "text": "Dictate the plan quickly and move on.",
+              "consequence": "It saves time but weakens buy-in.",
+              "meterImpact": { "budget": 2, "time": 2, "trust": -6 },
+              "nextStep": "end"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "sports_injury_pressure",
+      "title": "Play Through an Injury?",
+      "summary": "A coach wants you to play, but your injury might worsen.",
+      "stakes": ["Health", "Team commitment", "Long-term goals"],
+      "roles": ["Student", "Coach", "Parent"],
+      "startStep": "step1",
+      "meters": { "budget": 50, "time": 50, "trust": 55 },
+      "steps": {
+        "step1": {
+          "prompt": "You twisted your ankle at practice. The coach wants you to play in a big game.",
+          "stakeholder": "Coach",
+          "aiPrompts": [
+            "We need you out there. Can you push through?",
+            "It’s a big game. What can we do to make this work?"
+          ],
+          "choices": [
+            {
+              "id": "play",
+              "text": "Agree to play without getting medical advice.",
+              "consequence": "You help the team now but risk long-term injury.",
+              "meterImpact": { "budget": 0, "time": -6, "trust": -4 },
+              "nextStep": "step2"
+            },
+            {
+              "id": "check",
+              "text": "Ask for medical guidance before deciding.",
+              "consequence": "You protect your health and make a informed choice.",
+              "meterImpact": { "budget": 0, "time": -4, "trust": 6 },
+              "nextStep": "step2"
+            },
+            {
+              "id": "decline",
+              "text": "Decline and focus on recovery.",
+              "consequence": "Short-term disappointment but long-term health is protected.",
+              "meterImpact": { "budget": 0, "time": 4, "trust": -2 },
+              "nextStep": "step2"
+            }
+          ]
+        },
+        "step2": {
+          "prompt": "Your teammates are disappointed and ask you to reconsider.",
+          "stakeholder": "Teammate",
+          "aiPrompts": [
+            "We need you. It’s only one game.",
+            "Can you at least play part of it?"
+          ],
+          "choices": [
+            {
+              "id": "explain",
+              "text": "Explain your long-term goals and health boundaries.",
+              "consequence": "You model self-regulation and protect health.",
+              "meterImpact": { "budget": 0, "time": -2, "trust": 6 },
+              "nextStep": "step3"
+            },
+            {
+              "id": "give_in",
+              "text": "Give in to pressure and play anyway.",
+              "consequence": "Team is happy but risk increases.",
+              "meterImpact": { "budget": 0, "time": -4, "trust": -6 },
+              "nextStep": "step3"
+            }
+          ]
+        },
+        "step3": {
+          "prompt": "A parent asks how you decided.",
+          "stakeholder": "Parent",
+          "aiPrompts": [
+            "Walk me through your thinking.",
+            "What trade-offs did you consider?"
+          ],
+          "choices": [
+            {
+              "id": "reflect",
+              "text": "Describe your decision-making steps and trade-offs.",
+              "consequence": "You show clear reasoning and values.",
+              "meterImpact": { "budget": 0, "time": 2, "trust": 8 },
+              "nextStep": "end"
+            },
+            {
+              "id": "avoid",
+              "text": "Say it was no big deal.",
+              "consequence": "You miss a chance to show growth.",
+              "meterImpact": { "budget": 0, "time": 2, "trust": -4 },
+              "nextStep": "end"
+            }
+          ]
+        }
+      }
+    },
+    {
+      "id": "late_night_ride",
+      "title": "Late-Night Ride",
+      "summary": "A friend offers a ride home late at night, but you are unsure about safety.",
+      "stakes": ["Safety", "Peer pressure", "Decision ownership"],
+      "roles": ["Student", "Friend", "Guardian"],
+      "startStep": "step1",
+      "meters": { "budget": 55, "time": 40, "trust": 50 },
+      "steps": {
+        "step1": {
+          "prompt": "A friend offers a ride home late at night. You are unsure if they are a safe driver.",
+          "stakeholder": "Friend",
+          "aiPrompts": [
+            "It’s fine. We’ll get there fast.",
+            "Don’t be dramatic. I do this all the time."
+          ],
+          "choices": [
+            {
+              "id": "safe_plan",
+              "text": "Pause and suggest a safer plan (call a guardian or use a safer route).",
+              "consequence": "You reduce risk and model responsible decision-making.",
+              "meterImpact": { "budget": -4, "time": -6, "trust": 6 },
+              "nextStep": "step2"
+            },
+            {
+              "id": "go",
+              "text": "Accept the ride to avoid conflict.",
+              "consequence": "You save time but accept more risk.",
+              "meterImpact": { "budget": 0, "time": 6, "trust": -6 },
+              "nextStep": "step2"
+            },
+            {
+              "id": "decline",
+              "text": "Decline the ride and wait for another option.",
+              "consequence": "You prioritize safety but it takes longer.",
+              "meterImpact": { "budget": -2, "time": -8, "trust": 2 },
+              "nextStep": "step2"
+            }
+          ]
+        },
+        "step2": {
+          "prompt": "Your guardian texts asking for your plan to get home safely.",
+          "stakeholder": "Guardian",
+          "aiPrompts": [
+            "I need to know where you are and how you’re getting home.",
+            "What’s your plan?"
+          ],
+          "choices": [
+            {
+              "id": "communicate",
+              "text": "Share your plan and ask for support.",
+              "consequence": "You build trust and keep safety first.",
+              "meterImpact": { "budget": 0, "time": -2, "trust": 8 },
+              "nextStep": "step3"
+            },
+            {
+              "id": "vague",
+              "text": "Be vague to avoid questions.",
+              "consequence": "You risk trust and increase uncertainty.",
+              "meterImpact": { "budget": 0, "time": 0, "trust": -8 },
+              "nextStep": "step3"
+            }
+          ]
+        },
+        "step3": {
+          "prompt": "Reflect on the decision you made about safety and pressure.",
+          "stakeholder": "Guardian",
+          "aiPrompts": [
+            "What was the biggest risk?",
+            "What would you do if this happened again?"
+          ],
+          "choices": [
+            {
+              "id": "reflect",
+              "text": "Describe your risk assessment and how you managed pressure.",
+              "consequence": "You show transfer of decision-making skills.",
+              "meterImpact": { "budget": 0, "time": 2, "trust": 8 },
+              "nextStep": "end"
+            },
+            {
+              "id": "minimize",
+              "text": "Say it wasn’t a big deal.",
+              "consequence": "You miss an opportunity to show growth.",
+              "meterImpact": { "budget": 0, "time": 2, "trust": -4 },
+              "nextStep": "end"
+            }
+          ]
+        }
+      }
+    }
+  ]
+}
+</script>
+<script id="rubricData" type="application/json">{
+  "criteria": [
+    {
+      "id": "unit_language",
+      "label": "Uses unit language accurately",
+      "max": 3,
+      "keywords": [
+        "decision-making",
+        "self-regulation",
+        "self regulation",
+        "impulse control",
+        "pause and plan",
+        "trade-off",
+        "trade off",
+        "short-term",
+        "long-term",
+        "consequence",
+        "consequences",
+        "stakes",
+        "risk vs reward",
+        "values",
+        "goals",
+        "priorities",
+        "boundaries",
+        "responsibility",
+        "accountability",
+        "choice ownership",
+        "impact on others"
+      ]
+    },
+    {
+      "id": "reasoning",
+      "label": "Explains reasoning clearly",
+      "max": 3,
+      "keywords": [
+        "because",
+        "so that",
+        "therefore",
+        "risk",
+        "benefit",
+        "impact",
+        "priority",
+        "plan",
+        "pros and cons",
+        "best next step",
+        "worst-case",
+        "most likely",
+        "second-order",
+        "information i still need",
+        "assumptions",
+        "pressure",
+        "time limit",
+        "scarce resources",
+        "plan a",
+        "plan b",
+        "support system",
+        "follow-through"
+      ]
+    },
+    {
+      "id": "self_regulation",
+      "label": "Names a self-regulation strategy",
+      "max": 3,
+      "keywords": [
+        "stop and pause",
+        "pause",
+        "breathe",
+        "step back",
+        "name the feeling",
+        "delay",
+        "ask for help",
+        "check the facts",
+        "reframe",
+        "set a boundary",
+        "checklist",
+        "slow down to speed up",
+        "repair"
+      ]
+    },
+    {
+      "id": "transfer",
+      "label": "Connects to a higher-stakes situation",
+      "max": 3,
+      "keywords": [
+        "in real life",
+        "workplace",
+        "at home",
+        "online",
+        "relationship",
+        "health and safety",
+        "long-term reputation",
+        "trust and credibility",
+        "legal risk",
+        "team impact",
+        "future opportunities"
+      ]
+    }
+  ],
+  "minimumLength": 90,
+  "lengthScore": 1,
+  "requiredGroups": {
+    "tools": [
+      "stop and pause",
+      "pause",
+      "breathe",
+      "step back",
+      "name the feeling",
+      "delay",
+      "ask for help",
+      "check the facts",
+      "reframe",
+      "set a boundary",
+      "checklist",
+      "slow down to speed up",
+      "repair"
+    ],
+    "concepts": [
+      "decision-making",
+      "self-regulation",
+      "self regulation",
+      "impulse control",
+      "pause and plan",
+      "trade-off",
+      "trade off",
+      "short-term",
+      "long-term",
+      "consequence",
+      "consequences",
+      "stakes",
+      "risk vs reward",
+      "values",
+      "goals",
+      "priorities",
+      "boundaries",
+      "responsibility",
+      "accountability",
+      "choice ownership",
+      "impact on others"
+    ],
+    "why": [
+      "i chose this because",
+      "my goal is",
+      "the trade-off is",
+      "the short-term gain is",
+      "but the long-term cost is",
+      "the biggest risk is",
+      "the consequence i'm trying to avoid is",
+      "this protects my boundary by",
+      "i'm taking responsibility by",
+      "i would pause first and then",
+      "if this happens again, i will"
+    ]
+  },
+  "requiredGroupCount": 3
+}
+</script>
+<script src="app.js"></script>
+</body>
+</html>
