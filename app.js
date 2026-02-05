@@ -459,7 +459,7 @@ function renderStep() {
   feedbackPanel.classList.add("hidden");
   nextStepBtn.classList.add("hidden");
   toolAnswerEl.value = "";
-  conceptAnswerEl.value = "";
+  conceptAnswerEl.value = defaultConceptText();
   whyAnswerEl.value = "";
 
   if (currentStepId === "end") {
@@ -487,6 +487,10 @@ function renderStep() {
     });
     choicesEl.appendChild(choiceEl);
   });
+}
+
+function defaultConceptText() {
+  return "The trade-off is short-term relief vs long-term consequences.";
 }
 
 function updateMeters() {
@@ -554,7 +558,7 @@ submitDecision.addEventListener("click", () => {
     return;
   }
   const toolAnswer = toolAnswerEl.value.trim();
-  const conceptAnswer = conceptAnswerEl.value.trim();
+  const conceptAnswer = conceptAnswerEl.value.trim() || defaultConceptText();
   const whyAnswer = whyAnswerEl.value.trim();
   if (!toolAnswer || !conceptAnswer || !whyAnswer) {
     alert("Complete all three boxes: Tool, Concept, and Why.");
