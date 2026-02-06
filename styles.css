@@ -35,7 +35,32 @@ body {
   content: "";
   position: fixed;
   inset: 0;
-  background: none;
+  background-image:
+    linear-gradient(0deg, rgba(247, 243, 234, 0.92), rgba(247, 243, 234, 0.92)),
+    url("https://images.unsplash.com/photo-1767243303669-7afee65619cf?auto=format&fit=crop&fm=jpg&ixlib=rb-4.1.0&q=60&w=1600"),
+    url("https://cdn.pixabay.com/photo/2019/04/16/11/15/job-4131482_1280.jpg"),
+    url("https://cdn.pixabay.com/photo/2016/11/29/01/25/ceremony-1866532_1280.jpg"),
+    url("https://cdn.pixabay.com/photo/2018/08/24/20/32/church-3628816_1280.jpg"),
+    url("https://cdn.pixabay.com/photo/2019/06/14/21/43/hard-hat-4274431_1280.jpg"),
+    url("https://cdn.pixabay.com/photo/2017/08/18/06/50/volunteers-2654000_1280.jpg");
+  background-size:
+    cover,
+    520px auto,
+    420px auto,
+    520px auto,
+    520px auto,
+    440px auto,
+    520px auto;
+  background-position:
+    center,
+    6% 10%,
+    95% 12%,
+    12% 78%,
+    92% 70%,
+    50% 88%,
+    58% 18%;
+  background-repeat: no-repeat;
+  opacity: 1;
   pointer-events: none;
   z-index: 0;
 }
