@@ -34,6 +34,8 @@ const modelNameInput = document.getElementById("modelName");
 const saveSettings = document.getElementById("saveSettings");
 const teacherToggle = document.getElementById("teacherToggle");
 const resourceSelect = document.getElementById("resourceSelect");
+const youthResourceSelect = document.getElementById("youthResourceSelect");
+const adultResourceSelect = document.getElementById("adultResourceSelect");
 const yearPreviewEl = document.getElementById("yearPreview");
 const monthPreviewEl = document.getElementById("monthPreview");
 const yearPreviewGridEl = document.getElementById("yearPreviewGrid");
@@ -888,6 +890,26 @@ if (resourceSelect) {
     if (url) {
       window.open(url, "_blank", "noopener");
       resourceSelect.value = "";
+    }
+  });
+}
+
+if (youthResourceSelect) {
+  youthResourceSelect.addEventListener("change", () => {
+    const url = youthResourceSelect.value;
+    if (url) {
+      window.open(url, "_blank", "noopener");
+      youthResourceSelect.value = "";
+    }
+  });
+}
+
+if (adultResourceSelect) {
+  adultResourceSelect.addEventListener("change", () => {
+    const url = adultResourceSelect.value;
+    if (url) {
+      window.open(url, "_blank", "noopener");
+      adultResourceSelect.value = "";
     }
   });
 }
