@@ -321,11 +321,33 @@ body {
   margin-top: 10px;
 }
 
+.month-tabs-row {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.month-toggle {
+  border: 1px solid var(--border);
+  background: #0b6b6b;
+  color: #fff;
+  padding: 6px 10px;
+  border-radius: 999px;
+  font-size: 11px;
+  cursor: pointer;
+  white-space: nowrap;
+}
+
 .month-tabs {
   display: flex;
   gap: 6px;
   margin-top: 0;
   flex-wrap: wrap;
+}
+
+.month-tabs.collapsed {
+  display: none;
 }
 
 .month-tabs-row {

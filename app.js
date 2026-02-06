@@ -38,6 +38,7 @@ const monthPreviewEl = document.getElementById("monthPreview");
 const yearPreviewGridEl = document.getElementById("yearPreviewGrid");
 const previewTabButtons = document.querySelectorAll(".tab-button");
 const monthTabsEl = document.getElementById("monthTabs");
+const monthToggle = document.getElementById("monthToggle");
 const infoBadges = document.querySelectorAll(".info-badge");
 const currentDateEl = document.getElementById("currentDate");
 const currentScenarioLabelEl = document.getElementById("currentScenarioLabel");
@@ -248,6 +249,7 @@ function renderYearPreview() {
     previewTabButtons.forEach((button) => button.classList.remove("active"));
     previewTabButtons[0].classList.add("active");
   }
+  initMonthToggle();
 }
 
 function renderIntroMeta() {
@@ -344,6 +346,15 @@ function renderMonthTabs(monthKeys, activeKey, months, now, startDate) {
       renderMonthContent(key, months, now, startDate);
     });
     monthTabsEl.appendChild(btn);
+  });
+}
+
+function initMonthToggle() {
+  if (!monthToggle || !monthTabsEl) return;
+  monthToggle.addEventListener("click", () => {
+    monthTabsEl.classList.toggle("collapsed");
+    const isCollapsed = monthTabsEl.classList.contains("collapsed");
+    monthToggle.setAttribute("aria-expanded", isCollapsed ? "false" : "true");
   });
 }
 
