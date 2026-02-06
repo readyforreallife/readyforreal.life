@@ -115,6 +115,23 @@ body {
 .controls {
   display: flex;
   gap: 12px;
+  align-items: center;
+}
+
+.resource-select {
+  display: grid;
+  gap: 4px;
+  font-size: 11px;
+  color: var(--muted);
+}
+
+.resource-select select {
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 6px 12px;
+  background: #fff4df;
+  font-size: 12px;
+  cursor: pointer;
 }
 
 .year-preview {

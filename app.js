@@ -33,6 +33,7 @@ const apiKeyInput = document.getElementById("apiKey");
 const modelNameInput = document.getElementById("modelName");
 const saveSettings = document.getElementById("saveSettings");
 const teacherToggle = document.getElementById("teacherToggle");
+const resourceSelect = document.getElementById("resourceSelect");
 const yearPreviewEl = document.getElementById("yearPreview");
 const monthPreviewEl = document.getElementById("monthPreview");
 const yearPreviewGridEl = document.getElementById("yearPreviewGrid");
@@ -880,6 +881,16 @@ teacherToggle.addEventListener("click", () => {
     alert("Incorrect PIN.");
   }
 });
+
+if (resourceSelect) {
+  resourceSelect.addEventListener("change", () => {
+    const url = resourceSelect.value;
+    if (url) {
+      window.open(url, "_blank", "noopener");
+      resourceSelect.value = "";
+    }
+  });
+}
 
 exportCsv.addEventListener("click", () => {
   if (!sessionLog.length) {
