@@ -14,7 +14,9 @@ const submitDecision = document.getElementById("submitDecision");
 const nextStepBtn = document.getElementById("nextStep");
 const feedbackPanel = document.getElementById("feedbackPanel");
 const consequenceEl = document.getElementById("consequence");
-const scorecardEl = document.getElementById("scorecard");
+const aiFeedbackEl = document.getElementById("aiFeedback");
+const aiOptionsEl = document.getElementById("aiOptions");
+const aiVideoEl = document.getElementById("aiVideo");
 const budgetBar = document.getElementById("budgetBar");
 const timeBar = document.getElementById("timeBar");
 const trustBar = document.getElementById("trustBar");
@@ -36,6 +38,7 @@ const monthPreviewEl = document.getElementById("monthPreview");
 const yearPreviewGridEl = document.getElementById("yearPreviewGrid");
 const previewTabButtons = document.querySelectorAll(".tab-button");
 const monthTabsEl = document.getElementById("monthTabs");
+const infoBadges = document.querySelectorAll(".info-badge");
 const currentDateEl = document.getElementById("currentDate");
 const currentScenarioLabelEl = document.getElementById("currentScenarioLabel");
 
@@ -459,7 +462,7 @@ function renderStep() {
   feedbackPanel.classList.add("hidden");
   nextStepBtn.classList.add("hidden");
   toolAnswerEl.value = "";
-  conceptAnswerEl.value = defaultConceptText();
+  conceptAnswerEl.value = "";
   whyAnswerEl.value = "";
 
   if (currentStepId === "end") {
@@ -489,9 +492,6 @@ function renderStep() {
   });
 }
 
-function defaultConceptText() {
-  return "The trade-off is short-term relief vs long-term consequences.";
-}
 
 function updateMeters() {
   budgetBar.style.width = `${clamp(meters.budget)}%`;
@@ -532,33 +532,13 @@ function scoreJustification(text) {
   return { scores, lengthBonus, groupMatches, matchedGroupCount, missingGroups };
 }
 
-function renderScorecard(scoreResult) {
-  scorecardEl.innerHTML = "";
-  scoreResult.scores.forEach((item) => {
-    const row = document.createElement("div");
-    row.className = "score-row";
-    row.innerHTML = `<span>${item.label}</span><strong>${item.score}/${item.max}</strong>`;
-    scorecardEl.appendChild(row);
-  });
-  if (scoreResult.lengthBonus) {
-    const bonus = document.createElement("div");
-    bonus.className = "score-row";
-    bonus.innerHTML = `<span>Complete explanation length</span><strong>+${scoreResult.lengthBonus}</strong>`;
-    scorecardEl.appendChild(bonus);
-  }
-  const requirement = document.createElement("div");
-  requirement.className = "score-row";
-  requirement.innerHTML = `<span>Unit language requirement (tool + concept + why)</span><strong>${scoreResult.matchedGroupCount}/3</strong>`;
-  scorecardEl.appendChild(requirement);
-}
-
 submitDecision.addEventListener("click", () => {
   if (!selectedChoice) {
     alert("Select a decision first.");
     return;
   }
   const toolAnswer = toolAnswerEl.value.trim();
-  const conceptAnswer = conceptAnswerEl.value.trim() || defaultConceptText();
+  const conceptAnswer = conceptAnswerEl.value.trim();
   const whyAnswer = whyAnswerEl.value.trim();
   if (!toolAnswer || !conceptAnswer || !whyAnswer) {
     alert("Complete all three boxes: Tool, Concept, and Why.");
@@ -568,16 +548,6 @@ submitDecision.addEventListener("click", () => {
 
   const step = currentScenario.steps[currentStepId];
   const scoreResult = scoreJustification(justification);
-  if (scoreResult.matchedGroupCount < rubric.requiredGroupCount) {
-    const labels = {
-      tools: "tool",
-      concepts: "concept",
-      why: "why statement"
-    };
-    const missing = scoreResult.missingGroups.map((g) => labels[g]).join(", ");
-    alert(`Add unit language in the ${missing} box(es).`);
-    return;
-  }
 
   meters.budget += selectedChoice.meterImpact.budget;
   meters.time += selectedChoice.meterImpact.time;
@@ -586,7 +556,14 @@ submitDecision.addEventListener("click", () => {
   updateMeters();
 
   consequenceEl.textContent = selectedChoice.consequence;
-  renderScorecard(scoreResult);
+  renderAiFeedback({
+    toolAnswer,
+    conceptAnswer,
+    whyAnswer,
+    choice: selectedChoice,
+    step: currentScenario.steps[currentStepId],
+    scenario: currentScenario
+  });
   feedbackPanel.classList.remove("hidden");
   nextStepBtn.textContent = currentStepId === "end" ? "Restart" : "Next";
   nextStepBtn.classList.remove("hidden");
@@ -709,6 +686,127 @@ async function getAiReply(message) {
   } catch (error) {
     return "Connection issue. Use the justification box to explain your reasoning.";
   }
+}
+
+async function renderAiFeedback(context) {
+  const settings = loadSettings();
+  if (settings.endpointUrl) {
+    const ai = await getAiFeedback(context, settings);
+    applyAiFeedback(ai, context);
+    return;
+  }
+  const fallback = buildFallbackFeedback(context);
+  applyAiFeedback(fallback, context);
+}
+
+async function getAiFeedback(context, settings) {
+  const payload = {
+    model: settings.modelName || undefined,
+    type: "decision_feedback",
+    scenario: {
+      title: context.scenario.title,
+      summary: context.scenario.summary,
+      stakes: context.scenario.stakes
+    },
+    decision: {
+      choice: context.choice.text,
+      consequence: context.choice.consequence,
+      tool: context.toolAnswer,
+      concept: context.conceptAnswer,
+      why: context.whyAnswer
+    },
+    rubric
+  };
+
+  try {
+    const response = await fetch(settings.endpointUrl, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        ...(settings.apiKey ? { "Authorization": `Bearer ${settings.apiKey}` } : {})
+      },
+      body: JSON.stringify(payload)
+    });
+
+    const data = await response.json();
+    return {
+      feedback: data.feedback || data.response || "Thanks for your response. Reflect on your next step.",
+      options: data.options || data.next_steps || [],
+      videoQuery: data.video_query || data.videoQuery || "",
+      videoUrl: data.video_url || data.videoUrl || ""
+    };
+  } catch (error) {
+    return buildFallbackFeedback(context);
+  }
+}
+
+function applyAiFeedback(ai, context) {
+  if (aiFeedbackEl) {
+    aiFeedbackEl.textContent = ai.feedback || "Thanks for your response. Reflect on your next step.";
+  }
+  if (aiOptionsEl) {
+    aiOptionsEl.innerHTML = "";
+    const options = ai.options && ai.options.length ? ai.options : buildDefaultOptions(context);
+    options.slice(0, 3).forEach((option) => {
+      const li = document.createElement("li");
+      li.textContent = option;
+      aiOptionsEl.appendChild(li);
+    });
+  }
+  if (aiVideoEl) {
+    const link = document.createElement("a");
+    const query = ai.videoQuery || context.scenario.videoQuery || buildVideoQuery(context);
+    const url = ai.videoUrl || `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
+    link.href = url;
+    link.target = "_blank";
+    link.rel = "noopener";
+    link.textContent = query ? `Search YouTube: ${query}` : "Search YouTube for related guidance";
+    aiVideoEl.innerHTML = "";
+    aiVideoEl.appendChild(link);
+  }
+}
+
+function buildFallbackFeedback(context) {
+  return {
+    feedback: `You chose: ${context.choice.text} This protects you in the short term, but consider how it affects trust and long-term goals.`,
+    options: buildDefaultOptions(context),
+    videoQuery: buildVideoQuery(context)
+  };
+}
+
+function buildDefaultOptions(context) {
+  return [
+    "Pause and gather one more fact before deciding.",
+    "Ask a trusted adult or peer for a second perspective.",
+    "Set a clear boundary and explain your long-term goal."
+  ];
+}
+
+function buildVideoQuery(context) {
+  const id = context.scenario.id || "";
+  const title = context.scenario.title.toLowerCase();
+  const tags = context.scenario.stakes.join(" ").toLowerCase();
+  const hay = `${id} ${title} ${tags}`;
+
+  const library = [
+    { match: ["online", "rumor", "reputation", "digital"], query: "digital citizenship online reputation decision making" },
+    { match: ["job", "employment", "manager", "workplace"], query: "workplace communication boundaries decision making" },
+    { match: ["peer pressure", "safety", "ride", "driving"], query: "peer pressure safety decision making teens" },
+    { match: ["group", "project", "team", "conflict"], query: "conflict resolution teamwork accountability students" },
+    { match: ["health", "injury", "sports"], query: "sports injury decision making athlete health" },
+    { match: ["budget", "money", "finances", "family"], query: "teen budgeting priorities trade-offs decision making" },
+    { match: ["self-regulation", "impulse", "stress"], query: "self regulation impulse control teens" },
+    { match: ["boundary", "boundaries"], query: "setting boundaries teens respectful communication" }
+  ];
+
+  for (const item of library) {
+    if (item.match.some((term) => hay.includes(term))) {
+      return item.query;
+    }
+  }
+
+  const stakes = context.scenario.stakes.join(" ");
+  return `${context.scenario.title} decision-making ${stakes}`;
 }
 
 sendChat.addEventListener("click", handleChatSend);
@@ -1169,3 +1267,39 @@ function capitalize(text) {
 }
 
 loadData();
+
+const infoPopover = document.createElement("div");
+infoPopover.className = "info-popover hidden";
+document.body.appendChild(infoPopover);
+
+function showInfoPopover(target) {
+  const text = target.getAttribute("data-tooltip");
+  if (!text) return;
+  infoPopover.textContent = text;
+  infoPopover.classList.remove("hidden");
+  const rect = target.getBoundingClientRect();
+  const top = rect.bottom + 8;
+  const left = rect.left + rect.width / 2;
+  infoPopover.style.top = `${top}px`;
+  infoPopover.style.left = `${left}px`;
+  infoPopover.style.transform = "translateX(-50%)";
+}
+
+function hideInfoPopover() {
+  infoPopover.classList.add("hidden");
+}
+
+infoBadges.forEach((badge) => {
+  badge.addEventListener("click", (event) => {
+    event.stopPropagation();
+    if (!infoPopover.classList.contains("hidden") && infoPopover.textContent === badge.getAttribute("data-tooltip")) {
+      hideInfoPopover();
+      return;
+    }
+    showInfoPopover(badge);
+  });
+});
+
+document.addEventListener("click", () => {
+  hideInfoPopover();
+});
