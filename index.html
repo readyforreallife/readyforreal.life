@@ -192,6 +192,8 @@
             <span id="stepCounter">Step 1</span>
             <div class="star-meter" id="starMeter" aria-label="Level progress"></div>
             <div class="progress-bar"><div id="stepProgressBar"></div></div>
+            <span id="xpBadge" class="xp-badge">XP 0</span>
+            <span id="streakBadge" class="xp-badge">Streak 0</span>
           </div>
           <div id="levelUpBadge" class="level-up hidden">Level Up!</div>
           <div class="prompt" id="stepPrompt"></div>
@@ -257,8 +259,8 @@
             <ul id="aiOptions" class="feedback-list"></ul>
           </div>
           <div class="feedback-section">
-            <h4>Related Video</h4>
-            <div id="aiVideo" class="feedback-text"></div>
+            <h4>Encouragement</h4>
+            <div id="encouragement" class="feedback-text"></div>
           </div>
         </div>
       </section>
@@ -330,11 +332,11 @@
       <p class="muted">We’ll contact you when class dates and locations are announced.</p>
       <label class="field">
         <span>Full name</span>
-        <input id="regName" type="text" placeholder="Your name" required />
+        <input id="regName" type="text" placeholder="Your name" />
       </label>
       <label class="field">
         <span>Email</span>
-        <input id="regEmail" type="email" placeholder="name@email.com" required />
+        <input id="regEmail" type="email" placeholder="name@email.com" />
       </label>
       <label class="field">
         <span>Phone (optional)</span>
@@ -342,7 +344,7 @@
       </label>
       <label class="field">
         <span>Best fit</span>
-        <select id="regGroup" required>
+        <select id="regGroup">
           <option value="">Select one</option>
           <option value="Youth">Youth</option>
           <option value="Adult">Adult</option>

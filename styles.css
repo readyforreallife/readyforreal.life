@@ -874,6 +874,17 @@ body {
   gap: 4px;
 }
 
+.xp-badge {
+  padding: 6px 10px;
+  border-radius: 999px;
+  background: rgba(11, 107, 107, 0.12);
+  border: 1px solid rgba(11, 107, 107, 0.2);
+  font-size: 12px;
+  font-weight: 700;
+  color: #0f4f4f;
+  white-space: nowrap;
+}
+
 .star {
   width: 16px;
   height: 16px;

@@ -22,13 +22,15 @@ const starMeterEl = document.getElementById("starMeter");
 const undoSelectionBtn = document.getElementById("undoSelection");
 const soundToggleEl = document.getElementById("soundToggle");
 const levelUpBadge = document.getElementById("levelUpBadge");
+const xpBadge = document.getElementById("xpBadge");
+const streakBadge = document.getElementById("streakBadge");
 const submitDecision = document.getElementById("submitDecision");
 const nextStepBtn = document.getElementById("nextStep");
 const feedbackPanel = document.getElementById("feedbackPanel");
 const consequenceEl = document.getElementById("consequence");
 const aiFeedbackEl = document.getElementById("aiFeedback");
 const aiOptionsEl = document.getElementById("aiOptions");
-const aiVideoEl = document.getElementById("aiVideo");
+const encouragementEl = document.getElementById("encouragement");
 const budgetBar = document.getElementById("budgetBar");
 const timeBar = document.getElementById("timeBar");
 const trustBar = document.getElementById("trustBar");
@@ -143,6 +145,16 @@ const STAKE_VIDEO_MAP = {
   "Family stability": "family responsibilities and school balance"
 };
 
+const ENCOURAGEMENTS = [
+  "You’re thinking ahead. That’s a real‑world skill.",
+  "Great self‑control — that’s how leaders respond.",
+  "You owned your choice. That builds trust.",
+  "Nice work balancing short‑term and long‑term.",
+  "You’re practicing the long view. Keep going."
+];
+
+const GAMIFY_KEY = "decision-lab-gamify";
+
 const ROTATION_START = "2026-02-02";
 const WEEKS_PER_YEAR = 40;
 const SCENARIOS_PER_WEEK = 7;
@@ -225,6 +237,7 @@ async function loadData() {
   renderIntroMeta();
   loadTeacherMode();
   renderBuilderOptions();
+  updateGamifyUI(loadGamify());
 }
 
 function renderBuilderOptions() {
@@ -692,6 +705,46 @@ function updateProgress() {
   }
 }
 
+function loadGamify() {
+  const saved = localStorage.getItem(GAMIFY_KEY);
+  if (!saved) {
+    return { xp: 0, streak: 0, lastDate: "" };
+  }
+  try {
+    return JSON.parse(saved);
+  } catch {
+    return { xp: 0, streak: 0, lastDate: "" };
+  }
+}
+
+function saveGamify(data) {
+  localStorage.setItem(GAMIFY_KEY, JSON.stringify(data));
+  updateGamifyUI(data);
+}
+
+function updateGamifyUI(data) {
+  if (xpBadge) xpBadge.textContent = `XP ${data.xp}`;
+  if (streakBadge) streakBadge.textContent = `Streak ${data.streak}`;
+}
+
+function awardXP(points) {
+  const today = new Date().toISOString().slice(0, 10);
+  const data = loadGamify();
+  data.xp += points;
+  if (data.lastDate === today) {
+    // same day, keep streak
+  } else if (!data.lastDate) {
+    data.streak = 1;
+  } else {
+    const last = new Date(data.lastDate);
+    const now = new Date(today);
+    const diff = Math.floor((now - last) / (24 * 60 * 60 * 1000));
+    data.streak = diff === 1 ? data.streak + 1 : 1;
+  }
+  data.lastDate = today;
+  saveGamify(data);
+}
+
 
 function updateMeters() {
   budgetBar.style.width = `${clamp(meters.budget)}%`;
@@ -798,6 +851,7 @@ submitDecision.addEventListener("click", async () => {
 
   updateLocalStats(payload);
   await logToSheets(payload);
+  awardXP(15);
   fireConfetti();
   playChime();
 });
@@ -974,16 +1028,8 @@ function applyAiFeedback(ai, context) {
       aiOptionsEl.appendChild(li);
     });
   }
-  if (aiVideoEl) {
-    const link = document.createElement("a");
-    const query = ai.videoQuery || context.scenario.videoQuery || buildVideoQuery(context);
-    const url = ai.videoUrl || `https://www.youtube.com/results?search_query=${encodeURIComponent(query)}`;
-    link.href = url;
-    link.target = "_blank";
-    link.rel = "noopener";
-    link.textContent = query ? `Search YouTube: ${query}` : "Search YouTube for related guidance";
-    aiVideoEl.innerHTML = "";
-    aiVideoEl.appendChild(link);
+  if (encouragementEl) {
+    encouragementEl.textContent = ENCOURAGEMENTS[Math.floor(Math.random() * ENCOURAGEMENTS.length)];
   }
 }
 
@@ -1001,16 +1047,6 @@ function buildDefaultOptions(context) {
     "Ask a trusted adult or peer for a second perspective.",
     "Set a clear boundary and explain your long-term goal."
   ];
-}
-
-function buildVideoQuery(context) {
-  if (context.scenario.videoQuery) return context.scenario.videoQuery;
-  const stakes = context.scenario.stakes || [];
-  for (const stake of stakes) {
-    if (STAKE_VIDEO_MAP[stake]) return STAKE_VIDEO_MAP[stake];
-  }
-  const title = context.scenario.title || "decision making";
-  return `${title} decision-making teens`;
 }
 
 function updateLocalStats(payload) {
