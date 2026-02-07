@@ -31,6 +31,8 @@ const settingsDialog = document.getElementById("settingsDialog");
 const endpointUrlInput = document.getElementById("endpointUrl");
 const apiKeyInput = document.getElementById("apiKey");
 const modelNameInput = document.getElementById("modelName");
+const sheetsEndpointInput = document.getElementById("sheetsEndpoint");
+const sheetsSecretInput = document.getElementById("sheetsSecret");
 const saveSettings = document.getElementById("saveSettings");
 const teacherToggle = document.getElementById("teacherToggle");
 const resourceSelect = document.getElementById("resourceSelect");
@@ -73,11 +75,19 @@ const settingsKey = "decision-lab-settings";
 
 function loadSettings() {
   const saved = localStorage.getItem(settingsKey);
-  if (!saved) return {};
+  if (!saved) {
+    return {
+      sheetsEndpoint: "https://script.google.com/macros/s/AKfycby9WsQIZXATnaKbC4JeBNT4DRLzIDVXXWutlH01wW-CXg3aWcxxsZyKErNyrLRNaCmf/exec",
+      sheetsSecret: ""
+    };
+  }
   try {
     return JSON.parse(saved);
   } catch {
-    return {};
+    return {
+      sheetsEndpoint: "https://script.google.com/macros/s/AKfycby9WsQIZXATnaKbC4JeBNT4DRLzIDVXXWutlH01wW-CXg3aWcxxsZyKErNyrLRNaCmf/exec",
+      sheetsSecret: ""
+    };
   }
 }
 
@@ -597,6 +607,18 @@ submitDecision.addEventListener("click", () => {
     meters: { ...meters },
     score: scoreResult
   });
+
+  logToSheets({
+    participant_name: document.getElementById("studentName").value.trim(),
+    role_or_level: document.getElementById("studentGrade").value.trim(),
+    age: document.getElementById("studentAge").value.trim(),
+    scenario_title: currentScenario.title,
+    choice: selectedChoice.text,
+    tool: toolAnswer,
+    concept: conceptAnswer,
+    why: whyAnswer,
+    timestamp: new Date().toISOString()
+  });
 });
 
 nextStepBtn.addEventListener("click", () => {
@@ -827,6 +849,24 @@ function buildVideoQuery(context) {
   return `${context.scenario.title} decision-making ${stakes}`;
 }
 
+async function logToSheets(payload) {
+  const settings = loadSettings();
+  if (!settings.sheetsEndpoint) return;
+  const body = {
+    ...payload,
+    ...(settings.sheetsSecret ? { secret: settings.sheetsSecret } : {})
+  };
+  try {
+    await fetch(settings.sheetsEndpoint, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(body)
+    });
+  } catch (error) {
+    // Silent fail to avoid blocking students
+  }
+}
+
 sendChat.addEventListener("click", handleChatSend);
 chatMessage.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
@@ -865,7 +905,9 @@ saveSettings.addEventListener("click", () => {
   const settings = {
     endpointUrl: endpointUrlInput.value.trim(),
     apiKey: apiKeyInput.value.trim(),
-    modelName: modelNameInput.value.trim()
+    modelName: modelNameInput.value.trim(),
+    sheetsEndpoint: sheetsEndpointInput ? sheetsEndpointInput.value.trim() : "",
+    sheetsSecret: sheetsSecretInput ? sheetsSecretInput.value.trim() : ""
   };
   saveSettingsToStorage(settings);
 });
@@ -984,6 +1026,8 @@ function applySettingsToUI() {
   endpointUrlInput.value = settings.endpointUrl || "";
   apiKeyInput.value = settings.apiKey || "";
   modelNameInput.value = settings.modelName || "";
+  if (sheetsEndpointInput) sheetsEndpointInput.value = settings.sheetsEndpoint || "";
+  if (sheetsSecretInput) sheetsSecretInput.value = settings.sheetsSecret || "";
 }
 
 function getScenarioYear() {

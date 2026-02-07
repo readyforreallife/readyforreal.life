@@ -267,6 +267,16 @@
         <span>Model name (optional)</span>
         <input id="modelName" type="text" placeholder="model-id" />
       </label>
+      <h3>Response Logging (Google Sheets)</h3>
+      <p class="muted">Only visible in Teacher Mode. Leave blank to disable logging.</p>
+      <label class="field">
+        <span>Sheets endpoint URL</span>
+        <input id="sheetsEndpoint" type="url" placeholder="https://script.google.com/macros/s/.../exec" />
+      </label>
+      <label class="field">
+        <span>Sheets secret (optional)</span>
+        <input id="sheetsSecret" type="password" placeholder="Stored locally" />
+      </label>
       <menu>
         <button class="ghost" value="cancel">Close</button>
         <button id="saveSettings" class="primary" value="default">Save</button>
