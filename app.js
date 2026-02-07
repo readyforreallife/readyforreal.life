@@ -51,6 +51,8 @@ const creatorToggle = document.getElementById("creatorToggle");
 const creatorDialog = document.getElementById("creatorDialog");
 const currentDateEl = document.getElementById("currentDate");
 const currentScenarioLabelEl = document.getElementById("currentScenarioLabel");
+const teacherStatsEl = document.getElementById("teacherStats");
+const sheetsStatusEl = document.getElementById("sheetsStatus");
 
 let scenarios = [];
 let weeklyScenarios = [];
@@ -77,7 +79,7 @@ function loadSettings() {
   const saved = localStorage.getItem(settingsKey);
   if (!saved) {
     return {
-      sheetsEndpoint: "https://script.google.com/macros/s/AKfycby9WsQIZXATnaKbC4JeBNT4DRLzIDVXXWutlH01wW-CXg3aWcxxsZyKErNyrLRNaCmf/exec",
+      sheetsEndpoint: "https://script.google.com/macros/s/AKfycbzH2--hkA4ezway034VJ6AKK7AQlkiDkGn2rjQ1tP2PhaY25gOKX89cfJZ7fucx6yUH/exec",
       sheetsSecret: ""
     };
   }
@@ -85,7 +87,7 @@ function loadSettings() {
     return JSON.parse(saved);
   } catch {
     return {
-      sheetsEndpoint: "https://script.google.com/macros/s/AKfycby9WsQIZXATnaKbC4JeBNT4DRLzIDVXXWutlH01wW-CXg3aWcxxsZyKErNyrLRNaCmf/exec",
+      sheetsEndpoint: "https://script.google.com/macros/s/AKfycbzH2--hkA4ezway034VJ6AKK7AQlkiDkGn2rjQ1tP2PhaY25gOKX89cfJZ7fucx6yUH/exec",
       sheetsSecret: ""
     };
   }
@@ -106,6 +108,10 @@ function updateTeacherControls() {
   openSettings.classList.toggle("hidden", !teacherMode);
   exportSession.classList.toggle("hidden", !teacherMode);
   exportCsv.classList.toggle("hidden", !teacherMode);
+  if (teacherStatsEl) {
+    teacherStatsEl.classList.toggle("hidden", !teacherMode);
+    if (teacherMode) updateTeacherStats();
+  }
 }
 
 async function loadData() {
@@ -560,7 +566,7 @@ function scoreJustification(text) {
   return { scores, lengthBonus, groupMatches, matchedGroupCount, missingGroups };
 }
 
-submitDecision.addEventListener("click", () => {
+submitDecision.addEventListener("click", async () => {
   if (!selectedChoice) {
     alert("Select a decision first.");
     return;
@@ -608,7 +614,7 @@ submitDecision.addEventListener("click", () => {
     score: scoreResult
   });
 
-  logToSheets({
+  const payload = {
     participant_name: document.getElementById("studentName").value.trim(),
     role_or_level: document.getElementById("studentGrade").value.trim(),
     age: document.getElementById("studentAge").value.trim(),
@@ -618,7 +624,10 @@ submitDecision.addEventListener("click", () => {
     concept: conceptAnswer,
     why: whyAnswer,
     timestamp: new Date().toISOString()
-  });
+  };
+
+  updateLocalStats(payload);
+  await logToSheets(payload);
 });
 
 nextStepBtn.addEventListener("click", () => {
@@ -849,6 +858,27 @@ function buildVideoQuery(context) {
   return `${context.scenario.title} decision-making ${stakes}`;
 }
 
+function updateLocalStats(payload) {
+  const key = "decision-lab-local-stats";
+  const stored = localStorage.getItem(key);
+  const stats = stored ? JSON.parse(stored) : { submissions: 0, participants: [] };
+  stats.submissions += 1;
+  const name = (payload.participant_name || "").trim();
+  if (name && !stats.participants.includes(name)) {
+    stats.participants.push(name);
+  }
+  localStorage.setItem(key, JSON.stringify(stats));
+  updateTeacherStats();
+}
+
+function updateTeacherStats() {
+  if (!teacherStatsEl) return;
+  const stored = localStorage.getItem("decision-lab-local-stats");
+  const stats = stored ? JSON.parse(stored) : { submissions: 0, participants: [] };
+  const participantCount = stats.participants.length;
+  teacherStatsEl.textContent = `Submissions: ${stats.submissions} · Participants: ${participantCount}`;
+}
+
 async function logToSheets(payload) {
   const settings = loadSettings();
   if (!settings.sheetsEndpoint) return;
@@ -857,13 +887,24 @@ async function logToSheets(payload) {
     ...(settings.sheetsSecret ? { secret: settings.sheetsSecret } : {})
   };
   try {
-    await fetch(settings.sheetsEndpoint, {
+    const response = await fetch(settings.sheetsEndpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(body)
     });
+    const ok = response.ok;
+    if (sheetsStatusEl) {
+      sheetsStatusEl.classList.remove("hidden");
+      sheetsStatusEl.textContent = ok ? "Saved to Google Sheets." : "Could not save to Google Sheets yet.";
+      setTimeout(() => sheetsStatusEl.classList.add("hidden"), 3000);
+    }
   } catch (error) {
     // Silent fail to avoid blocking students
+    if (sheetsStatusEl) {
+      sheetsStatusEl.classList.remove("hidden");
+      sheetsStatusEl.textContent = "Connection issue. Your response will still save locally.";
+      setTimeout(() => sheetsStatusEl.classList.add("hidden"), 3000);
+    }
   }
 }
 
