@@ -43,6 +43,8 @@ const previewTabButtons = document.querySelectorAll(".tab-button");
 const monthTabsEl = document.getElementById("monthTabs");
 const monthToggle = document.getElementById("monthToggle");
 const infoBadges = document.querySelectorAll(".info-badge");
+const qrToggle = document.getElementById("qrToggle");
+const qrSection = document.getElementById("qrSection");
 const currentDateEl = document.getElementById("currentDate");
 const currentScenarioLabelEl = document.getElementById("currentScenarioLabel");
 
@@ -1311,6 +1313,15 @@ function capitalize(text) {
 }
 
 loadData();
+
+if (qrToggle && qrSection) {
+  qrToggle.addEventListener("click", () => {
+    qrSection.classList.toggle("collapsed");
+    const isCollapsed = qrSection.classList.contains("collapsed");
+    qrToggle.setAttribute("aria-expanded", isCollapsed ? "false" : "true");
+    qrToggle.textContent = isCollapsed ? "Show QR Resources" : "Hide QR Resources";
+  });
+}
 
 const infoPopover = document.createElement("div");
 infoPopover.className = "info-popover hidden";

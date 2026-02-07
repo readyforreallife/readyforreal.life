@@ -53,9 +53,9 @@ body {
 }
 
 .copyright {
-  position: absolute;
-  right: 22px;
-  top: 18px;
+  position: static;
+  margin: 20px auto 0;
+  text-align: center;
   font-size: 11px;
   color: var(--muted);
   background: rgba(255, 250, 240, 0.7);
@@ -73,6 +73,21 @@ body {
   max-width: 200px;
   margin-left: auto;
   margin-right: 0;
+}
+
+.qr-toggle {
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: #0b6b6b;
+  color: #fff;
+  padding: 10px 14px;
+  border-radius: 999px;
+  font-size: 12px;
+  cursor: pointer;
+  text-align: center;
+}
+
+.qr-section.collapsed {
+  display: none;
 }
 
 .badge-card,
