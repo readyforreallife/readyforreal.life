@@ -95,6 +95,11 @@ body {
   display: flex;
   align-items: center;
   gap: 16px;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
 }
 
 .brand-mark {
@@ -124,19 +129,33 @@ body {
   align-items: center;
 }
 
+.controls .ghost {
+  background: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  color: #1d1b16;
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
 .resource-select {
   display: grid;
   gap: 4px;
   font-size: 11px;
-  color: var(--muted);
+  color: #1d1b16;
+  background: rgba(255, 255, 255, 0.85);
+  padding: 6px 10px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
 }
 
 .resource-select select {
   border: 1px solid var(--border);
   border-radius: 999px;
   padding: 6px 12px;
-  background: #fff4df;
+  background: #ffffff;
   font-size: 12px;
+  color: #1d1b16;
+  box-shadow: 0 6px 14px rgba(0, 0, 0, 0.08);
   cursor: pointer;
 }
 
