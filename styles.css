@@ -121,6 +121,10 @@ body {
   margin: 6px auto;
 }
 
+.qr-card a {
+  display: inline-block;
+}
+
 .qr-title {
   font-size: 12px;
   font-weight: 600;
