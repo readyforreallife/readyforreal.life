@@ -33,6 +33,7 @@ const apiKeyInput = document.getElementById("apiKey");
 const modelNameInput = document.getElementById("modelName");
 const sheetsEndpointInput = document.getElementById("sheetsEndpoint");
 const sheetsSecretInput = document.getElementById("sheetsSecret");
+const testSheetsBtn = document.getElementById("testSheets");
 const saveSettings = document.getElementById("saveSettings");
 const teacherToggle = document.getElementById("teacherToggle");
 const resourceSelect = document.getElementById("resourceSelect");
@@ -908,6 +909,34 @@ async function logToSheets(payload) {
   }
 }
 
+async function testSheetsConnection() {
+  const settings = loadSettings();
+  if (!settings.sheetsEndpoint) {
+    if (sheetsStatusEl) {
+      sheetsStatusEl.classList.remove("hidden");
+      sheetsStatusEl.textContent = "Add a Sheets endpoint first.";
+      setTimeout(() => sheetsStatusEl.classList.add("hidden"), 3000);
+    }
+    return;
+  }
+  const payload = {
+    participant_name: "Test Participant",
+    role_or_level: "Test",
+    age: "",
+    scenario_title: "Test Connection",
+    choice: "Test",
+    tool: "Test",
+    concept: "Test",
+    why: "Test",
+    timestamp: new Date().toISOString()
+  };
+  if (sheetsStatusEl) {
+    sheetsStatusEl.classList.remove("hidden");
+    sheetsStatusEl.textContent = "Testing Google Sheets connection...";
+  }
+  await logToSheets(payload);
+}
+
 sendChat.addEventListener("click", handleChatSend);
 chatMessage.addEventListener("keydown", (event) => {
   if (event.key === "Enter") {
@@ -1050,6 +1079,10 @@ exportCsv.addEventListener("click", () => {
   document.body.removeChild(link);
   URL.revokeObjectURL(url);
 });
+
+if (testSheetsBtn) {
+  testSheetsBtn.addEventListener("click", testSheetsConnection);
+}
 
 function sanitizeCsv(value) {
   return value.replace(/\\r?\\n/g, " ").trim();
