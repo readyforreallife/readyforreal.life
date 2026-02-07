@@ -66,13 +66,13 @@ body {
 }
 
 .corner-badges {
-  position: fixed;
-  right: 24px;
-  bottom: 24px;
+  position: relative;
   display: grid;
   gap: 12px;
   z-index: 2;
   max-width: 200px;
+  margin-left: auto;
+  margin-right: 0;
 }
 
 .badge-card,
@@ -941,13 +941,24 @@ body {
     position: static;
     grid-template-columns: 1fr;
     max-width: none;
-    margin: 16px auto 0;
+    margin: 16px 0 0;
     width: 100%;
   }
 
   .qr-card img {
     width: 160px;
     height: 160px;
+  }
+
+  .badge-card,
+  .qr-card {
+    width: 100%;
+  }
+
+  .app::before {
+    background-image:
+      linear-gradient(0deg, rgba(247, 243, 234, 0.75), rgba(247, 243, 234, 0.75)),
+      url("assets/backgrounds/collage.jpg");
   }
 
   .copyright {
