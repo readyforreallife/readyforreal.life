@@ -1410,14 +1410,21 @@ async function submitRegistration(event) {
   event.preventDefault();
   if (!registerStatus) return;
   registerStatus.classList.remove("hidden");
+  const name = regName.value.trim();
+  const email = regEmail.value.trim();
+  const group = regGroup.value;
+  if (!name || !email || !group) {
+    registerStatus.textContent = "Please add name, email, and best fit.";
+    return;
+  }
   registerStatus.textContent = "Submitting...";
 
   const payload = {
     type: "registration",
-    name: regName.value.trim(),
-    email: regEmail.value.trim(),
+    name,
+    email,
     phone: regPhone.value.trim(),
-    group: regGroup.value,
+    group,
     notes: regNotes.value.trim(),
     timestamp: new Date().toISOString()
   };
