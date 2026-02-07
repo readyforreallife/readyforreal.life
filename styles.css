@@ -177,8 +177,9 @@ body {
   width: 72px;
   height: 72px;
   border-radius: 12px;
-  background: url("assets/brand.png") no-repeat center;
-  background-size: 110% 110%;
+  background: url("assets/logo-square.png") no-repeat center;
+  background-size: cover;
+  background-position: center;
   box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
 }
 
