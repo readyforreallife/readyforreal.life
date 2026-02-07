@@ -278,6 +278,14 @@ body {
   color: var(--muted);
 }
 
+.welcome-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
 .intro-meta {
   display: flex;
   gap: 8px;
@@ -300,16 +308,17 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.12);
   border-radius: 999px;
   padding: 6px 12px;
-  margin: 4px 0 10px;
+  margin: 4px 0 4px;
   cursor: pointer;
   box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
 }
 
 .creator-badge img {
-  width: 44px;
-  height: 44px;
+  width: 50px;
+  height: 50px;
   border-radius: 50%;
   object-fit: cover;
+  object-position: 50% 15%;
 }
 
 .creator-badge span {

@@ -60,16 +60,18 @@
 
     <main class="layout">
       <section class="panel" id="introPanel">
-        <h1>Welcome</h1>
+        <div class="welcome-header">
+          <h1>Welcome</h1>
+          <button id="creatorToggle" class="creator-badge" type="button">
+            <img src="assets/creator.jpg" alt="Photo of Michael R. Terry" />
+            <span>About the Creator</span>
+          </button>
+        </div>
         <div class="intro-meta">
           <span id="currentDate"></span>
           <span class="dot">•</span>
           <span id="currentScenarioLabel">Boundary Test</span>
         </div>
-        <button id="creatorToggle" class="creator-badge" type="button">
-          <img src="assets/creator.jpg" alt="Photo of Michael R. Terry" />
-          <span>About the Creator</span>
-        </button>
         <div class="welcome-logo" aria-hidden="true"></div>
         <div class="course-summary">
           <strong>Modern Manners & Mental Fortitude</strong>
