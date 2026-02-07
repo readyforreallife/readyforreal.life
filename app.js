@@ -75,6 +75,7 @@ const regPhone = document.getElementById("regPhone");
 const regGroup = document.getElementById("regGroup");
 const regNotes = document.getElementById("regNotes");
 const registerStatus = document.getElementById("registerStatus");
+const closeRegisterBtn = document.getElementById("closeRegister");
 
 let scenarios = [];
 let weeklyScenarios = [];
@@ -122,6 +123,25 @@ const WHY_OPTIONS = [
   "I’m taking responsibility by owning my choice.",
   "Skip for now (I need more time to explain.)"
 ];
+
+const STAKE_VIDEO_MAP = {
+  "Employment": "teen part-time job communication scheduling conflict",
+  "Family finances": "teen budgeting priorities family finances",
+  "Financial responsibility": "financial responsibility decision making teens",
+  "Academic performance": "study skills exam week time management",
+  "Grades": "grades vs work balance decision making",
+  "Peer pressure": "peer pressure safety decision making teens",
+  "Safety": "personal safety decision making teens",
+  "Reputation": "digital reputation and choices for teens",
+  "Health": "health and safety decision making teens",
+  "Team commitment": "team commitment conflict resolution sports",
+  "Team trust": "trust and accountability teamwork students",
+  "Time pressure": "decision making under pressure teens",
+  "Decision ownership": "taking responsibility for choices teens",
+  "Long-term goals": "long-term goals short-term choices teens",
+  "Long-term planning": "planning ahead long-term consequences",
+  "Family stability": "family responsibilities and school balance"
+};
 
 const ROTATION_START = "2026-02-02";
 const WEEKS_PER_YEAR = 40;
@@ -984,30 +1004,13 @@ function buildDefaultOptions(context) {
 }
 
 function buildVideoQuery(context) {
-  const id = context.scenario.id || "";
-  const title = context.scenario.title.toLowerCase();
-  const tags = context.scenario.stakes.join(" ").toLowerCase();
-  const hay = `${id} ${title} ${tags}`;
-
-  const library = [
-    { match: ["online", "rumor", "reputation", "digital"], query: "digital citizenship online reputation decision making" },
-    { match: ["job", "employment", "manager", "workplace"], query: "workplace communication boundaries decision making" },
-    { match: ["peer pressure", "safety", "ride", "driving"], query: "peer pressure safety decision making teens" },
-    { match: ["group", "project", "team", "conflict"], query: "conflict resolution teamwork accountability students" },
-    { match: ["health", "injury", "sports"], query: "sports injury decision making athlete health" },
-    { match: ["budget", "money", "finances", "family"], query: "teen budgeting priorities trade-offs decision making" },
-    { match: ["self-regulation", "impulse", "stress"], query: "self regulation impulse control teens" },
-    { match: ["boundary", "boundaries"], query: "setting boundaries teens respectful communication" }
-  ];
-
-  for (const item of library) {
-    if (item.match.some((term) => hay.includes(term))) {
-      return item.query;
-    }
+  if (context.scenario.videoQuery) return context.scenario.videoQuery;
+  const stakes = context.scenario.stakes || [];
+  for (const stake of stakes) {
+    if (STAKE_VIDEO_MAP[stake]) return STAKE_VIDEO_MAP[stake];
   }
-
-  const stakes = context.scenario.stakes.join(" ");
-  return `${context.scenario.title} decision-making ${stakes}`;
+  const title = context.scenario.title || "decision making";
+  return `${title} decision-making teens`;
 }
 
 function updateLocalStats(payload) {
@@ -1330,6 +1333,9 @@ if (registerToggle && registerDialog) {
 }
 if (registerForm) {
   registerForm.addEventListener("submit", submitRegistration);
+}
+if (closeRegisterBtn && registerDialog) {
+  closeRegisterBtn.addEventListener("click", () => registerDialog.close());
 }
 
 if (undoSelectionBtn) {
