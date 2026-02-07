@@ -53,9 +53,9 @@ body {
 }
 
 .copyright {
-  position: fixed;
-  right: 20px;
-  bottom: 14px;
+  position: absolute;
+  right: 22px;
+  top: 18px;
   font-size: 11px;
   color: var(--muted);
   background: rgba(255, 250, 240, 0.7);
