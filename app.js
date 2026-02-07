@@ -10,6 +10,18 @@ const choicesEl = document.getElementById("choices");
 const toolAnswerEl = document.getElementById("toolAnswer");
 const conceptAnswerEl = document.getElementById("conceptAnswer");
 const whyAnswerEl = document.getElementById("whyAnswer");
+const toolOptionsEl = document.getElementById("toolOptions");
+const conceptOptionsEl = document.getElementById("conceptOptions");
+const whyOptionsEl = document.getElementById("whyOptions");
+const sentencePreviewEl = document.getElementById("sentencePreview");
+const optionalNoteEl = document.getElementById("optionalNote");
+const stepCounterEl = document.getElementById("stepCounter");
+const stepProgressBarEl = document.getElementById("stepProgressBar");
+const confettiCanvas = document.getElementById("confettiCanvas");
+const starMeterEl = document.getElementById("starMeter");
+const undoSelectionBtn = document.getElementById("undoSelection");
+const soundToggleEl = document.getElementById("soundToggle");
+const levelUpBadge = document.getElementById("levelUpBadge");
 const submitDecision = document.getElementById("submitDecision");
 const nextStepBtn = document.getElementById("nextStep");
 const feedbackPanel = document.getElementById("feedbackPanel");
@@ -54,6 +66,15 @@ const currentDateEl = document.getElementById("currentDate");
 const currentScenarioLabelEl = document.getElementById("currentScenarioLabel");
 const teacherStatsEl = document.getElementById("teacherStats");
 const sheetsStatusEl = document.getElementById("sheetsStatus");
+const registerToggle = document.getElementById("registerToggle");
+const registerDialog = document.getElementById("registerDialog");
+const registerForm = document.getElementById("registerForm");
+const regName = document.getElementById("regName");
+const regEmail = document.getElementById("regEmail");
+const regPhone = document.getElementById("regPhone");
+const regGroup = document.getElementById("regGroup");
+const regNotes = document.getElementById("regNotes");
+const registerStatus = document.getElementById("registerStatus");
 
 let scenarios = [];
 let weeklyScenarios = [];
@@ -69,12 +90,46 @@ let followUpIndex = 0;
 let teacherMode = false;
 const TEACHER_PIN = "4429";
 
+const TOOL_OPTIONS = [
+  "Pause and breathe",
+  "Ask for help",
+  "Check the facts",
+  "Step back before reacting",
+  "Set a boundary",
+  "Use a checklist",
+  "Delay the reaction",
+  "Repair the relationship"
+];
+
+const CONCEPT_OPTIONS = [
+  "Trade-off",
+  "Short-term vs long-term",
+  "Consequences",
+  "Stakes",
+  "Risk vs reward",
+  "Values and priorities",
+  "Responsibility",
+  "Impact on others",
+  "Boundaries"
+];
+
+const WHY_OPTIONS = [
+  "I chose this because my goal is to protect trust.",
+  "My goal is to protect long-term opportunities.",
+  "The trade-off is short-term relief vs long-term respect.",
+  "The biggest risk is damaging trust or safety.",
+  "This protects my boundary by staying honest.",
+  "I’m taking responsibility by owning my choice.",
+  "Skip for now (I need more time to explain.)"
+];
+
 const ROTATION_START = "2026-02-02";
 const WEEKS_PER_YEAR = 40;
 const SCENARIOS_PER_WEEK = 7;
 const SCENARIO_YEAR_KEY = "decision-lab-scenario-year";
 
 const settingsKey = "decision-lab-settings";
+const REGISTRATION_ENDPOINT = "https://script.google.com/macros/s/AKfycbzH2--hkA4ezway034VJ6AKK7AQlkiDkGn2rjQ1tP2PhaY25gOKX89cfJZ7fucx6yUH/exec";
 
 function loadSettings() {
   const saved = localStorage.getItem(settingsKey);
@@ -149,6 +204,66 @@ async function loadData() {
   renderYearPreview();
   renderIntroMeta();
   loadTeacherMode();
+  renderBuilderOptions();
+}
+
+function renderBuilderOptions() {
+  if (!toolOptionsEl || !conceptOptionsEl || !whyOptionsEl) return;
+  toolOptionsEl.innerHTML = "";
+  conceptOptionsEl.innerHTML = "";
+  whyOptionsEl.innerHTML = "";
+
+  shuffle([...TOOL_OPTIONS]).forEach((label) => {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "option-card";
+    card.textContent = label;
+    card.addEventListener("click", () => selectOption(toolOptionsEl, card, toolAnswerEl, label));
+    toolOptionsEl.appendChild(card);
+  });
+
+  shuffle([...CONCEPT_OPTIONS]).forEach((label) => {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "option-card";
+    card.textContent = label;
+    card.addEventListener("click", () => selectOption(conceptOptionsEl, card, conceptAnswerEl, label));
+    conceptOptionsEl.appendChild(card);
+  });
+
+  shuffle([...WHY_OPTIONS]).forEach((label) => {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = "option-card";
+    card.textContent = label;
+    card.addEventListener("click", () => selectOption(whyOptionsEl, card, whyAnswerEl, label));
+    whyOptionsEl.appendChild(card);
+  });
+  updateSentencePreview();
+}
+
+function selectOption(container, card, inputEl, value) {
+  container.querySelectorAll(".option-card").forEach((el) => el.classList.remove("active"));
+  card.classList.add("active");
+  inputEl.value = value;
+  updateSentencePreview();
+}
+
+function updateSentencePreview() {
+  if (!sentencePreviewEl) return;
+  const tool = toolAnswerEl.value || "a tool";
+  const concept = conceptAnswerEl.value || "a concept";
+  const why = whyAnswerEl.value || "a reason";
+  const prettyWhy = why.toLowerCase().startsWith("skip for now") ? "I need more time to explain." : why;
+  sentencePreviewEl.textContent = `I will ${tool.toLowerCase()} (tool). The key concept is ${concept.toLowerCase()} (concept). ${prettyWhy} (why).`;
+}
+
+function shuffle(list) {
+  for (let i = list.length - 1; i > 0; i -= 1) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [list[i], list[j]] = [list[j], list[i]];
+  }
+  return list;
 }
 
 function renderScenarioCards() {
@@ -499,6 +614,9 @@ function renderStep() {
   toolAnswerEl.value = "";
   conceptAnswerEl.value = "";
   whyAnswerEl.value = "";
+  if (optionalNoteEl) optionalNoteEl.value = "";
+  document.querySelectorAll(".option-card").forEach((el) => el.classList.remove("active"));
+  updateSentencePreview();
 
   if (currentStepId === "end") {
     stepPrompt.textContent = "Scenario complete. Review your decisions and reflections.";
@@ -513,6 +631,8 @@ function renderStep() {
   stepPrompt.textContent = step.prompt;
   choicesEl.innerHTML = "";
   submitDecision.classList.remove("hidden");
+  renderBuilderOptions();
+  updateProgress();
 
   step.choices.forEach((choice) => {
     const choiceEl = document.createElement("div");
@@ -525,6 +645,31 @@ function renderStep() {
     });
     choicesEl.appendChild(choiceEl);
   });
+}
+
+function updateProgress() {
+  if (!currentScenario || !stepCounterEl || !stepProgressBarEl) return;
+  const totalSteps = Math.max(1, Object.keys(currentScenario.steps).length - 1);
+  const completed = sessionLog.filter((entry) => entry.type === "decision").length;
+  const current = Math.min(totalSteps, completed + 1);
+  stepCounterEl.textContent = `Step ${current} of ${totalSteps}`;
+  stepProgressBarEl.style.width = `${(current / totalSteps) * 100}%`;
+  if (starMeterEl) {
+    const starCount = 5;
+    const filled = Math.round((current / totalSteps) * starCount);
+    const prevFilled = starMeterEl.querySelectorAll(".star.filled").length;
+    starMeterEl.innerHTML = "";
+    for (let i = 0; i < starCount; i += 1) {
+      const star = document.createElement("span");
+      star.className = `star ${i < filled ? "filled" : ""}`;
+      starMeterEl.appendChild(star);
+    }
+    if (filled > prevFilled && levelUpBadge) {
+      levelUpBadge.classList.remove("hidden");
+      playLevelUp();
+      setTimeout(() => levelUpBadge.classList.add("hidden"), 1200);
+    }
+  }
 }
 
 
@@ -575,11 +720,12 @@ submitDecision.addEventListener("click", async () => {
   const toolAnswer = toolAnswerEl.value.trim();
   const conceptAnswer = conceptAnswerEl.value.trim();
   const whyAnswer = whyAnswerEl.value.trim();
+  const optionalNote = optionalNoteEl ? optionalNoteEl.value.trim() : "";
   if (!toolAnswer || !conceptAnswer || !whyAnswer) {
-    alert("Complete all three boxes: Tool, Concept, and Why.");
+    alert("Pick one Tool, one Concept, and one Why.");
     return;
   }
-  const justification = `Tool: ${toolAnswer} Concept: ${conceptAnswer} Why: ${whyAnswer}`;
+  const justification = `Tool: ${toolAnswer} Concept: ${conceptAnswer} Why: ${whyAnswer}${optionalNote ? ` Note: ${optionalNote}` : ""}`;
 
   const step = currentScenario.steps[currentStepId];
   const scoreResult = scoreJustification(justification);
@@ -595,6 +741,7 @@ submitDecision.addEventListener("click", async () => {
     toolAnswer,
     conceptAnswer,
     whyAnswer,
+    optionalNote,
     choice: selectedChoice,
     step: currentScenario.steps[currentStepId],
     scenario: currentScenario
@@ -610,6 +757,7 @@ submitDecision.addEventListener("click", async () => {
     toolAnswer,
     conceptAnswer,
     whyAnswer,
+    optionalNote,
     justification,
     meters: { ...meters },
     score: scoreResult
@@ -624,11 +772,14 @@ submitDecision.addEventListener("click", async () => {
     tool: toolAnswer,
     concept: conceptAnswer,
     why: whyAnswer,
+    note: optionalNote,
     timestamp: new Date().toISOString()
   };
 
   updateLocalStats(payload);
   await logToSheets(payload);
+  fireConfetti();
+  playChime();
 });
 
 nextStepBtn.addEventListener("click", () => {
@@ -909,6 +1060,95 @@ async function logToSheets(payload) {
   }
 }
 
+function fireConfetti() {
+  if (!confettiCanvas) return;
+  const ctx = confettiCanvas.getContext("2d");
+  const w = confettiCanvas.width = window.innerWidth;
+  const h = confettiCanvas.height = window.innerHeight;
+  const colors = ["#0b6b6b", "#2ba79c", "#f0b429", "#f08a4b", "#6b5c49"];
+  const pieces = Array.from({ length: 120 }).map(() => ({
+    x: Math.random() * w,
+    y: Math.random() * -h,
+    size: 4 + Math.random() * 6,
+    color: colors[Math.floor(Math.random() * colors.length)],
+    speed: 2 + Math.random() * 4,
+    drift: -1 + Math.random() * 2,
+    rotation: Math.random() * Math.PI
+  }));
+
+  let frame = 0;
+  function tick() {
+    frame += 1;
+    ctx.clearRect(0, 0, w, h);
+    pieces.forEach((p) => {
+      p.y += p.speed;
+      p.x += p.drift;
+      p.rotation += 0.1;
+      ctx.save();
+      ctx.translate(p.x, p.y);
+      ctx.rotate(p.rotation);
+      ctx.fillStyle = p.color;
+      ctx.fillRect(-p.size / 2, -p.size / 2, p.size, p.size);
+      ctx.restore();
+    });
+    if (frame < 60) {
+      requestAnimationFrame(tick);
+    } else {
+      ctx.clearRect(0, 0, w, h);
+    }
+  }
+  tick();
+}
+
+function playChime() {
+  try {
+    const settings = loadSettings();
+    if (settings.soundEnabled === false) return;
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "triangle";
+    osc.frequency.value = 523.25;
+    gain.gain.value = 0.08;
+    osc.connect(gain);
+    gain.connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.2);
+    setTimeout(() => ctx.close(), 300);
+  } catch (error) {
+    // ignore audio failures
+  }
+}
+
+function playLevelUp() {
+  try {
+    const settings = loadSettings();
+    if (settings.soundEnabled === false) return;
+    const AudioCtx = window.AudioContext || window.webkitAudioContext;
+    const ctx = new AudioCtx();
+    const osc1 = ctx.createOscillator();
+    const osc2 = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc1.type = "sine";
+    osc2.type = "triangle";
+    osc1.frequency.value = 392;
+    osc2.frequency.value = 523.25;
+    gain.gain.value = 0.06;
+    osc1.connect(gain);
+    osc2.connect(gain);
+    gain.connect(ctx.destination);
+    osc1.start();
+    osc2.start();
+    osc1.frequency.exponentialRampToValueAtTime(659.25, ctx.currentTime + 0.25);
+    osc2.frequency.exponentialRampToValueAtTime(783.99, ctx.currentTime + 0.25);
+    osc1.stop(ctx.currentTime + 0.28);
+    osc2.stop(ctx.currentTime + 0.28);
+    setTimeout(() => ctx.close(), 350);
+  } catch (error) {
+    // ignore audio failures
+  }
+}
 async function testSheetsConnection() {
   const settings = loadSettings();
   if (!settings.sheetsEndpoint) {
@@ -977,7 +1217,8 @@ saveSettings.addEventListener("click", () => {
     apiKey: apiKeyInput.value.trim(),
     modelName: modelNameInput.value.trim(),
     sheetsEndpoint: sheetsEndpointInput ? sheetsEndpointInput.value.trim() : "",
-    sheetsSecret: sheetsSecretInput ? sheetsSecretInput.value.trim() : ""
+    sheetsSecret: sheetsSecretInput ? sheetsSecretInput.value.trim() : "",
+    soundEnabled: soundToggleEl ? soundToggleEl.value !== "off" : true
   };
   saveSettingsToStorage(settings);
 });
@@ -1084,6 +1325,24 @@ if (testSheetsBtn) {
   testSheetsBtn.addEventListener("click", testSheetsConnection);
 }
 
+if (registerToggle && registerDialog) {
+  registerToggle.addEventListener("click", () => registerDialog.showModal());
+}
+if (registerForm) {
+  registerForm.addEventListener("submit", submitRegistration);
+}
+
+if (undoSelectionBtn) {
+  undoSelectionBtn.addEventListener("click", () => {
+    toolAnswerEl.value = "";
+    conceptAnswerEl.value = "";
+    whyAnswerEl.value = "";
+    if (optionalNoteEl) optionalNoteEl.value = "";
+    document.querySelectorAll(".option-card").forEach((el) => el.classList.remove("active"));
+    updateSentencePreview();
+  });
+}
+
 function sanitizeCsv(value) {
   return value.replace(/\\r?\\n/g, " ").trim();
 }
@@ -1102,6 +1361,37 @@ function applySettingsToUI() {
   modelNameInput.value = settings.modelName || "";
   if (sheetsEndpointInput) sheetsEndpointInput.value = settings.sheetsEndpoint || "";
   if (sheetsSecretInput) sheetsSecretInput.value = settings.sheetsSecret || "";
+  if (soundToggleEl) soundToggleEl.value = settings.soundEnabled === false ? "off" : "on";
+}
+
+async function submitRegistration(event) {
+  event.preventDefault();
+  if (!registerStatus) return;
+  registerStatus.classList.remove("hidden");
+  registerStatus.textContent = "Submitting...";
+
+  const payload = {
+    type: "registration",
+    name: regName.value.trim(),
+    email: regEmail.value.trim(),
+    phone: regPhone.value.trim(),
+    group: regGroup.value,
+    notes: regNotes.value.trim(),
+    timestamp: new Date().toISOString()
+  };
+
+  try {
+    const response = await fetch(REGISTRATION_ENDPOINT, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify(payload)
+    });
+    if (!response.ok) throw new Error("Bad response");
+    registerStatus.textContent = "Thanks! You’re on the interest list.";
+    registerForm.reset();
+  } catch (error) {
+    registerStatus.textContent = "Could not submit. Please try again.";
+  }
 }
 
 function getScenarioYear() {

@@ -61,6 +61,7 @@
         <button id="exportSession" class="ghost hidden">Export</button>
         <button id="exportCsv" class="ghost hidden">Export CSV</button>
         <div id="teacherStats" class="teacher-stats hidden"></div>
+        <button id="registerToggle" class="primary">Register Now</button>
       </div>
     </header>
 
@@ -187,28 +188,55 @@
         </div>
 
         <div class="step">
+          <div class="step-progress">
+            <span id="stepCounter">Step 1</span>
+            <div class="star-meter" id="starMeter" aria-label="Level progress"></div>
+            <div class="progress-bar"><div id="stepProgressBar"></div></div>
+          </div>
+          <div id="levelUpBadge" class="level-up hidden">Level Up!</div>
           <div class="prompt" id="stepPrompt"></div>
           <div class="choices" id="choices"></div>
 
-          <label class="field">
-            <span>Tool (self-regulation strategy)
-              <button class="info-badge" type="button" aria-label="What counts as a tool?" data-tooltip="A tool is a self-regulation action you use to slow down or stay in control (pause, breathe, ask for help, check the facts, set a boundary).">?</button>
-            </span>
-            <textarea id="toolAnswer" rows="2" placeholder="Example: I would pause and check the facts."></textarea>
-          </label>
-          <label class="field">
-            <span>Concept (unit idea)
-              <button class="info-badge" type="button" aria-label="What counts as a concept?" data-tooltip="A concept is a unit idea that explains the situation (trade-off, short-term vs long-term, consequences, stakes, risk vs reward, values, goals, boundaries, responsibility).">?</button>
-            </span>
-            <textarea id="conceptAnswer" rows="2" placeholder="Example: The trade-off is short-term relief vs long-term trust."></textarea>
-          </label>
-          <label class="field">
-            <span>Why (reasoning)
-              <button class="info-badge" type="button" aria-label="What counts as a why statement?" data-tooltip="A why statement explains your reason and goal (I chose this because..., My goal is..., The biggest risk is..., This protects my boundary by...).">?</button>
-            </span>
-            <textarea id="whyAnswer" rows="3" placeholder="Example: I chose this because my goal is to protect credibility."></textarea>
-            <small class="hint">Use unit language in each box. Each box is required.</small>
-          </label>
+          <div class="builder">
+            <div class="builder-row">
+              <div class="builder-title">
+                <span>Pick a Tool
+                  <button class="info-badge" type="button" aria-label="What counts as a tool?" data-tooltip="A tool is a self-regulation action you use to slow down or stay in control (pause, breathe, ask for help, check the facts, set a boundary).">?</button>
+                </span>
+              </div>
+              <div class="option-grid" id="toolOptions"></div>
+            </div>
+            <div class="builder-row">
+              <div class="builder-title">
+                <span>Pick a Concept
+                  <button class="info-badge" type="button" aria-label="What counts as a concept?" data-tooltip="A concept is a unit idea that explains the situation (trade-off, short-term vs long-term, consequences, stakes, risk vs reward, values, goals, boundaries, responsibility).">?</button>
+                </span>
+              </div>
+              <div class="option-grid" id="conceptOptions"></div>
+            </div>
+            <div class="builder-row">
+              <div class="builder-title">
+                <span>Pick a Why
+                  <button class="info-badge" type="button" aria-label="What counts as a why statement?" data-tooltip="A why statement explains your reason and goal (I chose this because..., My goal is..., The biggest risk is..., This protects my boundary by...).">?</button>
+                </span>
+              </div>
+              <div class="option-grid" id="whyOptions"></div>
+              <div class="skip-note">You can choose “Skip for now” if you need more time to explain.</div>
+            </div>
+            <div class="builder-preview">
+              <div class="preview-label">Your response will sound like:</div>
+              <div id="sentencePreview" class="preview-text">Pick a tool, concept, and why to build your response.</div>
+            </div>
+            <button id="undoSelection" type="button" class="ghost">Undo selections</button>
+            <label class="field">
+              <span>Add a note (optional)</span>
+              <textarea id="optionalNote" rows="2" placeholder="Add a quick detail if you want."></textarea>
+              <small class="hint">No typing required. Just pick one in each row.</small>
+            </label>
+            <input id="toolAnswer" type="hidden" />
+            <input id="conceptAnswer" type="hidden" />
+            <input id="whyAnswer" type="hidden" />
+          </div>
 
           <div class="actions">
             <button id="submitDecision" class="primary">Submit</button>
@@ -252,6 +280,7 @@
     </main>
     <div class="copyright">© 2026 Ready For Real Life. All rights reserved. Website design and ownership: Michael R. Terry.</div>
   </div>
+  <canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
 
   <dialog id="settingsDialog" class="settings">
     <form method="dialog">
@@ -279,10 +308,55 @@
         <span>Sheets secret (optional)</span>
         <input id="sheetsSecret" type="password" placeholder="Stored locally" />
       </label>
+      <label class="field">
+        <span>Sound effects</span>
+        <select id="soundToggle">
+          <option value="on">On</option>
+          <option value="off">Off</option>
+        </select>
+      </label>
       <button id="testSheets" type="button" class="ghost">Test Sheets Connection</button>
       <menu>
         <button class="ghost" value="cancel">Close</button>
         <button id="saveSettings" class="primary" value="default">Save</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <dialog id="registerDialog" class="settings register-dialog">
+    <form method="dialog" id="registerForm">
+      <h3>Register for Future Classes</h3>
+      <p class="muted">We’ll contact you when class dates and locations are announced.</p>
+      <label class="field">
+        <span>Full name</span>
+        <input id="regName" type="text" placeholder="Your name" required />
+      </label>
+      <label class="field">
+        <span>Email</span>
+        <input id="regEmail" type="email" placeholder="name@email.com" required />
+      </label>
+      <label class="field">
+        <span>Phone (optional)</span>
+        <input id="regPhone" type="tel" placeholder="(555) 555-5555" />
+      </label>
+      <label class="field">
+        <span>Best fit</span>
+        <select id="regGroup" required>
+          <option value="">Select one</option>
+          <option value="Youth">Youth</option>
+          <option value="Adult">Adult</option>
+          <option value="Educator">Educator</option>
+          <option value="Family">Family</option>
+        </select>
+      </label>
+      <label class="field">
+        <span>Notes (optional)</span>
+        <textarea id="regNotes" rows="3" placeholder="Preferred days/times, questions, etc."></textarea>
+      </label>
+      <div id="registerStatus" class="sheets-status hidden" role="status" aria-live="polite"></div>
+      <menu>
+        <button class="ghost" value="cancel">Close</button>
+        <button id="submitRegistration" class="primary" value="default">Submit</button>
       </menu>
     </form>
   </dialog>
