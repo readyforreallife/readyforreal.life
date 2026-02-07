@@ -862,6 +862,57 @@ body {
   .topbar {
     flex-direction: column;
     align-items: stretch;
+    gap: 12px;
   }
 
+  .brand {
+    justify-content: center;
+    text-align: center;
+  }
+
+  .controls {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+  }
+
+  .resource-select {
+    width: 100%;
+  }
+
+  .resource-select select {
+    width: 100%;
+  }
+
+  .month-tabs {
+    flex-wrap: wrap;
+  }
+
+  .welcome-logo {
+    width: 240px;
+    height: 240px;
+  }
+
+  #introPanel {
+    margin: 0 auto;
+  }
+
+  .corner-badges {
+    position: static;
+    grid-template-columns: 1fr;
+    max-width: none;
+    margin: 16px auto 0;
+    width: 100%;
+  }
+
+  .qr-card img {
+    width: 140px;
+    height: 140px;
+  }
+
+  .copyright {
+    position: static;
+    margin: 8px auto 0;
+    text-align: center;
+  }
 }
