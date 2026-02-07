@@ -318,7 +318,17 @@ body {
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  object-position: 50% 15%;
+  object-position: 50% 0%;
+}
+
+#introPanel {
+  position: relative;
+}
+
+.creator-badge {
+  position: absolute;
+  top: 16px;
+  right: 16px;
 }
 
 .creator-badge span {
