@@ -286,6 +286,10 @@ body {
   flex-wrap: wrap;
 }
 
+#introPanel {
+  position: relative;
+}
+
 .intro-meta {
   display: flex;
   gap: 8px;
@@ -318,7 +322,7 @@ body {
   height: 50px;
   border-radius: 50%;
   object-fit: cover;
-  object-position: 50% 0%;
+  object-position: 50% 20%;
 }
 
 #introPanel {
@@ -329,6 +333,7 @@ body {
   position: absolute;
   top: 16px;
   right: 16px;
+  z-index: 3;
 }
 
 .creator-badge span {
@@ -357,7 +362,7 @@ body {
   height: 84px;
   border-radius: 50%;
   object-fit: cover;
-  object-position: 50% 0%;
+  object-position: 50% 20%;
 }
 
 .creator-header h3 {
