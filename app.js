@@ -45,6 +45,8 @@ const monthToggle = document.getElementById("monthToggle");
 const infoBadges = document.querySelectorAll(".info-badge");
 const qrToggle = document.getElementById("qrToggle");
 const qrSection = document.getElementById("qrSection");
+const creatorToggle = document.getElementById("creatorToggle");
+const creatorDialog = document.getElementById("creatorDialog");
 const currentDateEl = document.getElementById("currentDate");
 const currentScenarioLabelEl = document.getElementById("currentScenarioLabel");
 
@@ -1320,6 +1322,12 @@ if (qrToggle && qrSection) {
     const isCollapsed = qrSection.classList.contains("collapsed");
     qrToggle.setAttribute("aria-expanded", isCollapsed ? "false" : "true");
     qrToggle.textContent = isCollapsed ? "Show QR Resources" : "Hide QR Resources";
+  });
+}
+
+if (creatorToggle && creatorDialog) {
+  creatorToggle.addEventListener("click", () => {
+    creatorDialog.showModal();
   });
 }
 

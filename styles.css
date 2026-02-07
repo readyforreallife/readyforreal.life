@@ -292,6 +292,77 @@ body {
   opacity: 0.6;
 }
 
+.creator-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: 999px;
+  padding: 6px 12px;
+  margin: 4px 0 10px;
+  cursor: pointer;
+  box-shadow: 0 10px 22px rgba(0, 0, 0, 0.12);
+}
+
+.creator-badge img {
+  width: 44px;
+  height: 44px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.creator-badge span {
+  font-size: 12px;
+  color: #1d1b16;
+  font-weight: 600;
+}
+
+.creator-dialog {
+  border: none;
+  border-radius: 18px;
+  max-width: 520px;
+  padding: 0;
+  box-shadow: 0 24px 60px rgba(0, 0, 0, 0.18);
+}
+
+.creator-header {
+  display: flex;
+  gap: 16px;
+  align-items: center;
+  padding: 18px 20px 8px;
+}
+
+.creator-header img {
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.creator-header h3 {
+  margin: 0 0 4px;
+}
+
+.creator-header p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 13px;
+}
+
+.creator-body {
+  padding: 0 20px 8px;
+  font-size: 14px;
+  color: var(--ink);
+  line-height: 1.55;
+}
+
+.creator-dialog menu {
+  display: flex;
+  justify-content: flex-end;
+  padding: 0 20px 16px;
+}
+
 .stack {
   display: grid;
   gap: 12px;
