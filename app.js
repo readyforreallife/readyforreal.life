@@ -68,6 +68,9 @@ const currentDateEl = document.getElementById("currentDate");
 const currentScenarioLabelEl = document.getElementById("currentScenarioLabel");
 const teacherStatsEl = document.getElementById("teacherStats");
 const sheetsStatusEl = document.getElementById("sheetsStatus");
+const dailyChallengeTextEl = document.getElementById("dailyChallengeText");
+const avatarGridEl = document.getElementById("avatarGrid");
+const badgesGridEl = document.getElementById("badgesGrid");
 const registerToggle = document.getElementById("registerToggle");
 const registerDialog = document.getElementById("registerDialog");
 const registerForm = document.getElementById("registerForm");
@@ -154,6 +157,30 @@ const ENCOURAGEMENTS = [
 ];
 
 const GAMIFY_KEY = "decision-lab-gamify";
+const AVATAR_KEY = "decision-lab-avatar";
+const BADGE_KEY = "decision-lab-badges";
+
+const AVATARS = [
+  { id: "rocket", label: "Rocket", icon: "🚀" },
+  { id: "lion", label: "Lion", icon: "🦁" },
+  { id: "owl", label: "Owl", icon: "🦉" },
+  { id: "star", label: "Star", icon: "⭐" },
+  { id: "shield", label: "Shield", icon: "🛡️" },
+  { id: "spark", label: "Spark", icon: "✨" }
+];
+
+const BADGES = [
+  { id: "first_win", title: "First Win", desc: "Complete your first decision." },
+  { id: "three_day", title: "3‑Day Streak", desc: "Complete decisions on 3 different days." },
+  { id: "calm_communicator", title: "Calm Communicator", desc: "Use a pause or breathe tool." },
+  { id: "boundary_boss", title: "Boundary Boss", desc: "Use a boundary tool." }
+];
+
+const DAILY_CHALLENGES = [
+  { id: "boundary", text: "Use a boundary tool in your response today.", bonus: 10 },
+  { id: "long_view", text: "Reference long‑term consequences in your response.", bonus: 10 },
+  { id: "ask_help", text: "Include “ask for help” as your tool.", bonus: 10 }
+];
 
 const ROTATION_START = "2026-02-02";
 const WEEKS_PER_YEAR = 40;
@@ -238,6 +265,63 @@ async function loadData() {
   loadTeacherMode();
   renderBuilderOptions();
   updateGamifyUI(loadGamify());
+  renderAvatarChooser();
+  renderBadges();
+  renderDailyChallenge();
+}
+
+function renderAvatarChooser() {
+  if (!avatarGridEl) return;
+  avatarGridEl.innerHTML = "";
+  const selected = localStorage.getItem(AVATAR_KEY) || AVATARS[0].id;
+  AVATARS.forEach((av) => {
+    const card = document.createElement("button");
+    card.type = "button";
+    card.className = `avatar-card ${av.id === selected ? "active" : ""}`;
+    card.innerHTML = `<div class="avatar-icon">${av.icon}</div><div>${av.label}</div>`;
+    card.addEventListener("click", () => {
+      localStorage.setItem(AVATAR_KEY, av.id);
+      renderAvatarChooser();
+    });
+    avatarGridEl.appendChild(card);
+  });
+}
+
+function loadBadges() {
+  const saved = localStorage.getItem(BADGE_KEY);
+  if (!saved) return {};
+  try {
+    return JSON.parse(saved);
+  } catch {
+    return {};
+  }
+}
+
+function saveBadges(data) {
+  localStorage.setItem(BADGE_KEY, JSON.stringify(data));
+  renderBadges();
+}
+
+function renderBadges() {
+  if (!badgesGridEl) return;
+  const unlocked = loadBadges();
+  badgesGridEl.innerHTML = "";
+  BADGES.forEach((badge) => {
+    const card = document.createElement("div");
+    card.className = `badge-card ${unlocked[badge.id] ? "" : "locked"}`;
+    card.innerHTML = `<div class="badge-title">${badge.title}</div><div class="badge-desc">${badge.desc}</div>`;
+    badgesGridEl.appendChild(card);
+  });
+}
+
+function renderDailyChallenge() {
+  if (!dailyChallengeTextEl) return;
+  const today = new Date().toISOString().slice(0, 10);
+  const idx = new Date().getDay() % DAILY_CHALLENGES.length;
+  const challenge = DAILY_CHALLENGES[idx];
+  dailyChallengeTextEl.textContent = challenge.text;
+  dailyChallengeTextEl.dataset.challengeId = challenge.id;
+  dailyChallengeTextEl.dataset.date = today;
 }
 
 function renderBuilderOptions() {
@@ -745,6 +829,31 @@ function awardXP(points) {
   saveGamify(data);
 }
 
+function checkBadges(payload) {
+  const unlocked = loadBadges();
+  const decisions = sessionLog.filter((e) => e.type === "decision").length;
+  if (decisions >= 1) unlocked.first_win = true;
+  const gamify = loadGamify();
+  if (gamify.streak >= 3) unlocked.three_day = true;
+  if ((payload.tool || "").toLowerCase().includes("pause") || (payload.tool || "").toLowerCase().includes("breathe")) {
+    unlocked.calm_communicator = true;
+  }
+  if ((payload.tool || "").toLowerCase().includes("boundary")) {
+    unlocked.boundary_boss = true;
+  }
+  saveBadges(unlocked);
+}
+
+function applyDailyChallenge(payload) {
+  const id = dailyChallengeTextEl ? dailyChallengeTextEl.dataset.challengeId : "";
+  if (!id) return;
+  const tool = (payload.tool || "").toLowerCase();
+  const concept = (payload.concept || "").toLowerCase();
+  if (id === "boundary" && tool.includes("boundary")) awardXP(10);
+  if (id === "long_view" && (concept.includes("long-term") || concept.includes("long term"))) awardXP(10);
+  if (id === "ask_help" && tool.includes("ask for help")) awardXP(10);
+}
+
 
 function updateMeters() {
   budgetBar.style.width = `${clamp(meters.budget)}%`;
@@ -852,6 +961,8 @@ submitDecision.addEventListener("click", async () => {
   updateLocalStats(payload);
   await logToSheets(payload);
   awardXP(15);
+  applyDailyChallenge(payload);
+  checkBadges(payload);
   fireConfetti();
   playChime();
 });
