@@ -993,6 +993,7 @@ submitDecision.addEventListener("click", async () => {
   checkBadges(payload);
   fireConfetti();
   playChime();
+  window.scrollTo({ top: 0, behavior: "smooth" });
 });
 
 nextStepBtn.addEventListener("click", () => {

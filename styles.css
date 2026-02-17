@@ -255,6 +255,15 @@ body {
   margin-bottom: 10px;
 }
 
+.curriculum-panel > summary {
+  cursor: pointer;
+  list-style: none;
+}
+
+.curriculum-panel > summary::-webkit-details-marker {
+  display: none;
+}
+
 .curriculum-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
