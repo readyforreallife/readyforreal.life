@@ -189,7 +189,6 @@ const SCENARIOS_PER_WEEK = 7;
 const SCENARIO_YEAR_KEY = "decision-lab-scenario-year";
 
 const settingsKey = "decision-lab-settings";
-const REGISTRATION_ENDPOINT = "https://script.google.com/macros/s/AKfycbzH2--hkA4ezway034VJ6AKK7AQlkiDkGn2rjQ1tP2PhaY25gOKX89cfJZ7fucx6yUH/exec";
 
 function loadSettings() {
   const saved = localStorage.getItem(settingsKey);
@@ -1532,6 +1531,12 @@ async function submitRegistration(event) {
   }
   registerStatus.textContent = "Submitting...";
 
+  const settings = loadSettings();
+  if (!settings.sheetsEndpoint) {
+    registerStatus.textContent = "Registration link not set. Ask the teacher to enable it.";
+    return;
+  }
+
   const payload = {
     type: "registration",
     name,
@@ -1539,11 +1544,12 @@ async function submitRegistration(event) {
     phone: regPhone.value.trim(),
     group,
     notes: regNotes.value.trim(),
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
+    ...(settings.sheetsSecret ? { secret: settings.sheetsSecret } : {})
   };
 
   try {
-    const response = await fetch(REGISTRATION_ENDPOINT, {
+    const response = await fetch(settings.sheetsEndpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload)
