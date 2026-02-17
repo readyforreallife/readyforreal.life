@@ -1036,11 +1036,11 @@ async function getAiReply(message) {
     const prompt = prompts[stepChatIndex % prompts.length];
     stepChatIndex += 1;
     const followUps = [
-      "What trade-off are you seeing here?",
-      "Which boundary or value matters most right now?",
-      "What is your best next step and why?",
-      "What is the biggest risk if you choose that?",
-      "How does this affect trust or long-term reputation?"
+      "What happens if you choose that?",
+      "How would that affect the other person?",
+      "What’s a safer or calmer way to say that?",
+      "What might happen next if you do that?",
+      "What would you do instead?"
     ];
     const followUp = followUps[followUpIndex % followUps.length];
     followUpIndex += 1;
@@ -1052,7 +1052,7 @@ async function getAiReply(message) {
     messages: [
       {
         role: "system",
-        content: `You are role-playing a stakeholder in a classroom decision scenario. Keep responses short, safe, and focused. Ask the student to justify decisions using unit language. Scenario: ${currentScenario.title}. Step: ${step.prompt}`
+        content: `You are role-playing a stakeholder in a classroom decision scenario. Keep responses short, safe, and realistic. Ask follow-up questions like a real person would in a role-play. Do NOT mention unit language. Scenario: ${currentScenario.title}. Step: ${step.prompt}`
       },
       { role: "user", content: message }
     ],
@@ -1070,9 +1070,9 @@ async function getAiReply(message) {
     });
 
     const data = await response.json();
-    return data.reply || data.response || "Thanks. Explain your reasoning using unit language.";
+    return data.reply || data.response || "Thanks. What do you want to do next?";
   } catch (error) {
-    return "Connection issue. Use the justification box to explain your reasoning.";
+    return "Connection issue. Let’s keep role‑playing—what would you say next?";
   }
 }
 
