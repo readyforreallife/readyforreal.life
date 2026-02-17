@@ -1577,12 +1577,11 @@ async function submitRegistration(event) {
   };
 
   try {
-    const response = await fetch(settings.sheetsEndpoint, {
+    await fetch(settings.sheetsEndpoint, {
       method: "POST",
-      headers: { "Content-Type": "application/json" },
+      mode: "no-cors",
       body: JSON.stringify(payload)
     });
-    if (!response.ok) throw new Error("Bad response");
     registerStatus.textContent = "Thanks! You’re on the interest list.";
     registerForm.reset();
   } catch (error) {
