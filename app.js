@@ -71,6 +71,7 @@ const sheetsStatusEl = document.getElementById("sheetsStatus");
 const dailyChallengeTextEl = document.getElementById("dailyChallengeText");
 const avatarGridEl = document.getElementById("avatarGrid");
 const badgesGridEl = document.getElementById("badgesGrid");
+const teacherOnlyEls = document.querySelectorAll(".teacher-only");
 const registerToggle = document.getElementById("registerToggle");
 const registerDialog = document.getElementById("registerDialog");
 const registerForm = document.getElementById("registerForm");
@@ -227,6 +228,7 @@ function updateTeacherControls() {
     teacherStatsEl.classList.toggle("hidden", !teacherMode);
     if (teacherMode) updateTeacherStats();
   }
+  teacherOnlyEls.forEach((el) => el.classList.toggle("hidden", !teacherMode));
 }
 
 async function loadData() {

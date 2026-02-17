@@ -240,6 +240,88 @@ body {
   border: 1px solid rgba(0, 0, 0, 0.08);
 }
 
+.curriculum-panel {
+  margin: 14px 0;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.curriculum-title {
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.curriculum-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 10px;
+}
+
+.curriculum-card {
+  padding: 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.95);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.curriculum-heading {
+  font-weight: 700;
+  margin-bottom: 6px;
+}
+
+.downloads-panel,
+.teacher-vault {
+  margin: 12px 0;
+  padding: 14px;
+  border-radius: 16px;
+  background: rgba(255, 255, 255, 0.9);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.downloads-title,
+.teacher-title {
+  font-weight: 800;
+  margin-bottom: 10px;
+}
+
+.teacher-subtitle {
+  margin-top: 12px;
+  font-weight: 700;
+}
+.downloads-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: 10px;
+}
+
+.download-card {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  padding: 10px 12px;
+  border-radius: 12px;
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  background: rgba(255, 255, 255, 0.95);
+  font-weight: 600;
+  color: #1d1b16;
+  text-decoration: none;
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+
+.download-card:hover {
+  transform: translateY(-1px);
+  box-shadow: 0 8px 18px rgba(0, 0, 0, 0.12);
+}
+
+.teacher-only.hidden {
+  display: none;
+}
+
 .challenge-title,
 .avatar-title,
 .badges-title {
