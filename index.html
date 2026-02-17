@@ -196,29 +196,18 @@
             <a class="download-card" href="assets/docs/cmp/cmp-comparison-freshman-success-vs-modern-manners.pdf" target="_blank" rel="noopener">CMP Comparison (Freshman Success vs MMMF)</a>
           </div>
         </div>
-        <p class="lead">Practice higher-stakes decisions safely. Choose a scenario, make a choice, then justify it using unit language.</p>
-        <div class="year-preview">
-          <div class="year-preview-header">
-            <h3>Preview</h3>
-            <p>Scenarios unlock daily (Mon–Sun). Future scenarios are blurred until their unlock date.</p>
-            <div class="month-tabs-row">
-              <button type="button" id="monthToggle" class="month-toggle" aria-expanded="false">Month</button>
-              <div id="monthTabs" class="month-tabs collapsed"></div>
+        <p class="lead">Today’s mission is short, clear, and built for real life. Tap to start.</p>
+        <div class="mission-card" id="todayMission">
+          <div class="mission-header">
+            <div>
+              <div class="mission-label">Today’s Mission</div>
+              <div id="todayScenarioTitle" class="mission-title">Loading scenario…</div>
+              <div id="todayScenarioSummary" class="mission-summary"></div>
             </div>
+            <button id="unitHelpToggle" class="ghost" type="button">Unit Language Help</button>
           </div>
-          <div id="yearPreview">
-            <div id="monthPreview"></div>
-            <div id="yearPreviewGrid" class="hidden"></div>
-          </div>
-        </div>
-        <div class="unit-language">
-          <h3>Unit Language (Required)</h3>
-          <p>Good justifications use at least 3 elements: one self-regulation tool, one concept, and one why statement.</p>
-          <ul>
-            <li>Tools: stop and pause, breathe, step back, name the feeling, delay the reaction, ask for help, check the facts, reframe, set a boundary, use a checklist, slow down to speed up, repair.</li>
-            <li>Concepts: decision-making, self-regulation, impulse control, trade-off, short-term vs long-term, consequences, stakes, risk vs reward, values, goals, priorities, boundaries, responsibility, accountability, choice ownership, impact on others.</li>
-            <li>Why stems: I chose this because, My goal is, The trade-off is, The short-term gain is, but the long-term cost is, The biggest risk is, The consequence I’m trying to avoid is, This protects my boundary by, I’m taking responsibility by, I would pause first and then, If this happens again, I will.</li>
-          </ul>
+          <div id="todayScenarioStakes" class="mission-stakes"></div>
+          <button id="startTodayBtn" class="primary">Start Today’s Scenario</button>
         </div>
         <div class="stack">
           <label class="field">
@@ -234,7 +223,7 @@
             <input id="studentAge" type="text" placeholder="e.g., 13, 25, 40+" />
           </label>
         </div>
-        <div class="scenario-grid" id="scenarioGrid"></div>
+        <div class="scenario-grid hidden" id="scenarioGrid"></div>
         <div class="corner-badges">
           <button type="button" id="qrToggle" class="qr-toggle" aria-expanded="false">Show QR Resources</button>
           <div id="qrSection" class="qr-section collapsed">
@@ -485,6 +474,24 @@
         <p>The logo you see represents that mission. The shield stands for protection and preparation. The book represents learning and growth. The flame represents wisdom and personal development. The colors represent trust, leadership, and progress.</p>
         <p>This page will be where I share ideas, lessons, and real conversations about preparing the next generation for life outside the classroom.</p>
         <p><strong>This is only the beginning.</strong></p>
+      </div>
+      <menu>
+        <button class="ghost" value="cancel">Close</button>
+      </menu>
+    </form>
+  </dialog>
+
+  <dialog id="unitHelpDialog" class="settings">
+    <form method="dialog">
+      <h3>Unit Language Help</h3>
+      <p class="muted">Use simple, clear language to explain your choice.</p>
+      <div class="unit-language">
+        <h4>Tools (self‑regulation)</h4>
+        <p>Pause, breathe, step back, name the feeling, delay the reaction, ask for help, check the facts, reframe, set a boundary, use a checklist, slow down to speed up, repair.</p>
+        <h4>Concepts (unit ideas)</h4>
+        <p>Decision‑making, self‑regulation, impulse control, trade‑off, short‑term vs long‑term, consequences, stakes, risk vs reward, values, goals, priorities, boundaries, responsibility, accountability, choice ownership, impact on others.</p>
+        <h4>Why stems</h4>
+        <p>I chose this because… / My goal is… / The trade‑off is… / The biggest risk is… / This protects my boundary by… / I’m taking responsibility by… / I would pause first and then…</p>
       </div>
       <menu>
         <button class="ghost" value="cancel">Close</button>

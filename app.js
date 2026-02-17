@@ -64,6 +64,8 @@ const qrToggle = document.getElementById("qrToggle");
 const qrSection = document.getElementById("qrSection");
 const creatorToggle = document.getElementById("creatorToggle");
 const creatorDialog = document.getElementById("creatorDialog");
+const unitHelpToggle = document.getElementById("unitHelpToggle");
+const unitHelpDialog = document.getElementById("unitHelpDialog");
 const currentDateEl = document.getElementById("currentDate");
 const currentScenarioLabelEl = document.getElementById("currentScenarioLabel");
 const teacherStatsEl = document.getElementById("teacherStats");
@@ -72,6 +74,10 @@ const dailyChallengeTextEl = document.getElementById("dailyChallengeText");
 const avatarGridEl = document.getElementById("avatarGrid");
 const badgesGridEl = document.getElementById("badgesGrid");
 const teacherOnlyEls = document.querySelectorAll(".teacher-only");
+const todayScenarioTitleEl = document.getElementById("todayScenarioTitle");
+const todayScenarioSummaryEl = document.getElementById("todayScenarioSummary");
+const todayScenarioStakesEl = document.getElementById("todayScenarioStakes");
+const startTodayBtn = document.getElementById("startTodayBtn");
 const registerToggle = document.getElementById("registerToggle");
 const registerDialog = document.getElementById("registerDialog");
 const registerForm = document.getElementById("registerForm");
@@ -403,7 +409,7 @@ function renderScenarioCards() {
 }
 
 function renderYearPreview() {
-  if (!yearPreviewEl || !scenarios.length) return;
+  if (!yearPreviewEl || !monthPreviewEl || !yearPreviewGridEl || !scenarios.length) return;
   const now = new Date();
   const startDate = new Date(getScenarioYear().startDate);
   const weeks = [];
@@ -522,6 +528,27 @@ function renderIntroMeta() {
   if (currentScenarioLabelEl) {
     const todayScenario = getTodayScenario();
     currentScenarioLabelEl.textContent = todayScenario ? todayScenario.title : "Boundary Test";
+  }
+
+  renderTodayMission();
+}
+
+function renderTodayMission() {
+  const scenario = getTodayScenario();
+  if (!scenario) return;
+  if (todayScenarioTitleEl) todayScenarioTitleEl.textContent = scenario.title;
+  if (todayScenarioSummaryEl) todayScenarioSummaryEl.textContent = scenario.summary;
+  if (todayScenarioStakesEl) {
+    todayScenarioStakesEl.innerHTML = "";
+    scenario.stakes.slice(0, 3).forEach((stake) => {
+      const tag = document.createElement("span");
+      tag.className = "tag";
+      tag.textContent = stake;
+      todayScenarioStakesEl.appendChild(tag);
+    });
+  }
+  if (startTodayBtn) {
+    startTodayBtn.onclick = () => startScenario(scenario.id);
   }
 }
 
@@ -1904,6 +1931,12 @@ if (qrToggle && qrSection) {
 if (creatorToggle && creatorDialog) {
   creatorToggle.addEventListener("click", () => {
     creatorDialog.showModal();
+  });
+}
+
+if (unitHelpToggle && unitHelpDialog) {
+  unitHelpToggle.addEventListener("click", () => {
+    unitHelpDialog.showModal();
   });
 }
 
