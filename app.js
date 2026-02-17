@@ -1577,10 +1577,19 @@ async function submitRegistration(event) {
   };
 
   try {
+    const body = JSON.stringify(payload);
+    const beaconSent = navigator.sendBeacon
+      ? navigator.sendBeacon(settings.sheetsEndpoint, new Blob([body], { type: "text/plain" }))
+      : false;
+    if (beaconSent) {
+      registerStatus.textContent = "Thanks! You’re on the interest list.";
+      registerForm.reset();
+      return;
+    }
     await fetch(settings.sheetsEndpoint, {
       method: "POST",
       mode: "no-cors",
-      body: JSON.stringify(payload)
+      body
     });
     registerStatus.textContent = "Thanks! You’re on the interest list.";
     registerForm.reset();
