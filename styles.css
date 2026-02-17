@@ -22,7 +22,7 @@ body {
   margin: 0;
   font-family: "IBM Plex Sans", "Space Grotesk", "Source Sans 3", "Trebuchet MS", sans-serif;
   color: var(--ink);
-  background: radial-gradient(circle at top left, #f7f3ea 0%, #efe3cc 45%, #e5dac5 100%);
+  background: radial-gradient(circle at top left, #f5f0ff 0%, #e6f7ff 40%, #fff2e1 100%);
   min-height: 100vh;
 }
 
@@ -36,12 +36,14 @@ body {
   position: fixed;
   inset: 0;
   background-image:
-    linear-gradient(0deg, rgba(247, 243, 234, 0.6), rgba(247, 243, 234, 0.6)),
-    url("assets/backgrounds/collage.jpg");
-  background-size: cover;
-  background-position: center;
-  background-repeat: no-repeat;
-  opacity: 1;
+    radial-gradient(circle at 15% 20%, rgba(255, 145, 77, 0.22), transparent 45%),
+    radial-gradient(circle at 85% 10%, rgba(74, 144, 226, 0.25), transparent 40%),
+    radial-gradient(circle at 70% 80%, rgba(43, 167, 156, 0.2), transparent 45%),
+    repeating-linear-gradient(135deg, rgba(11, 107, 107, 0.08) 0 12px, transparent 12px 36px),
+    radial-gradient(rgba(11, 107, 107, 0.12) 1px, transparent 1px);
+  background-size: auto, auto, auto, auto, 18px 18px;
+  background-position: center, center, center, center, 0 0;
+  opacity: 0.9;
   pointer-events: none;
   z-index: 0;
 }
