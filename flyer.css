@@ -21,6 +21,28 @@ body {
   border-radius: 24px;
   border: 1px solid rgba(0,0,0,0.1);
   box-shadow: 0 30px 70px rgba(0,0,0,0.18);
+  position: relative;
+  overflow: hidden;
+}
+
+.flyer::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background-image:
+    radial-gradient(circle at 10% 10%, rgba(240,138,75,0.2), transparent 35%),
+    radial-gradient(circle at 90% 15%, rgba(11,107,107,0.18), transparent 40%),
+    radial-gradient(circle at 70% 80%, rgba(98, 75, 255, 0.16), transparent 40%),
+    repeating-linear-gradient(135deg, rgba(11,107,107,0.08) 0 10px, transparent 10px 28px),
+    radial-gradient(rgba(11, 107, 107, 0.1) 1px, transparent 1px);
+  background-size: auto, auto, auto, auto, 18px 18px;
+  opacity: 0.6;
+  pointer-events: none;
+}
+
+.flyer > * {
+  position: relative;
+  z-index: 1;
 }
 
 .hero {
@@ -30,7 +52,7 @@ body {
   align-items: center;
   padding: 16px;
   border-radius: 18px;
-  background: linear-gradient(120deg, rgba(11,107,107,0.12), rgba(240,138,75,0.14));
+  background: linear-gradient(120deg, rgba(11,107,107,0.18), rgba(240,138,75,0.2));
 }
 
 .logo {
@@ -74,7 +96,7 @@ body {
   padding: 14px;
   border-radius: 16px;
   border: 1px solid rgba(0,0,0,0.1);
-  background: #fff;
+  background: rgba(255,255,255,0.95);
 }
 
 .panel h2 {
@@ -119,6 +141,26 @@ body {
   gap: 20px;
   padding-top: 10px;
   border-top: 1px solid rgba(0,0,0,0.1);
+}
+
+.about {
+  margin: 10px 0 4px;
+}
+
+.about-card {
+  padding: 16px;
+  border-radius: 16px;
+  border: 1px solid rgba(0,0,0,0.1);
+  background: rgba(255,255,255,0.96);
+}
+
+.about-card h2 {
+  margin-top: 0;
+}
+
+.signature {
+  font-weight: 700;
+  margin-top: 8px;
 }
 
 @media print {

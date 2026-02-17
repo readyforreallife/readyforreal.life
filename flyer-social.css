@@ -19,6 +19,8 @@ header p { margin:6px 0 0; font-weight:700; color:var(--accent); }
 .cards { display:grid; gap:16px; }
 .card { background:#fff; border-radius:18px; padding:20px; border:1px solid rgba(0,0,0,0.1); font-size:22px; }
 .card h2 { margin:0 0 8px; font-size:26px; }
+.about { background:#fff; border-radius:18px; padding:20px; border:1px solid rgba(0,0,0,0.1); font-size:20px; }
+.about h2 { margin:0 0 8px; font-size:26px; }
 .cta { display:flex; justify-content:space-between; align-items:center; gap:20px; }
 .cta a { background:var(--accent); color:#fff; text-decoration:none; padding:16px 26px; border-radius:999px; font-weight:700; font-size:22px; }
 .qr img { width:180px; height:180px; border-radius:12px; border:1px solid rgba(0,0,0,0.1); }
