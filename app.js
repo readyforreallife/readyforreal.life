@@ -817,6 +817,16 @@ function updateProgress() {
   }
 }
 
+// Helper: creates a Registrations tab in the connected Google Sheet
+// Copy this into Apps Script and run once if the tab is missing.
+function createRegistrationsTab() {
+  const ss = SpreadsheetApp.getActiveSpreadsheet();
+  const reg = ss.getSheetByName("Registrations") || ss.insertSheet("Registrations");
+  if (reg.getLastRow() === 0) {
+    reg.appendRow(["name","email","phone","group","notes","timestamp"]);
+  }
+}
+
 function loadGamify() {
   const saved = localStorage.getItem(GAMIFY_KEY);
   if (!saved) {
