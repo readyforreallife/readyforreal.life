@@ -3,86 +3,815 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Modern Manners Detail</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<title>CMP Resource Detail</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root {
-  --ink: #0e1118;
-  --paper: #f6f3ec;
-  --slate: #253044;
-  --gold: #c49540;
-  --rule: #ddd7cc;
+  --ink: #0f1623;
+  --paper: #f7f3ea;
+  --slate: #24324b;
+  --slate2: #2f415f;
+  --gold: #c89844;
+  --teal: #1d6b69;
+  --rust: #b44a38;
+  --sage: #5d7851;
+  --rule: #ddd5c6;
   --white: #ffffff;
-  --muted: #697080;
+  --muted: #63718a;
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
-body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); }
-.wrap { max-width: 940px; margin: 0 auto; padding: 34px 18px 64px; }
-.top { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
-.back {
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 10% 10%, rgba(200, 152, 68, 0.15), transparent 25%),
+    radial-gradient(circle at 90% 15%, rgba(29, 107, 105, 0.13), transparent 25%),
+    linear-gradient(180deg, #f8f4eb 0%, #f4efe3 100%);
+}
+.wrap { max-width: 1160px; margin: 0 auto; padding: 22px 16px 42px; }
+.top {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.btn {
   border: 1px solid var(--rule);
   background: var(--white);
   border-radius: 999px;
   color: var(--slate);
-  font-weight: 600;
-  padding: 8px 14px;
-  cursor: pointer;
+  font-weight: 700;
+  text-decoration: none;
+  padding: 9px 16px;
+  display: inline-flex;
+  align-items: center;
 }
-.meta { font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .12em; font-size: 10px; color: var(--muted); }
-.card {
+.meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+.hero {
+  border-radius: 18px;
   border: 1px solid var(--rule);
-  background: var(--white);
-  border-radius: 16px;
-  padding: 24px;
-  box-shadow: 0 14px 32px rgba(0, 0, 0, .06);
+  background: linear-gradient(120deg, var(--slate) 0%, #21314d 65%, #294466 100%);
+  color: #fff;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  right: -80px;
+  top: -120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,152,68,.34) 0%, transparent 70%);
+}
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.70);
+  font-size: 10px;
+  margin-bottom: 8px;
 }
 h1 {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.6rem, 4vw, 2.4rem);
-  line-height: 1.2;
-  color: var(--slate);
-  margin-bottom: 8px;
+  font-size: clamp(1.8rem, 3.3vw, 2.8rem);
+  line-height: 1.14;
+  margin-bottom: 10px;
 }
-.desc { color: var(--ink); line-height: 1.75; font-size: 15px; white-space: pre-line; }
-.cta {
-  margin-top: 16px;
-  display: inline-flex;
-  border: 1px solid var(--gold);
-  color: var(--slate);
+.summary {
+  color: rgba(255,255,255,.88);
+  line-height: 1.75;
+  font-size: 15px;
+  max-width: 980px;
+  white-space: pre-line;
+}
+.chip-row {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
   border-radius: 999px;
-  text-decoration: none;
-  padding: 8px 14px;
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(255,255,255,.12);
+  font-size: 11px;
+  letter-spacing: .03em;
   font-weight: 600;
+  padding: 5px 12px;
+}
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+}
+.card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.22rem;
+  color: var(--slate);
+  margin-bottom: 10px;
+}
+.card p {
+  color: var(--ink);
+  line-height: 1.7;
+  font-size: 14px;
+}
+.list { display: grid; gap: 8px; margin-top: 8px; }
+.item {
+  border-radius: 10px;
+  border-left: 4px solid var(--gold);
+  background: #f8f6f1;
+  padding: 10px 12px;
+  color: #1f2533;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.item strong { color: var(--slate); }
+.docs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.doc-link {
+  text-decoration: none;
+  color: var(--slate);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: #fcfbf8;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.doc-link:hover { border-color: var(--gold); }
+.note {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+@media (max-width: 900px) {
+  .grid, .docs { grid-template-columns: 1fr; }
 }
 </style>
 </head>
 <body>
   <div class="wrap">
     <div class="top">
-      <button class="back" type="button" onclick="window.location.href='index.html'">Back to Curriculum</button>
+      <a class="btn" href="index.html">Back to Curriculum</a>
       <div class="meta" id="sectionMeta">Section</div>
     </div>
-    <article class="card">
-      <h1 id="title">Detail</h1>
-      <p class="desc" id="summary">Select a card from the curriculum homepage to open its detail view here.</p>
-      <a class="cta" href="index.html">Return to Home</a>
-    </article>
+
+    <section class="hero">
+      <div class="eyebrow">CMP Resource Infographic</div>
+      <h1 id="title">Curriculum Detail</h1>
+      <div class="summary" id="summary">Open any card from the main infographic to see targeted educational material, implementation guidance, and downloadable CMP resources.</div>
+      <div class="chip-row" id="chipRow"></div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Learning Targets</h2>
+        <div class="list" id="outcomes"></div>
+      </section>
+      <section class="card">
+        <h2>Instructional Moves</h2>
+        <div class="list" id="moves"></div>
+      </section>
+      <section class="card">
+        <h2>Practice and Activities</h2>
+        <div class="list" id="activities"></div>
+      </section>
+      <section class="card">
+        <h2>Assessment Evidence</h2>
+        <div class="list" id="assessment"></div>
+      </section>
+      <section class="card">
+        <h2>Transfer and Real-World Application</h2>
+        <div class="list" id="transfer"></div>
+      </section>
+      <section class="card">
+        <h2>Educator and Family Supports</h2>
+        <div class="list" id="supports"></div>
+      </section>
+      <section class="card" style="grid-column: 1 / -1;">
+        <h2>CMP Resources and Downloads</h2>
+        <div class="docs" id="resources"></div>
+        <p class="note">These links open within the same website tab and can be used as handouts for classes, board review, and curriculum implementation planning.</p>
+      </section>
+    </div>
   </div>
+
 <script>
 const params = new URLSearchParams(window.location.search);
-const title = params.get('title');
-const section = params.get('section');
-const summary = params.get('summary');
-if (title) {
-  document.getElementById('title').textContent = title;
-  document.title = title + ' | Modern Manners';
+const title = (params.get('title') || 'Curriculum Detail').trim();
+const section = (params.get('section') || 'overview').trim();
+const summary = (params.get('summary') || '').trim();
+
+const BASE_DOCS = [
+  { label: 'CMP Full District Proposal', href: 'assets/docs/cmp/cmp-tooele-district-mike-terry.pdf' },
+  { label: 'CMP Supplemental Packet', href: 'assets/docs/cmp/cmp-supplemental-packet.pdf' },
+  { label: 'Course Addition Packet', href: 'assets/docs/cmp/course-addition-request-packet.pdf' },
+  { label: 'Board Letter', href: 'assets/docs/cmp/cmp-board-letter.pdf' },
+  { label: 'CMP Comparison Analysis', href: 'assets/docs/cmp/cmp-comparison-freshman-success-vs-modern-manners.pdf' },
+  { label: 'One-Page Program Handout', href: 'assets/docs/cmp/One%20Page%20Handout%20-%20Modern_Manners_Mental_Fortitude_One_Pager.pdf' },
+  { label: 'Unit Plan and Storyboard', href: 'assets/docs/unit-plan-storyboard.pdf' },
+  { label: 'Novel Scenario (Summative)', href: 'assets/docs/novel-scenario-summative.pdf' },
+  { label: 'Lesson Plan (Part 3)', href: 'assets/docs/lesson-plan-part-3.pdf' },
+  { label: 'Inquiry Project Outline', href: 'assets/docs/inquiry-project-outline.pdf' }
+];
+
+const SECTION_DEFAULTS = {
+  overview: {
+    chips: ['Program Vision', 'All-Inclusive', 'School + Community + Family'],
+    outcomes: [
+      'Build respectful communication and self-regulation routines that transfer across school, family, workplace, and online contexts.',
+      'Strengthen decision quality under pressure with a repeatable framework that students and adults can apply independently.',
+      'Develop accountability habits: own mistakes, repair trust, and follow through with actions.'
+    ],
+    moves: [
+      'Use explicit instruction for anchor concepts and sentence stems before scenario work.',
+      'Model decision-thinking aloud: pause, identify options, map consequences, choose and justify.',
+      'Revisit the same core ideas in a spiral sequence so learners progress from guided practice to independent transfer.'
+    ],
+    activities: [
+      'Scenario cards with context shifts (home, school, workplace, online) to build flexible application.',
+      'Role-play cycles with observer checklists for tone, listening, boundary setting, and repair language.',
+      'Weekly reflection journals to convert lived moments into metacognitive learning evidence.'
+    ],
+    assessment: [
+      'Formative checks: concept sorts, exit reflections, role-play rubrics, and weekly journals.',
+      'Summative checks: capstone presentation and novel scenario response to an authentic audience.',
+      'Growth measures: pre/post self-efficacy snapshots tied to SEL competencies.'
+    ],
+    transfer: [
+      'Students justify decisions in unfamiliar, higher-stakes situations with limited information and social pressure.',
+      'Learners connect short-term choices to long-term trust, reputation, and opportunity pathways.',
+      'Adults and educators use the same language to reinforce consistency across settings.'
+    ],
+    supports: [
+      'Teacher toolkit includes pacing map, scenario prompts, rubric language, and feedback routines.',
+      'Family extension prompts keep home conversations aligned to course decision frameworks.',
+      'Community-facing handouts support workshops, private classes, and mentoring sessions.'
+    ]
+  },
+  pillars: {
+    chips: ['Anchor Concepts', 'Behavior + Decision Skills', 'Spiral Reinforcement'],
+    outcomes: [
+      'Use respectful communication during disagreement and repair conversations.',
+      'Apply self-regulation before responding under pressure.',
+      'Demonstrate accountable follow-through after decisions.'
+    ],
+    moves: [
+      'Introduce one pillar at a time with concrete examples and non-examples.',
+      'Embed pillar language into discussion protocols and grading comments.',
+      'Use retrieval prompts each week so pillar terms become fluent.'
+    ],
+    activities: [
+      'Pillar stations: analyze examples from school, family, digital, and workplace situations.',
+      'Partner drills for “pause and reframe” and “repair after conflict” scripts.',
+      'Reflective exit tickets linked to one pillar per lesson.'
+    ],
+    assessment: [
+      'Rubric rows map directly to pillar performance indicators.',
+      'Observation checklists track communication, regulation, and accountability behaviors.',
+      'Short written justifications require concept language and evidence.'
+    ],
+    transfer: [
+      'Pillars are applied to novel dilemmas where emotional urgency conflicts with long-view goals.',
+      'Learners compare outcomes when one pillar is skipped versus intentionally used.',
+      'Students identify second-order effects (trust, reputation, access to opportunities).'
+    ],
+    supports: [
+      'Teacher anchor charts and sentence stems for each pillar.',
+      'Parent/mentor discussion prompts to reinforce shared language.',
+      'Printable pillar quick-guide for class and coaching sessions.'
+    ]
+  },
+  modules: {
+    chips: ['Five Modules', '16-Week Flow', 'Practice to Transfer'],
+    outcomes: [
+      'Build from etiquette basics to independent decision transfer in complex scenarios.',
+      'Strengthen learner confidence through repeated performance practice.',
+      'Generate observable growth in communication, regulation, and accountability.'
+    ],
+    moves: [
+      'Weekly structure: introduce, model, practice, reflect, and apply.',
+      'Interleave module skills so no concept remains isolated.',
+      'Use debrief protocols to transform role-play into strategy insight.'
+    ],
+    activities: [
+      'Modern Manners: greetings, active listening, digital etiquette.',
+      'Emotional Intelligence: trigger mapping, grounding routines, reframing drills.',
+      'Conflict Navigation: apology/repair scripts, boundary language, mediation tasks.',
+      'Digital Citizenship: permanence cases, audience analysis, consequence mapping.',
+      'Personal Growth: goal setting, integrity checks, capstone planning.'
+    ],
+    assessment: [
+      'Module check-ins with rubric-aligned formative tasks.',
+      'Midpoint performance simulation with peer and teacher feedback.',
+      'End-of-module reflection connecting strategy use to outcomes.'
+    ],
+    transfer: [
+      'Each module includes at least one unfamiliar context problem.',
+      'Learners practice using module tools when information is incomplete.',
+      'Capstone combines all five modules in one authentic challenge.'
+    ],
+    supports: [
+      'Facilitator pacing notes and discussion question bank.',
+      'Private class adaptation options for individuals, couples, and families.',
+      'Online mentoring adaptation with asynchronous reflection prompts.'
+    ]
+  },
+  frameworks: {
+    chips: ['PLRR', 'POCC', 'Student-Friendly Routines'],
+    outcomes: [
+      'Use PLRR to regulate before reacting.',
+      'Use POCC to make defensible decisions under pressure.',
+      'Explain reasoning with evidence and consequence awareness.'
+    ],
+    moves: [
+      'Teach each framework step explicitly with live modeling.',
+      'Use “same scenario, different framework quality” comparisons.',
+      'Require framework language in oral and written debriefs.'
+    ],
+    activities: [
+      'Rapid-cycle role-plays where students pause and reset before speaking.',
+      'Decision map templates comparing options and outcomes.',
+      'Partner feedback on whether each step was applied or skipped.'
+    ],
+    assessment: [
+      'Performance rubric includes framework fidelity indicators.',
+      'Reflection responses identify which step changed the outcome most.',
+      'Novel scenario grading checks independent framework transfer.'
+    ],
+    transfer: [
+      'Frameworks are applied across school conflict, work dilemmas, and digital pressure moments.',
+      'Students adapt framework use with time limits and scarce information.',
+      'Adults in mentoring sessions mirror the same routines for consistency.'
+    ],
+    supports: [
+      'Pocket reference cards for PLRR and POCC.',
+      'Teacher prompts for live coaching during simulations.',
+      'Family conversation scripts based on framework language.'
+    ]
+  },
+  targets: {
+    chips: ['Objective Alignment', 'Observable Behaviors', 'Mastery Evidence'],
+    outcomes: [
+      'Targets specify exactly what students can demonstrate, not just what is covered.',
+      'Targets are written for communication, regulation, decision quality, and accountability.',
+      'Targets support grading consistency across teachers and cohorts.'
+    ],
+    moves: [
+      'Post learning targets in student language at lesson launch.',
+      'Tie each activity and rubric row back to a specific target.',
+      'Use target-based feedback instead of generic participation comments.'
+    ],
+    activities: [
+      'Students self-rate target confidence before and after scenario practice.',
+      'Peer observers track one target during each role-play.',
+      'Learners revise responses to demonstrate target growth.'
+    ],
+    assessment: [
+      'Target-aligned checklists for formative observations.',
+      'Summative rubric references target IDs for transparent grading.',
+      'Summary dashboard tracks target trends over time.'
+    ],
+    transfer: [
+      'Dissimilar transfer tasks require multiple targets in one response.',
+      'Students justify choices with explicit target language.',
+      'Capstone evidence shows whether skills generalize beyond class routines.'
+    ],
+    supports: [
+      'Target tracker templates for teacher conferencing.',
+      'Student-friendly target glossary for independent study.',
+      'Family-facing target summary for reinforcement outside class.'
+    ]
+  },
+  pacing: {
+    chips: ['Week-by-Week', 'Milestones', 'Sustainable Delivery'],
+    outcomes: [
+      'Pacing ensures skills are practiced repeatedly before high-stakes assessment.',
+      'Milestone weeks reinforce retention and application.',
+      'Course flow supports both school semester and private cohort formats.'
+    ],
+    moves: [
+      'Use a predictable lesson arc each week to reduce confusion and increase confidence.',
+      'Build milestone weeks around synthesis, not content overload.',
+      'Adjust timing for block schedules or workshop series while preserving sequence logic.'
+    ],
+    activities: [
+      'Weekly scenario practice with rotating contexts and stakeholder roles.',
+      'Reflection checkpoints at the end of each mini-cycle.',
+      'Milestone challenge weeks for mixed-skill performance.'
+    ],
+    assessment: [
+      'Weekly evidence logs support timely intervention.',
+      'Mid-course review identifies learners needing additional coaching.',
+      'Final milestone demonstrates integrated transfer.'
+    ],
+    transfer: [
+      'As pacing advances, support decreases and independence increases.',
+      'Late-course dilemmas include ambiguity and social risk to mirror real conditions.',
+      'Students are expected to justify choices without scripted prompts.'
+    ],
+    supports: [
+      'Alternative pacing maps for school, family, and adult workshop cohorts.',
+      'Attendance-flex options for online mentoring paths.',
+      'Implementation notes for compressed or extended timelines.'
+    ]
+  },
+  assessment: {
+    chips: ['Formative + Summative', 'Performance-Based', 'Growth Evidence'],
+    outcomes: [
+      'Assessment evaluates skill use, not just recall.',
+      'Students provide evidence of thinking, not one-word answers.',
+      'Scoring prioritizes clarity, strategy use, and transfer quality.'
+    ],
+    moves: [
+      'Use low-stakes formative checks early and often.',
+      'Provide rubric previews before scenario tasks.',
+      'Debrief assessments with concrete next-step coaching.'
+    ],
+    activities: [
+      'Weekly reflection journals using structured prompts.',
+      'Scenario role-play rubrics scored by peers and instructor.',
+      'Capstone presentations to authentic audiences.'
+    ],
+    assessment: [
+      'Pre/post self-efficacy snapshots for growth tracking.',
+      'Novel scenario summative for dissimilar transfer.',
+      'Rubric dimensions: clarity, application, reflection, delivery, supports.'
+    ],
+    transfer: [
+      'Summative scenarios combine school, digital, workplace, and family pressures.',
+      'Students must show regulation and decision logic under time constraints.',
+      'Evaluation includes second-order consequences and repair planning.'
+    ],
+    supports: [
+      'Teacher calibration guide for rubric reliability.',
+      'Student exemplars at multiple proficiency levels.',
+      'Parent-facing explanation of how to read rubric feedback.'
+    ]
+  },
+  theory: {
+    chips: ['Research-Backed', 'Learning Science', 'CMP Coherence'],
+    outcomes: [
+      'Course architecture is grounded in transfer-focused curriculum design.',
+      'Theory is operationalized in daily routines, not left abstract.',
+      'Research foundations support district adoption and sustainability.'
+    ],
+    moves: [
+      'Connect each classroom routine to a clear theoretical rationale.',
+      'Use spiral review to deepen conceptual complexity over time.',
+      'Apply reinforcement and reflection to build durable habits.'
+    ],
+    activities: [
+      'Concept retrieval starts each cycle.',
+      'Scenario application follows direct instruction.',
+      'Reflection consolidates learning for future transfer.'
+    ],
+    assessment: [
+      'Tyler alignment between objectives, instruction, and evaluation.',
+      'Dewey-aligned experiential tasks with reflective integration.',
+      'Stern transfer checks with dissimilar scenario design.'
+    ],
+    transfer: [
+      'Theory-to-practice bridge: explicit routines in authentic contexts.',
+      'Students show independent use of learned tools in unfamiliar settings.',
+      'Curriculum supports long-term behavior change, not short-term compliance.'
+    ],
+    supports: [
+      'Research reference summary for stakeholders and board review.',
+      'Teacher orientation slides connecting theory to instruction.',
+      'Implementation guide with practical classroom translation.'
+    ]
+  },
+  implementation: {
+    chips: ['Adoption Ready', 'Classroom Practical', 'Scalable'],
+    outcomes: [
+      'Provide a deployable model for electives, workshops, and mentoring formats.',
+      'Ensure resources, pacing, and facilitation tools are ready for immediate use.',
+      'Support consistent quality across different instructors and settings.'
+    ],
+    moves: [
+      'Start with staff orientation and model lessons.',
+      'Use common rubrics and observation tools across sections.',
+      'Review implementation data each cycle and adjust supports.'
+    ],
+    activities: [
+      'Scenario prompt banks and challenge cards.',
+      'Guest speaker integration with reflection follow-ups.',
+      'Practice labs for conflict, boundaries, and decision pressure.'
+    ],
+    assessment: [
+      'Implementation fidelity checks each month.',
+      'Submission dashboards for participation and growth.',
+      'Evidence archive for board and stakeholder reporting.'
+    ],
+    transfer: [
+      'Adapts to in-person class, private cohort, family workshop, or online mentoring.',
+      'Maintains core framework integrity across delivery formats.',
+      'Builds shared language across youth, adults, and educators.'
+    ],
+    supports: [
+      'Teacher prep packet with step-by-step facilitation notes.',
+      'Family workshop handouts and follow-up prompts.',
+      'Online mentoring session templates with progress checkpoints.'
+    ]
+  },
+  rationale: {
+    chips: ['Need Statement', 'Local Relevance', 'Practical Outcomes'],
+    outcomes: [
+      'Address the gap between academic success and life readiness.',
+      'Train behaviors that directly affect safety, trust, and opportunity.',
+      'Equip learners with repeatable decision tools for high-pressure moments.'
+    ],
+    moves: [
+      'Anchor instruction in realistic local and digital scenarios.',
+      'Teach explicit behaviors for respectful response and repair.',
+      'Use reflection to connect classroom practice to real-life moments.'
+    ],
+    activities: [
+      'Case discussions based on common youth and adult dilemmas.',
+      'Decision rehearsals with consequences mapped before action.',
+      'Communication labs for conflict de-escalation and accountability.'
+    ],
+    assessment: [
+      'Observe whether students choose long-view outcomes over short-term relief.',
+      'Track quality of reasoning and consequence awareness.',
+      'Measure confidence growth in handling difficult conversations.'
+    ],
+    transfer: [
+      'Skills are used in school, home, work, and online relationships.',
+      'Learners apply tools under unfamiliar pressure, not only rehearsed examples.',
+      'Adults can use the same language for coaching and mentoring.'
+    ],
+    supports: [
+      'CMP rationale documents for administrators and board members.',
+      'One-page summary handouts for community partners.',
+      'Talking points for presentation and adoption conversations.'
+    ]
+  },
+  budget: {
+    chips: ['Sustainability', 'Resource Planning', 'Program Growth'],
+    outcomes: [
+      'Support program quality through intentional resource allocation.',
+      'Link budget categories to student-facing impact and fidelity.',
+      'Build a sustainable model for scaling delivery options.'
+    ],
+    moves: [
+      'Prioritize funding for training, materials, and assessment quality.',
+      'Track expenditures against implementation milestones.',
+      'Use data to adjust budget for highest-impact supports.'
+    ],
+    activities: [
+      'Map each budget line to a specific instructional outcome.',
+      'Create phased resource plans for pilot and expansion.',
+      'Review cost-effectiveness using participation and impact metrics.'
+    ],
+    assessment: [
+      'Quarterly review of implementation evidence versus spend.',
+      'Stakeholder reporting with budget-to-outcome alignment.',
+      'Continuous improvement recommendations for next cycle.'
+    ],
+    transfer: [
+      'Budget strategy supports school adoption, private cohorts, and mentoring delivery.',
+      'Funding plans include both direct instruction and family/community extensions.',
+      'Resource decisions prioritize real-world skill transfer outcomes.'
+    ],
+    supports: [
+      'Budget narrative templates for proposal packets.',
+      'Board-ready summaries tied to measurable outcomes.',
+      'Program sustainability planning resources.'
+    ]
+  }
+};
+
+const TITLE_OVERRIDES = [
+  {
+    when: (t) => /modern manners$/i.test(t),
+    use: {
+      chips: ['Module 1', 'Etiquette', 'Social Presence'],
+      outcomes: [
+        'Demonstrate respectful introductions, greetings, and active-listening behaviors.',
+        'Apply etiquette principles in school, family, and workplace interactions.',
+        'Build credibility through consistent respectful communication.'
+      ]
+    }
+  },
+  {
+    when: (t) => /emotional intelligence/i.test(t),
+    use: {
+      chips: ['Module 2', 'Self-Regulation', 'Emotional Awareness'],
+      outcomes: [
+        'Identify emotional triggers and interrupt impulsive reaction patterns.',
+        'Use practical regulation tools under stress.',
+        'Respond with intentional language in high-emotion situations.'
+      ]
+    }
+  },
+  {
+    when: (t) => /conflict navigation|conflict and repair/i.test(t),
+    use: {
+      chips: ['Module 3', 'Repair', 'Boundaries'],
+      outcomes: [
+        'Use de-escalation language during disagreement.',
+        'Deliver effective apologies and structured repair plans.',
+        'Set boundaries while maintaining respectful communication.'
+      ]
+    }
+  },
+  {
+    when: (t) => /digital citizenship/i.test(t),
+    use: {
+      chips: ['Module 4', 'Online Conduct', 'Reputation'],
+      outcomes: [
+        'Evaluate permanence and audience impact before posting.',
+        'Use digital tone and privacy best practices.',
+        'Align online behavior with long-term goals and trust.'
+      ]
+    }
+  },
+  {
+    when: (t) => /personal growth/i.test(t),
+    use: {
+      chips: ['Module 5', 'Goal Systems', 'Accountability'],
+      outcomes: [
+        'Set measurable personal growth goals.',
+        'Track follow-through with reflection evidence.',
+        'Demonstrate accountability through behavior change.'
+      ]
+    }
+  },
+  {
+    when: (t) => /respectful communication/i.test(t),
+    use: {
+      chips: ['Pillar 1', 'Communication', 'Trust Building'],
+      moves: [
+        'Model respectful disagreement language and turn-taking norms.',
+        'Use listening stems and paraphrase checks during pair activities.',
+        'Coach repair language immediately after communication breakdowns.'
+      ]
+    }
+  },
+  {
+    when: (t) => /decision-making under pressure|decision-making framework|pocc/i.test(t),
+    use: {
+      chips: ['Decision Framework', 'POCC', 'High-Stakes Thinking'],
+      moves: [
+        'Require students to name at least two options before deciding.',
+        'Map short-term vs long-term consequences before response.',
+        'Use accountability prompts to justify final choices.'
+      ]
+    }
+  },
+  {
+    when: (t) => /regulation routine|plrr|pause/i.test(t),
+    use: {
+      chips: ['Regulation Routine', 'PLRR', 'Composure'],
+      activities: [
+        'Scenario interruption drill: pause and reset before response.',
+        'Label-and-reframe practice with emotional trigger prompts.',
+        'Performance reflection: how regulation changed decision quality.'
+      ]
+    }
+  }
+];
+
+function parseWeek(titleText) {
+  const m = titleText.match(/week\s+(\d{1,2})/i);
+  return m ? Number(m[1]) : null;
 }
-if (section) {
-  document.getElementById('sectionMeta').textContent = section.replace(/-/g, ' ');
+
+function buildWeekEnhancement(week) {
+  if (!week) return null;
+  if (week <= 4) {
+    return {
+      chips: ['Pacing Detail', 'Cycle 1', 'Foundations'],
+      activities: [
+        'Cycle 1 builds language, routines, and social safety for productive role-play.',
+        'Lessons front-load modeling so learners can see what quality responses look like.',
+        'Milestone week reinforces concepts through challenge practice and reflection.'
+      ]
+    };
+  }
+  if (week <= 8) {
+    return {
+      chips: ['Pacing Detail', 'Cycle 2', 'Regulation'],
+      activities: [
+        'Cycle 2 emphasizes emotional control and decision quality under stress.',
+        'Students increase independence in applying PLRR and POCC routines.',
+        'Milestone week checks whether learners transfer tools beyond scripted examples.'
+      ]
+    };
+  }
+  if (week <= 12) {
+    return {
+      chips: ['Pacing Detail', 'Cycle 3', 'Digital + Conflict'],
+      activities: [
+        'Cycle 3 integrates digital citizenship with conflict repair decisions.',
+        'Scenarios blend peer dynamics, social pressure, and reputation stakes.',
+        'Milestone week focuses on boundary language and accountability moves.'
+      ]
+    };
+  }
+  return {
+    chips: ['Pacing Detail', 'Cycle 4', 'Capstone Transfer'],
+    activities: [
+      'Cycle 4 moves to independent transfer and capstone preparation.',
+      'Students work through unfamiliar scenarios with less teacher scaffolding.',
+      'Final milestone demonstrates full-framework application to real-life stakes.'
+    ]
+  };
 }
+
+function mergePack(base, extra) {
+  if (!extra) return base;
+  const out = { ...base };
+  Object.keys(extra).forEach((k) => {
+    if (Array.isArray(extra[k])) out[k] = extra[k];
+    else if (typeof extra[k] === 'string') out[k] = extra[k];
+  });
+  return out;
+}
+
+function getPack(sectionKey, titleText) {
+  const base = SECTION_DEFAULTS[sectionKey] || SECTION_DEFAULTS.overview;
+  let pack = { ...base };
+
+  TITLE_OVERRIDES.forEach((ov) => {
+    if (ov.when(titleText)) pack = mergePack(pack, ov.use);
+  });
+
+  const wk = parseWeek(titleText);
+  if (wk) pack = mergePack(pack, buildWeekEnhancement(wk));
+
+  return pack;
+}
+
+function renderList(id, items) {
+  const el = document.getElementById(id);
+  el.innerHTML = '';
+  (items || []).forEach((txt) => {
+    const div = document.createElement('div');
+    div.className = 'item';
+    div.textContent = txt;
+    el.appendChild(div);
+  });
+}
+
+function renderResources(items) {
+  const el = document.getElementById('resources');
+  el.innerHTML = '';
+  (items || []).forEach((res) => {
+    const a = document.createElement('a');
+    a.className = 'doc-link';
+    a.href = res.href;
+    a.textContent = res.label;
+    el.appendChild(a);
+  });
+}
+
+function renderChips(items) {
+  const el = document.getElementById('chipRow');
+  el.innerHTML = '';
+  (items || []).forEach((c) => {
+    const chip = document.createElement('span');
+    chip.className = 'chip';
+    chip.textContent = c;
+    el.appendChild(chip);
+  });
+}
+
+document.getElementById('title').textContent = title;
+document.getElementById('sectionMeta').textContent = section.replace(/-/g, ' ');
+document.title = title + ' | CMP Resource Detail';
 if (summary) {
   document.getElementById('summary').textContent = summary;
 }
+
+const pack = getPack(section, title);
+renderChips(pack.chips || []);
+renderList('outcomes', pack.outcomes || []);
+renderList('moves', pack.moves || []);
+renderList('activities', pack.activities || []);
+renderList('assessment', pack.assessment || []);
+renderList('transfer', pack.transfer || []);
+renderList('supports', pack.supports || []);
+renderResources(BASE_DOCS);
 </script>
 </body>
 </html>
