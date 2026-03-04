@@ -1,1219 +1,667 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>Decision Lab</title>
-  <link rel="manifest" href="manifest.json?v=2" />
-  <link rel="icon" sizes="32x32" href="assets/icons/favicon-32.png" />
-  <link rel="icon" sizes="16x16" href="assets/icons/favicon-16.png" />
-  <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon-v2.png" />
-  <link rel="apple-touch-icon-precomposed" href="/apple-touch-icon-v2.png" />
-  <link rel="stylesheet" href="styles.css" />
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern Manners & Mental Fortitude — Full Curriculum Infographic</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:      #0e1118;
+  --paper:    #f6f3ec;
+  --slate:    #253044;
+  --slate2:   #344159;
+  --gold:     #c49540;
+  --gold-lt:  #f2e4c0;
+  --gold-dim: #e8d198;
+  --teal:     #1b6b6b;
+  --teal-lt:  #cce9e9;
+  --rust:     #b0432e;
+  --rust-lt:  #f3dbd5;
+  --sage:     #456640;
+  --sage-lt:  #d8ecd5;
+  --plum:     #5c3d6e;
+  --plum-lt:  #e5d8ef;
+  --muted:    #697080;
+  --rule:     #ddd7cc;
+  --white:    #ffffff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.6; }
+
+nav { position: sticky; top: 0; z-index: 100; background: var(--slate); display: flex; flex-wrap: wrap; border-bottom: 3px solid var(--gold); }
+nav a { color: rgba(255,255,255,.6); text-decoration: none; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding: 12px 16px; transition: color .2s, background .2s; white-space: nowrap; }
+nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
+
+.hero { background: var(--slate); padding: 80px 60px 64px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; width: 500px; height: 500px; top: -150px; right: -100px; border-radius: 50%; background: radial-gradient(circle, rgba(196,149,64,.18) 0%, transparent 70%); pointer-events: none; }
+.hero::after { content: ''; position: absolute; width: 320px; height: 320px; bottom: -80px; left: 25%; border-radius: 50%; background: radial-gradient(circle, rgba(27,107,107,.22) 0%, transparent 70%); pointer-events: none; }
+.hero-layout { display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: end; position: relative; z-index: 1; }
+.hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4.2rem); font-weight: 900; line-height: 1.06; color: #fff; margin-bottom: 8px; }
+.hero h1 em { font-style: italic; color: var(--gold); }
+.hero-tagline { font-size: 18px; color: rgba(255,255,255,.6); font-weight: 300; margin-bottom: 36px; }
+.hero-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.18); border-radius: 40px; padding: 5px 14px; font-size: 12.5px; color: rgba(255,255,255,.8); font-weight: 500; }
+.chip strong { color: var(--gold); }
+.hero-badge { background: var(--gold); color: var(--slate); border-radius: 16px; padding: 28px 26px; text-align: center; min-width: 160px; flex-shrink: 0; }
+.badge-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; line-height: 1; display: block; margin-bottom: 4px; }
+.badge-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .10em; opacity: .75; }
+.badge-sub { font-size: 12px; font-weight: 600; margin-top: 6px; opacity: .85; }
+
+.inst-strip { background: var(--gold-lt); border-bottom: 3px solid var(--gold-dim); padding: 28px 60px; display: flex; align-items: center; gap: 36px; flex-wrap: wrap; }
+.inst-avatar { width: 64px; height: 64px; border-radius: 50%; background: var(--slate); display: flex; align-items: center; justify-content: center; font-size: 28px; flex-shrink: 0; border: 3px solid var(--gold); }
+.inst-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--slate); }
+.inst-titles { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+.inst-awards { margin-left: auto; display: flex; gap: 12px; flex-wrap: wrap; }
+.award-pill { background: var(--slate); color: #fff; border-radius: 8px; padding: 8px 14px; font-size: 11.5px; line-height: 1.45; max-width: 180px; }
+.award-pill strong { display: block; color: var(--gold); font-family: 'DM Mono', monospace; font-size: 9px; letter-spacing: .10em; text-transform: uppercase; margin-bottom: 2px; }
+
+.section { padding: 60px; border-bottom: 1px solid var(--rule); }
+.section.alt { background: var(--white); }
+.section.dark { background: var(--slate); color: #fff; }
+.section.gold-bg { background: var(--gold-lt); }
+.section-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.section.dark .section-label { color: rgba(255,255,255,.45); }
+.section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 700; line-height: 1.2; color: var(--slate); margin-bottom: 32px; }
+.section.dark .section-title { color: #fff; }
+.accent { color: var(--gold); }
+.accent-rust { color: var(--rust); }
+
+.rat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,.12); border-radius: 14px; overflow: hidden; }
+.rat-cell { background: rgba(255,255,255,.06); padding: 32px 28px; }
+.rat-icon { font-size: 28px; margin-bottom: 14px; }
+.rat-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--gold); margin-bottom: 10px; }
+.rat-body { font-size: 13.5px; color: rgba(255,255,255,.68); line-height: 1.7; font-weight: 300; }
+
+.pillars-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.pillar { border-radius: 14px; padding: 28px 22px 24px; position: relative; overflow: hidden; border: 1.5px solid transparent; transition: transform .2s, box-shadow .2s; }
+.pillar:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,0,0,.10); }
+.pillar.p-teal { background: var(--teal-lt); border-color: var(--teal); }
+.pillar.p-rust { background: var(--rust-lt); border-color: var(--rust); }
+.pillar.p-gold { background: var(--gold-lt); border-color: var(--gold); }
+.pillar.p-sage { background: var(--sage-lt); border-color: var(--sage); }
+.pillar-wm { font-family: 'Playfair Display', serif; font-size: 5rem; font-weight: 900; line-height: 1; position: absolute; top: 8px; right: 12px; opacity: .09; }
+.pillar.p-teal .pillar-wm { color: var(--teal); }
+.pillar.p-rust .pillar-wm { color: var(--rust); }
+.pillar.p-gold .pillar-wm { color: var(--gold); }
+.pillar.p-sage .pillar-wm { color: var(--sage); }
+.pillar-icon { font-size: 26px; margin-bottom: 12px; }
+.pillar-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--slate); margin-bottom: 10px; }
+.pillar-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
+.pillar-subs { margin-top: 14px; display: flex; flex-direction: column; gap: 5px; }
+.sub-tag { font-size: 11.5px; color: var(--muted); padding-left: 0; border-top: 1px solid var(--rule); padding-top: 5px; }
+.sub-tag::before { content: '→ '; opacity: .5; }
+
+.cq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.cq-card { background: var(--white); border-radius: 12px; padding: 24px 26px; border-left: 5px solid var(--gold); box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+.cq-card p { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; color: var(--slate); line-height: 1.55; }
+.cq-card p::before { content: '"'; color: var(--gold); }
+.cq-card p::after { content: '"'; color: var(--gold); }
+
+.modules-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.module-card { background: var(--white); border-radius: 12px; padding: 22px 18px; box-shadow: 0 2px 10px rgba(0,0,0,.04); transition: transform .2s; }
+.module-card:nth-child(1) { border-top: 4px solid var(--gold); }
+.module-card:nth-child(2) { border-top: 4px solid var(--teal); }
+.module-card:nth-child(3) { border-top: 4px solid var(--rust); }
+.module-card:nth-child(4) { border-top: 4px solid var(--sage); }
+.module-card:nth-child(5) { border-top: 4px solid var(--plum); }
+.module-card:hover { transform: translateY(-3px); }
+.module-num { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.module-icon { font-size: 24px; margin-bottom: 10px; }
+.module-title { font-family: 'Playfair Display', serif; font-size: .95rem; font-weight: 700; color: var(--slate); margin-bottom: 10px; }
+.module-topics { display: flex; flex-direction: column; gap: 5px; }
+.module-topic { font-size: 12px; color: var(--muted); padding-left: 12px; position: relative; line-height: 1.5; }
+.module-topic::before { content: '·'; position: absolute; left: 3px; color: var(--gold); font-weight: 700; }
+
+.spiral-wrapper { display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: center; }
+.spiral-diagram { display: flex; flex-direction: column; gap: 8px; }
+.spiral-ring { height: 44px; border-radius: 0 22px 22px 0; display: flex; align-items: center; padding: 0 18px 0 14px; font-size: 12px; font-weight: 600; color: white; white-space: nowrap; }
+.spiral-ring:nth-child(1) { width: 100%; background: var(--teal); }
+.spiral-ring:nth-child(2) { width: 133%; background: var(--gold); color: var(--slate); }
+.spiral-ring:nth-child(3) { width: 166%; background: var(--rust); }
+.spiral-ring:nth-child(4) { width: 200%; background: var(--slate); }
+.spiral-label { font-size: 10.5px; color: var(--muted); font-family: 'DM Mono', monospace; letter-spacing: .10em; text-transform: uppercase; margin-top: 8px; }
+.spiral-desc-col { display: flex; flex-direction: column; gap: 12px; }
+.spiral-item { background: var(--white); border-radius: 10px; padding: 16px 20px; border-left: 4px solid var(--rule); font-size: 13.5px; color: var(--ink); line-height: 1.6; }
+.spiral-item strong { font-weight: 600; color: var(--slate); display: block; margin-bottom: 3px; }
+
+.timeline-outer { overflow-x: auto; }
+.timeline-track { display: flex; position: relative; min-width: 700px; padding-top: 56px; }
+.timeline-line { position: absolute; top: 24px; left: 11px; right: 0; height: 3px; background: linear-gradient(90deg, var(--teal), var(--gold), var(--rust), var(--sage), var(--slate)); border-radius: 3px; }
+.phase { flex: 1; padding-right: 18px; position: relative; }
+.phase:last-child { padding-right: 0; }
+.phase-dot { position: absolute; top: -44px; left: 0; width: 22px; height: 22px; border-radius: 50%; border: 3px solid var(--paper); box-shadow: 0 0 0 2px currentColor; }
+.phase:nth-child(1) .phase-dot { color: var(--teal); background: var(--teal); }
+.phase:nth-child(2) .phase-dot { color: var(--gold); background: var(--gold); }
+.phase:nth-child(3) .phase-dot { color: var(--rust); background: var(--rust); }
+.phase:nth-child(4) .phase-dot { color: var(--sage); background: var(--sage); }
+.phase:nth-child(5) .phase-dot { color: var(--slate); background: var(--slate); }
+.phase-days { font-family: 'DM Mono', monospace; font-size: 9.5px; letter-spacing: .10em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+.phase-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--slate); margin-bottom: 8px; }
+.phase-desc { font-size: 12.5px; color: var(--muted); line-height: 1.65; }
+.phase-tools { margin-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+.phase-tool { font-size: 11.5px; color: var(--muted); padding-left: 10px; position: relative; }
+.phase-tool::before { content: '▸'; position: absolute; left: 0; color: var(--gold); font-size: 9px; top: 2px; }
+
+.fw-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.fw-card { background: var(--white); border-radius: 14px; padding: 30px 28px; border: 1px solid var(--rule); box-shadow: 0 2px 14px rgba(0,0,0,.04); }
+.fw-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid var(--rule); }
+.fw-badge { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.fw-badge.teal { background: var(--teal-lt); }
+.fw-badge.rust { background: var(--rust-lt); }
+.fw-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--slate); line-height: 1.3; margin-bottom: 3px; }
+.fw-subtitle { font-size: 12.5px; color: var(--muted); }
+.fw-steps { display: flex; flex-direction: column; gap: 12px; }
+.fw-step { display: flex; align-items: flex-start; gap: 12px; }
+.fw-letter { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; line-height: 1; min-width: 28px; padding-top: 1px; }
+.fw-letter.teal { color: var(--teal); }
+.fw-letter.rust { color: var(--rust); }
+.fw-step-body { font-size: 13.5px; line-height: 1.55; }
+.fw-step-body strong { color: var(--slate); }
+.fw-step-body span { color: var(--muted); }
+
+.targets-list { display: flex; flex-direction: column; gap: 12px; }
+.t-row { display: flex; align-items: flex-start; gap: 18px; background: var(--white); padding: 18px 22px; border-radius: 10px; border: 1px solid var(--rule); transition: border-color .2s; }
+.t-row:hover { border-color: var(--gold); }
+.t-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--gold); line-height: 1; min-width: 36px; padding-top: 2px; }
+.t-text { font-size: 14px; color: var(--ink); line-height: 1.65; flex: 1; }
+.t-tag { margin-left: auto; flex-shrink: 0; font-family: 'DM Mono', monospace; font-size: 10.5px; padding: 4px 10px; border-radius: 20px; background: var(--gold-lt); color: var(--gold); font-weight: 500; align-self: center; white-space: nowrap; }
+
+.contexts-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.ctx-card { background: var(--slate); border-radius: 14px; padding: 28px 22px; text-align: center; transition: transform .2s, box-shadow .2s; border-bottom: 4px solid transparent; }
+.ctx-card:nth-child(1) { border-color: var(--teal); }
+.ctx-card:nth-child(2) { border-color: var(--gold); }
+.ctx-card:nth-child(3) { border-color: var(--rust); }
+.ctx-card:nth-child(4) { border-color: var(--sage); }
+.ctx-card:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(0,0,0,.22); }
+.ctx-icon { font-size: 34px; margin-bottom: 12px; }
+.ctx-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.ctx-desc { font-size: 12.5px; color: rgba(255,255,255,.6); line-height: 1.65; font-weight: 300; }
+
+.lit-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.lit-card { padding: 22px 18px; border-radius: 12px; border: 1.5px solid var(--rule); background: var(--paper); transition: border-color .2s, transform .2s; }
+.lit-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.lit-icon { font-size: 24px; margin-bottom: 10px; }
+.lit-name { font-family: 'Playfair Display', serif; font-size: .95rem; font-weight: 700; color: var(--slate); margin-bottom: 7px; }
+.lit-desc { font-size: 12.5px; color: var(--muted); line-height: 1.65; }
+
+.pacing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.wk { background: var(--white); border-radius: 10px; padding: 14px 16px; border: 1px solid var(--rule); transition: border-color .2s; position: relative; }
+.wk:hover { border-color: var(--gold); }
+.wk.milestone { border-color: var(--rust); background: var(--rust-lt); }
+.wk-num { font-family: 'DM Mono', monospace; font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+.wk.milestone .wk-num { color: var(--rust); }
+.wk-text { font-size: 12.5px; color: var(--ink); line-height: 1.55; font-weight: 500; }
+.wk-dot { position: absolute; top: 10px; right: 10px; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); opacity: .5; }
+.wk.milestone .wk-dot { background: var(--rust); opacity: 1; }
+
+.assess-list { display: flex; flex-direction: column; gap: 12px; }
+.assess-row { display: grid; grid-template-columns: 26px 180px 100px 1fr 120px; gap: 18px; align-items: start; background: var(--white); padding: 16px 22px; border-radius: 10px; border: 1px solid var(--rule); }
+.assess-row.hdr { background: var(--slate); border: none; font-family: 'DM Mono', monospace; font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.55); padding: 12px 22px; }
+.a-icon { font-size: 18px; padding-top: 1px; }
+.a-name { font-size: 13.5px; font-weight: 600; color: var(--slate); line-height: 1.45; }
+.a-badge { font-family: 'DM Mono', monospace; font-size: 10.5px; padding: 4px 10px; border-radius: 20px; font-weight: 500; width: fit-content; white-space: nowrap; }
+.a-badge.f { background: var(--teal-lt); color: var(--teal); }
+.a-badge.s { background: var(--rust-lt); color: var(--rust); }
+.a-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+.a-targets { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--gold); font-weight: 500; text-align: right; }
+
+.rubric-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.05); }
+.rubric-table thead th { background: var(--slate); color: #fff; padding: 14px 16px; text-align: left; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; font-weight: 400; }
+.rubric-table thead th.col-e { color: var(--gold); }
+.rubric-table thead th.col-m { color: var(--teal-lt); }
+.rubric-table thead th.col-n { color: rgba(255,255,255,.5); }
+.rubric-table tbody tr { border-bottom: 1px solid var(--rule); }
+.rubric-table tbody tr:last-child { border-bottom: none; }
+.rubric-table tbody td { padding: 13px 16px; vertical-align: top; line-height: 1.6; }
+.rubric-table tbody td:first-child { font-weight: 600; color: var(--slate); }
+.rubric-table tbody tr:nth-child(even) td { background: var(--paper); }
+
+.scenario-box { background: var(--rust-lt); border-left: 6px solid var(--rust); border-radius: 0 14px 14px 0; padding: 36px 40px; }
+.scenario-box h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--slate); margin-bottom: 14px; }
+.scenario-body { font-size: 14px; color: var(--ink); line-height: 1.75; margin-bottom: 20px; }
+.s-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.s-tag { background: var(--rust); color: #fff; border-radius: 20px; padding: 5px 15px; font-size: 12.5px; font-weight: 500; }
+
+.journal-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.j-card { background: var(--white); border-radius: 12px; padding: 20px 18px; border: 1px solid var(--rule); border-top: 4px solid var(--gold); }
+.j-icon { font-size: 22px; margin-bottom: 10px; }
+.j-prompt { font-size: 13px; font-style: italic; color: var(--slate); line-height: 1.6; font-family: 'Playfair Display', serif; }
+
+.theory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.theory-card { background: var(--white); border-radius: 12px; padding: 22px 20px; border-top: 4px solid var(--gold); box-shadow: 0 2px 10px rgba(0,0,0,.04); }
+.theory-author { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .10em; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+.theory-title { font-family: 'Playfair Display', serif; font-size: .95rem; font-weight: 700; color: var(--slate); margin-bottom: 10px; }
+.theory-body { font-size: 12.5px; color: var(--muted); line-height: 1.65; }
+
+.impl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.impl-card { padding: 26px 24px; border-radius: 12px; border: 1px solid var(--rule); background: var(--white); }
+.impl-icon { font-size: 26px; margin-bottom: 12px; }
+.impl-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--slate); margin-bottom: 12px; }
+.impl-items { display: flex; flex-direction: column; gap: 6px; }
+.impl-item { font-size: 13px; color: var(--muted); line-height: 1.55; padding-left: 14px; position: relative; }
+.impl-item::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-size: 11px; top: 2px; }
+
+.eval-grid { display: flex; flex-direction: column; gap: 12px; }
+.eval-row { display: grid; grid-template-columns: 260px 1fr; gap: 20px; align-items: center; background: var(--white); padding: 16px 22px; border-radius: 10px; border: 1px solid var(--rule); }
+.eval-goal { font-size: 13.5px; font-weight: 600; color: var(--slate); line-height: 1.5; }
+.eval-method { font-size: 13px; color: var(--muted); line-height: 1.6; padding-left: 18px; border-left: 3px solid var(--gold); }
+
+.budget-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+.budget-card { background: var(--white); border-radius: 12px; padding: 20px 18px; border: 1px solid var(--rule); text-align: center; transition: border-color .2s; }
+.budget-card:hover { border-color: var(--gold); }
+.budget-amt { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 900; color: var(--slate); line-height: 1; margin-bottom: 6px; }
+.budget-cat { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+.budget-total { background: var(--slate); color: #fff; border-radius: 12px; padding: 20px 28px; display: flex; justify-content: space-between; align-items: center; }
+.budget-total-label { font-size: 14px; font-weight: 600; }
+.budget-total-amt { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--gold); }
+
+footer { background: var(--ink); color: rgba(255,255,255,.5); padding: 36px 60px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
+.footer-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #fff; font-weight: 700; margin-bottom: 4px; }
+.footer-meta { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: .10em; line-height: 1.8; }
+.footer-refs { font-size: 11.5px; line-height: 1.8; text-align: right; max-width: 400px; }
+
+.fade { opacity: 0; transform: translateY(20px); transition: opacity .5s ease, transform .5s ease; }
+.fade.in { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 900px) {
+  .section, .hero { padding: 40px 24px; }
+  .inst-strip { padding: 24px; }
+  .hero-layout { grid-template-columns: 1fr; }
+  .hero-badge { display: none; }
+  .pillars-grid, .modules-grid, .contexts-grid, .lit-row, .theory-grid, .pacing-grid, .journal-grid, .budget-grid { grid-template-columns: 1fr 1fr; }
+  .rat-grid, .fw-row, .impl-grid, .spiral-wrapper { grid-template-columns: 1fr; }
+  .assess-row { grid-template-columns: 1fr 1fr; }
+  .assess-row.hdr { display: none; }
+  .eval-row { grid-template-columns: 1fr; }
+  footer { grid-template-columns: 1fr; }
+  .footer-refs { text-align: left; }
+}
+</style>
 </head>
 <body>
-  <div class="app">
-    <header class="topbar">
-      <div class="brand">
-        <div class="brand-mark"></div>
-        <div>
-          <div class="title">Decision Lab</div>
-          <div class="subtitle">Scenario-based decision training</div>
-        </div>
+
+<nav>
+  <a href="#overview">Overview</a>
+  <a href="#pillars">Pillars</a>
+  <a href="#modules">Modules</a>
+  <a href="#design">Design</a>
+  <a href="#frameworks">Frameworks</a>
+  <a href="#targets">Targets</a>
+  <a href="#pacing">Pacing</a>
+  <a href="#assessment">Assessment</a>
+  <a href="#theory">Theory</a>
+  <a href="#implementation">Implementation</a>
+</nav>
+
+<!-- HERO -->
+<header class="hero" id="overview">
+  <div class="hero-layout">
+    <div>
+      <p class="hero-eyebrow">Curriculum Master Plan · EDUC 565 · Tooele County School District Proposal</p>
+      <h1><em>Modern Manners</em><br>&amp; Mental Fortitude</h1>
+      <p class="hero-tagline">Life Prep for High Schoolers — Grades 9–12 · One Semester Elective · 0.5 Credit</p>
+      <div class="hero-chips">
+        <div class="chip"><strong>16 Weeks</strong> · 2 sessions / week</div>
+        <div class="chip">Class size <strong>20–25 students</strong></div>
+        <div class="chip">Aligns with <strong>Utah CASEL &amp; CCA Core Standards</strong></div>
+        <div class="chip">Research-backed <strong>SEL + Transfer Design</strong></div>
+        <div class="chip">Submitted <strong>August 2025</strong></div>
       </div>
-      <div class="controls">
-        <label class="resource-select">
-          <span>Helpful Resources</span>
-          <select id="resourceSelect">
-            <option value="">Select a resource</option>
-            <option value="https://988lifeline.org/">988 Suicide & Crisis Lifeline</option>
-            <option value="https://www.samhsa.gov/find-help/helplines">SAMHSA Helplines</option>
-            <option value="https://211.org/homepage">United Way 211</option>
-            <option value="https://www.stopbullying.gov/">StopBullying.gov</option>
-            <option value="https://www.nimh.nih.gov/health">NIMH Mental Health Information</option>
-            <option value="https://casel.org/">CASEL (Social & Emotional Learning)</option>
-          </select>
-        </label>
-        <label class="resource-select">
-          <span>Youth Resources</span>
-          <select id="youthResourceSelect">
-            <option value="">Select a youth resource</option>
-            <option value="https://www.consumerfinance.gov/youth-financial-education">CFPB Youth Financial Education</option>
-            <option value="https://www.fdic.gov/consumer-resource-center/money-smart-young-people">FDIC Money Smart for Young People</option>
-            <option value="https://banzai.org/">Banzai (Financial Literacy)</option>
-            <option value="https://www.brightfuturespress.com/more-resources">Career Idea of the Week (Free)</option>
-            <option value="https://www.dove.com/us/en/dove-self-esteem-project/self-esteem-resources-for-youth-groups.html">Dove Self‑Esteem Project</option>
-          </select>
-        </label>
-        <label class="resource-select">
-          <span>Adult Resources</span>
-          <select id="adultResourceSelect">
-            <option value="">Select an adult resource</option>
-            <option value="https://www.consumerfinance.gov/consumer-tools/educator-tools/adult-financial-education/">CFPB Adult Financial Education</option>
-            <option value="https://www.fdic.gov/consumer-resource-center/money-smart-adults">FDIC Money Smart for Adults</option>
-            <option value="https://www.mymoney.gov/">MyMoney.gov (Federal Financial Education)</option>
-            <option value="https://www.incharge.org/financial-literacy/">InCharge Financial Literacy</option>
-            <option value="https://www.careeronestop.org/">CareerOneStop (Career Tools)</option>
-          </select>
-        </label>
-        <button id="teacherToggle" class="ghost">Teacher Mode</button>
-        <button id="openSettings" class="ghost hidden">Settings</button>
-        <button id="exportSession" class="ghost hidden">Export</button>
-        <button id="exportCsv" class="ghost hidden">Export CSV</button>
-        <div id="teacherStats" class="teacher-stats hidden"></div>
-        <button id="registerToggle" class="primary">Register Now</button>
-      </div>
-    </header>
-
-    <main class="layout">
-      <section class="panel" id="introPanel">
-        <div class="welcome-header">
-          <h1>Welcome</h1>
-        </div>
-        <button id="creatorToggle" class="creator-badge" type="button">
-          <img src="assets/creator.jpg" alt="Photo of Michael R. Terry" />
-          <span>About the Creator</span>
-        </button>
-        <div class="daily-challenge" id="dailyChallenge">
-          <div class="challenge-title">Daily Challenge</div>
-          <div class="challenge-text" id="dailyChallengeText">Use a boundary tool in your response today.</div>
-          <div class="challenge-reward">Bonus: +10 XP</div>
-        </div>
-        <div class="avatar-chooser" id="avatarChooser">
-          <div class="avatar-title">Pick Your Avatar</div>
-          <div class="avatar-grid" id="avatarGrid"></div>
-        </div>
-        <div class="badges-panel" id="badgesPanel">
-          <div class="badges-title">Badges</div>
-          <div class="badges-grid" id="badgesGrid"></div>
-        </div>
-        <div class="intro-meta">
-          <span id="currentDate"></span>
-          <span class="dot">•</span>
-          <span id="currentScenarioLabel">Boundary Test</span>
-        </div>
-        <div class="welcome-logo" aria-hidden="true"></div>
-        <div class="course-summary">
-          <strong>Modern Manners & Mental Fortitude</strong>
-          This course builds real-life decision skills for youth and adults: self-control under pressure,
-          respectful communication, and choosing the long view. It turns stressful moments into practice
-          so learners can pause, think, and choose intentionally.
-          <br /><br />
-          How it helps: students gain confidence for real situations at school, home, work, and online.
-          Adults get a shared language to coach, model, and reinforce good choices.
-          <br /><br />
-          Instructions: choose a scenario, make a decision, then explain it using unit language.
-          Use the three boxes: Tool (self‑regulation), Concept (unit idea), and Why (reasoning).
-          Scenarios unlock daily and rotate weekly.
-        </div>
-        <details class="curriculum-panel" id="curriculumPanel">
-          <summary class="curriculum-title">Course Curriculum Hub</summary>
-          <div class="curriculum-grid">
-            <div class="curriculum-card">
-              <div class="curriculum-heading">Unit Overview</div>
-              <p><strong>Unit:</strong> Modern Manners & Mental Fortitude: Respect, Decision‑Making, and Self‑Regulation</p>
-              <p><strong>Length:</strong> 3 weeks (12–15 class periods)</p>
-              <p><strong>Grade Band:</strong> High school (9–12), adaptable for advisory</p>
-              <p><strong>Compelling Question:</strong> How do my everyday choices influence how others trust me and the opportunities I am given?</p>
-              <p><strong>Anchors:</strong> Respect, Accountability, Decision‑Making, Self‑Regulation, Responsibility in community</p>
-            </div>
-            <div class="curriculum-card">
-              <div class="curriculum-heading">Decision & Regulation Tools</div>
-              <ul>
-                <li><strong>Decision Framework:</strong> Pause → Options → Consequences → Choose</li>
-                <li><strong>Regulation Routine:</strong> Pause → Label → Reframe → Respond</li>
-                <li><strong>Respect Moves:</strong> I‑statements, active listening, paraphrase, repair</li>
-              </ul>
-            </div>
-            <div class="curriculum-card">
-              <div class="curriculum-heading">Unit Roadmap</div>
-              <ul>
-                <li><strong>Acquire (Days 1–4):</strong> Build shared language and understanding</li>
-                <li><strong>Connect (Days 5–7):</strong> Compare effective vs ineffective responses</li>
-                <li><strong>Similar Transfer (Days 8–10):</strong> Apply skills to familiar school/peer scenarios</li>
-                <li><strong>Dissimilar Transfer (Days 11–15):</strong> Apply skills to unfamiliar high‑stakes situations</li>
-              </ul>
-            </div>
-            <div class="curriculum-card">
-              <div class="curriculum-heading">Lesson Snapshot (Connect Phase)</div>
-              <ul>
-                <li><strong>Intentions:</strong> Use regulation routine and decision framework under pressure</li>
-                <li><strong>Success Criteria:</strong> Identify emotions, use tools, explain choices with respectful language</li>
-                <li><strong>Flow:</strong> Retrieval → Paired scenario analysis → Discussion → Reflection</li>
-                <li><strong>Differentiation:</strong> simplified text, organizers, audio support, extension prompts</li>
-              </ul>
-            </div>
-            <div class="curriculum-card">
-              <div class="curriculum-heading">Summative Assessment</div>
-              <p>Students respond to a novel scenario blending school, digital communication, and community behavior.</p>
-              <ul>
-                <li>Artifact: written or multimedia response</li>
-                <li>Includes: justified decision, self‑regulation evidence, accountability/repair plan</li>
-                <li>Authentic audience: administrators, community leaders, or supervisors</li>
-              </ul>
-            </div>
-            <div class="curriculum-card">
-              <div class="curriculum-heading">Research Base</div>
-              <ul>
-                <li>Explicit, structured instruction reduces cognitive load</li>
-                <li>Retrieval practice + distributed review strengthen retention</li>
-                <li>Metacognitive regulation builds independence</li>
-                <li>Data‑driven adjustments increase precision</li>
-                <li>Authentic transfer tasks deepen real‑world application</li>
-              </ul>
-            </div>
-          </div>
-        </details>
-        <div class="downloads-panel">
-          <div class="downloads-title">Download Curriculum (PDF)</div>
-          <div class="downloads-grid">
-            <a class="download-card" href="assets/docs/unit-plan-storyboard.pdf" target="_blank" rel="noopener">Unit Plan & Storyboard</a>
-            <a class="download-card" href="assets/docs/novel-scenario-summative.pdf" target="_blank" rel="noopener">Summative Scenario</a>
-            <a class="download-card" href="assets/docs/lesson-plan-part-3.pdf" target="_blank" rel="noopener">Lesson Plan (Part 3)</a>
-            <a class="download-card" href="assets/docs/inquiry-project-outline.pdf" target="_blank" rel="noopener">Inquiry Project Outline</a>
-            <a class="download-card" href="flyer.html" target="_blank" rel="noopener">Program Flyer</a>
-            <a class="download-card" href="flyer-social.html" target="_blank" rel="noopener">Social Flyer (1080×1350)</a>
-          </div>
-        </div>
-        <div class="teacher-only teacher-vault">
-          <div class="teacher-title">Teacher Resource Vault</div>
-          <p class="muted">Visible only in Teacher Mode. Printable PDFs and planning materials.</p>
-          <div class="downloads-grid">
-            <a class="download-card" href="assets/docs/unit-plan-storyboard.pdf" target="_blank" rel="noopener">Unit Plan & Storyboard</a>
-            <a class="download-card" href="assets/docs/novel-scenario-summative.pdf" target="_blank" rel="noopener">Summative Scenario</a>
-            <a class="download-card" href="assets/docs/lesson-plan-part-3.pdf" target="_blank" rel="noopener">Lesson Plan (Part 3)</a>
-            <a class="download-card" href="assets/docs/inquiry-project-outline.pdf" target="_blank" rel="noopener">Inquiry Project Outline</a>
-            <a class="download-card" href="flyer.html" target="_blank" rel="noopener">Program Flyer</a>
-          </div>
-          <div class="teacher-subtitle">CMP / District Documents</div>
-          <div class="downloads-grid">
-            <a class="download-card" href="assets/docs/cmp/One Page Handout - Modern_Manners_Mental_Fortitude_One_Pager.pdf" target="_blank" rel="noopener">One‑Page Handout</a>
-            <a class="download-card" href="assets/docs/cmp/CMP–Supplemental Packet.pdf" target="_blank" rel="noopener">CMP Supplemental Packet (PDF)</a>
-            <a class="download-card" href="assets/docs/cmp/CMP–Tooele County School District–Mike Terry .pdf" target="_blank" rel="noopener">CMP – Tooele County School District (PDF)</a>
-            <a class="download-card" href="assets/docs/cmp/Course Addition Request Packet.pdf" target="_blank" rel="noopener">Course Addition Request (PDF)</a>
-            <a class="download-card" href="assets/docs/cmp/Mike Terry–CMP Board Letter.pdf" target="_blank" rel="noopener">CMP Board Letter (PDF)</a>
-            <a class="download-card" href="assets/docs/cmp/Talking_Points_Board_Meeting_CMP_Summary.pdf" target="_blank" rel="noopener">Board Meeting Talking Points</a>
-            <a class="download-card" href="assets/docs/cmp/cmp-comparison-freshman-success-vs-modern-manners.pdf" target="_blank" rel="noopener">CMP Comparison (Freshman Success vs MMMF)</a>
-          </div>
-        </div>
-        <p class="lead">Today’s mission is short, clear, and built for real life. Tap to start.</p>
-        <div class="mission-card" id="todayMission">
-          <div class="mission-header">
-            <div>
-              <div class="mission-label">Today’s Mission</div>
-              <div id="todayScenarioTitle" class="mission-title">Loading scenario…</div>
-              <div id="todayScenarioSummary" class="mission-summary"></div>
-            </div>
-            <button id="unitHelpToggle" class="ghost" type="button">Unit Language Help</button>
-          </div>
-          <div id="todayScenarioStakes" class="mission-stakes"></div>
-          <button id="startTodayBtn" class="primary">Start Today’s Scenario</button>
-        </div>
-        <div class="stack">
-          <label class="field">
-            <span>Participant name</span>
-            <input id="studentName" type="text" placeholder="First and last (or preferred name)" />
-          </label>
-          <label class="field">
-            <span>Role or level (optional)</span>
-            <input id="studentGrade" type="text" placeholder="e.g., 7th grade, adult learner, educator" />
-          </label>
-          <label class="field">
-            <span>Age (optional)</span>
-            <input id="studentAge" type="text" placeholder="e.g., 13, 25, 40+" />
-          </label>
-        </div>
-        <div class="scenario-grid hidden" id="scenarioGrid"></div>
-        <div class="corner-badges">
-          <button type="button" id="qrToggle" class="qr-toggle" aria-expanded="false">Show QR Resources</button>
-          <div id="qrSection" class="qr-section collapsed">
-            <div class="badge-card">
-              <div class="badge-mark"></div>
-              <div class="badge-text">Choose the Long View</div>
-            </div>
-            <div class="qr-card">
-              <div class="qr-title">Follow on Instagram</div>
-              <a href="https://www.instagram.com/readyforreal.life/" target="_blank" rel="noopener">
-                <img src="assets/qr-instagram.png" alt="QR code to @readyforreal.life on Instagram" />
-              </a>
-              <div class="qr-handle">@readyforreal.life</div>
-            </div>
-            <div class="qr-card">
-              <div class="qr-title">Khan Academy (Youth)</div>
-              <a href="https://www.khanacademy.org/" target="_blank" rel="noopener">
-                <img src="assets/qr-khanacademy.png" alt="QR code to Khan Academy" />
-              </a>
-              <div class="qr-handle">khanacademy.org</div>
-            </div>
-            <div class="qr-card">
-              <div class="qr-title">MyMoney.gov (Adults)</div>
-              <a href="https://www.mymoney.gov/" target="_blank" rel="noopener">
-                <img src="assets/qr-mymoney.png" alt="QR code to MyMoney.gov" />
-              </a>
-              <div class="qr-handle">mymoney.gov</div>
-            </div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel hidden" id="gamePanel">
-        <div class="scenario-header">
-          <div>
-            <h2 id="scenarioTitle"></h2>
-            <p id="scenarioSummary"></p>
-            <div class="tags" id="scenarioTags"></div>
-          </div>
-          <div class="meters">
-            <div class="meter">
-              <span>Budget</span>
-              <div class="bar"><div id="budgetBar"></div></div>
-            </div>
-            <div class="meter">
-              <span>Time</span>
-              <div class="bar"><div id="timeBar"></div></div>
-            </div>
-            <div class="meter">
-              <span>Trust</span>
-              <div class="bar"><div id="trustBar"></div></div>
-            </div>
-          </div>
-        </div>
-
-        <div class="step">
-          <div class="step-progress">
-            <span id="stepCounter">Step 1</span>
-            <div class="star-meter" id="starMeter" aria-label="Level progress"></div>
-            <div class="progress-bar"><div id="stepProgressBar"></div></div>
-            <span id="xpBadge" class="xp-badge">XP 0</span>
-            <span id="streakBadge" class="xp-badge">Streak 0</span>
-          </div>
-          <div id="levelUpBadge" class="level-up hidden">Level Up!</div>
-          <div class="prompt" id="stepPrompt"></div>
-          <div class="choices" id="choices"></div>
-
-          <div class="builder">
-            <div class="builder-row">
-              <div class="builder-title">
-                <span>Pick a Tool
-                  <button class="info-badge" type="button" aria-label="What counts as a tool?" data-tooltip="A tool is a self-regulation action you use to slow down or stay in control (pause, breathe, ask for help, check the facts, set a boundary).">?</button>
-                </span>
-              </div>
-              <div class="option-grid" id="toolOptions"></div>
-            </div>
-            <div class="builder-row">
-              <div class="builder-title">
-                <span>Pick a Concept
-                  <button class="info-badge" type="button" aria-label="What counts as a concept?" data-tooltip="A concept is a unit idea that explains the situation (trade-off, short-term vs long-term, consequences, stakes, risk vs reward, values, goals, boundaries, responsibility).">?</button>
-                </span>
-              </div>
-              <div class="option-grid" id="conceptOptions"></div>
-            </div>
-            <div class="builder-row">
-              <div class="builder-title">
-                <span>Pick a Why
-                  <button class="info-badge" type="button" aria-label="What counts as a why statement?" data-tooltip="A why statement explains your reason and goal (I chose this because..., My goal is..., The biggest risk is..., This protects my boundary by...).">?</button>
-                </span>
-              </div>
-              <div class="option-grid" id="whyOptions"></div>
-              <div class="skip-note">You can choose “Skip for now” if you need more time to explain.</div>
-            </div>
-            <div class="builder-preview">
-              <div class="preview-label">Your response will sound like:</div>
-              <div id="sentencePreview" class="preview-text">Pick a tool, concept, and why to build your response.</div>
-            </div>
-            <button id="undoSelection" type="button" class="ghost">Undo selections</button>
-            <label class="field">
-              <span>Add a note (optional)</span>
-              <textarea id="optionalNote" rows="2" placeholder="Add a quick detail if you want."></textarea>
-              <small class="hint">No typing required. Just pick one in each row.</small>
-            </label>
-            <input id="toolAnswer" type="hidden" />
-            <input id="conceptAnswer" type="hidden" />
-            <input id="whyAnswer" type="hidden" />
-          </div>
-
-          <div class="actions">
-            <button id="submitDecision" class="primary">Submit</button>
-            <button id="nextStep" class="ghost hidden">Next</button>
-          </div>
-          <div id="sheetsStatus" class="sheets-status hidden" role="status" aria-live="polite"></div>
-        </div>
-
-        <div class="feedback hidden" id="feedbackPanel">
-          <h3>Feedback</h3>
-          <div id="consequence"></div>
-          <div class="feedback-section">
-            <h4>AI Feedback</h4>
-            <div id="aiFeedback" class="feedback-text"></div>
-          </div>
-          <div class="feedback-section">
-            <h4>Next-Step Options</h4>
-            <ul id="aiOptions" class="feedback-list"></ul>
-          </div>
-          <div class="feedback-section">
-            <h4>Encouragement</h4>
-            <div id="encouragement" class="feedback-text"></div>
-          </div>
-        </div>
-      </section>
-
-      <section class="panel hidden" id="aiPanel">
-        <div class="ai-header">
-          <h3>Role-play Partner</h3>
-          <div class="toggle">
-            <input type="checkbox" id="aiToggle" />
-            <label for="aiToggle">Enable AI role-play</label>
-          </div>
-        </div>
-        <div class="chat" id="chat"></div>
-        <div class="chat-input">
-          <input id="chatMessage" type="text" placeholder="Ask the stakeholder a question" />
-          <button id="sendChat">Send</button>
-        </div>
-      </section>
-    </main>
-    <div class="copyright">© 2026 Ready For Real Life. All rights reserved. Website design and ownership: Michael R. Terry.</div>
+    </div>
+    <div class="hero-badge">
+      <span class="badge-num">5</span>
+      <span class="badge-label">Modules</span>
+      <div class="badge-sub">16-Week Semester</div>
+    </div>
   </div>
-  <canvas id="confettiCanvas" class="confetti-canvas" aria-hidden="true"></canvas>
+</header>
 
-  <dialog id="settingsDialog" class="settings">
-    <form method="dialog">
-      <h3>AI Settings</h3>
-      <p class="muted">Leave blank to use the built-in scripted role-play.</p>
-      <label class="field">
-        <span>AI endpoint URL</span>
-        <input id="endpointUrl" type="url" placeholder="https://your-endpoint.example/chat" />
-      </label>
-      <label class="field">
-        <span>API key (optional)</span>
-        <input id="apiKey" type="password" placeholder="Stored locally" />
-      </label>
-      <label class="field">
-        <span>Model name (optional)</span>
-        <input id="modelName" type="text" placeholder="model-id" />
-      </label>
-      <h3>Response Logging (Google Sheets)</h3>
-      <p class="muted">Only visible in Teacher Mode. Leave blank to disable logging.</p>
-      <label class="field">
-        <span>Sheets endpoint URL</span>
-        <input id="sheetsEndpoint" type="url" placeholder="https://script.google.com/macros/s/.../exec" />
-      </label>
-      <label class="field">
-        <span>Sheets secret (optional)</span>
-        <input id="sheetsSecret" type="password" placeholder="Stored locally" />
-      </label>
-      <label class="field">
-        <span>Sound effects</span>
-        <select id="soundToggle">
-          <option value="on">On</option>
-          <option value="off">Off</option>
-        </select>
-      </label>
-      <button id="testSheets" type="button" class="ghost">Test Sheets Connection</button>
-      <menu>
-        <button class="ghost" value="cancel">Close</button>
-        <button id="saveSettings" class="primary" value="default">Save</button>
-      </menu>
-    </form>
-  </dialog>
+<!-- INSTRUCTOR STRIP -->
+<div class="inst-strip">
+  <div class="inst-avatar">👤</div>
+  <div>
+    <div class="inst-name">Michael R. Terry</div>
+    <div class="inst-titles">Sergeant, Utah Highway Patrol · Nearly 20 Years in Law Enforcement · MAT Candidate, Columbia College of Missouri (Dec 2026) · Published Author · Spanish Proficient</div>
+  </div>
+  <div class="inst-awards">
+    <div class="award-pill"><strong>KDP Honor Society</strong>Top 10% of Education Students · Feb 2026</div>
+    <div class="award-pill"><strong>MLK Community Service Award</strong>Columbia College · Jan 2026</div>
+    <div class="award-pill"><strong>CCAA Scholar</strong>1 of 12 Selected Nationally · Oct 2025</div>
+    <div class="award-pill"><strong>POST Council Approved</strong>Statewide CMP Implementation · UHP</div>
+  </div>
+</div>
 
-  <dialog id="registerDialog" class="settings register-dialog">
-    <button id="closeRegister" class="ghost register-close" type="button" aria-label="Close registration form">Close</button>
-    <form method="dialog" id="registerForm" novalidate>
-      <h3>Register for Future Classes</h3>
-      <p class="muted">We’ll contact you when class dates and locations are announced.</p>
-      <label class="field">
-        <span>Full name</span>
-        <input id="regName" type="text" placeholder="Your name" />
-      </label>
-      <label class="field">
-        <span>Email</span>
-        <input id="regEmail" type="email" placeholder="name@email.com" />
-      </label>
-      <label class="field">
-        <span>Phone (optional)</span>
-        <input id="regPhone" type="tel" placeholder="(555) 555-5555" />
-      </label>
-      <label class="field">
-        <span>Best fit</span>
-        <select id="regGroup">
-          <option value="">Select one</option>
-          <option value="Youth">Youth</option>
-          <option value="Adult">Adult</option>
-          <option value="Educator">Educator</option>
-          <option value="Family">Family</option>
-        </select>
-      </label>
-      <label class="field">
-        <span>Notes (optional)</span>
-        <textarea id="regNotes" rows="3" placeholder="Preferred days/times, questions, etc."></textarea>
-      </label>
-      <div id="registerStatus" class="sheets-status hidden" role="status" aria-live="polite"></div>
-      <menu>
-        <button id="submitRegistration" class="primary" value="default">Submit</button>
-      </menu>
-    </form>
-  </dialog>
+<!-- RATIONALE -->
+<section class="section dark fade" id="rationale">
+  <p class="section-label">Why This Course Exists</p>
+  <h2 class="section-title">The <span class="accent">Gap</span> &amp; The Response</h2>
+  <div class="rat-grid">
+    <div class="rat-cell fade"><div class="rat-icon">🏫</div><div class="rat-title">The Unaddressed Gap</div><div class="rat-body">Academic achievement dominates curricula. Students navigate complex social, digital, and emotional landscapes with few tools. Soft skills are assumed — not taught. This course makes them explicit and measurable.</div></div>
+    <div class="rat-cell fade"><div class="rat-icon">👮</div><div class="rat-title">Built from Real Experience</div><div class="rat-body">Nearly 20 years of law enforcement, crisis response, and youth mentorship — including SRO at Blue Peak High School and teaching Lions Quest to every 6th grader in Tooele City — shaped every module in this course.</div></div>
+    <div class="rat-cell fade"><div class="rat-icon">🎯</div><div class="rat-title">The Design Standard</div><div class="rat-body">Transfer, not coverage. Students leave able to apply concepts independently to unfamiliar, high-stakes situations. Every lesson, framework, and assessment is designed backward from that single outcome.</div></div>
+  </div>
+</section>
 
-  <dialog id="creatorDialog" class="creator-dialog">
-    <form method="dialog">
-      <div class="creator-header">
-        <img src="assets/creator.jpg" alt="Photo of Michael R. Terry" />
-        <div>
-          <h3>Michael R. Terry</h3>
-          <p>Founder, Modern Manners & Mental Fortitude</p>
-        </div>
+<!-- PILLARS -->
+<section class="section fade" id="pillars">
+  <p class="section-label">Anchoring Concepts</p>
+  <h2 class="section-title">Four Core <span class="accent">Pillars</span></h2>
+  <div class="pillars-grid">
+    <div class="pillar p-teal fade"><div class="pillar-wm">01</div><div class="pillar-icon">🤝</div><div class="pillar-title">Respectful Communication</div><div class="pillar-body">Tone, body language, active listening, I-statements, and repair moves across every context — school, workplace, community, and digital.</div><div class="pillar-subs"><div class="sub-tag">Eye contact &amp; nonverbal cues</div><div class="sub-tag">Conflict repair steps</div><div class="sub-tag">Authority &amp; feedback response</div></div></div>
+    <div class="pillar p-rust fade"><div class="pillar-wm">02</div><div class="pillar-icon">🧘</div><div class="pillar-title">Emotional Regulation</div><div class="pillar-body">Identifying triggers, managing stress, and applying the Pause–Label–Reframe–Respond routine as a performance skill — not a therapy tool.</div><div class="pillar-subs"><div class="sub-tag">Escalation vs. de-escalation</div><div class="sub-tag">Peer pressure &amp; belonging</div><div class="sub-tag">Mindfulness &amp; grounding</div></div></div>
+    <div class="pillar p-gold fade"><div class="pillar-wm">03</div><div class="pillar-icon">⚖️</div><div class="pillar-title">Decision-Making Under Pressure</div><div class="pillar-body">Pause–Options–Consequences–Choose: a structured four-step framework applied across scenarios with competing priorities and real stakes.</div><div class="pillar-subs"><div class="sub-tag">Consequence mapping</div><div class="sub-tag">Short vs. long-term thinking</div><div class="sub-tag">Digital permanence</div></div></div>
+    <div class="pillar p-sage fade"><div class="pillar-wm">04</div><div class="pillar-icon">🔁</div><div class="pillar-title">Accountability &amp; Repair</div><div class="pillar-body">Own it, fix it, follow through. How accountability builds trust and long-term opportunity — and why repair after a mistake is a strength.</div><div class="pillar-subs"><div class="sub-tag">Integrity &amp; follow-through</div><div class="sub-tag">Personal growth targets</div><div class="sub-tag">Self-assessment cycles</div></div></div>
+  </div>
+</section>
+
+<!-- COMPELLING QUESTIONS -->
+<section class="section alt gold-bg fade">
+  <p class="section-label">Unit Inquiry</p>
+  <h2 class="section-title">Compelling <span class="accent">Questions</span></h2>
+  <div class="cq-grid">
+    <div class="cq-card fade"><p>How do my everyday choices shape how others trust me — and the opportunities I get?</p></div>
+    <div class="cq-card fade"><p>What does respect look like when no one is watching?</p></div>
+    <div class="cq-card fade"><p>Why do strong emotions make good decisions harder — and what can I do about it in the moment?</p></div>
+    <div class="cq-card fade"><p>How should my behavior change depending on context: friend group, classroom, workplace, or online?</p></div>
+  </div>
+</section>
+
+<!-- 5 MODULES -->
+<section class="section fade" id="modules">
+  <p class="section-label">Content Strands</p>
+  <h2 class="section-title">Five <span class="accent">Modules</span></h2>
+  <div class="modules-grid">
+    <div class="module-card fade"><div class="module-num">Module 01</div><div class="module-icon">🎩</div><div class="module-title">Modern Manners</div><div class="module-topics"><div class="module-topic">Eye contact &amp; greetings</div><div class="module-topic">Cell phone etiquette</div><div class="module-topic">Gratitude practices</div><div class="module-topic">Context-appropriate behavior</div></div></div>
+    <div class="module-card fade"><div class="module-num">Module 02</div><div class="module-icon">🧠</div><div class="module-title">Emotional Intelligence</div><div class="module-topics"><div class="module-topic">Self-awareness &amp; triggers</div><div class="module-topic">Stress &amp; anxiety tools</div><div class="module-topic">Mindfulness basics</div><div class="module-topic">Regulation routines</div></div></div>
+    <div class="module-card fade"><div class="module-num">Module 03</div><div class="module-icon">🕊️</div><div class="module-title">Conflict Navigation</div><div class="module-topics"><div class="module-topic">Disagreement without disrespect</div><div class="module-topic">Apologies &amp; repair</div><div class="module-topic">Boundaries</div><div class="module-topic">Peer mediation</div></div></div>
+    <div class="module-card fade"><div class="module-num">Module 04</div><div class="module-icon">📱</div><div class="module-title">Digital Citizenship</div><div class="module-topics"><div class="module-topic">Online tone &amp; posting</div><div class="module-topic">Digital permanence</div><div class="module-topic">Reputation management</div><div class="module-topic">Privacy &amp; boundaries</div></div></div>
+    <div class="module-card fade"><div class="module-num">Module 05</div><div class="module-icon">🌱</div><div class="module-title">Personal Growth</div><div class="module-topics"><div class="module-topic">Goal setting</div><div class="module-topic">Self-assessment</div><div class="module-topic">Integrity &amp; follow-through</div><div class="module-topic">Capstone project</div></div></div>
+  </div>
+</section>
+
+<!-- SPIRAL CURRICULUM DESIGN -->
+<section class="section alt fade" id="design">
+  <p class="section-label">Curriculum Structure · Bruner (1960)</p>
+  <h2 class="section-title">Spiral <span class="accent">Design</span></h2>
+  <div class="spiral-wrapper">
+    <div>
+      <div class="spiral-diagram">
+        <div class="spiral-ring">Introduce</div>
+        <div class="spiral-ring">Reinforce</div>
+        <div class="spiral-ring">Apply</div>
+        <div class="spiral-ring">Transfer</div>
+        <div class="spiral-label">Increasing Complexity →</div>
       </div>
-      <div class="creator-body">
-        <p>For years I have worked in public service, spent time with youth in difficult moments, and raised five kids of my own. One thing has become very clear to me. Schools teach academics well, but many young people are entering adulthood without the life skills they actually need to succeed in the real world.</p>
-        <p>That realization pushed me back into school to earn my Master of Arts in Teaching. During this program, I began building something that has become very personal to me.</p>
-        <p><strong>Modern Manners and Mental Fortitude.</strong></p>
-        <p>This is a curriculum designed to help middle and high school students learn the skills that rarely get a dedicated place in the school day. Skills like respectful communication, emotional regulation, handling conflict, managing stress, digital behavior, and learning how to carry themselves with confidence in real situations.</p>
-        <p>This is not about perfection. It is about preparation.</p>
-        <p>My goal is simple. Help young people and interested adults become confident, respectful, emotionally grounded people who know how to handle real life.</p>
-        <p>The logo you see represents that mission. The shield stands for protection and preparation. The book represents learning and growth. The flame represents wisdom and personal development. The colors represent trust, leadership, and progress.</p>
-        <p>This page will be where I share ideas, lessons, and real conversations about preparing the next generation for life outside the classroom.</p>
-        <p><strong>This is only the beginning.</strong></p>
-      </div>
-      <menu>
-        <button class="ghost" value="cancel">Close</button>
-      </menu>
-    </form>
-  </dialog>
+    </div>
+    <div class="spiral-desc-col">
+      <div class="spiral-item fade"><strong>Weeks 1–2: Direct Instruction</strong>Core concepts introduced through mini-lessons, case studies, graphic organizers, and instructor modeling. Shared vocabulary built across the class.</div>
+      <div class="spiral-item fade"><strong>Week 3: Simulation &amp; Role-Play</strong>Students apply learned skills in structured practice. Scenario prompts build fluency before independent application is expected.</div>
+      <div class="spiral-item fade"><strong>Week 4: Collaborative Challenge &amp; Reflection</strong>Team-based tasks reinforce understanding. Reflection journals connect experience to concept and set goals for the next four-week cycle.</div>
+      <div class="spiral-item fade"><strong>All Four Pillars Revisited Every Cycle</strong>Respect, regulation, decision-making, and accountability reappear in every module at increasing levels of complexity — exactly as Bruner's spiral model intended.</div>
+    </div>
+  </div>
+</section>
 
-  <dialog id="unitHelpDialog" class="settings">
-    <form method="dialog">
-      <h3>Unit Language Help</h3>
-      <p class="muted">Use simple, clear language to explain your choice.</p>
-      <div class="unit-language">
-        <h4>Tools (self‑regulation)</h4>
-        <p>Pause, breathe, step back, name the feeling, delay the reaction, ask for help, check the facts, reframe, set a boundary, use a checklist, slow down to speed up, repair.</p>
-        <h4>Concepts (unit ideas)</h4>
-        <p>Decision‑making, self‑regulation, impulse control, trade‑off, short‑term vs long‑term, consequences, stakes, risk vs reward, values, goals, priorities, boundaries, responsibility, accountability, choice ownership, impact on others.</p>
-        <h4>Why stems</h4>
-        <p>I chose this because… / My goal is… / The trade‑off is… / The biggest risk is… / This protects my boundary by… / I’m taking responsibility by… / I would pause first and then…</p>
-      </div>
-      <menu>
-        <button class="ghost" value="cancel">Close</button>
-      </menu>
-    </form>
-  </dialog>
+<!-- UNIT STORYBOARD TIMELINE -->
+<section class="section fade">
+  <p class="section-label">Unit Storyboard · Stern et al. (2021)</p>
+  <h2 class="section-title">How the <span class="accent">Unit Flows</span></h2>
+  <div class="timeline-outer">
+    <div class="timeline-track">
+      <div class="timeline-line"></div>
+      <div class="phase fade"><div class="phase-dot"></div><div class="phase-days">Days 1–4</div><div class="phase-name">Acquire</div><div class="phase-desc">Build shared vocabulary around all four anchoring concepts.</div><div class="phase-tools"><div class="phase-tool">Concept mapping</div><div class="phase-tool">Guided questioning</div><div class="phase-tool">Short video dilemmas</div><div class="phase-tool">Graphic organizers</div></div></div>
+      <div class="phase fade"><div class="phase-dot"></div><div class="phase-days">Days 5–7</div><div class="phase-name">Connect</div><div class="phase-desc">Examine the relationship between emotions, choices, and consequences.</div><div class="phase-tools"><div class="phase-tool">Cause-effect charts</div><div class="phase-tool">Paired case studies</div><div class="phase-tool">Discussion protocols</div><div class="phase-tool">Reflection journals</div></div></div>
+      <div class="phase fade"><div class="phase-dot"></div><div class="phase-days">Days 8–10</div><div class="phase-name">Similar Transfer</div><div class="phase-desc">Apply concepts to familiar school and peer scenarios.</div><div class="phase-tools"><div class="phase-tool">Role-play &amp; scenario cards</div><div class="phase-tool">Decision frameworks</div><div class="phase-tool">Peer feedback tools</div></div></div>
+      <div class="phase fade"><div class="phase-dot"></div><div class="phase-days">Days 11–13</div><div class="phase-name">Dissimilar Transfer</div><div class="phase-desc">Apply independently to workplace, community, and digital contexts never practiced in class.</div><div class="phase-tools"><div class="phase-tool">Workplace case studies</div><div class="phase-tool">Digital dilemmas</div><div class="phase-tool">Reflective justification</div></div></div>
+      <div class="phase fade"><div class="phase-dot"></div><div class="phase-days">Days 14–15</div><div class="phase-name">Student Action</div><div class="phase-desc">Culminating performance task with a real-world audience.</div><div class="phase-tools"><div class="phase-tool">Novel scenario response</div><div class="phase-tool">Justified decision + repair plan</div><div class="phase-tool">Authentic audience feedback</div></div></div>
+    </div>
+  </div>
+</section>
 
-  <script id="scenariosData" type="application/json">{
-  "scenarios": [
-    {
-      "id": "after_school_job",
-      "title": "After-School Job Dilemma",
-      "summary": "You need money for a family bill, but your manager schedules you during a major exam week.",
-      "stakes": ["Employment", "Family finances", "Academic performance"],
-      "roles": ["Student", "Manager", "Parent"],
-      "startStep": "step1",
-      "meters": { "budget": 60, "time": 40, "trust": 50 },
-      "steps": {
-        "step1": {
-          "prompt": "Your manager schedules you for two extra shifts during exam week. You need the money, but the exams are major.",
-          "stakeholder": "Manager",
-          "aiPrompts": [
-            "I can only give these shifts to someone who is reliable. Can you do it?",
-            "Let me know quickly. I have to finalize the schedule today."
-          ],
-          "choices": [
-            {
-              "id": "accept",
-              "text": "Accept all shifts and plan to study late.",
-              "consequence": "You earn money but lose study time and feel stressed.",
-              "meterImpact": { "budget": 15, "time": -20, "trust": 5 },
-              "nextStep": "step2"
-            },
-            {
-              "id": "negotiate",
-              "text": "Negotiate for one shift and explain your exam week.",
-              "consequence": "You balance income and study time, but the manager is uncertain.",
-              "meterImpact": { "budget": 8, "time": -8, "trust": 3 },
-              "nextStep": "step2"
-            },
-            {
-              "id": "decline",
-              "text": "Decline and focus on exams.",
-              "consequence": "You protect study time but lose income.",
-              "meterImpact": { "budget": -10, "time": 12, "trust": -2 },
-              "nextStep": "step2"
-            }
-          ]
-        },
-        "step2": {
-          "prompt": "A parent asks how you will cover the family bill this month.",
-          "stakeholder": "Parent",
-          "aiPrompts": [
-            "We need to know your plan so we can cover the gap.",
-            "I want you to succeed in school, but we also have to pay the bill."
-          ],
-          "choices": [
-            {
-              "id": "budget",
-              "text": "Propose a budget plan and ask for temporary support.",
-              "consequence": "The parent feels heard and agrees to help short-term.",
-              "meterImpact": { "budget": 10, "time": 5, "trust": 10 },
-              "nextStep": "step3"
-            },
-            {
-              "id": "overpromise",
-              "text": "Promise to cover it without a clear plan.",
-              "consequence": "You avoid conflict now but risk breaking trust later.",
-              "meterImpact": { "budget": 0, "time": -4, "trust": -8 },
-              "nextStep": "step3"
-            },
-            {
-              "id": "ask_delay",
-              "text": "Ask to delay the payment and focus on exams.",
-              "consequence": "You buy time but increase financial pressure.",
-              "meterImpact": { "budget": -6, "time": 6, "trust": -3 },
-              "nextStep": "step3"
-            }
-          ]
-        },
-        "step3": {
-          "prompt": "Your friend offers to share answers for one exam to reduce stress.",
-          "stakeholder": "Friend",
-          "aiPrompts": [
-            "No one will know. It just makes this week easier.",
-            "You have too much on your plate. Take the help."
-          ],
-          "choices": [
-            {
-              "id": "refuse",
-              "text": "Refuse and explain your values and long-term goals.",
-              "consequence": "You keep integrity and lower long-term risk.",
-              "meterImpact": { "budget": 0, "time": -2, "trust": 8 },
-              "nextStep": "end"
-            },
-            {
-              "id": "accept",
-              "text": "Accept the answers to reduce stress.",
-              "consequence": "Short-term relief but major academic and trust risks.",
-              "meterImpact": { "budget": 0, "time": 6, "trust": -15 },
-              "nextStep": "end"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "group_project_conflict",
-      "title": "Group Project Breakdown",
-      "summary": "Your team is behind and one member is disengaged right before the due date.",
-      "stakes": ["Grades", "Team trust", "Time pressure"],
-      "roles": ["Student", "Teammate", "Teacher"],
-      "startStep": "step1",
-      "meters": { "budget": 45, "time": 35, "trust": 55 },
-      "steps": {
-        "step1": {
-          "prompt": "One teammate has not done their section. The project is due in 48 hours.",
-          "stakeholder": "Teammate",
-          "aiPrompts": [
-            "I was busy. I can do it tonight, just give me time.",
-            "Please don’t tell the teacher yet."
-          ],
-          "choices": [
-            {
-              "id": "coach",
-              "text": "Set a clear deadline and offer help to finish tonight.",
-              "consequence": "You keep collaboration but add work to your schedule.",
-              "meterImpact": { "budget": 0, "time": -10, "trust": 6 },
-              "nextStep": "step2"
-            },
-            {
-              "id": "reassign",
-              "text": "Reassign their section to other team members.",
-              "consequence": "The project quality improves, but resentment grows.",
-              "meterImpact": { "budget": 0, "time": -8, "trust": -6 },
-              "nextStep": "step2"
-            },
-            {
-              "id": "escalate",
-              "text": "Tell the teacher immediately and document the issue.",
-              "consequence": "You protect your grade, but it affects team relationships.",
-              "meterImpact": { "budget": 0, "time": -4, "trust": -4 },
-              "nextStep": "step2"
-            }
-          ]
-        },
-        "step2": {
-          "prompt": "The teammate sends a partial draft. It is not high quality.",
-          "stakeholder": "Teammate",
-          "aiPrompts": [
-            "I did what I could. It’s not perfect, but it’s something.",
-            "Can you just fix it?"
-          ],
-          "choices": [
-            {
-              "id": "revise",
-              "text": "Revise it and give feedback for next time.",
-              "consequence": "You secure the grade but carry extra workload.",
-              "meterImpact": { "budget": 0, "time": -12, "trust": 5 },
-              "nextStep": "step3"
-            },
-            {
-              "id": "negotiate",
-              "text": "Ask them to revise with specific expectations.",
-              "consequence": "You reinforce accountability but risk delays.",
-              "meterImpact": { "budget": 0, "time": -6, "trust": 2 },
-              "nextStep": "step3"
-            },
-            {
-              "id": "replace",
-              "text": "Replace their section without discussion.",
-              "consequence": "Quality improves but trust takes a hit.",
-              "meterImpact": { "budget": 0, "time": -8, "trust": -8 },
-              "nextStep": "step3"
-            }
-          ]
-        },
-        "step3": {
-          "prompt": "The teacher asks for a reflection on how the team handled the conflict.",
-          "stakeholder": "Teacher",
-          "aiPrompts": [
-            "Be honest. How did your team handle responsibility and communication?",
-            "What would you do differently next time?"
-          ],
-          "choices": [
-            {
-              "id": "reflect",
-              "text": "Describe the conflict and your conflict-resolution strategy.",
-              "consequence": "You show growth and apply unit language.",
-              "meterImpact": { "budget": 0, "time": 3, "trust": 8 },
-              "nextStep": "end"
-            },
-            {
-              "id": "deflect",
-              "text": "Avoid details and keep it surface-level.",
-              "consequence": "You miss a chance to show learning.",
-              "meterImpact": { "budget": 0, "time": 2, "trust": -4 },
-              "nextStep": "end"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "online_pressure",
-      "title": "Online Pressure and Reputation",
-      "summary": "A rumor spreads online and you are asked to respond publicly.",
-      "stakes": ["Reputation", "Safety", "Peer pressure"],
-      "roles": ["Student", "Peer", "Coach"],
-      "startStep": "step1",
-      "meters": { "budget": 50, "time": 50, "trust": 40 },
-      "steps": {
-        "step1": {
-          "prompt": "A rumor about you is spreading in a group chat. People want a response now.",
-          "stakeholder": "Peer",
-          "aiPrompts": [
-            "You should clap back. Everyone is watching.",
-            "If you stay quiet, people will think it’s true."
-          ],
-          "choices": [
-            {
-              "id": "pause",
-              "text": "Pause, gather facts, and set a plan before responding.",
-              "consequence": "You reduce risk and stay in control.",
-              "meterImpact": { "budget": 0, "time": -4, "trust": 6 },
-              "nextStep": "step2"
-            },
-            {
-              "id": "respond_fast",
-              "text": "Respond immediately and defend yourself.",
-              "consequence": "You feel relief but may escalate the situation.",
-              "meterImpact": { "budget": 0, "time": -6, "trust": -4 },
-              "nextStep": "step2"
-            },
-            {
-              "id": "ignore",
-              "text": "Ignore the messages and hope it fades.",
-              "consequence": "You avoid conflict but lose control of the narrative.",
-              "meterImpact": { "budget": 0, "time": 4, "trust": -6 },
-              "nextStep": "step2"
-            }
-          ]
-        },
-        "step2": {
-          "prompt": "A teammate asks if the rumor is true and if it affects your role.",
-          "stakeholder": "Coach",
-          "aiPrompts": [
-            "I need to know if this is a team issue. What’s your plan?",
-            "Help me understand the facts."
-          ],
-          "choices": [
-            {
-              "id": "facts",
-              "text": "Explain the facts calmly and outline your response plan.",
-              "consequence": "You build trust and show leadership.",
-              "meterImpact": { "budget": 0, "time": -3, "trust": 10 },
-              "nextStep": "step3"
-            },
-            {
-              "id": "defensive",
-              "text": "Get defensive and blame others.",
-              "consequence": "Trust drops and the issue escalates.",
-              "meterImpact": { "budget": 0, "time": -2, "trust": -10 },
-              "nextStep": "step3"
-            }
-          ]
-        },
-        "step3": {
-          "prompt": "You decide how to respond publicly. Your post will be seen by peers and adults.",
-          "stakeholder": "Peer",
-          "aiPrompts": [
-            "Think about how this will look a week from now.",
-            "Do you want to post at all, or use a private message?"
-          ],
-          "choices": [
-            {
-              "id": "private",
-              "text": "Address it privately and focus on repairing trust.",
-              "consequence": "You reduce public drama but need patience.",
-              "meterImpact": { "budget": 0, "time": -4, "trust": 8 },
-              "nextStep": "end"
-            },
-            {
-              "id": "public",
-              "text": "Post a calm public response with facts and boundaries.",
-              "consequence": "You show leadership but risk further attention.",
-              "meterImpact": { "budget": 0, "time": -6, "trust": 4 },
-              "nextStep": "end"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "family_budget_emergency",
-      "title": "Family Budget Emergency",
-      "summary": "A sudden expense hits your household and you are asked to help decide priorities.",
-      "stakes": ["Family stability", "Financial responsibility", "Long-term planning"],
-      "roles": ["Student", "Parent", "Sibling"],
-      "startStep": "step1",
-      "meters": { "budget": 35, "time": 55, "trust": 60 },
-      "steps": {
-        "step1": {
-          "prompt": "A car repair bill arrives. The family budget is short this month.",
-          "stakeholder": "Parent",
-          "aiPrompts": [
-            "We need to decide what to cut this month. What’s your plan?",
-            "I’m stressed. We have to choose wisely."
-          ],
-          "choices": [
-            {
-              "id": "prioritize",
-              "text": "List essential expenses and propose cuts to non-essentials.",
-              "consequence": "The plan reduces risk and keeps essentials covered.",
-              "meterImpact": { "budget": 12, "time": -4, "trust": 6 },
-              "nextStep": "step2"
-            },
-            {
-              "id": "avoid",
-              "text": "Avoid the conversation and hope it works out.",
-              "consequence": "Short-term comfort but long-term risk increases.",
-              "meterImpact": { "budget": -6, "time": 2, "trust": -8 },
-              "nextStep": "step2"
-            },
-            {
-              "id": "loan",
-              "text": "Suggest a short-term loan without reviewing the terms.",
-              "consequence": "Immediate relief but potential future burden.",
-              "meterImpact": { "budget": 6, "time": -6, "trust": -4 },
-              "nextStep": "step2"
-            }
-          ]
-        },
-        "step2": {
-          "prompt": "A sibling asks to keep a planned event that costs money.",
-          "stakeholder": "Sibling",
-          "aiPrompts": [
-            "It’s not fair. I already invited people.",
-            "Can’t we just do this one thing?"
-          ],
-          "choices": [
-            {
-              "id": "compromise",
-              "text": "Offer a lower-cost alternative and explain the trade-off.",
-              "consequence": "You protect relationships and the budget.",
-              "meterImpact": { "budget": 6, "time": -2, "trust": 8 },
-              "nextStep": "step3"
-            },
-            {
-              "id": "no",
-              "text": "Say no without explanation.",
-              "consequence": "You save money but damage trust.",
-              "meterImpact": { "budget": 8, "time": 0, "trust": -10 },
-              "nextStep": "step3"
-            }
-          ]
-        },
-        "step3": {
-          "prompt": "You need to explain the plan to the family.",
-          "stakeholder": "Parent",
-          "aiPrompts": [
-            "How will you explain this plan so everyone buys in?",
-            "What will you do if people push back?"
-          ],
-          "choices": [
-            {
-              "id": "communicate",
-              "text": "Communicate the plan and ask for input.",
-              "consequence": "Shared ownership increases follow-through.",
-              "meterImpact": { "budget": 2, "time": -2, "trust": 8 },
-              "nextStep": "end"
-            },
-            {
-              "id": "dictate",
-              "text": "Dictate the plan quickly and move on.",
-              "consequence": "It saves time but weakens buy-in.",
-              "meterImpact": { "budget": 2, "time": 2, "trust": -6 },
-              "nextStep": "end"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "sports_injury_pressure",
-      "title": "Play Through an Injury?",
-      "summary": "A coach wants you to play, but your injury might worsen.",
-      "stakes": ["Health", "Team commitment", "Long-term goals"],
-      "roles": ["Student", "Coach", "Parent"],
-      "startStep": "step1",
-      "meters": { "budget": 50, "time": 50, "trust": 55 },
-      "steps": {
-        "step1": {
-          "prompt": "You twisted your ankle at practice. The coach wants you to play in a big game.",
-          "stakeholder": "Coach",
-          "aiPrompts": [
-            "We need you out there. Can you push through?",
-            "It’s a big game. What can we do to make this work?"
-          ],
-          "choices": [
-            {
-              "id": "play",
-              "text": "Agree to play without getting medical advice.",
-              "consequence": "You help the team now but risk long-term injury.",
-              "meterImpact": { "budget": 0, "time": -6, "trust": -4 },
-              "nextStep": "step2"
-            },
-            {
-              "id": "check",
-              "text": "Ask for medical guidance before deciding.",
-              "consequence": "You protect your health and make a informed choice.",
-              "meterImpact": { "budget": 0, "time": -4, "trust": 6 },
-              "nextStep": "step2"
-            },
-            {
-              "id": "decline",
-              "text": "Decline and focus on recovery.",
-              "consequence": "Short-term disappointment but long-term health is protected.",
-              "meterImpact": { "budget": 0, "time": 4, "trust": -2 },
-              "nextStep": "step2"
-            }
-          ]
-        },
-        "step2": {
-          "prompt": "Your teammates are disappointed and ask you to reconsider.",
-          "stakeholder": "Teammate",
-          "aiPrompts": [
-            "We need you. It’s only one game.",
-            "Can you at least play part of it?"
-          ],
-          "choices": [
-            {
-              "id": "explain",
-              "text": "Explain your long-term goals and health boundaries.",
-              "consequence": "You model self-regulation and protect health.",
-              "meterImpact": { "budget": 0, "time": -2, "trust": 6 },
-              "nextStep": "step3"
-            },
-            {
-              "id": "give_in",
-              "text": "Give in to pressure and play anyway.",
-              "consequence": "Team is happy but risk increases.",
-              "meterImpact": { "budget": 0, "time": -4, "trust": -6 },
-              "nextStep": "step3"
-            }
-          ]
-        },
-        "step3": {
-          "prompt": "A parent asks how you decided.",
-          "stakeholder": "Parent",
-          "aiPrompts": [
-            "Walk me through your thinking.",
-            "What trade-offs did you consider?"
-          ],
-          "choices": [
-            {
-              "id": "reflect",
-              "text": "Describe your decision-making steps and trade-offs.",
-              "consequence": "You show clear reasoning and values.",
-              "meterImpact": { "budget": 0, "time": 2, "trust": 8 },
-              "nextStep": "end"
-            },
-            {
-              "id": "avoid",
-              "text": "Say it was no big deal.",
-              "consequence": "You miss a chance to show growth.",
-              "meterImpact": { "budget": 0, "time": 2, "trust": -4 },
-              "nextStep": "end"
-            }
-          ]
-        }
-      }
-    },
-    {
-      "id": "late_night_ride",
-      "title": "Late-Night Ride",
-      "summary": "A friend offers a ride home late at night, but you are unsure about safety.",
-      "stakes": ["Safety", "Peer pressure", "Decision ownership"],
-      "roles": ["Student", "Friend", "Guardian"],
-      "startStep": "step1",
-      "meters": { "budget": 55, "time": 40, "trust": 50 },
-      "steps": {
-        "step1": {
-          "prompt": "A friend offers a ride home late at night. You are unsure if they are a safe driver.",
-          "stakeholder": "Friend",
-          "aiPrompts": [
-            "It’s fine. We’ll get there fast.",
-            "Don’t be dramatic. I do this all the time."
-          ],
-          "choices": [
-            {
-              "id": "safe_plan",
-              "text": "Pause and suggest a safer plan (call a guardian or use a safer route).",
-              "consequence": "You reduce risk and model responsible decision-making.",
-              "meterImpact": { "budget": -4, "time": -6, "trust": 6 },
-              "nextStep": "step2"
-            },
-            {
-              "id": "go",
-              "text": "Accept the ride to avoid conflict.",
-              "consequence": "You save time but accept more risk.",
-              "meterImpact": { "budget": 0, "time": 6, "trust": -6 },
-              "nextStep": "step2"
-            },
-            {
-              "id": "decline",
-              "text": "Decline the ride and wait for another option.",
-              "consequence": "You prioritize safety but it takes longer.",
-              "meterImpact": { "budget": -2, "time": -8, "trust": 2 },
-              "nextStep": "step2"
-            }
-          ]
-        },
-        "step2": {
-          "prompt": "Your guardian texts asking for your plan to get home safely.",
-          "stakeholder": "Guardian",
-          "aiPrompts": [
-            "I need to know where you are and how you’re getting home.",
-            "What’s your plan?"
-          ],
-          "choices": [
-            {
-              "id": "communicate",
-              "text": "Share your plan and ask for support.",
-              "consequence": "You build trust and keep safety first.",
-              "meterImpact": { "budget": 0, "time": -2, "trust": 8 },
-              "nextStep": "step3"
-            },
-            {
-              "id": "vague",
-              "text": "Be vague to avoid questions.",
-              "consequence": "You risk trust and increase uncertainty.",
-              "meterImpact": { "budget": 0, "time": 0, "trust": -8 },
-              "nextStep": "step3"
-            }
-          ]
-        },
-        "step3": {
-          "prompt": "Reflect on the decision you made about safety and pressure.",
-          "stakeholder": "Guardian",
-          "aiPrompts": [
-            "What was the biggest risk?",
-            "What would you do if this happened again?"
-          ],
-          "choices": [
-            {
-              "id": "reflect",
-              "text": "Describe your risk assessment and how you managed pressure.",
-              "consequence": "You show transfer of decision-making skills.",
-              "meterImpact": { "budget": 0, "time": 2, "trust": 8 },
-              "nextStep": "end"
-            },
-            {
-              "id": "minimize",
-              "text": "Say it wasn’t a big deal.",
-              "consequence": "You miss an opportunity to show growth.",
-              "meterImpact": { "budget": 0, "time": 2, "trust": -4 },
-              "nextStep": "end"
-            }
-          ]
-        }
-      }
+<!-- FRAMEWORKS -->
+<section class="section alt fade" id="frameworks">
+  <p class="section-label">Student-Facing Thinking Tools</p>
+  <h2 class="section-title">The Two <span class="accent">Frameworks</span></h2>
+  <div class="fw-row">
+    <div class="fw-card fade">
+      <div class="fw-header"><div class="fw-badge teal">🧘</div><div><div class="fw-title">Regulation Routine</div><div class="fw-subtitle">Self-regulation under stress — used before decision-making</div></div></div>
+      <div class="fw-steps">
+        <div class="fw-step"><div class="fw-letter teal">P</div><div class="fw-step-body"><strong>Pause.</strong> <span>Stop the automatic reaction. Create space before responding.</span></div></div>
+        <div class="fw-step"><div class="fw-letter teal">L</div><div class="fw-step-body"><strong>Label.</strong> <span>Name the emotion. What am I actually feeling right now?</span></div></div>
+        <div class="fw-step"><div class="fw-letter teal">R</div><div class="fw-step-body"><strong>Reframe.</strong> <span>Shift perspective. What is actually happening vs. what I assumed?</span></div></div>
+        <div class="fw-step"><div class="fw-letter teal">R</div><div class="fw-step-body"><strong>Respond.</strong> <span>Choose deliberately — aligned with values and context.</span></div></div>
+      </div>
+    </div>
+    <div class="fw-card fade">
+      <div class="fw-header"><div class="fw-badge rust">⚖️</div><div><div class="fw-title">Decision-Making Framework</div><div class="fw-subtitle">Structured choice-making under pressure and competing priorities</div></div></div>
+      <div class="fw-steps">
+        <div class="fw-step"><div class="fw-letter rust">P</div><div class="fw-step-body"><strong>Pause.</strong> <span>Regulate first. Good decisions require cognitive space.</span></div></div>
+        <div class="fw-step"><div class="fw-letter rust">O</div><div class="fw-step-body"><strong>Options.</strong> <span>Identify multiple possible responses. What are my real choices?</span></div></div>
+        <div class="fw-step"><div class="fw-letter rust">C</div><div class="fw-step-body"><strong>Consequences.</strong> <span>Evaluate short and long-term outcomes. Who is affected and how?</span></div></div>
+        <div class="fw-step"><div class="fw-letter rust">C</div><div class="fw-step-body"><strong>Choose.</strong> <span>Select a response and justify it. Be able to explain the reasoning.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEARNING TARGETS -->
+<section class="section fade" id="targets">
+  <p class="section-label">Learning Standards &amp; Objectives</p>
+  <h2 class="section-title">What Students Will <span class="accent">Be Able to Do</span></h2>
+  <div class="targets-list">
+    <div class="t-row fade"><div class="t-num">1</div><div class="t-text">Recognize and actively use respectful communication approaches across school, community, workplace, and digital contexts.</div><div class="t-tag">Module 1, 3</div></div>
+    <div class="t-row fade"><div class="t-num">2</div><div class="t-text">Use a decision-making framework (Pause–Options–Consequences–Choose) to analyze scenarios and justify choices with evidence and likely consequences.</div><div class="t-tag">Module 2, 3</div></div>
+    <div class="t-row fade"><div class="t-num">3</div><div class="t-text">Apply self-regulation strategies (Pause–Label–Reframe–Respond) during conflict or stress, using the routine as a performance skill, not a therapeutic one.</div><div class="t-tag">Module 2</div></div>
+    <div class="t-row fade"><div class="t-num">4</div><div class="t-text">Navigate digital and in-person etiquette with attention to permanence, reputation, and audience — in school, community, and online settings.</div><div class="t-tag">Module 4</div></div>
+    <div class="t-row fade"><div class="t-num">5</div><div class="t-text">Explain how accountability — owning a mistake, repairing it, and following through — builds trust and long-term opportunity.</div><div class="t-tag">Module 5</div></div>
+    <div class="t-row fade"><div class="t-num">6</div><div class="t-text">Establish personal growth targets, monitor progress through self-assessment, and independently transfer all skills to an unfamiliar, high-stakes scenario.</div><div class="t-tag">Module 5</div></div>
+  </div>
+</section>
+
+<!-- TRANSFER CONTEXTS -->
+<section class="section alt fade">
+  <p class="section-label">Real-World Application</p>
+  <h2 class="section-title">Where Students <span class="accent">Transfer</span></h2>
+  <div class="contexts-grid">
+    <div class="ctx-card fade"><div class="ctx-icon">🏫</div><div class="ctx-name">School &amp; Community</div><div class="ctx-desc">Respectful language, follow-through, and conflict repair in everyday peer and adult interactions across campus and community settings.</div></div>
+    <div class="ctx-card fade"><div class="ctx-icon">💼</div><div class="ctx-name">Workplace Readiness</div><div class="ctx-desc">Professionalism, feedback response, teamwork norms, and decision-making in simulated job and team settings mirroring post-secondary realities.</div></div>
+    <div class="ctx-card fade"><div class="ctx-icon">📱</div><div class="ctx-name">Digital &amp; Social Media</div><div class="ctx-desc">Digital citizenship, tone, privacy, and reputation management — with intentional focus on the permanence of online choices.</div></div>
+    <div class="ctx-card fade"><div class="ctx-icon">🔥</div><div class="ctx-name">High-Stress Moments</div><div class="ctx-desc">Self-regulation and de-escalation when emotions run high or social pressure is present — trained as a performance competency.</div></div>
+  </div>
+</section>
+
+<!-- MODERN LITERACIES -->
+<section class="section fade">
+  <p class="section-label">Skills Beyond Standards · Stern et al. (2021) &amp; Lang (2021)</p>
+  <h2 class="section-title">Modern <span class="accent">Literacies</span> Developed</h2>
+  <div class="lit-row">
+    <div class="lit-card fade"><div class="lit-icon">🔍</div><div class="lit-name">Critical Thinking</div><div class="lit-desc">Structured decision framework to evaluate options, consequences, and long-term outcomes in any context.</div></div>
+    <div class="lit-card fade"><div class="lit-icon">💬</div><div class="lit-name">Communication</div><div class="lit-desc">Respectful tone, active listening moves, and audience-aware responses in face-to-face and written formats.</div></div>
+    <div class="lit-card fade"><div class="lit-icon">🤝</div><div class="lit-name">Collaboration</div><div class="lit-desc">Group norms, roles, task distribution, disagreement routines, and feedback cycles — with guided reflection built in.</div></div>
+    <div class="lit-card fade"><div class="lit-icon">🌐</div><div class="lit-name">Digital Citizenship</div><div class="lit-desc">Evaluating online behavior, sources, and permanence; aligning online choices with real-world goals and reputation.</div></div>
+  </div>
+</section>
+
+<!-- PACING CALENDAR -->
+<section class="section alt fade" id="pacing">
+  <p class="section-label">16-Week Pacing Calendar</p>
+  <h2 class="section-title">Week-by-Week <span class="accent">Schedule</span></h2>
+  <div class="pacing-grid">
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 1</div><div class="wk-text">Course Introduction · Expectations · Icebreakers</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 2</div><div class="wk-text">Respectful Communication: Active listening, sentence stems</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 3</div><div class="wk-text">Role-Play: Disagreements &amp; Listening Skills</div></div>
+    <div class="wk milestone fade"><div class="wk-dot"></div><div class="wk-num">Week 4</div><div class="wk-text">Manners Challenge + Group Discussion ★</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 5</div><div class="wk-text">EQ &amp; Emotional Regulation: Triggers, grounding</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 6</div><div class="wk-text">Peer Interviews: How We Cope</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 7</div><div class="wk-text">Team Challenge: Managing Stress</div></div>
+    <div class="wk milestone fade"><div class="wk-dot"></div><div class="wk-num">Week 8</div><div class="wk-text">Guest Speaker: First Responder on Composure ★</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 9</div><div class="wk-text">Modern Etiquette: Digital, public, school settings</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 10</div><div class="wk-text">Scenario Simulations: Online Conversations</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 11</div><div class="wk-text">Role-Play &amp; Manners in Motion Challenge</div></div>
+    <div class="wk milestone fade"><div class="wk-dot"></div><div class="wk-num">Week 12</div><div class="wk-text">Conflict Resolution: Boundaries, apologies ★</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 13</div><div class="wk-text">Simulation: Group Conflicts &amp; Peer Mediation</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 14</div><div class="wk-text">Self-Evaluation &amp; Goal Setting</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 15</div><div class="wk-text">Capstone Project Work Week</div></div>
+    <div class="wk milestone fade"><div class="wk-dot"></div><div class="wk-num">Week 16</div><div class="wk-text">Capstone Presentations &amp; Course Reflections ★</div></div>
+  </div>
+</section>
+
+<!-- ASSESSMENT -->
+<section class="section fade" id="assessment">
+  <p class="section-label">Assessment Framework · Tyler (1949) &amp; Dewey (1938)</p>
+  <h2 class="section-title">How Learning <span class="accent">Is Measured</span></h2>
+  <div class="assess-list">
+    <div class="assess-row hdr"><div></div><div>Assessment</div><div>Type</div><div>Purpose &amp; Use</div><div style="text-align:right">Targets</div></div>
+    <div class="assess-row fade"><div class="a-icon">📝</div><div class="a-name">Weekly Reflection Journals</div><div><div class="a-badge f">Formative</div></div><div class="a-desc">Five guided prompts each week: what was practiced, how it transferred outside class, what to do differently, what others modeled, and a goal for next week. Tracks metacognitive growth across the semester.</div><div class="a-targets">LT 3, 5, 6</div></div>
+    <div class="assess-row fade"><div class="a-icon">🗂️</div><div class="a-name">Concept Sorting &amp; Exit Reflections</div><div><div class="a-badge f">Formative</div></div><div class="a-desc">Determines whether students can accurately define and distinguish anchoring concepts. Informs pacing and re-teaching decisions before moving forward.</div><div class="a-targets">LT 1</div></div>
+    <div class="assess-row fade"><div class="a-icon">🎭</div><div class="a-name">Scenario Analysis &amp; Role-Play Rubrics</div><div><div class="a-badge f">Formative</div></div><div class="a-desc">Observes whether students apply regulation and decision frameworks during structured practice. Peer observation checklists used for conflict resolution scenarios.</div><div class="a-targets">LT 2, 3</div></div>
+    <div class="assess-row fade"><div class="a-icon">📊</div><div class="a-name">Pre/Post Self-Efficacy Surveys</div><div><div class="a-badge f">Formative</div></div><div class="a-desc">CASEL-based competency surveys at course start and end. Quantifies growth in confidence, regulation, and interpersonal skills. Teacher and guest speaker feedback included.</div><div class="a-targets">LT 1–6</div></div>
+    <div class="assess-row fade"><div class="a-icon">🏆</div><div class="a-name">"How I Handle It" Capstone</div><div><div class="a-badge s">Summative</div></div><div class="a-desc">Students present a real or simulated scenario and walk through how they applied course strategies. Evaluated on clarity, strategy application, reflection, delivery, and visual support materials.</div><div class="a-targets">LT 1–6</div></div>
+    <div class="assess-row fade"><div class="a-icon">🎯</div><div class="a-name">Novel Scenario Performance Task</div><div><div class="a-badge s">Summative</div></div><div class="a-desc">Unfamiliar, high-pressure scenario mixing school, digital, and community contexts. Students produce a justified decision, evidence of regulation, and an accountability or repair plan for a real-world audience.</div><div class="a-targets">LT 1–6</div></div>
+  </div>
+</section>
+
+<!-- CAPSTONE RUBRIC -->
+<section class="section alt fade">
+  <p class="section-label">Summative Rubric</p>
+  <h2 class="section-title">Capstone: <span class="accent">"How I Handle It"</span></h2>
+  <table class="rubric-table">
+    <thead>
+      <tr><th>Criteria</th><th class="col-e">Exceeds (10)</th><th class="col-m">Meets (8)</th><th class="col-n">Needs Improvement (5)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Clarity of Scenario</td><td>Clear, relatable, thoughtfully chosen with real-world grounding</td><td>Relevant and understandable</td><td>Unclear or vague scenario</td></tr>
+      <tr><td>Application of Strategies</td><td>Demonstrates mastery of course tools with nuanced, layered application</td><td>Applies most tools correctly</td><td>Few or incorrect applications</td></tr>
+      <tr><td>Self-Reflection</td><td>Insightful and honest reflection showing genuine growth awareness</td><td>Basic self-reflection shown</td><td>Minimal or shallow insight</td></tr>
+      <tr><td>Delivery</td><td>Confident, clear, and engaging throughout the presentation</td><td>Clear but with minor issues</td><td>Unclear or difficult to follow</td></tr>
+      <tr><td>Visual/Support Materials</td><td>Effective, well-prepared visuals that enhance the presentation</td><td>Basic visuals included</td><td>Missing or ineffective visuals</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- NOVEL SCENARIO -->
+<section class="section fade">
+  <p class="section-label">Summative Performance Task · Part 2</p>
+  <h2 class="section-title">The <span class="accent-rust">Novel Scenario</span></h2>
+  <div class="scenario-box">
+    <h3>Unfamiliar. High-Stakes. Real-World Complexity.</h3>
+    <p class="scenario-body">Students encounter a situation they have never practiced — one that deliberately mixes school expectations, digital communication, and community behavior. It adds pressure, gives partial information, and forces competing priorities. No clean answers, no practiced script. Students must draw on everything they have learned and demonstrate independent transfer to prove the learning is real.</p>
+    <p class="scenario-body">The authentic audience includes school administrators, community leaders, or workplace supervisors. Students observe the impact of their choices by evaluating how decisions affect trust, reputation, and opportunity — exactly the feedback loop the real world provides.</p>
+    <div class="s-tags">
+      <div class="s-tag">Justified Decision</div>
+      <div class="s-tag">Evidence of Self-Regulation</div>
+      <div class="s-tag">Accountability or Repair Plan</div>
+      <div class="s-tag">Written or Multimedia Response</div>
+      <div class="s-tag">Real-World Authentic Audience</div>
+      <div class="s-tag">Metacognitive Reflection</div>
+    </div>
+  </div>
+</section>
+
+<!-- REFLECTION JOURNAL -->
+<section class="section alt fade">
+  <p class="section-label">Weekly Formative Practice · Dewey (1938)</p>
+  <h2 class="section-title">Reflection <span class="accent">Journal</span> Prompts</h2>
+  <div class="journal-grid">
+    <div class="j-card fade"><div class="j-icon">💡</div><div class="j-prompt">What was one skill or idea you practiced this week?</div></div>
+    <div class="j-card fade"><div class="j-icon">🌍</div><div class="j-prompt">How did it go when you applied it outside the classroom?</div></div>
+    <div class="j-card fade"><div class="j-icon">🔄</div><div class="j-prompt">What would you do differently next time?</div></div>
+    <div class="j-card fade"><div class="j-icon">👀</div><div class="j-prompt">How did someone else demonstrate good manners or emotional control this week?</div></div>
+    <div class="j-card fade"><div class="j-icon">🎯</div><div class="j-prompt">What is one goal you want to set for next week?</div></div>
+  </div>
+</section>
+
+<!-- THEORY -->
+<section class="section fade" id="theory">
+  <p class="section-label">Theoretical Foundations</p>
+  <h2 class="section-title">The Research <span class="accent">Behind the Design</span></h2>
+  <div class="theory-grid">
+    <div class="theory-card fade"><div class="theory-author">Tyler (1949)</div><div class="theory-title">Objectives-Based Design</div><div class="theory-body">All course goals are intentional, measurable, and aligned with student needs. Backward design from capstone to daily objectives.</div></div>
+    <div class="theory-card fade"><div class="theory-author">Bruner (1960)</div><div class="theory-title">Spiral Curriculum</div><div class="theory-body">Core concepts revisited with increasing complexity across all five modules. Layered understanding builds over time.</div></div>
+    <div class="theory-card fade"><div class="theory-author">Dewey (1938)</div><div class="theory-title">Experience &amp; Education</div><div class="theory-body">Real-world role-play and simulations ground learning. Reflection journals connect experience to concept to future application.</div></div>
+    <div class="theory-card fade"><div class="theory-author">Skinner (1953)</div><div class="theory-title">Reinforcement in Practice</div><div class="theory-body">Peer feedback, instructor recognition, and Manners in Motion challenges reinforce positive skill application across the semester.</div></div>
+    <div class="theory-card fade"><div class="theory-author">Wiles &amp; Bondi (2015)</div><div class="theory-title">Curriculum Planning Model</div><div class="theory-body">CMP links context, goals, implementation, and evaluation into a coherent whole with continuous improvement built in.</div></div>
+    <div class="theory-card fade"><div class="theory-author">CASEL (2020)</div><div class="theory-title">SEL Competencies</div><div class="theory-body">Self-management, interpersonal communication, responsible decision-making, and digital citizenship aligned to Utah CCA Core Standards.</div></div>
+    <div class="theory-card fade"><div class="theory-author">Stern et al. (2021)</div><div class="theory-title">Learning That Transfers</div><div class="theory-body">Anchoring concepts, compelling questions, and dissimilar transfer tasks drive unit structure. Coverage is never the goal.</div></div>
+    <div class="theory-card fade"><div class="theory-author">Lang (2021) &amp; Tough (2012)</div><div class="theory-title">Small Teaching &amp; Grit</div><div class="theory-body">Brief, frequent retrieval and reflection cycles build durable habits. Grit and character development underpin every module.</div></div>
+  </div>
+</section>
+
+<!-- IMPLEMENTATION -->
+<section class="section alt fade" id="implementation">
+  <p class="section-label">Implementation Plan</p>
+  <h2 class="section-title">How to <span class="accent">Make It Work</span></h2>
+  <div class="impl-grid">
+    <div class="impl-card fade"><div class="impl-icon">🗓️</div><div class="impl-title">Scheduling Options</div><div class="impl-items"><div class="impl-item">Daily elective (45–60 min)</div><div class="impl-item">A/B block (90 min every other day)</div><div class="impl-item">Advisory enrichment block (pilot)</div><div class="impl-item">Class size: 20–25 students</div><div class="impl-item">Flexible seating + open space for simulations</div></div></div>
+    <div class="impl-card fade"><div class="impl-icon">🎯</div><div class="impl-title">Instructional Strategies</div><div class="impl-items"><div class="impl-item">Role-play &amp; scenario simulation</div><div class="impl-item">Team challenges &amp; practice rounds</div><div class="impl-item">Guest speakers: first responders, employers, community leaders</div><div class="impl-item">Peer interviews &amp; guided journaling</div><div class="impl-item">Weekly Manners in Motion challenge</div></div></div>
+    <div class="impl-card fade"><div class="impl-icon">📦</div><div class="impl-title">Materials &amp; Staff Prep</div><div class="impl-items"><div class="impl-item">Student journals or digital reflection logs</div><div class="impl-item">Scenario prompt cards &amp; Manners Challenge Cards</div><div class="impl-item">Projector/whiteboard for modeling &amp; instructional video</div><div class="impl-item">One-day teacher workshop on SEL &amp; group dynamics</div><div class="impl-item">Resource folder: scope, sequence, objectives, rubrics</div></div></div>
+  </div>
+</section>
+
+<!-- EVAL GOALS -->
+<section class="section fade">
+  <p class="section-label">Evaluation Aligned to Goals · Wiles &amp; Bondi (2015)</p>
+  <h2 class="section-title">Goals Mapped to <span class="accent">Evaluation Methods</span></h2>
+  <div class="eval-grid">
+    <div class="eval-row fade"><div class="eval-goal">Goal 1: Respectful Communication</div><div class="eval-method">Peer role-play and sentence-stem performance rubrics across school, community, workplace, and digital contexts.</div></div>
+    <div class="eval-row fade"><div class="eval-goal">Goal 2: Managing Stress &amp; Triggers</div><div class="eval-method">Weekly guided journaling tracking regulation routine application — plus the final capstone presentation component.</div></div>
+    <div class="eval-row fade"><div class="eval-goal">Goal 3: Modern Etiquette</div><div class="eval-method">Performance tasks and Manners in Motion challenge observations with structured rubrics.</div></div>
+    <div class="eval-row fade"><div class="eval-goal">Goal 4: Conflict Resolution</div><div class="eval-method">Peer observation checklists during scenario simulations. Students evaluate each other using structured observation tools.</div></div>
+    <div class="eval-row fade"><div class="eval-goal">Goal 5: Self-Assessment &amp; Growth</div><div class="eval-method">Pre/post CASEL self-efficacy surveys and teacher-student conferences measuring growth in confidence and accountability.</div></div>
+  </div>
+</section>
+
+<!-- BUDGET -->
+<section class="section alt fade">
+  <p class="section-label">Proposed Project Budget</p>
+  <h2 class="section-title">Resource <span class="accent">Requirements</span></h2>
+  <div class="budget-grid">
+    <div class="budget-card fade"><div class="budget-amt">$1,200</div><div class="budget-cat">Curriculum Development<br>Research texts, draft printing, revision copies</div></div>
+    <div class="budget-card fade"><div class="budget-amt">$2,200</div><div class="budget-cat">Technology &amp; Software<br>Survey platform, data analysis, simulation tools</div></div>
+    <div class="budget-card fade"><div class="budget-amt">$2,500</div><div class="budget-cat">Professional Development<br>Conference registration, collaborative planning</div></div>
+    <div class="budget-card fade"><div class="budget-amt">$1,800</div><div class="budget-cat">Instructional Materials<br>Workbooks, classroom supplies, pilot materials</div></div>
+    <div class="budget-card fade"><div class="budget-amt">$2,000</div><div class="budget-cat">Evaluation &amp; Data Analysis<br>Assessment development, external review</div></div>
+    <div class="budget-card fade"><div class="budget-amt">$1,000</div><div class="budget-cat">Dissemination<br>Final guide printing, replication documentation</div></div>
+    <div class="budget-card fade"><div class="budget-amt">$500</div><div class="budget-cat">Indirect Costs<br>Administrative &amp; miscellaneous expenses</div></div>
+    <div class="budget-card fade" style="border: 1.5px dashed var(--muted);"><div class="budget-amt" style="font-size:1.1rem; color:var(--muted);">In-Kind</div><div class="budget-cat">Personal time: curriculum design, research, data collection &amp; analysis</div></div>
+  </div>
+  <div class="budget-total">
+    <div class="budget-total-label">Total Proposed Budget (Direct Costs)</div>
+    <div class="budget-total-amt">$11,200</div>
+  </div>
+</section>
+
+<footer>
+  <div>
+    <div class="footer-name">Michael R. Terry</div>
+    <div class="footer-meta">
+      Sergeant, Utah Highway Patrol · MAT Candidate, Columbia College of Missouri (Dec 2026)<br>
+      Tooele, Utah · mikeyterry44@gmail.com · (435) 840-1896<br>
+      EDUC 565 · Advanced Application Learning Science · Dr. Lindsay Zeiter · Spring 2026
+    </div>
+  </div>
+  <div class="footer-refs">
+    Bruner (1960) · CASEL (2020) · Dewey (1938) · Lang (2021)<br>
+    Skinner (1953) · Stern, Ferraro &amp; Mohnkern (2021) · Tough (2012)<br>
+    Trilling &amp; Fadel (2009) · Tyler (1949) · Wiles &amp; Bondi (2015)<br>
+    Utah State Board of Education (2023)
+  </div>
+</footer>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in');
+      const children = entry.target.querySelectorAll(':scope > .fade, :scope > * > .fade');
+      children.forEach((child, i) => setTimeout(() => child.classList.add('in'), i * 65));
     }
-  ]
-}
+  });
+}, { threshold: 0.06 });
+document.querySelectorAll('.fade').forEach(el => observer.observe(el));
 </script>
-<script id="rubricData" type="application/json">{
-  "criteria": [
-    {
-      "id": "unit_language",
-      "label": "Uses unit language accurately",
-      "max": 3,
-      "keywords": [
-        "decision-making",
-        "self-regulation",
-        "self regulation",
-        "impulse control",
-        "pause and plan",
-        "trade-off",
-        "trade off",
-        "short-term",
-        "long-term",
-        "consequence",
-        "consequences",
-        "stakes",
-        "risk vs reward",
-        "values",
-        "goals",
-        "priorities",
-        "boundaries",
-        "responsibility",
-        "accountability",
-        "choice ownership",
-        "impact on others"
-      ]
-    },
-    {
-      "id": "reasoning",
-      "label": "Explains reasoning clearly",
-      "max": 3,
-      "keywords": [
-        "because",
-        "so that",
-        "therefore",
-        "risk",
-        "benefit",
-        "impact",
-        "priority",
-        "plan",
-        "pros and cons",
-        "best next step",
-        "worst-case",
-        "most likely",
-        "second-order",
-        "information i still need",
-        "assumptions",
-        "pressure",
-        "time limit",
-        "scarce resources",
-        "plan a",
-        "plan b",
-        "support system",
-        "follow-through"
-      ]
-    },
-    {
-      "id": "self_regulation",
-      "label": "Names a self-regulation strategy",
-      "max": 3,
-      "keywords": [
-        "stop and pause",
-        "pause",
-        "breathe",
-        "step back",
-        "name the feeling",
-        "delay",
-        "ask for help",
-        "check the facts",
-        "reframe",
-        "set a boundary",
-        "checklist",
-        "slow down to speed up",
-        "repair"
-      ]
-    },
-    {
-      "id": "transfer",
-      "label": "Connects to a higher-stakes situation",
-      "max": 3,
-      "keywords": [
-        "in real life",
-        "workplace",
-        "at home",
-        "online",
-        "relationship",
-        "health and safety",
-        "long-term reputation",
-        "trust and credibility",
-        "legal risk",
-        "team impact",
-        "future opportunities"
-      ]
-    }
-  ],
-  "minimumLength": 90,
-  "lengthScore": 1,
-  "requiredGroups": {
-    "tools": [
-      "stop and pause",
-      "pause",
-      "breathe",
-      "step back",
-      "name the feeling",
-      "delay",
-      "ask for help",
-      "check the facts",
-      "reframe",
-      "set a boundary",
-      "checklist",
-      "slow down to speed up",
-      "repair"
-    ],
-    "concepts": [
-      "decision-making",
-      "self-regulation",
-      "self regulation",
-      "impulse control",
-      "pause and plan",
-      "trade-off",
-      "trade off",
-      "short-term",
-      "long-term",
-      "consequence",
-      "consequences",
-      "stakes",
-      "risk vs reward",
-      "values",
-      "goals",
-      "priorities",
-      "boundaries",
-      "responsibility",
-      "accountability",
-      "choice ownership",
-      "impact on others"
-    ],
-    "why": [
-      "i chose this because",
-      "my goal is",
-      "the trade-off is",
-      "the short-term gain is",
-      "but the long-term cost is",
-      "the biggest risk is",
-      "the consequence i'm trying to avoid is",
-      "this protects my boundary by",
-      "i'm taking responsibility by",
-      "i would pause first and then",
-      "if this happens again, i will"
-    ]
-  },
-  "requiredGroupCount": 3
-}
-</script>
-<script src="app.js"></script>
 </body>
 </html>
