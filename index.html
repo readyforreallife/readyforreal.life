@@ -1128,12 +1128,19 @@ document.querySelectorAll(linkTargets.join(',')).forEach((el) => {
       .replace(/\s+/g, ' ')
       .trim()
   );
+  const clipAtWord = (text, maxLen) => {
+    const t = String(text || '').trim();
+    if (!t || t.length <= maxLen) return t;
+    const clipped = t.slice(0, maxLen);
+    const lastSpace = clipped.lastIndexOf(' ');
+    return (lastSpace > 20 ? clipped.slice(0, lastSpace) : clipped).trim();
+  };
   const titleEl =
     el.querySelector('.pillar-title, .module-title, .ctx-name, .lit-name, .phase-name, .a-name, .theory-title, .impl-title, .eval-goal, .wk-text, .j-prompt, .t-text, .cq-card p, .rat-title, .spiral-item strong')
     || el;
-  const rawTitle = normalizeText(titleEl).slice(0, 90) || 'Detail';
+  const rawTitle = clipAtWord(normalizeText(titleEl), 180) || 'Detail';
   const section = el.closest('section')?.id || 'overview';
-  const summary = normalizeText(el).slice(0, 700);
+  const summary = clipAtWord(normalizeText(el), 900);
   el.classList.add('card-link');
   el.setAttribute('tabindex', '0');
   const openDetail = () => {
