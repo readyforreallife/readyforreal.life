@@ -811,6 +811,23 @@ const observer = new IntersectionObserver(entries => {
 }, { threshold: 0.06 });
 document.querySelectorAll('.fade').forEach(el => observer.observe(el));
 
+// Restore prior reading position when returning from details page.
+(() => {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('restore') !== '1') return;
+    const yRaw = sessionStorage.getItem('dl_last_scroll_y');
+    const y = Number(yRaw || 0);
+    if (!Number.isFinite(y) || y < 0) return;
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: y, behavior: 'auto' });
+      const clean = new URL(window.location.href);
+      clean.searchParams.delete('restore');
+      window.history.replaceState({}, '', clean.pathname + clean.search + clean.hash);
+    });
+  } catch (_err) {}
+})();
+
 const LS = {
   teacherUnlocked: 'dl_teacher_unlocked',
   teacherPin: 'dl_teacher_pin',
@@ -1144,6 +1161,10 @@ document.querySelectorAll(linkTargets.join(',')).forEach((el) => {
   el.classList.add('card-link');
   el.setAttribute('tabindex', '0');
   const openDetail = () => {
+    try {
+      sessionStorage.setItem('dl_last_scroll_y', String(window.scrollY || 0));
+      sessionStorage.setItem('dl_last_section', section);
+    } catch (_err) {}
     const u = new URL('details.html', window.location.href);
     u.searchParams.set('section', section);
     u.searchParams.set('title', rawTitle);
@@ -1162,6 +1183,10 @@ document.querySelectorAll(linkTargets.join(',')).forEach((el) => {
 const modulesBadge = document.getElementById('modulesBadge');
 if (modulesBadge) {
   const openModuleList = () => {
+    try {
+      sessionStorage.setItem('dl_last_scroll_y', String(window.scrollY || 0));
+      sessionStorage.setItem('dl_last_section', 'modules');
+    } catch (_err) {}
     const u = new URL('details.html', window.location.href);
     u.searchParams.set('section', 'modules');
     u.searchParams.set('title', '5 Modules · 16-Week Semester');
