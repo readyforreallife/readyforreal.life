@@ -831,11 +831,13 @@ const registerModal = document.getElementById('registerModal');
 const settingsModal = document.getElementById('settingsModal');
 const registerForm = document.getElementById('registerForm');
 const registerStatus = document.getElementById('registerStatus');
+const registerSubmitBtn = registerForm ? registerForm.querySelector('button[type="submit"]') : null;
 const sheetsEndpointInput = document.getElementById('sheetsEndpoint');
 const sheetsSecretInput = document.getElementById('sheetsSecret');
 const registrationEndpointInput = document.getElementById('registrationEndpoint');
 const registrationSecretInput = document.getElementById('registrationSecret');
 const teacherPinInput = document.getElementById('teacherPin');
+let registerSubmitting = false;
 
 function getTeacherPin() {
   return localStorage.getItem(LS.teacherPin) || '4429';
@@ -973,6 +975,13 @@ document.getElementById('settingsSaveBtn').addEventListener('click', () => {
 registerBtn.addEventListener('click', () => {
   registerStatus.classList.remove('show');
   registerForm.reset();
+  registerSubmitting = false;
+  if (registerSubmitBtn) {
+    registerSubmitBtn.disabled = false;
+    registerSubmitBtn.textContent = 'Submit';
+    registerSubmitBtn.style.opacity = '1';
+    registerSubmitBtn.style.cursor = 'pointer';
+  }
   openModal(registerModal);
 });
 document.getElementById('registerCloseBtn').addEventListener('click', () => closeModal(registerModal));
@@ -980,6 +989,17 @@ document.querySelector('[data-close-register]').addEventListener('click', () => 
 
 registerForm.addEventListener('submit', async (e) => {
   e.preventDefault();
+  if (registerSubmitting) {
+    showStatus('Submitting... please wait.', false);
+    return;
+  }
+  registerSubmitting = true;
+  if (registerSubmitBtn) {
+    registerSubmitBtn.disabled = true;
+    registerSubmitBtn.textContent = 'Submitting...';
+    registerSubmitBtn.style.opacity = '0.72';
+    registerSubmitBtn.style.cursor = 'not-allowed';
+  }
   const formData = new FormData(registerForm);
   const payload = {
     type: 'registration',
@@ -1007,6 +1027,13 @@ registerForm.addEventListener('submit', async (e) => {
   payload.source = 'website-register-modal';
   if (!payload.name || !payload.email || !payload.group) {
     showStatus('Please complete name, email, and best fit.', true);
+    registerSubmitting = false;
+    if (registerSubmitBtn) {
+      registerSubmitBtn.disabled = false;
+      registerSubmitBtn.textContent = 'Submit';
+      registerSubmitBtn.style.opacity = '1';
+      registerSubmitBtn.style.cursor = 'pointer';
+    }
     return;
   }
   const primaryEndpoint =
@@ -1026,6 +1053,13 @@ registerForm.addEventListener('submit', async (e) => {
     queue.push(payload);
     localStorage.setItem('dl_registration_queue', JSON.stringify(queue));
     showStatus('Saved locally. Add a Registration endpoint (or Sheets endpoint) in Teacher Settings to sync.', false);
+    registerSubmitting = false;
+    if (registerSubmitBtn) {
+      registerSubmitBtn.disabled = false;
+      registerSubmitBtn.textContent = 'Submit';
+      registerSubmitBtn.style.opacity = '1';
+      registerSubmitBtn.style.cursor = 'pointer';
+    }
     return;
   }
   try {
@@ -1039,6 +1073,13 @@ registerForm.addEventListener('submit', async (e) => {
     if (sent) {
       showStatus('Submitted. Thank you.', false);
       setTimeout(() => closeModal(registerModal), 900);
+      registerSubmitting = false;
+      if (registerSubmitBtn) {
+        registerSubmitBtn.disabled = false;
+        registerSubmitBtn.textContent = 'Submit';
+        registerSubmitBtn.style.opacity = '1';
+        registerSubmitBtn.style.cursor = 'pointer';
+      }
       return;
     }
     throw new Error('All endpoints failed');
@@ -1047,6 +1088,13 @@ registerForm.addEventListener('submit', async (e) => {
     queue.push(payload);
     localStorage.setItem('dl_registration_queue', JSON.stringify(queue));
     showStatus('Could not submit. Saved locally to retry later.', true);
+    registerSubmitting = false;
+    if (registerSubmitBtn) {
+      registerSubmitBtn.disabled = false;
+      registerSubmitBtn.textContent = 'Submit';
+      registerSubmitBtn.style.opacity = '1';
+      registerSubmitBtn.style.cursor = 'pointer';
+    }
   }
 });
 
