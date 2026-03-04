@@ -161,6 +161,7 @@ h1 {
   color: var(--muted);
   font-size: 13px;
 }
+.teacher-only { display: none; }
 @media (max-width: 900px) {
   .grid, .docs { grid-template-columns: 1fr; }
 }
@@ -205,7 +206,7 @@ h1 {
         <h2>Educator and Family Supports</h2>
         <div class="list" id="supports"></div>
       </section>
-      <section class="card" style="grid-column: 1 / -1;">
+      <section class="card teacher-only" id="resourcesCard" style="grid-column: 1 / -1;">
         <h2>CMP Resources and Downloads</h2>
         <div class="docs" id="resources"></div>
         <p class="note">These links open within the same website tab and can be used as handouts for classes, board review, and curriculum implementation planning.</p>
@@ -785,6 +786,11 @@ function renderResources(items) {
   });
 }
 
+function isTeacherModeEnabled() {
+  return localStorage.getItem('dl_teacher_unlocked') === '1'
+    || localStorage.getItem('decision-lab-teacher-mode') === 'true';
+}
+
 function renderChips(items) {
   const el = document.getElementById('chipRow');
   el.innerHTML = '';
@@ -811,7 +817,11 @@ renderList('activities', pack.activities || []);
 renderList('assessment', pack.assessment || []);
 renderList('transfer', pack.transfer || []);
 renderList('supports', pack.supports || []);
-renderResources(BASE_DOCS);
+const resourcesCard = document.getElementById('resourcesCard');
+if (resourcesCard && isTeacherModeEnabled()) {
+  resourcesCard.style.display = 'block';
+  renderResources(BASE_DOCS);
+}
 </script>
 </body>
 </html>
