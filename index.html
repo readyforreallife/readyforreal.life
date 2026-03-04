@@ -776,8 +776,12 @@ footer { background: var(--ink); color: rgba(255,255,255,.5); padding: 36px 60px
   <div class="modal-backdrop" data-close-settings></div>
   <div class="modal-panel">
     <h3 class="modal-title">Teacher Settings</h3>
-    <p class="modal-sub">Only visible in Teacher Mode. Use this to control Google Sheets registration logging.</p>
+    <p class="modal-sub">Only visible in Teacher Mode. Route registrations to a dedicated endpoint, separate from response logging.</p>
     <div class="form-grid">
+      <label for="registrationEndpoint">Registration endpoint URL (optional, recommended)</label>
+      <input id="registrationEndpoint" placeholder="https://script.google.com/macros/s/.../exec">
+      <label for="registrationSecret">Registration secret (optional)</label>
+      <input id="registrationSecret" placeholder="Stored locally">
       <label for="sheetsEndpoint">Sheets endpoint URL</label>
       <input id="sheetsEndpoint" placeholder="https://script.google.com/macros/s/.../exec">
       <label for="sheetsSecret">Sheets secret (optional)</label>
@@ -808,7 +812,9 @@ const LS = {
   teacherUnlocked: 'dl_teacher_unlocked',
   teacherPin: 'dl_teacher_pin',
   sheetsEndpoint: 'dl_sheets_endpoint',
-  sheetsSecret: 'dl_sheets_secret'
+  sheetsSecret: 'dl_sheets_secret',
+  registrationEndpoint: 'dl_registration_endpoint',
+  registrationSecret: 'dl_registration_secret'
 };
 const LEGACY_SETTINGS_KEY = 'decision-lab-settings-v1';
 const LEGACY_TEACHER_KEY = 'decision-lab-teacher-mode';
@@ -822,6 +828,8 @@ const registerForm = document.getElementById('registerForm');
 const registerStatus = document.getElementById('registerStatus');
 const sheetsEndpointInput = document.getElementById('sheetsEndpoint');
 const sheetsSecretInput = document.getElementById('sheetsSecret');
+const registrationEndpointInput = document.getElementById('registrationEndpoint');
+const registrationSecretInput = document.getElementById('registrationSecret');
 const teacherPinInput = document.getElementById('teacherPin');
 
 function getTeacherPin() {
@@ -875,8 +883,18 @@ const secretFromStorage =
   localStorage.getItem(LS.sheetsSecret)
   || (legacySettings && legacySettings.sheetsSecret)
   || '';
+const registrationEndpointFromStorage =
+  localStorage.getItem(LS.registrationEndpoint)
+  || (legacySettings && (legacySettings.registrationEndpoint || legacySettings.registerEndpoint))
+  || '';
+const registrationSecretFromStorage =
+  localStorage.getItem(LS.registrationSecret)
+  || (legacySettings && (legacySettings.registrationSecret || legacySettings.registerSecret))
+  || '';
 sheetsEndpointInput.value = endpointFromStorage;
 sheetsSecretInput.value = secretFromStorage;
+registrationEndpointInput.value = registrationEndpointFromStorage;
+registrationSecretInput.value = registrationSecretFromStorage;
 teacherPinInput.value = getTeacherPin();
 if (localStorage.getItem(LEGACY_TEACHER_KEY) === 'true') {
   setTeacherUnlocked(true);
@@ -902,9 +920,13 @@ document.querySelector('[data-close-settings]').addEventListener('click', () => 
 document.getElementById('settingsSaveBtn').addEventListener('click', () => {
   localStorage.setItem(LS.sheetsEndpoint, sheetsEndpointInput.value.trim());
   localStorage.setItem(LS.sheetsSecret, sheetsSecretInput.value.trim());
+  localStorage.setItem(LS.registrationEndpoint, registrationEndpointInput.value.trim());
+  localStorage.setItem(LS.registrationSecret, registrationSecretInput.value.trim());
   if (legacySettings) {
     legacySettings.sheetsEndpoint = sheetsEndpointInput.value.trim();
     legacySettings.sheetsSecret = sheetsSecretInput.value.trim();
+    legacySettings.registrationEndpoint = registrationEndpointInput.value.trim();
+    legacySettings.registrationSecret = registrationSecretInput.value.trim();
     localStorage.setItem(LEGACY_SETTINGS_KEY, JSON.stringify(legacySettings));
   }
   const newPin = teacherPinInput.value.trim();
@@ -928,6 +950,8 @@ registerForm.addEventListener('submit', async (e) => {
   const formData = new FormData(registerForm);
   const payload = {
     type: 'registration',
+    event: 'registration',
+    form: 'register_now',
     name: String(formData.get('name') || '').trim(),
     email: String(formData.get('email') || '').trim(),
     phone: String(formData.get('phone') || '').trim(),
@@ -935,17 +959,30 @@ registerForm.addEventListener('submit', async (e) => {
     notes: String(formData.get('notes') || '').trim(),
     timestamp: new Date().toISOString()
   };
+  // Backward-compatible fields for older Apps Script handlers.
+  payload.participant_name = payload.name;
+  payload.role_or_level = payload.group;
+  payload.age = '';
+  payload.scenario_title = 'Registration Interest';
+  payload.choice = 'Register Now';
+  payload.tool = payload.email;
+  payload.concept = payload.phone;
+  payload.why = payload.notes;
   if (!payload.name || !payload.email || !payload.group) {
     showStatus('Please complete name, email, and best fit.', true);
     return;
   }
-  const endpoint = localStorage.getItem(LS.sheetsEndpoint);
-  const secret = localStorage.getItem(LS.sheetsSecret);
+  const endpoint =
+    localStorage.getItem(LS.registrationEndpoint)
+    || localStorage.getItem(LS.sheetsEndpoint);
+  const secret =
+    localStorage.getItem(LS.registrationSecret)
+    || localStorage.getItem(LS.sheetsSecret);
   if (!endpoint) {
     const queue = JSON.parse(localStorage.getItem('dl_registration_queue') || '[]');
     queue.push(payload);
     localStorage.setItem('dl_registration_queue', JSON.stringify(queue));
-    showStatus('Saved locally. Add Sheets endpoint in Teacher Settings to sync.', false);
+    showStatus('Saved locally. Add a Registration endpoint (or Sheets endpoint) in Teacher Settings to sync.', false);
     return;
   }
   if (secret) {
@@ -975,12 +1012,17 @@ const linkTargets = [
   '.phase', '.scenario-box', '.award-pill', '.rubric-table tbody tr'
 ];
 document.querySelectorAll(linkTargets.join(',')).forEach((el) => {
+  const normalizeText = (node) => (
+    String((node && (node.innerText || node.textContent)) || '')
+      .replace(/\s+/g, ' ')
+      .trim()
+  );
   const titleEl =
     el.querySelector('.pillar-title, .module-title, .ctx-name, .lit-name, .phase-name, .a-name, .theory-title, .impl-title, .eval-goal, .wk-text, .j-prompt, .t-text, .cq-card p, .rat-title, .spiral-item strong')
     || el;
-  const rawTitle = (titleEl.textContent || '').trim().slice(0, 90) || 'Detail';
+  const rawTitle = normalizeText(titleEl).slice(0, 90) || 'Detail';
   const section = el.closest('section')?.id || 'overview';
-  const summary = (el.textContent || '').trim().slice(0, 700);
+  const summary = normalizeText(el).slice(0, 700);
   el.classList.add('card-link');
   el.setAttribute('tabindex', '0');
   const openDetail = () => {
