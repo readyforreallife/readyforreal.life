@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern Manners Detail</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0e1118;
+  --paper: #f6f3ec;
+  --slate: #253044;
+  --gold: #c49540;
+  --rule: #ddd7cc;
+  --white: #ffffff;
+  --muted: #697080;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { font-family: 'DM Sans', sans-serif; background: var(--paper); color: var(--ink); }
+.wrap { max-width: 940px; margin: 0 auto; padding: 34px 18px 64px; }
+.top { display: flex; align-items: center; gap: 10px; margin-bottom: 20px; }
+.back {
+  border: 1px solid var(--rule);
+  background: var(--white);
+  border-radius: 999px;
+  color: var(--slate);
+  font-weight: 600;
+  padding: 8px 14px;
+  cursor: pointer;
+}
+.meta { font-family: 'DM Mono', monospace; text-transform: uppercase; letter-spacing: .12em; font-size: 10px; color: var(--muted); }
+.card {
+  border: 1px solid var(--rule);
+  background: var(--white);
+  border-radius: 16px;
+  padding: 24px;
+  box-shadow: 0 14px 32px rgba(0, 0, 0, .06);
+}
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 4vw, 2.4rem);
+  line-height: 1.2;
+  color: var(--slate);
+  margin-bottom: 8px;
+}
+.desc { color: var(--ink); line-height: 1.75; font-size: 15px; }
+.cta {
+  margin-top: 16px;
+  display: inline-flex;
+  border: 1px solid var(--gold);
+  color: var(--slate);
+  border-radius: 999px;
+  text-decoration: none;
+  padding: 8px 14px;
+  font-weight: 600;
+}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <button class="back" type="button" onclick="window.location.href='index.html'">Back to Curriculum</button>
+      <div class="meta" id="sectionMeta">Section</div>
+    </div>
+    <article class="card">
+      <h1 id="title">Detail</h1>
+      <p class="desc" id="summary">Select a card from the curriculum homepage to open its detail view here.</p>
+      <a class="cta" href="index.html">Return to Home</a>
+    </article>
+  </div>
+<script>
+const params = new URLSearchParams(window.location.search);
+const title = params.get('title');
+const section = params.get('section');
+const summary = params.get('summary');
+if (title) {
+  document.getElementById('title').textContent = title;
+  document.title = title + ' | Modern Manners';
+}
+if (section) {
+  document.getElementById('sectionMeta').textContent = section.replace(/-/g, ' ');
+}
+if (summary) {
+  document.getElementById('summary').textContent = summary;
+}
+</script>
+</body>
+</html>

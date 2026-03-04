@@ -266,6 +266,88 @@ footer { background: var(--ink); color: rgba(255,255,255,.5); padding: 36px 60px
 .fade { opacity: 0; transform: translateY(20px); transition: opacity .5s ease, transform .5s ease; }
 .fade.in { opacity: 1; transform: translateY(0); }
 
+.utility-bar {
+  position: sticky;
+  top: 48px;
+  z-index: 95;
+  background: rgba(246, 243, 236, 0.92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.util-btn {
+  border: 1px solid var(--rule);
+  background: var(--white);
+  color: var(--slate);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.util-btn.primary { background: var(--slate); color: #fff; border-color: var(--slate); }
+.util-btn.locked { background: var(--gold-lt); border-color: var(--gold); }
+
+.card-link { cursor: pointer; }
+.card-link:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+.modal.open { display: flex; }
+.modal-backdrop { position: absolute; inset: 0; background: rgba(14, 17, 24, 0.55); }
+.modal-panel {
+  position: relative;
+  width: min(680px, 96vw);
+  max-height: 90vh;
+  overflow: auto;
+  background: var(--paper);
+  border-radius: 16px;
+  border: 1px solid var(--rule);
+  padding: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  color: var(--slate);
+  font-size: 1.7rem;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.modal-sub { color: var(--muted); margin-bottom: 16px; }
+.form-grid { display: grid; gap: 10px; }
+.form-grid label { font-weight: 600; color: var(--slate); font-size: 13px; }
+.form-grid input, .form-grid select, .form-grid textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 14px;
+}
+.modal-actions { margin-top: 16px; display: flex; justify-content: flex-end; gap: 8px; }
+.form-status {
+  margin-top: 10px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--slate);
+  background: var(--white);
+  display: none;
+}
+.form-status.show { display: block; }
+
 @media (max-width: 900px) {
   .section, .hero { padding: 40px 24px; }
   .inst-strip { padding: 24px; }
@@ -278,6 +360,7 @@ footer { background: var(--ink); color: rgba(255,255,255,.5); padding: 36px 60px
   .eval-row { grid-template-columns: 1fr; }
   footer { grid-template-columns: 1fr; }
   .footer-refs { text-align: left; }
+  .utility-bar { top: 44px; justify-content: center; flex-wrap: wrap; }
 }
 </style>
 </head>
@@ -295,14 +378,19 @@ footer { background: var(--ink); color: rgba(255,255,255,.5); padding: 36px 60px
   <a href="#theory">Theory</a>
   <a href="#implementation">Implementation</a>
 </nav>
+<div class="utility-bar">
+  <button class="util-btn primary" id="registerBtn" type="button">Register Now</button>
+  <button class="util-btn locked" id="teacherToggle" type="button">Teacher Mode: Locked</button>
+  <button class="util-btn" id="settingsBtn" type="button" style="display:none;">Settings</button>
+</div>
 
 <!-- HERO -->
 <header class="hero" id="overview">
   <div class="hero-layout">
     <div>
-      <p class="hero-eyebrow">Curriculum Master Plan · EDUC 565 · Tooele County School District Proposal</p>
+      <p class="hero-eyebrow">Modern Manners &amp; Mental Fortitude · Real-World Life Skills Program</p>
       <h1><em>Modern Manners</em><br>&amp; Mental Fortitude</h1>
-      <p class="hero-tagline">Life Prep for High Schoolers — Grades 9–12 · One Semester Elective · 0.5 Credit</p>
+      <p class="hero-tagline">For Grades 9-12 through Adult Interest · Individuals, Couples, Families, Educators · Private Classes, Group Workshops, and Online Mentoring</p>
       <div class="hero-chips">
         <div class="chip"><strong>16 Weeks</strong> · 2 sessions / week</div>
         <div class="chip">Class size <strong>20–25 students</strong></div>
@@ -324,11 +412,11 @@ footer { background: var(--ink); color: rgba(255,255,255,.5); padding: 36px 60px
   <div class="inst-avatar">👤</div>
   <div>
     <div class="inst-name">Michael R. Terry</div>
-    <div class="inst-titles">Sergeant, Utah Highway Patrol · Nearly 20 Years in Law Enforcement · MAT Candidate, Columbia College of Missouri (Dec 2026) · Published Author · Spanish Proficient</div>
+    <div class="inst-titles">Founder, Modern Manners &amp; Mental Fortitude · Public Service Leader · Curriculum Designer · Published Author · Community Presenter · Spanish Proficient</div>
   </div>
   <div class="inst-awards">
     <div class="award-pill"><strong>KDP Honor Society</strong>Top 10% of Education Students · Feb 2026</div>
-    <div class="award-pill"><strong>MLK Community Service Award</strong>Columbia College · Jan 2026</div>
+    <div class="award-pill"><strong>MLK Community Service Award</strong>Community Leadership Recognition · Jan 2026</div>
     <div class="award-pill"><strong>CCAA Scholar</strong>1 of 12 Selected Nationally · Oct 2025</div>
     <div class="award-pill"><strong>POST Council Approved</strong>Statewide CMP Implementation · UHP</div>
   </div>
@@ -638,9 +726,9 @@ footer { background: var(--ink); color: rgba(255,255,255,.5); padding: 36px 60px
   <div>
     <div class="footer-name">Michael R. Terry</div>
     <div class="footer-meta">
-      Sergeant, Utah Highway Patrol · MAT Candidate, Columbia College of Missouri (Dec 2026)<br>
+      Founder, Modern Manners &amp; Mental Fortitude · Program Designer &amp; Instructor<br>
       Tooele, Utah · mikeyterry44@gmail.com · (435) 840-1896<br>
-      EDUC 565 · Advanced Application Learning Science · Dr. Lindsay Zeiter · Spring 2026
+      Curriculum Design · Youth, Adult, Family &amp; Educator Programs · Real-World Decision Training
     </div>
   </div>
   <div class="footer-refs">
@@ -650,6 +738,59 @@ footer { background: var(--ink); color: rgba(255,255,255,.5); padding: 36px 60px
     Utah State Board of Education (2023)
   </div>
 </footer>
+
+<div class="modal" id="registerModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-register></div>
+  <div class="modal-panel">
+    <h3 class="modal-title">Register for Future Classes</h3>
+    <p class="modal-sub">Leave your info and I will contact you when class dates and locations are posted.</p>
+    <form id="registerForm" novalidate>
+      <div class="form-grid">
+        <label for="regName">Full name</label>
+        <input id="regName" name="name" required>
+        <label for="regEmail">Email</label>
+        <input id="regEmail" name="email" type="email" required>
+        <label for="regPhone">Phone (optional)</label>
+        <input id="regPhone" name="phone">
+        <label for="regGroup">Best fit</label>
+        <select id="regGroup" name="group" required>
+          <option value="">Select one</option>
+          <option>Youth</option>
+          <option>Adult</option>
+          <option>Family</option>
+          <option>Educator</option>
+        </select>
+        <label for="regNotes">Notes (optional)</label>
+        <textarea id="regNotes" name="notes" rows="3"></textarea>
+      </div>
+      <div id="registerStatus" class="form-status"></div>
+      <div class="modal-actions">
+        <button class="util-btn" type="button" id="registerCloseBtn">Close</button>
+        <button class="util-btn primary" type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal" id="settingsModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-settings></div>
+  <div class="modal-panel">
+    <h3 class="modal-title">Teacher Settings</h3>
+    <p class="modal-sub">Only visible in Teacher Mode. Use this to control Google Sheets registration logging.</p>
+    <div class="form-grid">
+      <label for="sheetsEndpoint">Sheets endpoint URL</label>
+      <input id="sheetsEndpoint" placeholder="https://script.google.com/macros/s/.../exec">
+      <label for="sheetsSecret">Sheets secret (optional)</label>
+      <input id="sheetsSecret" placeholder="Stored locally">
+      <label for="teacherPin">Teacher PIN</label>
+      <input id="teacherPin" type="password" value="4429">
+    </div>
+    <div class="modal-actions">
+      <button class="util-btn" type="button" id="settingsCloseBtn">Close</button>
+      <button class="util-btn primary" type="button" id="settingsSaveBtn">Save</button>
+    </div>
+  </div>
+</div>
 
 <script>
 const observer = new IntersectionObserver(entries => {
@@ -662,6 +803,201 @@ const observer = new IntersectionObserver(entries => {
   });
 }, { threshold: 0.06 });
 document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+
+const LS = {
+  teacherUnlocked: 'dl_teacher_unlocked',
+  teacherPin: 'dl_teacher_pin',
+  sheetsEndpoint: 'dl_sheets_endpoint',
+  sheetsSecret: 'dl_sheets_secret'
+};
+const LEGACY_SETTINGS_KEY = 'decision-lab-settings-v1';
+const LEGACY_TEACHER_KEY = 'decision-lab-teacher-mode';
+
+const teacherToggle = document.getElementById('teacherToggle');
+const settingsBtn = document.getElementById('settingsBtn');
+const registerBtn = document.getElementById('registerBtn');
+const registerModal = document.getElementById('registerModal');
+const settingsModal = document.getElementById('settingsModal');
+const registerForm = document.getElementById('registerForm');
+const registerStatus = document.getElementById('registerStatus');
+const sheetsEndpointInput = document.getElementById('sheetsEndpoint');
+const sheetsSecretInput = document.getElementById('sheetsSecret');
+const teacherPinInput = document.getElementById('teacherPin');
+
+function getTeacherPin() {
+  return localStorage.getItem(LS.teacherPin) || '4429';
+}
+
+function isTeacherUnlocked() {
+  return localStorage.getItem(LS.teacherUnlocked) === '1';
+}
+
+function setTeacherUnlocked(v) {
+  localStorage.setItem(LS.teacherUnlocked, v ? '1' : '0');
+  localStorage.setItem(LEGACY_TEACHER_KEY, v ? 'true' : 'false');
+  teacherToggle.textContent = v ? 'Teacher Mode: Unlocked' : 'Teacher Mode: Locked';
+  teacherToggle.classList.toggle('locked', !v);
+  settingsBtn.style.display = v ? 'inline-flex' : 'none';
+}
+
+function openModal(modalEl) {
+  modalEl.classList.add('open');
+  modalEl.setAttribute('aria-hidden', 'false');
+}
+
+function closeModal(modalEl) {
+  modalEl.classList.remove('open');
+  modalEl.setAttribute('aria-hidden', 'true');
+}
+
+function showStatus(text, isError) {
+  registerStatus.textContent = text;
+  registerStatus.classList.add('show');
+  registerStatus.style.borderColor = isError ? '#b0432e' : '#ddd7cc';
+  registerStatus.style.color = isError ? '#b0432e' : '#253044';
+}
+
+setTeacherUnlocked(isTeacherUnlocked());
+const legacySettingsRaw = localStorage.getItem(LEGACY_SETTINGS_KEY);
+let legacySettings = null;
+if (legacySettingsRaw) {
+  try {
+    legacySettings = JSON.parse(legacySettingsRaw);
+  } catch (_err) {
+    legacySettings = null;
+  }
+}
+const endpointFromStorage =
+  localStorage.getItem(LS.sheetsEndpoint)
+  || (legacySettings && legacySettings.sheetsEndpoint)
+  || '';
+const secretFromStorage =
+  localStorage.getItem(LS.sheetsSecret)
+  || (legacySettings && legacySettings.sheetsSecret)
+  || '';
+sheetsEndpointInput.value = endpointFromStorage;
+sheetsSecretInput.value = secretFromStorage;
+teacherPinInput.value = getTeacherPin();
+if (localStorage.getItem(LEGACY_TEACHER_KEY) === 'true') {
+  setTeacherUnlocked(true);
+}
+
+teacherToggle.addEventListener('click', () => {
+  if (isTeacherUnlocked()) {
+    setTeacherUnlocked(false);
+    return;
+  }
+  const entered = window.prompt('Enter Teacher PIN');
+  if (entered === null) return;
+  if (entered === getTeacherPin()) {
+    setTeacherUnlocked(true);
+  } else {
+    window.alert('Incorrect PIN.');
+  }
+});
+
+settingsBtn.addEventListener('click', () => openModal(settingsModal));
+document.getElementById('settingsCloseBtn').addEventListener('click', () => closeModal(settingsModal));
+document.querySelector('[data-close-settings]').addEventListener('click', () => closeModal(settingsModal));
+document.getElementById('settingsSaveBtn').addEventListener('click', () => {
+  localStorage.setItem(LS.sheetsEndpoint, sheetsEndpointInput.value.trim());
+  localStorage.setItem(LS.sheetsSecret, sheetsSecretInput.value.trim());
+  if (legacySettings) {
+    legacySettings.sheetsEndpoint = sheetsEndpointInput.value.trim();
+    legacySettings.sheetsSecret = sheetsSecretInput.value.trim();
+    localStorage.setItem(LEGACY_SETTINGS_KEY, JSON.stringify(legacySettings));
+  }
+  const newPin = teacherPinInput.value.trim();
+  if (newPin) {
+    localStorage.setItem(LS.teacherPin, newPin);
+  }
+  closeModal(settingsModal);
+  window.alert('Settings saved.');
+});
+
+registerBtn.addEventListener('click', () => {
+  registerStatus.classList.remove('show');
+  registerForm.reset();
+  openModal(registerModal);
+});
+document.getElementById('registerCloseBtn').addEventListener('click', () => closeModal(registerModal));
+document.querySelector('[data-close-register]').addEventListener('click', () => closeModal(registerModal));
+
+registerForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  const formData = new FormData(registerForm);
+  const payload = {
+    type: 'registration',
+    name: String(formData.get('name') || '').trim(),
+    email: String(formData.get('email') || '').trim(),
+    phone: String(formData.get('phone') || '').trim(),
+    group: String(formData.get('group') || '').trim(),
+    notes: String(formData.get('notes') || '').trim(),
+    timestamp: new Date().toISOString()
+  };
+  if (!payload.name || !payload.email || !payload.group) {
+    showStatus('Please complete name, email, and best fit.', true);
+    return;
+  }
+  const endpoint = localStorage.getItem(LS.sheetsEndpoint);
+  const secret = localStorage.getItem(LS.sheetsSecret);
+  if (!endpoint) {
+    const queue = JSON.parse(localStorage.getItem('dl_registration_queue') || '[]');
+    queue.push(payload);
+    localStorage.setItem('dl_registration_queue', JSON.stringify(queue));
+    showStatus('Saved locally. Add Sheets endpoint in Teacher Settings to sync.', false);
+    return;
+  }
+  if (secret) {
+    payload.secret = secret;
+  }
+  try {
+    await fetch(endpoint, {
+      method: 'POST',
+      mode: 'no-cors',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    });
+    showStatus('Submitted. Thank you.', false);
+    setTimeout(() => closeModal(registerModal), 900);
+  } catch (_err) {
+    const queue = JSON.parse(localStorage.getItem('dl_registration_queue') || '[]');
+    queue.push(payload);
+    localStorage.setItem('dl_registration_queue', JSON.stringify(queue));
+    showStatus('Could not submit. Saved locally to retry later.', true);
+  }
+});
+
+const linkTargets = [
+  '.pillar', '.module-card', '.t-row', '.ctx-card', '.lit-card', '.wk',
+  '.assess-row:not(.hdr)', '.theory-card', '.impl-card', '.j-card',
+  '.budget-card', '.eval-row', '.cq-card', '.rat-cell', '.spiral-item',
+  '.phase', '.scenario-box', '.award-pill', '.rubric-table tbody tr'
+];
+document.querySelectorAll(linkTargets.join(',')).forEach((el) => {
+  const titleEl =
+    el.querySelector('.pillar-title, .module-title, .ctx-name, .lit-name, .phase-name, .a-name, .theory-title, .impl-title, .eval-goal, .wk-text, .j-prompt, .t-text, .cq-card p, .rat-title, .spiral-item strong')
+    || el;
+  const rawTitle = (titleEl.textContent || '').trim().slice(0, 90) || 'Detail';
+  const section = el.closest('section')?.id || 'overview';
+  const summary = (el.textContent || '').trim().slice(0, 700);
+  el.classList.add('card-link');
+  el.setAttribute('tabindex', '0');
+  const openDetail = () => {
+    const u = new URL('details.html', window.location.href);
+    u.searchParams.set('section', section);
+    u.searchParams.set('title', rawTitle);
+    u.searchParams.set('summary', summary);
+    window.location.href = u.toString();
+  };
+  el.addEventListener('click', openDetail);
+  el.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Enter' || evt.key === ' ') {
+      evt.preventDefault();
+      openDetail();
+    }
+  });
+});
 </script>
 </body>
 </html>
