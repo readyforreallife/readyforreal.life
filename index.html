@@ -400,7 +400,7 @@ footer { background: var(--ink); color: rgba(255,255,255,.5); padding: 36px 60px
         <div class="chip">Submitted <strong>August 2025</strong></div>
       </div>
     </div>
-    <div class="hero-badge">
+    <div class="hero-badge card-link" id="modulesBadge" tabindex="0" role="button" aria-label="Open module list">
       <span class="badge-num">5</span>
       <span class="badge-label">Modules</span>
       <div class="badge-sub">16-Week Semester</div>
@@ -1151,6 +1151,33 @@ document.querySelectorAll(linkTargets.join(',')).forEach((el) => {
     }
   });
 });
+
+const modulesBadge = document.getElementById('modulesBadge');
+if (modulesBadge) {
+  const openModuleList = () => {
+    const u = new URL('details.html', window.location.href);
+    u.searchParams.set('section', 'modules');
+    u.searchParams.set('title', '5 Modules · 16-Week Semester');
+    u.searchParams.set(
+      'summary',
+      [
+        'Module 1: Modern Manners',
+        'Module 2: Emotional Intelligence',
+        'Module 3: Conflict Navigation',
+        'Module 4: Digital Citizenship',
+        'Module 5: Personal Growth'
+      ].join('\n')
+    );
+    window.location.href = u.toString();
+  };
+  modulesBadge.addEventListener('click', openModuleList);
+  modulesBadge.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Enter' || evt.key === ' ') {
+      evt.preventDefault();
+      openModuleList();
+    }
+  });
+}
 </script>
 </body>
 </html>
