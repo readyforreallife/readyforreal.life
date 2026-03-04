@@ -817,6 +817,10 @@ const LS = {
   registrationSecret: 'dl_registration_secret'
 };
 const DEFAULT_REGISTRATION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzH2--hkA4ezway034VJ6AKK7AQlkiDkGn2rjQ1tP2PhaY25gOKX89cfJZ7fucx6yUH/exec';
+const FALLBACK_REGISTRATION_ENDPOINTS = [
+  'https://script.google.com/macros/s/AKfycby9WsQIZXATnaKbC4JeBNT4DRLzIDVXXWutlH01wW-CXg3aWcxxsZyKErNyrLRNaCmf/exec',
+  DEFAULT_REGISTRATION_ENDPOINT
+];
 const LEGACY_SETTINGS_KEY = 'decision-lab-settings-v1';
 const LEGACY_TEACHER_KEY = 'decision-lab-teacher-mode';
 
@@ -864,6 +868,34 @@ function showStatus(text, isError) {
   registerStatus.classList.add('show');
   registerStatus.style.borderColor = isError ? '#b0432e' : '#ddd7cc';
   registerStatus.style.color = isError ? '#b0432e' : '#253044';
+}
+
+async function trySubmitToEndpoint(url, payload, secret) {
+  if (!url) return false;
+  const outbound = { ...payload };
+  if (secret && !outbound.secret) outbound.secret = secret;
+  if (!outbound.secret) outbound.secret = '4429-DECISION-LAB';
+  const body = JSON.stringify(outbound);
+  const opts = {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body
+  };
+  try {
+    const res = await fetch(url, opts);
+    if (res.ok) return true;
+  } catch (_err) {}
+  try {
+    if (navigator.sendBeacon) {
+      const sent = navigator.sendBeacon(url, new Blob([body], { type: 'text/plain;charset=utf-8' }));
+      if (sent) return true;
+    }
+  } catch (_err) {}
+  try {
+    await fetch(url, { ...opts, mode: 'no-cors' });
+    return true;
+  } catch (_err) {}
+  return false;
 }
 
 setTeacherUnlocked(isTeacherUnlocked());
@@ -969,36 +1001,47 @@ registerForm.addEventListener('submit', async (e) => {
   payload.tool = payload.email;
   payload.concept = payload.phone;
   payload.why = payload.notes;
+  payload.full_name = payload.name;
+  payload.best_fit = payload.group;
+  payload.program = 'Modern Manners and Mental Fortitude';
+  payload.source = 'website-register-modal';
   if (!payload.name || !payload.email || !payload.group) {
     showStatus('Please complete name, email, and best fit.', true);
     return;
   }
-  const endpoint =
+  const primaryEndpoint =
     localStorage.getItem(LS.registrationEndpoint)
     || localStorage.getItem(LS.sheetsEndpoint)
     || DEFAULT_REGISTRATION_ENDPOINT;
   const secret =
     localStorage.getItem(LS.registrationSecret)
-    || localStorage.getItem(LS.sheetsSecret);
-  if (!endpoint) {
+    || localStorage.getItem(LS.sheetsSecret)
+    || '';
+  const endpointCandidates = [
+    primaryEndpoint,
+    ...FALLBACK_REGISTRATION_ENDPOINTS
+  ].filter(Boolean).filter((url, idx, arr) => arr.indexOf(url) === idx);
+  if (!endpointCandidates.length) {
     const queue = JSON.parse(localStorage.getItem('dl_registration_queue') || '[]');
     queue.push(payload);
     localStorage.setItem('dl_registration_queue', JSON.stringify(queue));
     showStatus('Saved locally. Add a Registration endpoint (or Sheets endpoint) in Teacher Settings to sync.', false);
     return;
   }
-  if (secret) {
-    payload.secret = secret;
-  }
   try {
-    await fetch(endpoint, {
-      method: 'POST',
-      mode: 'no-cors',
-      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
-      body: JSON.stringify(payload)
-    });
-    showStatus('Submitted. Thank you.', false);
-    setTimeout(() => closeModal(registerModal), 900);
+    let sent = false;
+    for (const url of endpointCandidates) {
+      // Try each configured endpoint until one accepts/dispatches.
+      // Apps Script deployments vary; this fallback avoids manual endpoint churn.
+      sent = await trySubmitToEndpoint(url, payload, secret);
+      if (sent) break;
+    }
+    if (sent) {
+      showStatus('Submitted. Thank you.', false);
+      setTimeout(() => closeModal(registerModal), 900);
+      return;
+    }
+    throw new Error('All endpoints failed');
   } catch (_err) {
     const queue = JSON.parse(localStorage.getItem('dl_registration_queue') || '[]');
     queue.push(payload);
