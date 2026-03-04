@@ -816,6 +816,7 @@ const LS = {
   registrationEndpoint: 'dl_registration_endpoint',
   registrationSecret: 'dl_registration_secret'
 };
+const DEFAULT_REGISTRATION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzH2--hkA4ezway034VJ6AKK7AQlkiDkGn2rjQ1tP2PhaY25gOKX89cfJZ7fucx6yUH/exec';
 const LEGACY_SETTINGS_KEY = 'decision-lab-settings-v1';
 const LEGACY_TEACHER_KEY = 'decision-lab-teacher-mode';
 
@@ -886,7 +887,7 @@ const secretFromStorage =
 const registrationEndpointFromStorage =
   localStorage.getItem(LS.registrationEndpoint)
   || (legacySettings && (legacySettings.registrationEndpoint || legacySettings.registerEndpoint))
-  || '';
+  || DEFAULT_REGISTRATION_ENDPOINT;
 const registrationSecretFromStorage =
   localStorage.getItem(LS.registrationSecret)
   || (legacySettings && (legacySettings.registrationSecret || legacySettings.registerSecret))
@@ -974,7 +975,8 @@ registerForm.addEventListener('submit', async (e) => {
   }
   const endpoint =
     localStorage.getItem(LS.registrationEndpoint)
-    || localStorage.getItem(LS.sheetsEndpoint);
+    || localStorage.getItem(LS.sheetsEndpoint)
+    || DEFAULT_REGISTRATION_ENDPOINT;
   const secret =
     localStorage.getItem(LS.registrationSecret)
     || localStorage.getItem(LS.sheetsSecret);
