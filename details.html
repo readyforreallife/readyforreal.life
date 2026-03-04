@@ -763,6 +763,86 @@ function getPack(sectionKey, titleText) {
   return pack;
 }
 
+function safeArray(a) {
+  return Array.isArray(a) ? a : [];
+}
+
+function extractKeywords(text) {
+  const stop = new Set([
+    'the','and','for','with','that','this','from','into','your','you','are','was','were','have','has','had',
+    'in','on','at','to','of','or','as','is','be','by','an','a','it','its','their','them','they','under','over',
+    'week','module','card','section','use','using','used','about'
+  ]);
+  return String(text || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter((w) => w && w.length > 3 && !stop.has(w))
+    .slice(0, 6);
+}
+
+function sentence(input, fallback) {
+  const txt = String(input || '').trim();
+  return txt || fallback;
+}
+
+function sectionLabel(sectionKey) {
+  return String(sectionKey || 'overview').replace(/-/g, ' ');
+}
+
+function buildCardSpecificPack(basePack, titleText, sectionKey, summaryText) {
+  const sectionName = sectionLabel(sectionKey);
+  const keywords = extractKeywords(summaryText);
+  const k1 = keywords[0] || 'decision quality';
+  const k2 = keywords[1] || 'self-regulation';
+  const k3 = keywords[2] || 'accountability';
+
+  const fallbackOutcomes = safeArray(basePack.outcomes);
+  const fallbackMoves = safeArray(basePack.moves);
+  const fallbackActivities = safeArray(basePack.activities);
+  const fallbackAssessment = safeArray(basePack.assessment);
+  const fallbackTransfer = safeArray(basePack.transfer);
+  const fallbackSupports = safeArray(basePack.supports);
+
+  return {
+    chips: [
+      `Card: ${titleText}`,
+      `Section: ${sectionName}`,
+      `Focus: ${k1}`
+    ],
+    outcomes: [
+      sentence(fallbackOutcomes[0], `Define mastery for "${titleText}" with observable behaviors in communication, judgment, and follow-through.`),
+      sentence(fallbackOutcomes[1], `Demonstrate skill transfer for "${titleText}" across school, home, workplace, and online contexts.`),
+      sentence(fallbackOutcomes[2], `Produce evidence-based reasoning tied to ${k1}, ${k2}, and long-view consequences.`)
+    ],
+    moves: [
+      sentence(fallbackMoves[0], `Model instructor thinking aloud for "${titleText}" so learners can see strategy selection in real time.`),
+      sentence(fallbackMoves[1], `Use guided prompts that convert the card context into practice decisions with clear trade-off analysis.`),
+      sentence(fallbackMoves[2], `Coach revision cycles where students improve first responses into high-quality, accountable responses.`)
+    ],
+    activities: [
+      sentence(fallbackActivities[0], `Run a role-play sequence centered on "${titleText}" with peer observation and debrief.`),
+      sentence(fallbackActivities[1], `Use a scenario lab where learners map options, likely outcomes, and second-order effects linked to ${k2}.`),
+      sentence(fallbackActivities[2], `Assign a reflection task: what decision was made, what changed, and how ${k3} was demonstrated.`)
+    ],
+    assessment: [
+      sentence(fallbackAssessment[0], `Formative evidence: brief checks for concept accuracy, regulation strategy use, and explanation clarity.`),
+      sentence(fallbackAssessment[1], `Performance evidence: applied response to "${titleText}" scored with rubric indicators.`),
+      sentence(fallbackAssessment[2], `Growth evidence: compare first attempt versus revised attempt for transfer quality and accountability.`)
+    ],
+    transfer: [
+      sentence(fallbackTransfer[0], `Transfer task: apply "${titleText}" to an unfamiliar context with time pressure and incomplete information.`),
+      sentence(fallbackTransfer[1], `Require explicit links between short-term choices and long-term trust, credibility, and opportunity.`),
+      sentence(fallbackTransfer[2], `Document how strategy use in this card can be used outside class in daily life and mentoring settings.`)
+    ],
+    supports: [
+      sentence(fallbackSupports[0], `Teacher support: use this card as a mini-lesson opener, practice cycle, and targeted reteach tool.`),
+      sentence(fallbackSupports[1], `Family support: provide one home discussion prompt tied to "${titleText}" and one reflection follow-up question.`),
+      sentence(fallbackSupports[2], `Program support: tag this card in your tracking sheet for trend analysis and targeted intervention planning.`)
+    ]
+  };
+}
+
 function renderList(id, items) {
   const el = document.getElementById(id);
   el.innerHTML = '';
@@ -809,7 +889,8 @@ if (summary) {
   document.getElementById('summary').textContent = summary;
 }
 
-const pack = getPack(section, title);
+const sectionPack = getPack(section, title);
+const pack = buildCardSpecificPack(sectionPack, title, section, summary || title);
 renderChips(pack.chips || []);
 renderList('outcomes', pack.outcomes || []);
 renderList('moves', pack.moves || []);
