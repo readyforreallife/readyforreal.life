@@ -381,6 +381,7 @@ footer { background: var(--ink); color: rgba(255,255,255,.5); padding: 36px 60px
 <div class="utility-bar">
   <button class="util-btn primary" id="registerBtn" type="button">Register Now</button>
   <button class="util-btn locked" id="teacherToggle" type="button">Teacher Mode: Locked</button>
+  <button class="util-btn" id="sheetsTabBtn" type="button" style="display:none;">Sheets</button>
   <button class="util-btn" id="settingsBtn" type="button" style="display:none;">Settings</button>
 </div>
 
@@ -782,6 +783,8 @@ footer { background: var(--ink); color: rgba(255,255,255,.5); padding: 36px 60px
       <input id="registrationEndpoint" placeholder="https://script.google.com/macros/s/.../exec">
       <label for="registrationSecret">Registration secret (optional)</label>
       <input id="registrationSecret" placeholder="Stored locally">
+      <label for="sheetsDashboardUrl">Google Sheets URL (Teacher tab)</label>
+      <input id="sheetsDashboardUrl" placeholder="https://docs.google.com/spreadsheets/d/...">
       <label for="sheetsEndpoint">Sheets endpoint URL</label>
       <input id="sheetsEndpoint" placeholder="https://script.google.com/macros/s/.../exec">
       <label for="sheetsSecret">Sheets secret (optional)</label>
@@ -814,9 +817,11 @@ const LS = {
   sheetsEndpoint: 'dl_sheets_endpoint',
   sheetsSecret: 'dl_sheets_secret',
   registrationEndpoint: 'dl_registration_endpoint',
-  registrationSecret: 'dl_registration_secret'
+  registrationSecret: 'dl_registration_secret',
+  sheetsDashboardUrl: 'dl_sheets_dashboard_url'
 };
 const DEFAULT_REGISTRATION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzH2--hkA4ezway034VJ6AKK7AQlkiDkGn2rjQ1tP2PhaY25gOKX89cfJZ7fucx6yUH/exec';
+const DEFAULT_SHEETS_DASHBOARD_URL = 'https://docs.google.com/spreadsheets/d/1yhgF2coWvUk3QKqN347kFGMv8pqFBz79BHWE8kphs_E/edit?gid=0#gid=0';
 const FALLBACK_REGISTRATION_ENDPOINTS = [
   'https://script.google.com/macros/s/AKfycby9WsQIZXATnaKbC4JeBNT4DRLzIDVXXWutlH01wW-CXg3aWcxxsZyKErNyrLRNaCmf/exec',
   DEFAULT_REGISTRATION_ENDPOINT
@@ -825,6 +830,7 @@ const LEGACY_SETTINGS_KEY = 'decision-lab-settings-v1';
 const LEGACY_TEACHER_KEY = 'decision-lab-teacher-mode';
 
 const teacherToggle = document.getElementById('teacherToggle');
+const sheetsTabBtn = document.getElementById('sheetsTabBtn');
 const settingsBtn = document.getElementById('settingsBtn');
 const registerBtn = document.getElementById('registerBtn');
 const registerModal = document.getElementById('registerModal');
@@ -834,6 +840,7 @@ const registerStatus = document.getElementById('registerStatus');
 const registerSubmitBtn = registerForm ? registerForm.querySelector('button[type="submit"]') : null;
 const sheetsEndpointInput = document.getElementById('sheetsEndpoint');
 const sheetsSecretInput = document.getElementById('sheetsSecret');
+const sheetsDashboardUrlInput = document.getElementById('sheetsDashboardUrl');
 const registrationEndpointInput = document.getElementById('registrationEndpoint');
 const registrationSecretInput = document.getElementById('registrationSecret');
 const teacherPinInput = document.getElementById('teacherPin');
@@ -852,6 +859,7 @@ function setTeacherUnlocked(v) {
   localStorage.setItem(LEGACY_TEACHER_KEY, v ? 'true' : 'false');
   teacherToggle.textContent = v ? 'Teacher Mode: Unlocked' : 'Teacher Mode: Locked';
   teacherToggle.classList.toggle('locked', !v);
+  sheetsTabBtn.style.display = v ? 'inline-flex' : 'none';
   settingsBtn.style.display = v ? 'inline-flex' : 'none';
 }
 
@@ -926,8 +934,12 @@ const registrationSecretFromStorage =
   localStorage.getItem(LS.registrationSecret)
   || (legacySettings && (legacySettings.registrationSecret || legacySettings.registerSecret))
   || '';
+const sheetsDashboardUrlFromStorage =
+  localStorage.getItem(LS.sheetsDashboardUrl)
+  || DEFAULT_SHEETS_DASHBOARD_URL;
 sheetsEndpointInput.value = endpointFromStorage;
 sheetsSecretInput.value = secretFromStorage;
+sheetsDashboardUrlInput.value = sheetsDashboardUrlFromStorage;
 registrationEndpointInput.value = registrationEndpointFromStorage;
 registrationSecretInput.value = registrationSecretFromStorage;
 teacherPinInput.value = getTeacherPin();
@@ -950,11 +962,17 @@ teacherToggle.addEventListener('click', () => {
 });
 
 settingsBtn.addEventListener('click', () => openModal(settingsModal));
+sheetsTabBtn.addEventListener('click', () => {
+  const url = (localStorage.getItem(LS.sheetsDashboardUrl) || DEFAULT_SHEETS_DASHBOARD_URL).trim();
+  if (!url) return;
+  window.location.href = url;
+});
 document.getElementById('settingsCloseBtn').addEventListener('click', () => closeModal(settingsModal));
 document.querySelector('[data-close-settings]').addEventListener('click', () => closeModal(settingsModal));
 document.getElementById('settingsSaveBtn').addEventListener('click', () => {
   localStorage.setItem(LS.sheetsEndpoint, sheetsEndpointInput.value.trim());
   localStorage.setItem(LS.sheetsSecret, sheetsSecretInput.value.trim());
+  localStorage.setItem(LS.sheetsDashboardUrl, sheetsDashboardUrlInput.value.trim());
   localStorage.setItem(LS.registrationEndpoint, registrationEndpointInput.value.trim());
   localStorage.setItem(LS.registrationSecret, registrationSecretInput.value.trim());
   if (legacySettings) {
