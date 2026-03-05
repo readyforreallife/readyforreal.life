@@ -108,6 +108,8 @@ h1 {
   font-weight: 600;
   padding: 5px 12px;
 }
+.chip.clickable { cursor: pointer; }
+.chip.clickable:hover { background: rgba(255,255,255,.20); }
 .grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -140,6 +142,9 @@ h1 {
   font-size: 14px;
   line-height: 1.6;
 }
+.item.clickable { cursor: pointer; transition: transform .12s ease, box-shadow .12s ease; }
+.item.clickable:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+.item.clickable:focus-visible { outline: 3px solid rgba(200,152,68,.45); outline-offset: 2px; }
 .item strong { color: var(--slate); }
 .docs {
   display: grid;
@@ -163,6 +168,64 @@ h1 {
   font-size: 13px;
 }
 .teacher-only { display: none; }
+.detail-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 25, .45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 9999;
+}
+.detail-panel {
+  width: min(860px, 100%);
+  max-height: 86vh;
+  overflow: auto;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 18px;
+}
+.detail-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.detail-title {
+  font-family: 'Playfair Display', serif;
+  color: var(--slate);
+  font-size: 1.4rem;
+  line-height: 1.25;
+}
+.detail-kicker {
+  font-family: 'DM Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.detail-close {
+  border: 1px solid var(--rule);
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 700;
+  color: var(--slate);
+  cursor: pointer;
+}
+.detail-sections { display: grid; gap: 10px; }
+.detail-box {
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: #faf8f2;
+  padding: 10px 12px;
+}
+.detail-box h3 { margin-bottom: 6px; font-size: 14px; color: var(--slate); }
+.detail-box p { margin: 0; font-size: 14px; color: #1f2533; line-height: 1.6; }
 @media (max-width: 900px) {
   .grid, .docs { grid-template-columns: 1fr; }
 }
@@ -212,6 +275,32 @@ h1 {
         <div class="docs" id="resources"></div>
         <p class="note">These links open within the same website tab and can be used as handouts for classes, board review, and curriculum implementation planning.</p>
       </section>
+    </div>
+  </div>
+
+  <div class="detail-modal" id="detailModal" aria-hidden="true">
+    <div class="detail-panel" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <div class="detail-top">
+        <div>
+          <div class="detail-kicker" id="detailKicker">Point Detail</div>
+          <h2 class="detail-title" id="detailTitle">Detail</h2>
+        </div>
+        <button class="detail-close" id="detailClose" type="button">Close</button>
+      </div>
+      <div class="detail-sections">
+        <div class="detail-box">
+          <h3>What This Means</h3>
+          <p id="detailMeaning"></p>
+        </div>
+        <div class="detail-box">
+          <h3>How This Came To Be</h3>
+          <p id="detailOrigin"></p>
+        </div>
+        <div class="detail-box">
+          <h3>How To Apply It</h3>
+          <p id="detailApply"></p>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -1978,8 +2067,17 @@ function renderList(id, items) {
   el.innerHTML = '';
   (items || []).forEach((txt) => {
     const div = document.createElement('div');
-    div.className = 'item';
+    div.className = 'item clickable';
+    div.setAttribute('tabindex', '0');
+    div.setAttribute('role', 'button');
     div.textContent = txt;
+    div.addEventListener('click', () => openPointDetail(id, txt));
+    div.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Enter' || evt.key === ' ') {
+        evt.preventDefault();
+        openPointDetail(id, txt);
+      }
+    });
     el.appendChild(div);
   });
 }
@@ -2006,10 +2104,74 @@ function renderChips(items) {
   el.innerHTML = '';
   (items || []).forEach((c) => {
     const chip = document.createElement('span');
-    chip.className = 'chip';
+    chip.className = 'chip clickable';
+    chip.setAttribute('tabindex', '0');
+    chip.setAttribute('role', 'button');
     chip.textContent = c;
+    chip.addEventListener('click', () => openPointDetail('chip', c));
+    chip.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Enter' || evt.key === ' ') {
+        evt.preventDefault();
+        openPointDetail('chip', c);
+      }
+    });
     el.appendChild(chip);
   });
+}
+
+const POINT_SECTION_LABELS = {
+  outcomes: 'Learning Targets',
+  moves: 'Instructional Moves',
+  activities: 'Practice and Activities',
+  assessment: 'Assessment Evidence',
+  transfer: 'Transfer and Real-World Application',
+  supports: 'Educator and Family Supports',
+  chip: 'Card Focus'
+};
+
+function originForTitle(titleText, sectionText) {
+  const t = String(titleText || '').toLowerCase();
+  if (t.includes('built from real experience')) return 'This point came from your public-service experience, youth mentorship work, and the corresponding rationale in your CMP narrative.';
+  if (t.includes('school & community')) return 'This point came from the school/community behavior demands outlined in your CMP context and transfer design sections.';
+  if (t.includes('workplace readiness')) return 'This point came from the workforce-readiness outcomes and implementation behaviors specified in your CMP framework.';
+  if (t.includes('digital & social media')) return 'This point came from the CMP emphasis on digital permanence, privacy, tone, and reputation consequences.';
+  if (t.includes('high-stress moments')) return 'This point came from the regulation-under-pressure progression and scenario sequence in your CMP.';
+  if (t.includes('post council approved')) return 'This point came from credential and approval evidence used in your district adoption packet and implementation narrative.';
+  if (sectionText === 'Assessment Evidence') return 'This point came from your formative/summative evidence model and rubric alignment decisions in the CMP.';
+  if (sectionText === 'Instructional Moves') return 'This point came from your explicit instruction + guided practice architecture in the module design.';
+  if (sectionText === 'Practice and Activities') return 'This point came from the scenario-roleplay practice system and paced transfer cycle.';
+  if (sectionText === 'Transfer and Real-World Application') return 'This point came from your dissimilar transfer target: independent use in unfamiliar, higher-stakes contexts.';
+  return 'This point came from your CMP design logic and was translated into this card as actionable instruction and evidence.';
+}
+
+function buildPointDetail(sectionId, pointText) {
+  const sectionText = POINT_SECTION_LABELS[sectionId] || 'Card Detail';
+  return {
+    sectionText,
+    meaning: `In ${sectionText}, this point means: ${pointText}`,
+    origin: originForTitle(title, sectionText),
+    apply: 'Use this in class by modeling it, then running a scenario where learners must demonstrate it and explain their response. For youth/adults/families, use the same point in a real-life reflection and next-step plan.'
+  };
+}
+
+function openPointDetail(sectionId, pointText) {
+  const modal = document.getElementById('detailModal');
+  if (!modal) return;
+  const d = buildPointDetail(sectionId, pointText);
+  document.getElementById('detailKicker').textContent = d.sectionText;
+  document.getElementById('detailTitle').textContent = pointText;
+  document.getElementById('detailMeaning').textContent = d.meaning;
+  document.getElementById('detailOrigin').textContent = d.origin;
+  document.getElementById('detailApply').textContent = d.apply;
+  modal.style.display = 'flex';
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function closePointDetail() {
+  const modal = document.getElementById('detailModal');
+  if (!modal) return;
+  modal.style.display = 'none';
+  modal.setAttribute('aria-hidden', 'true');
 }
 
 document.getElementById('title').textContent = title;
@@ -2048,6 +2210,18 @@ if (backToCurriculum) {
     window.location.href = 'index.html?restore=1';
   });
 }
+
+const detailClose = document.getElementById('detailClose');
+if (detailClose) detailClose.addEventListener('click', closePointDetail);
+const detailModal = document.getElementById('detailModal');
+if (detailModal) {
+  detailModal.addEventListener('click', (evt) => {
+    if (evt.target === detailModal) closePointDetail();
+  });
+}
+document.addEventListener('keydown', (evt) => {
+  if (evt.key === 'Escape') closePointDetail();
+});
 </script>
 </body>
 </html>
