@@ -289,15 +289,15 @@ h1 {
       </div>
       <div class="detail-sections">
         <div class="detail-box">
-          <h3>What This Means</h3>
+          <h3>What This Means for Learners</h3>
           <p id="detailMeaning"></p>
         </div>
         <div class="detail-box">
-          <h3>How This Came To Be</h3>
+          <h3>Why This Is in the Course</h3>
           <p id="detailOrigin"></p>
         </div>
         <div class="detail-box">
-          <h3>How To Apply It</h3>
+          <h3>How to Practice It</h3>
           <p id="detailApply"></p>
         </div>
       </div>
@@ -2131,26 +2131,26 @@ const POINT_SECTION_LABELS = {
 
 function originForTitle(titleText, sectionText) {
   const t = String(titleText || '').toLowerCase();
-  if (t.includes('built from real experience')) return 'This point came from your public-service experience, youth mentorship work, and the corresponding rationale in your CMP narrative.';
-  if (t.includes('school & community')) return 'This point came from the school/community behavior demands outlined in your CMP context and transfer design sections.';
-  if (t.includes('workplace readiness')) return 'This point came from the workforce-readiness outcomes and implementation behaviors specified in your CMP framework.';
-  if (t.includes('digital & social media')) return 'This point came from the CMP emphasis on digital permanence, privacy, tone, and reputation consequences.';
-  if (t.includes('high-stress moments')) return 'This point came from the regulation-under-pressure progression and scenario sequence in your CMP.';
-  if (t.includes('post council approved')) return 'This point came from credential and approval evidence used in your district adoption packet and implementation narrative.';
-  if (sectionText === 'Assessment Evidence') return 'This point came from your formative/summative evidence model and rubric alignment decisions in the CMP.';
-  if (sectionText === 'Instructional Moves') return 'This point came from your explicit instruction + guided practice architecture in the module design.';
-  if (sectionText === 'Practice and Activities') return 'This point came from the scenario-roleplay practice system and paced transfer cycle.';
-  if (sectionText === 'Transfer and Real-World Application') return 'This point came from your dissimilar transfer target: independent use in unfamiliar, higher-stakes contexts.';
-  return 'This point came from your CMP design logic and was translated into this card as actionable instruction and evidence.';
+  if (t.includes('built from real experience')) return 'This point is included because the course is grounded in real public-service, mentoring, and youth-support situations that were converted into teachable classroom practice.';
+  if (t.includes('school & community')) return 'This point is included because school and community settings require clear expectations for respect, communication, and accountability.';
+  if (t.includes('workplace readiness')) return 'This point is included because employability depends on professional communication, reliability, and coachability.';
+  if (t.includes('digital & social media')) return 'This point is included because digital decisions have permanent reputation and safety consequences.';
+  if (t.includes('high-stress moments')) return 'This point is included because decision quality drops under stress unless regulation tools are practiced in advance.';
+  if (t.includes('post council approved')) return 'This point is included to show standards alignment, implementation credibility, and quality expectations for the program.';
+  if (sectionText === 'Assessment Evidence') return 'This point is included to make learning measurable through clear formative and summative evidence.';
+  if (sectionText === 'Instructional Moves') return 'This point is included because direct instruction plus guided rehearsal produces stronger transfer outcomes.';
+  if (sectionText === 'Practice and Activities') return 'This point is included because repeated scenario practice builds confidence and real-world performance.';
+  if (sectionText === 'Transfer and Real-World Application') return 'This point is included to ensure learners can apply skills in unfamiliar, higher-stakes situations.';
+  return 'This point is included to connect course goals to practical behavior, evidence, and long-view outcomes.';
 }
 
 function buildPointDetail(sectionId, pointText) {
   const sectionText = POINT_SECTION_LABELS[sectionId] || 'Card Detail';
   return {
     sectionText,
-    meaning: `In ${sectionText}, this point means: ${pointText}`,
+    meaning: `${pointText}`,
     origin: originForTitle(title, sectionText),
-    apply: 'Use this in class by modeling it, then running a scenario where learners must demonstrate it and explain their response. For youth/adults/families, use the same point in a real-life reflection and next-step plan.'
+    apply: 'Practice this by running a realistic scenario, naming the decision options, choosing a response, and explaining the likely outcome. Then reflect on how to apply the same skill at school, home, work, or online.'
   };
 }
 
