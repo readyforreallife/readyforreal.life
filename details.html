@@ -1405,38 +1405,146 @@ const SPECIAL_CARD_PACKS = [
     }
   },
   {
-    test: (t) => /school & community|workplace readiness|digital & social media|high-stress moments/i.test(t),
+    test: (t) => /school & community/i.test(t),
     pack: {
-      chips: ['Context Card', 'Application Domain', 'Behavior Expectations'],
+      chips: ['Context: School & Community', 'Relationships', 'Reputation'],
       outcomes: [
-        'Define what high-quality behavior looks like in this context.',
-        'Apply core pillars with context-specific adjustments.',
-        'Evaluate consequences unique to this environment.'
+        'Demonstrate respectful communication with peers, teachers, and community adults.',
+        'Use conflict-repair language when misunderstandings happen in school/community settings.',
+        'Make choices that protect trust and school/community credibility.'
       ],
       moves: [
-        'Teach context cues and stakeholder expectations explicitly.',
-        'Use environment-specific role-plays and debriefs.',
-        'Compare same decision across multiple contexts.'
+        'Model hallway, classroom, and activity-based communication routines.',
+        'Teach disagreement scripts for peer conflict and authority interactions.',
+        'Debrief decisions using community impact and trust-restoration prompts.'
       ],
       activities: [
-        'Context scenario lab focused on this domain.',
-        'Audience-impact mapping for choices in this setting.',
-        'Boundary and response script rehearsal.'
+        'Campus scenario labs: class transitions, group work, and event conduct.',
+        'Community civility role-play with observers tracking tone and follow-through.',
+        'Repair-plan practice after simulated disrespect or rumor incidents.'
       ],
       assessment: [
-        'Responses scored for context fit and value consistency.',
-        'Observers track behavior alignment to domain expectations.',
-        'Reflection checks include environment-specific adjustments.'
+        'Rubric checks tone, listening, repair quality, and follow-through.',
+        'Scenario responses scored for respect and accountability in school contexts.',
+        'Reflection evidence documents how trust was maintained or restored.'
       ],
       transfer: [
-        'Improves adaptation without losing core values.',
-        'Reduces context-blind choices that damage trust.',
-        'Strengthens readiness for real settings outside class.'
+        'Applies directly to classrooms, teams, clubs, and neighborhood interactions.',
+        'Builds social credibility that supports long-term opportunities.',
+        'Strengthens community-connected behavior and leadership habits.'
       ],
       supports: [
-        'Context cue sheet.',
-        'Teacher prompt bank by environment.',
-        'Family/workplace discussion prompts.'
+        'School/community behavior cue sheet.',
+        'Teacher-family conversation prompts for peer conflict repair.',
+        'Facilitator checklist for school-based scenario coaching.'
+      ]
+    }
+  },
+  {
+    test: (t) => /workplace readiness/i.test(t),
+    pack: {
+      chips: ['Context: Workplace Readiness', 'Professional Habits', 'Team Reliability'],
+      outcomes: [
+        'Use workplace communication norms with supervisors, coworkers, and customers.',
+        'Respond to feedback professionally and adjust behavior without defensiveness.',
+        'Show reliability through punctuality, accountability, and follow-through.'
+      ],
+      moves: [
+        'Teach professional language for questions, clarification, and conflict.',
+        'Run supervisor-feedback simulations with response coaching.',
+        'Use consequence mapping for attendance, attitude, and task completion decisions.'
+      ],
+      activities: [
+        'Workplace role-plays: scheduling conflicts, team responsibilities, and service tone.',
+        'Interview and first-day communication drills.',
+        'Problem-solving rounds focused on ownership and repair after mistakes.'
+      ],
+      assessment: [
+        'Performance rubric scores professionalism, coachability, and reliability.',
+        'Observers track response quality during feedback simulations.',
+        'Reflection checks include short-term vs long-term career consequences.'
+      ],
+      transfer: [
+        'Supports job readiness for youth and adults in real employment settings.',
+        'Improves confidence in interviews, onboarding, and team interactions.',
+        'Builds professional reputation through consistent behavior under pressure.'
+      ],
+      supports: [
+        'Workplace communication phrase bank.',
+        'Supervisor feedback response checklist.',
+        'Family/mentor guide for career-readiness practice.'
+      ]
+    }
+  },
+  {
+    test: (t) => /digital & social media/i.test(t),
+    pack: {
+      chips: ['Context: Digital & Social Media', 'Digital Footprint', 'Online Judgment'],
+      outcomes: [
+        'Evaluate digital choices for privacy, permanence, and reputation impact.',
+        'Use respectful tone and boundary-aware communication online.',
+        'Apply a pause-plan routine before posting, sharing, or replying.'
+      ],
+      moves: [
+        'Teach post-before-you-post checks: audience, permanence, and consequence.',
+        'Model text/comment rewrites that shift reactive tone to responsible tone.',
+        'Debrief digital scenarios with legal, safety, and trust implications.'
+      ],
+      activities: [
+        'Digital dilemma simulations: group chats, screenshots, rumor sharing, and comments.',
+        'Reputation audit exercise for real-world online decision patterns.',
+        'Boundary-setting script practice for unwanted contact or pressure.'
+      ],
+      assessment: [
+        'Responses scored for digital judgment, boundary clarity, and consequence awareness.',
+        'Scenario work evaluated for tone quality and stakeholder impact.',
+        'Reflections document better choices for future online interactions.'
+      ],
+      transfer: [
+        'Applies to texting, social platforms, gaming chat, and shared media spaces.',
+        'Reduces impulsive digital behavior that damages trust and opportunity.',
+        'Strengthens long-view online reputation management.'
+      ],
+      supports: [
+        'Digital footprint checklist.',
+        'Parent/guardian conversation guide for online behavior.',
+        'Teacher prompt bank for social-media case debriefs.'
+      ]
+    }
+  },
+  {
+    test: (t) => /high-stress moments/i.test(t),
+    pack: {
+      chips: ['Context: High-Stress Moments', 'De-escalation', 'Composure Under Pressure'],
+      outcomes: [
+        'Recognize stress signals early and apply regulation before reacting.',
+        'Use de-escalation communication in emotionally charged interactions.',
+        'Maintain decision quality when urgency and pressure are high.'
+      ],
+      moves: [
+        'Teach stress-to-response routines with immediate coaching cues.',
+        'Use timed scenarios that require pause-label-reframe before choosing.',
+        'Debrief high-arousal moments with consequence and repair analysis.'
+      ],
+      activities: [
+        'Pressure simulation rounds with escalating social/emotional complexity.',
+        'Composure drills for conflict, embarrassment, and peer-pressure moments.',
+        'Recovery planning exercise after an impulsive decision scenario.'
+      ],
+      assessment: [
+        'Rubric checks regulation routine fidelity under pressure.',
+        'Performance evidence tracks escalation reduction and response quality.',
+        'Reflection compares reactive choice versus regulated choice outcomes.'
+      ],
+      transfer: [
+        'Applies to family conflict, school incidents, workplace stress, and public settings.',
+        'Builds safer and more intentional responses in real high-stakes moments.',
+        'Improves long-term trust by reducing impulsive harm.'
+      ],
+      supports: [
+        'High-stress response card for quick reference.',
+        'Coach prompts for de-escalation and reset language.',
+        'Family/mentor check-in protocol after difficult moments.'
       ]
     }
   },
