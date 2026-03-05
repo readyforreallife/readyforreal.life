@@ -357,7 +357,7 @@
       <div>
         <div class="name">Michael R. Terry</div>
         <div class="roles">Salt Lake City Metropolitan Area · <span class="sensitive-contact">(435) 840-1896</span> · <span class="sensitive-contact">mikeyterry44@gmail.com</span></div>
-        <div class="roles"><a href="https://www.linkedin.com/in/mike-terry-46618318b/">linkedin.com/in/mike-terry-46618318b</a> · <a href="https://instagram.com/readyforreal.life">instagram.com/readyforreal.life</a> · <a href="https://instagram.com/hearhim.daily">instagram.com/hearhim.daily</a></div>
+        <div class="roles"><a class="social-external" href="https://www.linkedin.com/in/mike-terry-46618318b/">linkedin.com/in/mike-terry-46618318b</a> · <a class="social-external" href="https://instagram.com/readyforreal.life">instagram.com/readyforreal.life</a> · <a class="social-external" href="https://instagram.com/hearhim.daily">instagram.com/hearhim.daily</a></div>
       </div>
       <a class="btn" href="#experience">Jump to Experience</a>
     </div>
@@ -643,6 +643,19 @@
       if (!document.body.classList.contains('preview-locked')) return;
       const k = evt.key.toLowerCase();
       if ((evt.metaKey || evt.ctrlKey) && (k === 'c' || k === 's' || k === 'p' || k === 'u')) evt.preventDefault();
+    });
+    document.querySelectorAll('.social-external').forEach((el) => {
+      el.addEventListener('click', (evt) => {
+        evt.preventDefault();
+        const url = el.getAttribute('href');
+        if (!url) return;
+        const popup = window.open(
+          url,
+          'rrlSocialWindow',
+          'popup=yes,width=1180,height=860,left=120,top=80,menubar=no,toolbar=yes,location=yes,status=yes,scrollbars=yes,resizable=yes'
+        );
+        if (!popup) window.location.href = url;
+      });
     });
   </script>
 </body>
