@@ -3,187 +3,329 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Michael R. Terry | Resume</title>
+  <title>Michael R. Terry | Resume Profile</title>
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
   <style>
     :root {
       --ink: #0e1118;
       --paper: #f6f3ec;
       --slate: #253044;
+      --slate2: #344159;
       --gold: #c49540;
       --gold-lt: #f2e4c0;
+      --gold-dim: #e8d198;
+      --teal: #1b6b6b;
+      --rust: #b0432e;
+      --sage: #456640;
       --muted: #697080;
       --rule: #ddd7cc;
-      --white: #fff;
+      --white: #ffffff;
     }
     * { box-sizing: border-box; margin: 0; padding: 0; }
-    body { background: var(--paper); color: var(--ink); font-family: "DM Sans", sans-serif; line-height: 1.6; }
-    nav { position: sticky; top: 0; z-index: 20; background: var(--slate); border-bottom: 3px solid var(--gold); display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; }
-    .brand { color: var(--gold); text-decoration: none; font-family: "DM Mono", monospace; letter-spacing: .12em; font-size: 11px; text-transform: uppercase; }
-    .home-link { color: #fff; text-decoration: none; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; padding: 6px 12px; font-size: 12px; }
-    .hero { background: linear-gradient(120deg, #1f2d47 0%, #253044 55%, #31445f 100%); color: #fff; padding: 48px 24px; }
-    .hero-wrap { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; }
-    .avatar { width: 88px; height: 88px; border-radius: 50%; overflow: hidden; border: 3px solid var(--gold); }
+    html { scroll-behavior: smooth; }
+    body { background: var(--paper); color: var(--ink); font-family: "DM Sans", sans-serif; font-size: 15px; line-height: 1.6; }
+    nav {
+      position: sticky; top: 0; z-index: 30; background: var(--slate); border-bottom: 3px solid var(--gold);
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 16px;
+    }
+    .brand {
+      color: var(--gold); text-decoration: none; font-family: "DM Mono", monospace; font-size: 10px;
+      letter-spacing: .14em; text-transform: uppercase; white-space: nowrap;
+    }
+    .nav-links { display: flex; flex-wrap: wrap; gap: 8px; }
+    .nav-links a {
+      color: rgba(255,255,255,.78); text-decoration: none; font-size: 11px; font-family: "DM Mono", monospace;
+      letter-spacing: .08em; text-transform: uppercase; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; padding: 6px 10px;
+    }
+    .hero {
+      background: var(--slate); color: white; padding: 62px 28px 54px; position: relative; overflow: hidden;
+      border-bottom: 1px solid rgba(255,255,255,.09);
+    }
+    .hero::before {
+      content: ""; position: absolute; width: 460px; height: 460px; right: -120px; top: -160px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(196,149,64,.19) 0%, transparent 70%);
+    }
+    .hero::after {
+      content: ""; position: absolute; width: 320px; height: 320px; left: 24%; bottom: -130px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(27,107,107,.2) 0%, transparent 70%);
+    }
+    .hero-wrap {
+      max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 30px; position: relative; z-index: 1;
+    }
+    .eyebrow {
+      font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px;
+    }
+    h1 { font-family: "Playfair Display", serif; font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.02; margin-bottom: 10px; }
+    h1 em { color: var(--gold); font-style: italic; }
+    .hero-sub { color: rgba(255,255,255,.75); font-size: 17px; margin-bottom: 22px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip {
+      background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.2); border-radius: 999px;
+      padding: 6px 12px; font-size: 12px; color: rgba(255,255,255,.83);
+    }
+    .chip strong { color: var(--gold); font-weight: 700; }
+    .hero-badge {
+      background: var(--gold); color: var(--slate); border-radius: 15px; min-width: 170px;
+      text-align: center; padding: 24px 20px; box-shadow: 0 14px 30px rgba(0,0,0,.2);
+    }
+    .hero-badge .num { display: block; font-family: "Playfair Display", serif; font-size: 2.8rem; line-height: 1; font-weight: 900; }
+    .hero-badge .txt { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: .85; font-weight: 700; }
+    .hero-badge .subtxt { margin-top: 6px; font-size: 12px; font-weight: 600; }
+
+    .profile-strip {
+      background: var(--gold-lt); border-top: 1px solid var(--gold-dim); border-bottom: 3px solid var(--gold-dim);
+      padding: 22px 28px; display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center;
+    }
+    .profile-wrap { max-width: 1160px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; }
+    .avatar { width: 74px; height: 74px; border-radius: 50%; border: 3px solid var(--gold); overflow: hidden; background: var(--slate); }
     .avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; display: block; }
-    h1 { font-family: "Playfair Display", serif; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; margin-bottom: 6px; }
-    .sub { color: rgba(255,255,255,.82); }
-    .meta { margin-top: 10px; font-size: 13px; color: rgba(255,255,255,.75); }
-    .meta a { color: var(--gold-lt); text-decoration: none; }
-    main { max-width: 1000px; margin: 0 auto; padding: 24px; }
-    .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
-    .card { background: var(--white); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; }
-    .card h2 { font-family: "Playfair Display", serif; font-size: 1.45rem; color: var(--slate); margin-bottom: 10px; }
-    .card p { color: #1f2532; }
-    .job { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--rule); }
-    .job:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
-    .role { font-weight: 700; color: var(--slate); }
-    .org { color: var(--muted); font-size: 14px; }
-    .date { color: var(--gold); font-family: "DM Mono", monospace; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
-    ul { margin: 8px 0 0 18px; }
-    li { margin-bottom: 6px; }
-    .twocol { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .name { font-family: "Playfair Display", serif; font-size: 1.55rem; color: var(--slate); line-height: 1.1; }
+    .roles { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .btn {
+      background: var(--slate); color: white; text-decoration: none; border-radius: 10px; padding: 11px 14px; font-size: 12px; font-weight: 700;
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .section { padding: 44px 28px; border-bottom: 1px solid var(--rule); }
+    .section.dark { background: var(--slate); color: white; }
+    .section.alt { background: var(--white); }
+    .container { max-width: 1160px; margin: 0 auto; }
+    .section-label {
+      font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 8px; color: var(--muted);
+    }
+    .section.dark .section-label { color: rgba(255,255,255,.45); }
+    .section-title { font-family: "Playfair Display", serif; font-size: clamp(1.6rem, 3vw, 2.3rem); line-height: 1.15; color: var(--slate); margin-bottom: 22px; }
+    .section.dark .section-title { color: white; }
+    .accent { color: var(--gold); }
+
+    .summary-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; }
+    .summary-main, .metric {
+      border-radius: 12px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.07); padding: 16px;
+    }
+    .summary-main p { color: rgba(255,255,255,.8); }
+    .metric .k { font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+    .metric .v { margin-top: 6px; font-family: "Playfair Display", serif; font-size: 1.7rem; color: var(--gold); line-height: 1; }
+    .metric .d { margin-top: 6px; font-size: 12px; color: rgba(255,255,255,.78); }
+
+    .cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .cards2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .card {
+      background: var(--white); border: 1px solid var(--rule); border-radius: 12px; padding: 16px;
+      border-top: 4px solid var(--gold);
+    }
+    .card h3 { font-family: "Playfair Display", serif; font-size: 1.1rem; color: var(--slate); margin-bottom: 4px; }
+    .meta { font-size: 12px; color: var(--muted); margin-bottom: 7px; }
+    .date { font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: 9px; }
+    .card ul { margin-left: 18px; }
+    .card li { margin-bottom: 6px; font-size: 13px; color: #2f384a; }
+
     .tags { display: flex; flex-wrap: wrap; gap: 8px; }
-    .tag { background: var(--gold-lt); color: #5b471d; border-radius: 999px; padding: 6px 10px; font-size: 12px; font-weight: 600; }
-    .actions { margin-top: 20px; }
-    .download { display: inline-block; background: var(--slate); color: #fff; text-decoration: none; border-radius: 10px; padding: 10px 14px; font-size: 13px; }
-    @media (min-width: 860px) {
-      .twocol { grid-template-columns: 1fr 1fr; }
+    .tag {
+      background: var(--gold-lt); color: #5b471d; border: 1px solid #e2cf9a; border-radius: 999px; padding: 6px 10px;
+      font-size: 12px; font-weight: 700;
+    }
+    .pub {
+      background: linear-gradient(135deg, #f9f4e8 0%, #f3e6c7 100%); border: 1px solid #ebd7a7; border-radius: 12px; padding: 18px;
+    }
+    .pub strong { font-family: "Playfair Display", serif; font-size: 1.2rem; color: var(--slate); display: block; }
+
+    @media (max-width: 980px) {
+      .hero-wrap { grid-template-columns: 1fr; }
+      .profile-wrap { grid-template-columns: auto 1fr; }
+      .profile-wrap .btn { grid-column: 1 / -1; width: fit-content; }
+      .summary-grid { grid-template-columns: 1fr; }
+      .cards3 { grid-template-columns: 1fr; }
+      .cards2 { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
   <nav>
     <a class="brand" href="index.html">Modern Manners & Mental Fortitude</a>
-    <a class="home-link" href="index.html">Back to Site</a>
+    <div class="nav-links">
+      <a href="#summary">Summary</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#awards">Awards</a>
+      <a href="#skills">Skills</a>
+      <a href="index.html">Back to Site</a>
+    </div>
   </nav>
 
   <header class="hero">
     <div class="hero-wrap">
-      <div class="avatar"><img src="michael-terry-headshot.jpg" alt="Portrait of Michael R. Terry"></div>
       <div>
-        <h1>Michael R. Terry</h1>
-        <div class="sub">Sergeant, Utah Highway Patrol · MAT Candidate · Published Author</div>
-        <div class="meta">
-          Salt Lake City Metropolitan Area · (435) 840-1896 · mikeyterry44@gmail.com<br>
-          <a href="https://linkedin.com/in/miketerry-46618318b" target="_blank" rel="noopener noreferrer">linkedin.com/in/miketerry-46618318b</a> ·
-          <a href="https://instagram.com/readyforreal.life" target="_blank" rel="noopener noreferrer">instagram.com/readyforreal.life</a>
+        <p class="eyebrow">Professional Profile · Career & Service Overview</p>
+        <h1><em>Michael R. Terry</em><br>Resume Profile</h1>
+        <p class="hero-sub">Sergeant, Utah Highway Patrol · MAT Candidate · Published Author</p>
+        <div class="chips">
+          <div class="chip"><strong>18+ Years</strong> Public Safety Service</div>
+          <div class="chip"><strong>Current</strong> MAT Candidate</div>
+          <div class="chip"><strong>Focus</strong> Education + Community Engagement</div>
+          <div class="chip"><strong>Language</strong> Spanish (Professional)</div>
         </div>
+      </div>
+      <div class="hero-badge">
+        <span class="num">2</span>
+        <span class="txt">Resume Pages</span>
+        <div class="subtxt">Infographic View</div>
       </div>
     </div>
   </header>
 
-  <main>
-    <div class="grid">
-      <section class="card">
-        <h2>Summary</h2>
-        <p>Law enforcement leader with over 18 years of service transitioning to education. Career background spans K9 operations, criminal interdiction, community outreach, explosive detection, and youth mentorship. Published author and current MAT candidate at Columbia College, applying coursework directly to service with refugee families, immigrant communities, and individuals in crisis. Fluent in Spanish at a professional working level.</p>
-      </section>
+  <div class="profile-strip">
+    <div class="profile-wrap">
+      <div class="avatar"><img src="michael-terry-headshot.jpg" alt="Portrait of Michael R. Terry"></div>
+      <div>
+        <div class="name">Michael R. Terry</div>
+        <div class="roles">Salt Lake City Metropolitan Area · (435) 840-1896 · mikeyterry44@gmail.com</div>
+        <div class="roles">linkedin.com/in/miketerry-46618318b · instagram.com/readyforreal.life</div>
+      </div>
+      <a class="btn" href="michael-terry-resume.pdf">Download PDF Resume</a>
+    </div>
+  </div>
 
-      <section class="card">
-        <h2>Experience</h2>
+  <section class="section dark" id="summary">
+    <div class="container">
+      <p class="section-label">Career Snapshot</p>
+      <h2 class="section-title">Leadership + Service + <span class="accent">Education</span></h2>
+      <div class="summary-grid">
+        <div class="summary-main">
+          <p>Law enforcement leader transitioning to education with deep experience in K9 operations, criminal interdiction, community outreach, explosive detection, and youth mentorship. Graduate MAT coursework is actively applied to service with refugee families, immigrant communities, and individuals in crisis.</p>
+        </div>
+        <div class="metric">
+          <div class="k">Years of Service</div>
+          <div class="v">18+</div>
+          <div class="d">Public safety and community leadership.</div>
+        </div>
+        <div class="metric">
+          <div class="k">Current Role</div>
+          <div class="v">MAT</div>
+          <div class="d">Graduate preparation in teaching and curriculum design.</div>
+        </div>
+      </div>
+    </div>
+  </section>
 
-        <div class="job">
-          <div class="role">Explosive Detection K9 Field Supervisor</div>
-          <div class="org">Utah Highway Patrol · Salt Lake City, UT</div>
+  <section class="section alt" id="experience">
+    <div class="container">
+      <p class="section-label">Professional Experience</p>
+      <h2 class="section-title">Field + Leadership <span class="accent">Roles</span></h2>
+      <div class="cards3">
+        <article class="card">
+          <h3>Explosive Detection K9 Field Supervisor</h3>
+          <div class="meta">Utah Highway Patrol · Salt Lake City, UT</div>
           <div class="date">Nov 2023 - Present</div>
           <ul>
             <li>Oversee explosive detection K9 team at the Utah State Capitol.</li>
-            <li>Manage handler training, operational deployments, and team readiness.</li>
+            <li>Manage handler training, deployments, and readiness.</li>
           </ul>
-        </div>
-
-        <div class="job">
-          <div class="role">Police Sergeant - Community Engagement & Outreach</div>
-          <div class="org">Utah Department of Public Safety · Statewide, UT</div>
+        </article>
+        <article class="card">
+          <h3>Police Sergeant - Community Engagement & Outreach</h3>
+          <div class="meta">Utah Department of Public Safety · Statewide, UT</div>
           <div class="date">Aug 2019 - Present</div>
           <ul>
-            <li>Lead department outreach team serving communities across Utah.</li>
-            <li>Coordinate crisis response, refugee and immigrant family support, and youth mentorship initiatives.</li>
-            <li>Apply educational research from graduate coursework to strengthen community engagement strategies.</li>
+            <li>Lead statewide outreach serving diverse communities.</li>
+            <li>Coordinate crisis response, refugee support, and youth mentorship.</li>
+            <li>Apply graduate educational research in field strategy.</li>
           </ul>
-        </div>
-
-        <div class="job">
-          <div class="role">K9 Handler - Narcotics Detection</div>
-          <div class="org">Utah Department of Public Safety</div>
+        </article>
+        <article class="card">
+          <h3>K9 Handler - Narcotics Detection</h3>
+          <div class="meta">Utah Department of Public Safety</div>
           <div class="date">Jan 2016 - Jan 2020</div>
           <ul>
-            <li>Served as first-ever single-purpose K9 handler selected within the Utah Highway Patrol.</li>
-            <li>Deployed during Operation Rio Grande to address crime and support homeless resource centers in downtown Salt Lake City.</li>
-            <li>Represented a community-friendly model of police presence through K9 outreach.</li>
+            <li>First single-purpose K9 handler selected in UHP.</li>
+            <li>Deployed during Operation Rio Grande in downtown SLC.</li>
           </ul>
-        </div>
-
-        <div class="job">
-          <div class="role">Criminal Interdiction Officer</div>
-          <div class="org">Utah Department of Public Safety · Saratoga Springs, UT</div>
+        </article>
+        <article class="card">
+          <h3>Criminal Interdiction Officer</h3>
+          <div class="meta">Utah Department of Public Safety · Saratoga Springs, UT</div>
           <div class="date">Jan 2014 - May 2019</div>
           <ul>
-            <li>Conducted criminal interdiction operations and narcotics enforcement.</li>
-            <li>Recognized for excellence in criminal interdiction by Utah Highway Patrol (2015).</li>
+            <li>Conducted interdiction and narcotics enforcement operations.</li>
+            <li>Recognized for excellence in criminal interdiction (2015).</li>
           </ul>
-        </div>
-
-        <div class="job">
-          <div class="role">Police Officer</div>
-          <div class="org">Saratoga Springs Police Department · Saratoga Springs, UT</div>
+        </article>
+        <article class="card">
+          <h3>Police Officer</h3>
+          <div class="meta">Saratoga Springs Police Department</div>
           <div class="date">Feb 2012 - Jan 2014</div>
-        </div>
-
-        <div class="job">
-          <div class="role">Police Officer</div>
-          <div class="org">Tooele City Police Department · Tooele, UT</div>
+          <ul>
+            <li>Municipal patrol and community policing service.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Police Officer</h3>
+          <div class="meta">Tooele City Police Department · Tooele, UT</div>
           <div class="date">Jan 2008 - Feb 2012</div>
           <ul>
-            <li>Served in School Resource Officer, COP Division, and Graffiti Investigations roles.</li>
-            <li>Named Tooele City Officer of the Year (2010).</li>
+            <li>Served in SRO, COP Division, and Graffiti Investigations.</li>
+            <li>Named Officer of the Year (2010).</li>
           </ul>
-        </div>
-      </section>
+        </article>
+      </div>
+    </div>
+  </section>
 
-      <div class="twocol">
-        <section class="card">
-          <h2>Education</h2>
-          <div class="job">
-            <div class="role">Master of Arts in Teaching (MAT)</div>
-            <div class="org">Columbia College of Missouri</div>
-            <div class="date">Jan 2025 - Dec 2026</div>
-          </div>
-          <div class="job">
-            <div class="role">Bachelor of Arts - Criminal Justice / Law Enforcement Administration</div>
-            <div class="org">Columbia College of Missouri</div>
-            <div class="date">Jan 2012 - Jan 2024</div>
-          </div>
-          <div class="job">
-            <div class="role">Associate of Arts and Sciences - Criminal Justice</div>
-            <div class="org">Columbia College of Missouri</div>
-            <div class="date">2012 - 2014</div>
-          </div>
-        </section>
+  <section class="section" id="education">
+    <div class="container">
+      <p class="section-label">Academic Profile</p>
+      <h2 class="section-title">Education + <span class="accent">Credentials</span></h2>
+      <div class="cards2">
+        <article class="card">
+          <h3>Master of Arts in Teaching (MAT)</h3>
+          <div class="meta">Columbia College of Missouri</div>
+          <div class="date">Jan 2025 - Dec 2026</div>
+        </article>
+        <article class="card">
+          <h3>Bachelor of Arts - Criminal Justice / Law Enforcement Administration</h3>
+          <div class="meta">Columbia College of Missouri</div>
+          <div class="date">Jan 2012 - Jan 2024</div>
+        </article>
+        <article class="card">
+          <h3>Associate of Arts and Sciences - Criminal Justice</h3>
+          <div class="meta">Columbia College of Missouri</div>
+          <div class="date">2012 - 2014</div>
+        </article>
+      </div>
+    </div>
+  </section>
 
-        <section class="card">
-          <h2>Honors & Awards</h2>
+  <section class="section alt" id="awards">
+    <div class="container">
+      <p class="section-label">Recognition</p>
+      <h2 class="section-title">Honors + <span class="accent">Awards</span></h2>
+      <div class="cards2">
+        <article class="card">
           <ul>
             <li>Kappa Delta Pi International Honor Society (KDP), Feb 2026</li>
-            <li>Dr. Martin Luther King Jr. Community Service Award (Individual Recipient), Jan 2026</li>
+            <li>Dr. Martin Luther King Jr. Community Service Award, Jan 2026</li>
             <li>CCAA Scholar, Oct 2025</li>
             <li>Dean's List, Fall 2024 and 2021</li>
+          </ul>
+        </article>
+        <article class="card">
+          <ul>
             <li>SLC District Attorney - Power of Hope Recipient</li>
             <li>NAACP First Responders Award, Jan 2021</li>
             <li>Excellence in Criminal Interdiction, Dec 2015</li>
             <li>Officer of the Year, Dec 2010</li>
           </ul>
-        </section>
+        </article>
       </div>
+    </div>
+  </section>
 
-      <div class="twocol">
-        <section class="card">
-          <h2>Publications</h2>
-          <p><strong>Still. Small. Daily</strong> · Published author</p>
-        </section>
-
-        <section class="card">
-          <h2>Skills & Languages</h2>
+  <section class="section" id="skills">
+    <div class="container">
+      <p class="section-label">Capability Areas</p>
+      <h2 class="section-title">Skills + Publication</h2>
+      <div class="cards2">
+        <article class="card">
+          <h3>Skills & Languages</h3>
           <div class="tags">
             <span class="tag">Curriculum Development</span>
             <span class="tag">Educational Leadership</span>
@@ -193,12 +335,13 @@
             <span class="tag">Criminal Interdiction</span>
             <span class="tag">Spanish (Professional Working)</span>
           </div>
-          <div class="actions">
-            <a class="download" href="michael-terry-resume.pdf">Download PDF Resume</a>
-          </div>
-        </section>
+        </article>
+        <article class="pub">
+          <strong>Still. Small. Daily</strong>
+          Published Author
+        </article>
       </div>
     </div>
-  </main>
+  </section>
 </body>
 </html>
