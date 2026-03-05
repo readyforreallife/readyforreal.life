@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Site Admin Editor</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --slate: #253044;
+  --slate2: #344159;
+  --gold: #c49540;
+  --paper: #f6f3ec;
+  --ink: #0e1118;
+  --muted: #697080;
+  --white: #fff;
+  --danger: #b0432e;
+  --ok: #1f7a55;
+}
+* { box-sizing: border-box; }
+body {
+  margin: 0;
+  background: var(--paper);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+}
+.header {
+  background: linear-gradient(135deg, var(--slate) 0%, var(--slate2) 100%);
+  color: #fff;
+  border-bottom: 3px solid var(--gold);
+  padding: 24px;
+}
+.header h1 {
+  margin: 0;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 2.8vw, 2.2rem);
+}
+.header p {
+  margin: 8px 0 0;
+  color: rgba(255, 255, 255, 0.78);
+}
+.wrap {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 24px;
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 18px;
+}
+.card {
+  background: var(--white);
+  border: 1px solid #ddd7cc;
+  border-radius: 12px;
+  padding: 16px;
+}
+.card h2 {
+  margin: 0 0 10px;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.15rem;
+  color: var(--slate);
+}
+label {
+  display: block;
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--muted);
+  margin: 10px 0 6px;
+}
+input, select, textarea {
+  width: 100%;
+  border: 1px solid #cfd4dc;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font: inherit;
+  background: #fff;
+}
+textarea {
+  min-height: 64vh;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 13px;
+  line-height: 1.5;
+}
+.row {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.btn {
+  border: 0;
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 12px;
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn.primary {
+  background: var(--slate);
+  color: #fff;
+}
+.btn.gold {
+  background: var(--gold);
+  color: #1d2330;
+}
+.btn.ghost {
+  background: #eef1f5;
+  color: var(--slate);
+}
+.note {
+  font-size: 12px;
+  color: var(--muted);
+  line-height: 1.45;
+}
+.kbd {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  background: #eef1f5;
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+.status {
+  margin-top: 8px;
+  font-size: 12px;
+  min-height: 16px;
+}
+.status.ok { color: var(--ok); }
+.status.err { color: var(--danger); }
+.warn {
+  font-size: 12px;
+  border-left: 4px solid var(--gold);
+  background: #fff8ea;
+  padding: 10px;
+  border-radius: 8px;
+  color: #5a4b2f;
+}
+.editor-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.small { font-size: 12px; color: var(--muted); }
+@media (max-width: 980px) {
+  .wrap { grid-template-columns: 1fr; }
+  textarea { min-height: 52vh; }
+}
+</style>
+</head>
+<body>
+<header class="header">
+  <h1>Website Admin Editor</h1>
+  <p>Edit your live site files directly from this page and push changes to GitHub.</p>
+</header>
+
+<main class="wrap">
+  <section class="card">
+    <h2>Connection</h2>
+    <div class="warn">Use a GitHub Personal Access Token with repository <strong>contents: write</strong> access. Keep it private.</div>
+
+    <label for="owner">Owner</label>
+    <input id="owner" type="text" value="readyforreallife">
+
+    <label for="repo">Repository</label>
+    <input id="repo" type="text" value="readyforreal.life">
+
+    <label for="branch">Branch</label>
+    <input id="branch" type="text" value="main">
+
+    <label for="token">GitHub Token</label>
+    <input id="token" type="password" placeholder="ghp_... or github_pat_..." autocomplete="off">
+
+    <div class="row" style="margin-top:10px;">
+      <button class="btn ghost" id="savePrefsBtn" type="button">Save Non-Secret Settings</button>
+      <button class="btn ghost" id="clearTokenBtn" type="button">Clear Token</button>
+    </div>
+
+    <h2 style="margin-top:16px;">File</h2>
+    <label for="filePreset">Quick Select</label>
+    <select id="filePreset">
+      <option value="docs/index.html">Homepage (/docs/index.html)</option>
+      <option value="docs/details.html">Card Detail Page (/docs/details.html)</option>
+      <option value="docs/resume.html">Resume Page (/docs/resume.html)</option>
+      <option value="docs/styles.css">Styles (/docs/styles.css)</option>
+      <option value="custom">Custom path...</option>
+    </select>
+
+    <label for="path">Path In Repo</label>
+    <input id="path" type="text" value="docs/index.html">
+
+    <div class="row" style="margin-top:10px;">
+      <button class="btn primary" id="loadBtn" type="button">Load File</button>
+      <button class="btn ghost" id="reloadBtn" type="button">Reload</button>
+    </div>
+
+    <label for="message" style="margin-top:12px;">Commit Message</label>
+    <input id="message" type="text" value="Update website content from admin editor">
+
+    <div class="row" style="margin-top:10px;">
+      <button class="btn gold" id="saveBtn" type="button">Save to GitHub</button>
+    </div>
+
+    <div id="status" class="status"></div>
+    <p class="note" style="margin-top:10px;">Tip: Use <span class="kbd">Cmd/Ctrl + S</span> to save after editing.</p>
+  </section>
+
+  <section class="card">
+    <div class="editor-head">
+      <h2 style="margin:0;">Editor</h2>
+      <div class="small" id="fileMeta">No file loaded</div>
+    </div>
+    <textarea id="editor" placeholder="Load a file first..."></textarea>
+  </section>
+</main>
+
+<script>
+const els = {
+  owner: document.getElementById('owner'),
+  repo: document.getElementById('repo'),
+  branch: document.getElementById('branch'),
+  token: document.getElementById('token'),
+  filePreset: document.getElementById('filePreset'),
+  path: document.getElementById('path'),
+  loadBtn: document.getElementById('loadBtn'),
+  reloadBtn: document.getElementById('reloadBtn'),
+  saveBtn: document.getElementById('saveBtn'),
+  editor: document.getElementById('editor'),
+  message: document.getElementById('message'),
+  status: document.getElementById('status'),
+  fileMeta: document.getElementById('fileMeta'),
+  savePrefsBtn: document.getElementById('savePrefsBtn'),
+  clearTokenBtn: document.getElementById('clearTokenBtn')
+};
+
+const LS = {
+  owner: 'dl_admin_owner',
+  repo: 'dl_admin_repo',
+  branch: 'dl_admin_branch',
+  path: 'dl_admin_path',
+  token: 'dl_admin_token'
+};
+
+let currentSha = '';
+
+function setStatus(msg, isError = false) {
+  els.status.textContent = msg || '';
+  els.status.className = 'status ' + (isError ? 'err' : 'ok');
+}
+
+function b64ToUtf8(base64) {
+  const cleaned = String(base64 || '').replace(/\n/g, '');
+  const binary = atob(cleaned);
+  const bytes = new Uint8Array(binary.length);
+  for (let i = 0; i < binary.length; i++) bytes[i] = binary.charCodeAt(i);
+  return new TextDecoder().decode(bytes);
+}
+
+function utf8ToB64(text) {
+  const bytes = new TextEncoder().encode(text);
+  let bin = '';
+  bytes.forEach((b) => { bin += String.fromCharCode(b); });
+  return btoa(bin);
+}
+
+function apiHeaders() {
+  const token = els.token.value.trim();
+  const headers = {
+    'Accept': 'application/vnd.github+json',
+    'X-GitHub-Api-Version': '2022-11-28'
+  };
+  if (token) headers.Authorization = 'Bearer ' + token;
+  return headers;
+}
+
+function repoUrl(path) {
+  const owner = els.owner.value.trim();
+  const repo = els.repo.value.trim();
+  return `https://api.github.com/repos/${owner}/${repo}/contents/${encodeURIComponent(path).replace(/%2F/g, '/')}`;
+}
+
+function normalizePath(p) {
+  return String(p || '').trim().replace(/^\/+/, '');
+}
+
+async function loadFile() {
+  const path = normalizePath(els.path.value);
+  if (!path) return setStatus('Path is required.', true);
+  setStatus('Loading...');
+  els.path.value = path;
+
+  const url = repoUrl(path) + `?ref=${encodeURIComponent(els.branch.value.trim() || 'main')}`;
+  const res = await fetch(url, { headers: apiHeaders() });
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error(`Load failed (${res.status}): ${txt.slice(0, 220)}`);
+  }
+  const data = await res.json();
+  currentSha = data.sha || '';
+  els.editor.value = b64ToUtf8(data.content || '');
+  els.fileMeta.textContent = `${path} · sha ${currentSha.slice(0, 7)}`;
+  localStorage.setItem(LS.path, path);
+  setStatus('File loaded.');
+}
+
+async function saveFile() {
+  const path = normalizePath(els.path.value);
+  if (!path) return setStatus('Path is required.', true);
+  if (!els.token.value.trim()) return setStatus('GitHub token required.', true);
+
+  const body = {
+    message: (els.message.value || 'Update via website admin').trim(),
+    content: utf8ToB64(els.editor.value),
+    branch: (els.branch.value || 'main').trim()
+  };
+  if (currentSha) body.sha = currentSha;
+
+  setStatus('Saving to GitHub...');
+
+  const res = await fetch(repoUrl(path), {
+    method: 'PUT',
+    headers: {
+      ...apiHeaders(),
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(body)
+  });
+
+  if (!res.ok) {
+    const txt = await res.text();
+    throw new Error(`Save failed (${res.status}): ${txt.slice(0, 260)}`);
+  }
+
+  const data = await res.json();
+  currentSha = data.content && data.content.sha ? data.content.sha : currentSha;
+  els.fileMeta.textContent = `${path} · sha ${String(currentSha).slice(0, 7)}`;
+  setStatus('Saved and pushed to GitHub. Your site should redeploy in about 1-2 minutes.');
+}
+
+els.filePreset.addEventListener('change', () => {
+  if (els.filePreset.value !== 'custom') {
+    els.path.value = els.filePreset.value;
+  }
+});
+
+els.loadBtn.addEventListener('click', async () => {
+  try { await loadFile(); } catch (err) { setStatus(err.message, true); }
+});
+
+els.reloadBtn.addEventListener('click', async () => {
+  try { await loadFile(); } catch (err) { setStatus(err.message, true); }
+});
+
+els.saveBtn.addEventListener('click', async () => {
+  try { await saveFile(); } catch (err) { setStatus(err.message, true); }
+});
+
+els.savePrefsBtn.addEventListener('click', () => {
+  localStorage.setItem(LS.owner, els.owner.value.trim());
+  localStorage.setItem(LS.repo, els.repo.value.trim());
+  localStorage.setItem(LS.branch, els.branch.value.trim());
+  localStorage.setItem(LS.path, normalizePath(els.path.value));
+  sessionStorage.setItem(LS.token, els.token.value.trim());
+  setStatus('Settings saved (token saved only for this browser session).');
+});
+
+els.clearTokenBtn.addEventListener('click', () => {
+  els.token.value = '';
+  sessionStorage.removeItem(LS.token);
+  setStatus('Token cleared.');
+});
+
+document.addEventListener('keydown', async (event) => {
+  const isSave = (event.metaKey || event.ctrlKey) && event.key.toLowerCase() === 's';
+  if (!isSave) return;
+  event.preventDefault();
+  try { await saveFile(); } catch (err) { setStatus(err.message, true); }
+});
+
+(function init() {
+  els.owner.value = localStorage.getItem(LS.owner) || els.owner.value;
+  els.repo.value = localStorage.getItem(LS.repo) || els.repo.value;
+  els.branch.value = localStorage.getItem(LS.branch) || els.branch.value;
+  const savedPath = localStorage.getItem(LS.path);
+  if (savedPath) {
+    els.path.value = savedPath;
+    if ([...els.filePreset.options].some(o => o.value === savedPath)) {
+      els.filePreset.value = savedPath;
+    } else {
+      els.filePreset.value = 'custom';
+    }
+  }
+  els.token.value = sessionStorage.getItem(LS.token) || '';
+})();
+</script>
+</body>
+</html>
