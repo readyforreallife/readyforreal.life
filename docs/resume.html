@@ -150,6 +150,10 @@
     .avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; display: block; }
     .name { font-family: "Playfair Display", serif; font-size: 1.55rem; color: var(--slate); line-height: 1.1; }
     .roles { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .roles a { color: var(--slate); text-decoration: underline; text-underline-offset: 2px; }
+    .roles a:hover { color: #1b2942; }
+    .sensitive-contact { transition: filter .18s ease; }
+    body.preview-locked .sensitive-contact { filter: blur(4px); user-select: none; pointer-events: none; }
     .btn {
       background: var(--slate); color: white; text-decoration: none; border-radius: 10px; padding: 11px 14px; font-size: 12px; font-weight: 700;
       border: 1px solid rgba(255,255,255,.1);
@@ -352,8 +356,8 @@
       <div class="avatar"><img src="michael-terry-headshot.jpg" alt="Portrait of Michael R. Terry"></div>
       <div>
         <div class="name">Michael R. Terry</div>
-        <div class="roles">Salt Lake City Metropolitan Area · (435) 840-1896 · mikeyterry44@gmail.com</div>
-        <div class="roles">linkedin.com/in/miketerry-46618318b · instagram.com/readyforreal.life</div>
+        <div class="roles">Salt Lake City Metropolitan Area · <span class="sensitive-contact">(435) 840-1896</span> · <span class="sensitive-contact">mikeyterry44@gmail.com</span></div>
+        <div class="roles"><a href="https://linkedin.com/in/miketerry-46618318b" target="_blank" rel="noopener noreferrer">linkedin.com/in/miketerry-46618318b</a> · <a href="https://instagram.com/readyforreal.life" target="_blank" rel="noopener noreferrer">instagram.com/readyforreal.life</a> · <a href="https://instagram.com/hearhim.daily" target="_blank" rel="noopener noreferrer">instagram.com/hearhim.daily</a></div>
       </div>
       <a class="btn" href="#experience">Jump to Experience</a>
     </div>
