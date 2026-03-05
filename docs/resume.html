@@ -197,6 +197,48 @@
       background: linear-gradient(135deg, #f9f4e8 0%, #f3e6c7 100%); border: 1px solid #ebd7a7; border-radius: 12px; padding: 18px;
     }
     .pub strong { font-family: "Playfair Display", serif; font-size: 1.2rem; color: var(--slate); display: block; }
+    .book-showcase {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-top: 12px;
+    }
+    .book-card {
+      border: 1px solid var(--rule);
+      border-radius: 12px;
+      overflow: hidden;
+      background: #0b1220;
+      color: #fff;
+      position: relative;
+      min-height: 260px;
+    }
+    .book-card img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .book-cover-overlay {
+      position: absolute;
+      inset: 0;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 16px;
+      background: linear-gradient(120deg, rgba(255,255,255,.62) 0%, rgba(255,255,255,.12) 58%, rgba(0,0,0,.42) 100%);
+      color: #111827;
+    }
+    .book-title-stack { font-family: "Playfair Display", serif; font-size: 2.1rem; line-height: 1; color: #111827; }
+    .book-handle { color: #fff; font-weight: 700; text-shadow: 0 2px 8px rgba(0,0,0,.45); }
+    .book-links { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 10px; }
+    .book-link {
+      display: inline-block;
+      text-decoration: none;
+      border: 1px solid var(--slate);
+      background: var(--slate);
+      color: #fff;
+      border-radius: 999px;
+      padding: 7px 11px;
+      font-size: 11px;
+      letter-spacing: .08em;
+      text-transform: uppercase;
+      font-family: "DM Mono", monospace;
+    }
     .util-btn {
       border: 1px solid var(--rule);
       background: var(--white);
@@ -480,6 +522,22 @@
         <article class="pub">
           <strong>Still. Small. Daily</strong>
           Published Author
+          <div class="book-links">
+            <a class="book-link" href="https://a.co/d/01tD3p0R" target="_blank" rel="noopener noreferrer">Book Link 1</a>
+            <a class="book-link" href="https://a.co/d/00Kf67G7" target="_blank" rel="noopener noreferrer">Book Link 2</a>
+          </div>
+          <div class="book-showcase">
+            <div class="book-card">
+              <img src="assets/creator.jpg" alt="Still. Small. Daily book image">
+              <div class="book-cover-overlay">
+                <div class="book-title-stack">Still.<br>Small.<br>Daily.</div>
+                <div class="book-handle">@hearhim.daily</div>
+              </div>
+            </div>
+            <div class="book-card">
+              <img src="assets/hear-him-daily-logo.png" alt="Hear Him Daily logo">
+            </div>
+          </div>
         </article>
       </div>
     </div>
