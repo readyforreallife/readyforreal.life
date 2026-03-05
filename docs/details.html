@@ -1,0 +1,2227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CMP Resource Detail</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0f1623;
+  --paper: #f7f3ea;
+  --slate: #24324b;
+  --slate2: #2f415f;
+  --gold: #c89844;
+  --teal: #1d6b69;
+  --rust: #b44a38;
+  --sage: #5d7851;
+  --rule: #ddd5c6;
+  --white: #ffffff;
+  --muted: #63718a;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  font-family: 'DM Sans', sans-serif;
+  color: var(--ink);
+  background:
+    radial-gradient(circle at 10% 10%, rgba(200, 152, 68, 0.15), transparent 25%),
+    radial-gradient(circle at 90% 15%, rgba(29, 107, 105, 0.13), transparent 25%),
+    linear-gradient(180deg, #f8f4eb 0%, #f4efe3 100%);
+}
+.wrap { max-width: 1160px; margin: 0 auto; padding: 22px 16px 42px; }
+.top {
+  display: flex; align-items: center; gap: 12px; flex-wrap: wrap;
+  margin-bottom: 18px;
+}
+.btn {
+  border: 1px solid var(--rule);
+  background: var(--white);
+  border-radius: 999px;
+  color: var(--slate);
+  font-weight: 700;
+  text-decoration: none;
+  padding: 9px 16px;
+  display: inline-flex;
+  align-items: center;
+}
+.btn-link { cursor: pointer; }
+.meta {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--muted);
+}
+.hero {
+  border-radius: 18px;
+  border: 1px solid var(--rule);
+  background: linear-gradient(120deg, var(--slate) 0%, #21314d 65%, #294466 100%);
+  color: #fff;
+  padding: 28px;
+  position: relative;
+  overflow: hidden;
+  margin-bottom: 14px;
+}
+.hero::after {
+  content: "";
+  position: absolute;
+  width: 320px;
+  height: 320px;
+  right: -80px;
+  top: -120px;
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(200,152,68,.34) 0%, transparent 70%);
+}
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.70);
+  font-size: 10px;
+  margin-bottom: 8px;
+}
+h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3.3vw, 2.8rem);
+  line-height: 1.14;
+  margin-bottom: 10px;
+}
+.summary {
+  color: rgba(255,255,255,.88);
+  line-height: 1.75;
+  font-size: 15px;
+  max-width: 980px;
+  white-space: pre-line;
+}
+.chip-row {
+  margin-top: 14px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
+.chip {
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.25);
+  background: rgba(255,255,255,.12);
+  font-size: 11px;
+  letter-spacing: .03em;
+  font-weight: 600;
+  padding: 5px 12px;
+}
+.chip.clickable { cursor: pointer; }
+.chip.clickable:hover { background: rgba(255,255,255,.20); }
+.grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 18px 18px 16px;
+}
+.card h2 {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.22rem;
+  color: var(--slate);
+  margin-bottom: 10px;
+}
+.card p {
+  color: var(--ink);
+  line-height: 1.7;
+  font-size: 14px;
+}
+.list { display: grid; gap: 8px; margin-top: 8px; }
+.item {
+  border-radius: 10px;
+  border-left: 4px solid var(--gold);
+  background: #f8f6f1;
+  padding: 10px 12px;
+  color: #1f2533;
+  font-size: 14px;
+  line-height: 1.6;
+}
+.item.clickable { cursor: pointer; transition: transform .12s ease, box-shadow .12s ease; }
+.item.clickable:hover { transform: translateY(-1px); box-shadow: 0 6px 16px rgba(0,0,0,.08); }
+.item.clickable:focus-visible { outline: 3px solid rgba(200,152,68,.45); outline-offset: 2px; }
+.item strong { color: var(--slate); }
+.docs {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 10px;
+}
+.doc-link {
+  text-decoration: none;
+  color: var(--slate);
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: #fcfbf8;
+  padding: 10px 12px;
+  font-size: 13px;
+  font-weight: 600;
+}
+.doc-link:hover { border-color: var(--gold); }
+.note {
+  margin-top: 10px;
+  color: var(--muted);
+  font-size: 13px;
+}
+.teacher-only { display: none; }
+.detail-modal {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 15, 25, .45);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+  z-index: 9999;
+}
+.detail-panel {
+  width: min(860px, 100%);
+  max-height: 86vh;
+  overflow: auto;
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 18px;
+}
+.detail-top {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+.detail-title {
+  font-family: 'Playfair Display', serif;
+  color: var(--slate);
+  font-size: 1.4rem;
+  line-height: 1.25;
+}
+.detail-kicker {
+  font-family: 'DM Mono', monospace;
+  text-transform: uppercase;
+  letter-spacing: .12em;
+  font-size: 10px;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.detail-close {
+  border: 1px solid var(--rule);
+  background: #fff;
+  border-radius: 999px;
+  padding: 8px 12px;
+  font-weight: 700;
+  color: var(--slate);
+  cursor: pointer;
+}
+.detail-sections { display: grid; gap: 10px; }
+.detail-box {
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  background: #faf8f2;
+  padding: 10px 12px;
+}
+.detail-box h3 { margin-bottom: 6px; font-size: 14px; color: var(--slate); }
+.detail-box p { margin: 0; font-size: 14px; color: #1f2533; line-height: 1.6; }
+@media (max-width: 900px) {
+  .grid, .docs { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+  <div class="wrap">
+    <div class="top">
+      <a class="btn btn-link" href="index.html?restore=1" id="backToCurriculum">Back to Curriculum</a>
+      <div class="meta" id="sectionMeta">Section</div>
+    </div>
+
+    <section class="hero">
+      <div class="eyebrow">CMP Resource Infographic</div>
+      <h1 id="title">Curriculum Detail</h1>
+      <div class="summary" id="summary">Open any card from the main infographic to see targeted educational material, implementation guidance, and downloadable CMP resources.</div>
+      <div class="chip-row" id="chipRow"></div>
+    </section>
+
+    <div class="grid">
+      <section class="card">
+        <h2>Learning Targets</h2>
+        <div class="list" id="outcomes"></div>
+      </section>
+      <section class="card">
+        <h2>Instructional Moves</h2>
+        <div class="list" id="moves"></div>
+      </section>
+      <section class="card">
+        <h2>Practice and Activities</h2>
+        <div class="list" id="activities"></div>
+      </section>
+      <section class="card">
+        <h2>Assessment Evidence</h2>
+        <div class="list" id="assessment"></div>
+      </section>
+      <section class="card">
+        <h2>Transfer and Real-World Application</h2>
+        <div class="list" id="transfer"></div>
+      </section>
+      <section class="card">
+        <h2>Educator and Family Supports</h2>
+        <div class="list" id="supports"></div>
+      </section>
+      <section class="card teacher-only" id="resourcesCard" style="grid-column: 1 / -1;">
+        <h2>CMP Resources and Downloads</h2>
+        <div class="docs" id="resources"></div>
+        <p class="note">These links open within the same website tab and can be used as handouts for classes, board review, and curriculum implementation planning.</p>
+      </section>
+    </div>
+  </div>
+
+  <div class="detail-modal" id="detailModal" aria-hidden="true">
+    <div class="detail-panel" role="dialog" aria-modal="true" aria-labelledby="detailTitle">
+      <div class="detail-top">
+        <div>
+          <div class="detail-kicker" id="detailKicker">Point Detail</div>
+          <h2 class="detail-title" id="detailTitle">Detail</h2>
+        </div>
+        <button class="detail-close" id="detailClose" type="button">Close</button>
+      </div>
+      <div class="detail-sections">
+        <div class="detail-box">
+          <h3>What This Means for Learners</h3>
+          <p id="detailMeaning"></p>
+        </div>
+        <div class="detail-box">
+          <h3>Why This Is in the Course</h3>
+          <p id="detailOrigin"></p>
+        </div>
+        <div class="detail-box">
+          <h3>How to Practice It</h3>
+          <p id="detailApply"></p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+<script>
+const params = new URLSearchParams(window.location.search);
+const title = (params.get('title') || 'Curriculum Detail').trim();
+const section = (params.get('section') || 'overview').trim();
+const summary = (params.get('summary') || '').trim();
+
+const BASE_DOCS = [
+  { label: 'CMP Full District Proposal', href: 'assets/docs/cmp/cmp-tooele-district-mike-terry.pdf' },
+  { label: 'CMP Supplemental Packet', href: 'assets/docs/cmp/cmp-supplemental-packet.pdf' },
+  { label: 'Course Addition Packet', href: 'assets/docs/cmp/course-addition-request-packet.pdf' },
+  { label: 'Board Letter', href: 'assets/docs/cmp/cmp-board-letter.pdf' },
+  { label: 'CMP Comparison Analysis', href: 'assets/docs/cmp/cmp-comparison-freshman-success-vs-modern-manners.pdf' },
+  { label: 'One-Page Program Handout', href: 'assets/docs/cmp/One%20Page%20Handout%20-%20Modern_Manners_Mental_Fortitude_One_Pager.pdf' },
+  { label: 'Unit Plan and Storyboard', href: 'assets/docs/unit-plan-storyboard.pdf' },
+  { label: 'Novel Scenario (Summative)', href: 'assets/docs/novel-scenario-summative.pdf' },
+  { label: 'Lesson Plan (Part 3)', href: 'assets/docs/lesson-plan-part-3.pdf' },
+  { label: 'Inquiry Project Outline', href: 'assets/docs/inquiry-project-outline.pdf' }
+];
+
+const SECTION_DEFAULTS = {
+  overview: {
+    chips: ['Program Vision', 'All-Inclusive', 'School + Community + Family'],
+    outcomes: [
+      'Build respectful communication and self-regulation routines that transfer across school, family, workplace, and online contexts.',
+      'Strengthen decision quality under pressure with a repeatable framework that students and adults can apply independently.',
+      'Develop accountability habits: own mistakes, repair trust, and follow through with actions.'
+    ],
+    moves: [
+      'Use explicit instruction for anchor concepts and sentence stems before scenario work.',
+      'Model decision-thinking aloud: pause, identify options, map consequences, choose and justify.',
+      'Revisit the same core ideas in a spiral sequence so learners progress from guided practice to independent transfer.'
+    ],
+    activities: [
+      'Scenario cards with context shifts (home, school, workplace, online) to build flexible application.',
+      'Role-play cycles with observer checklists for tone, listening, boundary setting, and repair language.',
+      'Weekly reflection journals to convert lived moments into metacognitive learning evidence.'
+    ],
+    assessment: [
+      'Formative checks: concept sorts, exit reflections, role-play rubrics, and weekly journals.',
+      'Summative checks: capstone presentation and novel scenario response to an authentic audience.',
+      'Growth measures: pre/post self-efficacy snapshots tied to SEL competencies.'
+    ],
+    transfer: [
+      'Students justify decisions in unfamiliar, higher-stakes situations with limited information and social pressure.',
+      'Learners connect short-term choices to long-term trust, reputation, and opportunity pathways.',
+      'Adults and educators use the same language to reinforce consistency across settings.'
+    ],
+    supports: [
+      'Teacher toolkit includes pacing map, scenario prompts, rubric language, and feedback routines.',
+      'Family extension prompts keep home conversations aligned to course decision frameworks.',
+      'Community-facing handouts support workshops, private classes, and mentoring sessions.'
+    ]
+  },
+  pillars: {
+    chips: ['Anchor Concepts', 'Behavior + Decision Skills', 'Spiral Reinforcement'],
+    outcomes: [
+      'Use respectful communication during disagreement and repair conversations.',
+      'Apply self-regulation before responding under pressure.',
+      'Demonstrate accountable follow-through after decisions.'
+    ],
+    moves: [
+      'Introduce one pillar at a time with concrete examples and non-examples.',
+      'Embed pillar language into discussion protocols and grading comments.',
+      'Use retrieval prompts each week so pillar terms become fluent.'
+    ],
+    activities: [
+      'Pillar stations: analyze examples from school, family, digital, and workplace situations.',
+      'Partner drills for “pause and reframe” and “repair after conflict” scripts.',
+      'Reflective exit tickets linked to one pillar per lesson.'
+    ],
+    assessment: [
+      'Rubric rows map directly to pillar performance indicators.',
+      'Observation checklists track communication, regulation, and accountability behaviors.',
+      'Short written justifications require concept language and evidence.'
+    ],
+    transfer: [
+      'Pillars are applied to novel dilemmas where emotional urgency conflicts with long-view goals.',
+      'Learners compare outcomes when one pillar is skipped versus intentionally used.',
+      'Students identify second-order effects (trust, reputation, access to opportunities).'
+    ],
+    supports: [
+      'Teacher anchor charts and sentence stems for each pillar.',
+      'Parent/mentor discussion prompts to reinforce shared language.',
+      'Printable pillar quick-guide for class and coaching sessions.'
+    ]
+  },
+  modules: {
+    chips: ['Five Modules', '16-Week Flow', 'Practice to Transfer'],
+    outcomes: [
+      'Build from etiquette basics to independent decision transfer in complex scenarios.',
+      'Strengthen learner confidence through repeated performance practice.',
+      'Generate observable growth in communication, regulation, and accountability.'
+    ],
+    moves: [
+      'Weekly structure: introduce, model, practice, reflect, and apply.',
+      'Interleave module skills so no concept remains isolated.',
+      'Use debrief protocols to transform role-play into strategy insight.'
+    ],
+    activities: [
+      'Modern Manners: greetings, active listening, digital etiquette.',
+      'Emotional Intelligence: trigger mapping, grounding routines, reframing drills.',
+      'Conflict Navigation: apology/repair scripts, boundary language, mediation tasks.',
+      'Digital Citizenship: permanence cases, audience analysis, consequence mapping.',
+      'Personal Growth: goal setting, integrity checks, capstone planning.'
+    ],
+    assessment: [
+      'Module check-ins with rubric-aligned formative tasks.',
+      'Midpoint performance simulation with peer and teacher feedback.',
+      'End-of-module reflection connecting strategy use to outcomes.'
+    ],
+    transfer: [
+      'Each module includes at least one unfamiliar context problem.',
+      'Learners practice using module tools when information is incomplete.',
+      'Capstone combines all five modules in one authentic challenge.'
+    ],
+    supports: [
+      'Facilitator pacing notes and discussion question bank.',
+      'Private class adaptation options for individuals, couples, and families.',
+      'Online mentoring adaptation with asynchronous reflection prompts.'
+    ]
+  },
+  frameworks: {
+    chips: ['PLRR', 'POCC', 'Student-Friendly Routines'],
+    outcomes: [
+      'Use PLRR to regulate before reacting.',
+      'Use POCC to make defensible decisions under pressure.',
+      'Explain reasoning with evidence and consequence awareness.'
+    ],
+    moves: [
+      'Teach each framework step explicitly with live modeling.',
+      'Use “same scenario, different framework quality” comparisons.',
+      'Require framework language in oral and written debriefs.'
+    ],
+    activities: [
+      'Rapid-cycle role-plays where students pause and reset before speaking.',
+      'Decision map templates comparing options and outcomes.',
+      'Partner feedback on whether each step was applied or skipped.'
+    ],
+    assessment: [
+      'Performance rubric includes framework fidelity indicators.',
+      'Reflection responses identify which step changed the outcome most.',
+      'Novel scenario grading checks independent framework transfer.'
+    ],
+    transfer: [
+      'Frameworks are applied across school conflict, work dilemmas, and digital pressure moments.',
+      'Students adapt framework use with time limits and scarce information.',
+      'Adults in mentoring sessions mirror the same routines for consistency.'
+    ],
+    supports: [
+      'Pocket reference cards for PLRR and POCC.',
+      'Teacher prompts for live coaching during simulations.',
+      'Family conversation scripts based on framework language.'
+    ]
+  },
+  targets: {
+    chips: ['Objective Alignment', 'Observable Behaviors', 'Mastery Evidence'],
+    outcomes: [
+      'Targets specify exactly what students can demonstrate, not just what is covered.',
+      'Targets are written for communication, regulation, decision quality, and accountability.',
+      'Targets support grading consistency across teachers and cohorts.'
+    ],
+    moves: [
+      'Post learning targets in student language at lesson launch.',
+      'Tie each activity and rubric row back to a specific target.',
+      'Use target-based feedback instead of generic participation comments.'
+    ],
+    activities: [
+      'Students self-rate target confidence before and after scenario practice.',
+      'Peer observers track one target during each role-play.',
+      'Learners revise responses to demonstrate target growth.'
+    ],
+    assessment: [
+      'Target-aligned checklists for formative observations.',
+      'Summative rubric references target IDs for transparent grading.',
+      'Summary dashboard tracks target trends over time.'
+    ],
+    transfer: [
+      'Dissimilar transfer tasks require multiple targets in one response.',
+      'Students justify choices with explicit target language.',
+      'Capstone evidence shows whether skills generalize beyond class routines.'
+    ],
+    supports: [
+      'Target tracker templates for teacher conferencing.',
+      'Student-friendly target glossary for independent study.',
+      'Family-facing target summary for reinforcement outside class.'
+    ]
+  },
+  pacing: {
+    chips: ['Week-by-Week', 'Milestones', 'Sustainable Delivery'],
+    outcomes: [
+      'Pacing ensures skills are practiced repeatedly before high-stakes assessment.',
+      'Milestone weeks reinforce retention and application.',
+      'Course flow supports both school semester and private cohort formats.'
+    ],
+    moves: [
+      'Use a predictable lesson arc each week to reduce confusion and increase confidence.',
+      'Build milestone weeks around synthesis, not content overload.',
+      'Adjust timing for block schedules or workshop series while preserving sequence logic.'
+    ],
+    activities: [
+      'Weekly scenario practice with rotating contexts and stakeholder roles.',
+      'Reflection checkpoints at the end of each mini-cycle.',
+      'Milestone challenge weeks for mixed-skill performance.'
+    ],
+    assessment: [
+      'Weekly evidence logs support timely intervention.',
+      'Mid-course review identifies learners needing additional coaching.',
+      'Final milestone demonstrates integrated transfer.'
+    ],
+    transfer: [
+      'As pacing advances, support decreases and independence increases.',
+      'Late-course dilemmas include ambiguity and social risk to mirror real conditions.',
+      'Students are expected to justify choices without scripted prompts.'
+    ],
+    supports: [
+      'Alternative pacing maps for school, family, and adult workshop cohorts.',
+      'Attendance-flex options for online mentoring paths.',
+      'Implementation notes for compressed or extended timelines.'
+    ]
+  },
+  assessment: {
+    chips: ['Formative + Summative', 'Performance-Based', 'Growth Evidence'],
+    outcomes: [
+      'Assessment evaluates skill use, not just recall.',
+      'Students provide evidence of thinking, not one-word answers.',
+      'Scoring prioritizes clarity, strategy use, and transfer quality.'
+    ],
+    moves: [
+      'Use low-stakes formative checks early and often.',
+      'Provide rubric previews before scenario tasks.',
+      'Debrief assessments with concrete next-step coaching.'
+    ],
+    activities: [
+      'Weekly reflection journals using structured prompts.',
+      'Scenario role-play rubrics scored by peers and instructor.',
+      'Capstone presentations to authentic audiences.'
+    ],
+    assessment: [
+      'Pre/post self-efficacy snapshots for growth tracking.',
+      'Novel scenario summative for dissimilar transfer.',
+      'Rubric dimensions: clarity, application, reflection, delivery, supports.'
+    ],
+    transfer: [
+      'Summative scenarios combine school, digital, workplace, and family pressures.',
+      'Students must show regulation and decision logic under time constraints.',
+      'Evaluation includes second-order consequences and repair planning.'
+    ],
+    supports: [
+      'Teacher calibration guide for rubric reliability.',
+      'Student exemplars at multiple proficiency levels.',
+      'Parent-facing explanation of how to read rubric feedback.'
+    ]
+  },
+  theory: {
+    chips: ['Research-Backed', 'Learning Science', 'CMP Coherence'],
+    outcomes: [
+      'Course architecture is grounded in transfer-focused curriculum design.',
+      'Theory is operationalized in daily routines, not left abstract.',
+      'Research foundations support district adoption and sustainability.'
+    ],
+    moves: [
+      'Connect each classroom routine to a clear theoretical rationale.',
+      'Use spiral review to deepen conceptual complexity over time.',
+      'Apply reinforcement and reflection to build durable habits.'
+    ],
+    activities: [
+      'Concept retrieval starts each cycle.',
+      'Scenario application follows direct instruction.',
+      'Reflection consolidates learning for future transfer.'
+    ],
+    assessment: [
+      'Tyler alignment between objectives, instruction, and evaluation.',
+      'Dewey-aligned experiential tasks with reflective integration.',
+      'Stern transfer checks with dissimilar scenario design.'
+    ],
+    transfer: [
+      'Theory-to-practice bridge: explicit routines in authentic contexts.',
+      'Students show independent use of learned tools in unfamiliar settings.',
+      'Curriculum supports long-term behavior change, not short-term compliance.'
+    ],
+    supports: [
+      'Research reference summary for stakeholders and board review.',
+      'Teacher orientation slides connecting theory to instruction.',
+      'Implementation guide with practical classroom translation.'
+    ]
+  },
+  implementation: {
+    chips: ['Adoption Ready', 'Classroom Practical', 'Scalable'],
+    outcomes: [
+      'Provide a deployable model for electives, workshops, and mentoring formats.',
+      'Ensure resources, pacing, and facilitation tools are ready for immediate use.',
+      'Support consistent quality across different instructors and settings.'
+    ],
+    moves: [
+      'Start with staff orientation and model lessons.',
+      'Use common rubrics and observation tools across sections.',
+      'Review implementation data each cycle and adjust supports.'
+    ],
+    activities: [
+      'Scenario prompt banks and challenge cards.',
+      'Guest speaker integration with reflection follow-ups.',
+      'Practice labs for conflict, boundaries, and decision pressure.'
+    ],
+    assessment: [
+      'Implementation fidelity checks each month.',
+      'Submission dashboards for participation and growth.',
+      'Evidence archive for board and stakeholder reporting.'
+    ],
+    transfer: [
+      'Adapts to in-person class, private cohort, family workshop, or online mentoring.',
+      'Maintains core framework integrity across delivery formats.',
+      'Builds shared language across youth, adults, and educators.'
+    ],
+    supports: [
+      'Teacher prep packet with step-by-step facilitation notes.',
+      'Family workshop handouts and follow-up prompts.',
+      'Online mentoring session templates with progress checkpoints.'
+    ]
+  },
+  rationale: {
+    chips: ['Need Statement', 'Local Relevance', 'Practical Outcomes'],
+    outcomes: [
+      'Address the gap between academic success and life readiness.',
+      'Train behaviors that directly affect safety, trust, and opportunity.',
+      'Equip learners with repeatable decision tools for high-pressure moments.'
+    ],
+    moves: [
+      'Anchor instruction in realistic local and digital scenarios.',
+      'Teach explicit behaviors for respectful response and repair.',
+      'Use reflection to connect classroom practice to real-life moments.'
+    ],
+    activities: [
+      'Case discussions based on common youth and adult dilemmas.',
+      'Decision rehearsals with consequences mapped before action.',
+      'Communication labs for conflict de-escalation and accountability.'
+    ],
+    assessment: [
+      'Observe whether students choose long-view outcomes over short-term relief.',
+      'Track quality of reasoning and consequence awareness.',
+      'Measure confidence growth in handling difficult conversations.'
+    ],
+    transfer: [
+      'Skills are used in school, home, work, and online relationships.',
+      'Learners apply tools under unfamiliar pressure, not only rehearsed examples.',
+      'Adults can use the same language for coaching and mentoring.'
+    ],
+    supports: [
+      'CMP rationale documents for administrators and board members.',
+      'One-page summary handouts for community partners.',
+      'Talking points for presentation and adoption conversations.'
+    ]
+  },
+  budget: {
+    chips: ['Sustainability', 'Resource Planning', 'Program Growth'],
+    outcomes: [
+      'Support program quality through intentional resource allocation.',
+      'Link budget categories to student-facing impact and fidelity.',
+      'Build a sustainable model for scaling delivery options.'
+    ],
+    moves: [
+      'Prioritize funding for training, materials, and assessment quality.',
+      'Track expenditures against implementation milestones.',
+      'Use data to adjust budget for highest-impact supports.'
+    ],
+    activities: [
+      'Map each budget line to a specific instructional outcome.',
+      'Create phased resource plans for pilot and expansion.',
+      'Review cost-effectiveness using participation and impact metrics.'
+    ],
+    assessment: [
+      'Quarterly review of implementation evidence versus spend.',
+      'Stakeholder reporting with budget-to-outcome alignment.',
+      'Continuous improvement recommendations for next cycle.'
+    ],
+    transfer: [
+      'Budget strategy supports school adoption, private cohorts, and mentoring delivery.',
+      'Funding plans include both direct instruction and family/community extensions.',
+      'Resource decisions prioritize real-world skill transfer outcomes.'
+    ],
+    supports: [
+      'Budget narrative templates for proposal packets.',
+      'Board-ready summaries tied to measurable outcomes.',
+      'Program sustainability planning resources.'
+    ]
+  }
+};
+
+const TITLE_OVERRIDES = [
+  {
+    when: (t) => /modern manners$/i.test(t),
+    use: {
+      chips: ['Module 1', 'Etiquette', 'Social Presence'],
+      outcomes: [
+        'Demonstrate respectful introductions, greetings, and active-listening behaviors.',
+        'Apply etiquette principles in school, family, and workplace interactions.',
+        'Build credibility through consistent respectful communication.'
+      ]
+    }
+  },
+  {
+    when: (t) => /emotional intelligence/i.test(t),
+    use: {
+      chips: ['Module 2', 'Self-Regulation', 'Emotional Awareness'],
+      outcomes: [
+        'Identify emotional triggers and interrupt impulsive reaction patterns.',
+        'Use practical regulation tools under stress.',
+        'Respond with intentional language in high-emotion situations.'
+      ]
+    }
+  },
+  {
+    when: (t) => /conflict navigation|conflict and repair/i.test(t),
+    use: {
+      chips: ['Module 3', 'Repair', 'Boundaries'],
+      outcomes: [
+        'Use de-escalation language during disagreement.',
+        'Deliver effective apologies and structured repair plans.',
+        'Set boundaries while maintaining respectful communication.'
+      ]
+    }
+  },
+  {
+    when: (t) => /digital citizenship/i.test(t),
+    use: {
+      chips: ['Module 4', 'Online Conduct', 'Reputation'],
+      outcomes: [
+        'Evaluate permanence and audience impact before posting.',
+        'Use digital tone and privacy best practices.',
+        'Align online behavior with long-term goals and trust.'
+      ]
+    }
+  },
+  {
+    when: (t) => /personal growth/i.test(t),
+    use: {
+      chips: ['Module 5', 'Goal Systems', 'Accountability'],
+      outcomes: [
+        'Set measurable personal growth goals.',
+        'Track follow-through with reflection evidence.',
+        'Demonstrate accountability through behavior change.'
+      ]
+    }
+  },
+  {
+    when: (t) => /respectful communication/i.test(t),
+    use: {
+      chips: ['Pillar 1', 'Communication', 'Trust Building'],
+      moves: [
+        'Model respectful disagreement language and turn-taking norms.',
+        'Use listening stems and paraphrase checks during pair activities.',
+        'Coach repair language immediately after communication breakdowns.'
+      ]
+    }
+  },
+  {
+    when: (t) => /decision-making under pressure|decision-making framework|pocc/i.test(t),
+    use: {
+      chips: ['Decision Framework', 'POCC', 'High-Stakes Thinking'],
+      moves: [
+        'Require students to name at least two options before deciding.',
+        'Map short-term vs long-term consequences before response.',
+        'Use accountability prompts to justify final choices.'
+      ]
+    }
+  },
+  {
+    when: (t) => /regulation routine|plrr|pause/i.test(t),
+    use: {
+      chips: ['Regulation Routine', 'PLRR', 'Composure'],
+      activities: [
+        'Scenario interruption drill: pause and reset before response.',
+        'Label-and-reframe practice with emotional trigger prompts.',
+        'Performance reflection: how regulation changed decision quality.'
+      ]
+    }
+  }
+];
+
+function parseWeek(titleText) {
+  const m = titleText.match(/week\s+(\d{1,2})/i);
+  return m ? Number(m[1]) : null;
+}
+
+function buildWeekEnhancement(week) {
+  if (!week) return null;
+  if (week <= 4) {
+    return {
+      chips: ['Pacing Detail', 'Cycle 1', 'Foundations'],
+      activities: [
+        'Cycle 1 builds language, routines, and social safety for productive role-play.',
+        'Lessons front-load modeling so learners can see what quality responses look like.',
+        'Milestone week reinforces concepts through challenge practice and reflection.'
+      ]
+    };
+  }
+  if (week <= 8) {
+    return {
+      chips: ['Pacing Detail', 'Cycle 2', 'Regulation'],
+      activities: [
+        'Cycle 2 emphasizes emotional control and decision quality under stress.',
+        'Students increase independence in applying PLRR and POCC routines.',
+        'Milestone week checks whether learners transfer tools beyond scripted examples.'
+      ]
+    };
+  }
+  if (week <= 12) {
+    return {
+      chips: ['Pacing Detail', 'Cycle 3', 'Digital + Conflict'],
+      activities: [
+        'Cycle 3 integrates digital citizenship with conflict repair decisions.',
+        'Scenarios blend peer dynamics, social pressure, and reputation stakes.',
+        'Milestone week focuses on boundary language and accountability moves.'
+      ]
+    };
+  }
+  return {
+    chips: ['Pacing Detail', 'Cycle 4', 'Capstone Transfer'],
+    activities: [
+      'Cycle 4 moves to independent transfer and capstone preparation.',
+      'Students work through unfamiliar scenarios with less teacher scaffolding.',
+      'Final milestone demonstrates full-framework application to real-life stakes.'
+    ]
+  };
+}
+
+function mergePack(base, extra) {
+  if (!extra) return base;
+  const out = { ...base };
+  Object.keys(extra).forEach((k) => {
+    if (Array.isArray(extra[k])) out[k] = extra[k];
+    else if (typeof extra[k] === 'string') out[k] = extra[k];
+  });
+  return out;
+}
+
+function getPack(sectionKey, titleText) {
+  const base = SECTION_DEFAULTS[sectionKey] || SECTION_DEFAULTS.overview;
+  let pack = { ...base };
+
+  TITLE_OVERRIDES.forEach((ov) => {
+    if (ov.when(titleText)) pack = mergePack(pack, ov.use);
+  });
+
+  const wk = parseWeek(titleText);
+  if (wk) pack = mergePack(pack, buildWeekEnhancement(wk));
+
+  return pack;
+}
+
+function safeArray(a) {
+  return Array.isArray(a) ? a : [];
+}
+
+function extractKeywords(text) {
+  const stop = new Set([
+    'the','and','for','with','that','this','from','into','your','you','are','was','were','have','has','had',
+    'in','on','at','to','of','or','as','is','be','by','an','a','it','its','their','them','they','under','over',
+    'week','module','card','section','use','using','used','about'
+  ]);
+  return String(text || '')
+    .toLowerCase()
+    .replace(/[^a-z0-9\s]/g, ' ')
+    .split(/\s+/)
+    .filter((w) => w && w.length > 3 && !stop.has(w))
+    .slice(0, 6);
+}
+
+function sentence(input, fallback) {
+  const txt = String(input || '').trim();
+  return txt || fallback;
+}
+
+function sectionLabel(sectionKey) {
+  return String(sectionKey || 'overview').replace(/-/g, ' ');
+}
+
+const SPECIAL_CARD_PACKS = [
+  {
+    test: (t) => /the unaddressed gap/i.test(t),
+    pack: {
+      chips: ['Problem Statement', 'Need Analysis', 'Adoption Rationale'],
+      outcomes: [
+        'Define the gap between academic performance and life-readiness skills.',
+        'Identify where students and adults are least prepared for high-pressure moments.',
+        'Use gap evidence to justify explicit instruction in regulation, communication, and decision-making.'
+      ],
+      moves: [
+        'Open with local examples: school conflict, digital pressure, workplace decisions.',
+        'Separate symptom discussions from root-cause skill gaps.',
+        'Anchor every proposed solution to an observable learner behavior.'
+      ],
+      activities: [
+        'Gap audit with stakeholders (students, families, educators).',
+        'Context map: school, home, work, online decision demands.',
+        'Priority matrix: urgency, impact, and teachability.'
+      ],
+      assessment: [
+        'Gap statements are scored for specificity and supporting evidence.',
+        'Proposed outcomes are checked for measurability.',
+        'Stakeholder summary is reviewed for clarity and alignment.'
+      ],
+      transfer: [
+        'Clarifies why transfer-ready instruction is needed beyond classroom content coverage.',
+        'Directly supports youth, adults, and family learning contexts.',
+        'Builds a durable rationale for program continuation and expansion.'
+      ],
+      supports: [
+        'Board-ready rationale summary template.',
+        'Family-facing explanation sheet.',
+        'Teacher launch script for course purpose.'
+      ]
+    }
+  },
+  {
+    test: (t) => /built from real experience/i.test(t),
+    pack: {
+      chips: ['Creator Profile', 'Field Experience', 'Why This Program Exists'],
+      outcomes: [
+        'Understand how real public-service and youth-support experience shaped this curriculum.',
+        'Connect lived field lessons to practical classroom and mentoring routines.',
+        'Explain why the course prioritizes composure, respectful communication, and accountability.'
+      ],
+      moves: [
+        'Use first-hand scenario insights to model pressure-aware decision habits.',
+        'Translate field moments into safe, structured simulations for learners.',
+        'Debrief each case using real-world consequences and repair expectations.'
+      ],
+      activities: [
+        'Experience-to-curriculum timeline walk-through.',
+        'Case conversion: real event -> classroom-ready scenario.',
+        'Mission reflection: how this work supports youth, adults, and families.'
+      ],
+      assessment: [
+        'Learners explain how creator experience maps to course design choices.',
+        'Responses are checked for connection to practical outcomes, not biography recall.',
+        'Reflection quality is scored for relevance and application.'
+      ],
+      transfer: [
+        'Strengthens trust because methods are grounded in tested real-life conditions.',
+        'Improves adoption confidence for schools and private cohorts.',
+        'Supports mentoring and family sessions with credible, practical examples.'
+      ],
+      supports: [
+        'Expanded professional bio and mission narrative.',
+        'Facilitator notes for presenting lived examples responsibly.',
+        'Community outreach copy block tied to creator credibility.'
+      ]
+    }
+  },
+  {
+    test: (t) => /the design standard/i.test(t),
+    pack: {
+      chips: ['Transfer-First Design', 'Backward Planning', 'Mastery Evidence'],
+      outcomes: [
+        'Define mastery as independent performance in unfamiliar contexts.',
+        'Use backward design from capstone evidence to daily learning targets.',
+        'Prioritize transferable skill application over recall-only tasks.'
+      ],
+      moves: [
+        'Design from summative transfer backward to formative routines.',
+        'Use consistent language for tools, concepts, and reasons across modules.',
+        'Embed transfer checks before final assessment points.'
+      ],
+      activities: [
+        'Backward-design sprint for one module sequence.',
+        'Scenario ladder: familiar to dissimilar transfer progression.',
+        'Calibration activity on high-quality justification evidence.'
+      ],
+      assessment: [
+        'Checks include strategy use, consequence reasoning, and accountability plan.',
+        'Rubrics emphasize real-world plausibility and coherence.',
+        'Growth is measured from first attempt to revised response.'
+      ],
+      transfer: [
+        'Improves independent decision quality under pressure.',
+        'Builds durable skill use across school, home, work, and online settings.',
+        'Aligns curriculum goals with observable long-view behavior change.'
+      ],
+      supports: [
+        'Transfer-design planning template.',
+        'Rater calibration guide for rubric reliability.',
+        'Implementation checklist for fidelity checks.'
+      ]
+    }
+  },
+  {
+    test: (t) => /post council approved/i.test(t),
+    pack: {
+      chips: ['Credential Card', 'Program Validation', 'Stakeholder Confidence'],
+      outcomes: [
+        'Interpret what this approval communicates about quality and readiness.',
+        'Use credential language accurately in district and community communication.',
+        'Connect external validation to measurable student and family outcomes.'
+      ],
+      moves: [
+        'Present credential claims with evidence, not broad generalization.',
+        'Pair credential language with standards alignment and implementation data.',
+        'Use concise public-facing talking points in meetings and proposals.'
+      ],
+      activities: [
+        'Credential message drill for board, family, and educator audiences.',
+        'Evidence map linking credential to course outcomes.',
+        'One-minute confidence statement practice.'
+      ],
+      assessment: [
+        'Messaging is checked for accuracy, clarity, and audience fit.',
+        'Evidence links are scored for relevance.',
+        'Public summary language is reviewed for professional tone.'
+      ],
+      transfer: [
+        'Strengthens adoption discussions in school and community contexts.',
+        'Supports trust for private class enrollment decisions.',
+        'Provides consistent credibility language across web, flyers, and presentations.'
+      ],
+      supports: [
+        'Credential FAQ block.',
+        'Board letter talking-point insert.',
+        'Website badge language standards.'
+      ]
+    }
+  },
+  {
+    test: (t) => /kdp honor society/i.test(t),
+    pack: {
+      chips: ['Recognition Card', 'Academic Merit', 'Program Leadership'],
+      outcomes: [
+        'Explain how academic distinction supports instructional credibility.',
+        'Connect scholarship recognition to course quality expectations.',
+        'Frame recognition as evidence of discipline and preparation.'
+      ],
+      moves: [
+        'Keep recognition messaging concise and learner-centered.',
+        'Tie honors language to instructional standards and outcomes.',
+        'Use as supporting context rather than primary evidence.'
+      ],
+      activities: [
+        'Credential-to-impact message drafting.',
+        'Audience-fit rewrite (family, student, educator).',
+        'Bio alignment review for website and print media.'
+      ],
+      assessment: [
+        'Message quality: concise, accurate, relevant.',
+        'Learner-focus is maintained in final copy.',
+        'Credential language matches documented records.'
+      ],
+      transfer: [
+        'Supports trust in course rigor and preparation quality.',
+        'Improves public confidence in program leadership.',
+        'Strengthens outreach consistency.'
+      ],
+      supports: [
+        'Recognition copy snippet library.',
+        'Short intro statements for events.',
+        'Branding consistency checklist.'
+      ]
+    }
+  },
+  {
+    test: (t) => /mlk community service award/i.test(t),
+    pack: {
+      chips: ['Recognition Card', 'Community Leadership', 'Service Impact'],
+      outcomes: [
+        'Link service leadership to the curriculum mission of civic readiness.',
+        'Show how community engagement informs practical teaching examples.',
+        'Communicate leadership credibility to partners and families.'
+      ],
+      moves: [
+        'Use service-based stories that highlight empathy and accountability.',
+        'Translate community lessons into applicable classroom scenarios.',
+        'Keep recognition framing connected to learner benefit.'
+      ],
+      activities: [
+        'Service-impact story mapping to course modules.',
+        'Community-value discussion protocol.',
+        'Leadership habit reflection worksheet.'
+      ],
+      assessment: [
+        'Learners identify service-to-skill connections accurately.',
+        'Message drafts are scored for authenticity and relevance.',
+        'Communication remains mission-focused.'
+      ],
+      transfer: [
+        'Reinforces pro-social behavior expectations in and outside class.',
+        'Supports family and community partnerships.',
+        'Improves alignment between course values and public presence.'
+      ],
+      supports: [
+        'Community partner intro paragraph.',
+        'Service-value reflection prompts.',
+        'Leadership framing checklist for presentations.'
+      ]
+    }
+  },
+  {
+    test: (t) => /ccaa scholar/i.test(t),
+    pack: {
+      chips: ['Recognition Card', 'National Selection', 'Academic Excellence'],
+      outcomes: [
+        'Communicate why national selection supports program trust.',
+        'Connect scholarship distinction to instructional preparation quality.',
+        'Use credential language professionally in outreach contexts.'
+      ],
+      moves: [
+        'Position scholarship recognition as supporting evidence.',
+        'Pair distinction claims with tangible curriculum outcomes.',
+        'Use concise and verifiable wording in all materials.'
+      ],
+      activities: [
+        'Credential summary for website and flyer usage.',
+        'Audience adaptation task for stakeholder communication.',
+        'Consistency check across bio and credential cards.'
+      ],
+      assessment: [
+        'Accuracy check against official wording.',
+        'Professional tone and brevity scoring.',
+        'Relevance to learner outcomes validation.'
+      ],
+      transfer: [
+        'Increases confidence among schools and private clients.',
+        'Supports coherent public-facing credibility narrative.',
+        'Reinforces standards of professionalism in program branding.'
+      ],
+      supports: [
+        'Credential statement templates.',
+        'Outreach message variants.',
+        'Verification checklist for public materials.'
+      ]
+    }
+  },
+  {
+    test: (t) => /respectful communication/i.test(t),
+    pack: {
+      chips: ['Pillar 1', 'Communication', 'Trust Language'],
+      outcomes: [
+        'Use respectful verbal and nonverbal communication across contexts.',
+        'Demonstrate active listening and clarification before responding.',
+        'Apply repair language after communication mistakes.'
+      ],
+      moves: [
+        'Model sentence stems for disagreement without disrespect.',
+        'Use structured turn-taking and paraphrase checks in practice.',
+        'Coach immediate repair routines when tone escalates.'
+      ],
+      activities: [
+        'Greeting and first-impression lab for school/workplace readiness.',
+        'Conflict language role-play with observer rubric.',
+        'Repair script rehearsal after miscommunication scenarios.'
+      ],
+      assessment: [
+        'Rubric indicators: tone, listening, clarity, and repair quality.',
+        'Formative checks through paired dialogue observations.',
+        'Reflection evidence on communication growth and outcomes.'
+      ],
+      transfer: [
+        'Applies to parent/teacher interactions, peers, and workplace settings.',
+        'Improves trust continuity across in-person and digital communication.',
+        'Builds long-term credibility through consistent respectful conduct.'
+      ],
+      supports: [
+        'Communication anchor chart and sentence-stem bank.',
+        'Family discussion prompts for respectful disagreement practice.',
+        'Teacher mini-lesson script for reteach moments.'
+      ]
+    }
+  },
+  {
+    test: (t) => /emotional regulation/i.test(t),
+    pack: {
+      chips: ['Pillar 2', 'Regulation', 'Composure'],
+      outcomes: [
+        'Recognize triggers and interrupt impulsive reactions.',
+        'Use regulation routines before making consequential decisions.',
+        'Maintain composure in socially or emotionally charged moments.'
+      ],
+      moves: [
+        'Teach pause-label-reframe-respond with concrete examples.',
+        'Normalize reset moments during scenario work.',
+        'Debrief physiological cues and response quality after practice.'
+      ],
+      activities: [
+        'Trigger map creation and response planning.',
+        'Timed pressure scenarios with regulation checkpoints.',
+        'Peer coaching drills for de-escalation language.'
+      ],
+      assessment: [
+        'Performance checks for routine fidelity under stress.',
+        'Self-report logs on trigger recognition and response choice.',
+        'Instructor observation of composure and recovery quality.'
+      ],
+      transfer: [
+        'Supports safer decisions at home, school, work, and online.',
+        'Improves conflict outcomes by reducing reactive escalation.',
+        'Strengthens long-view choices under immediate pressure.'
+      ],
+      supports: [
+        'Regulation tool card for students and families.',
+        'Teacher cue prompts for in-the-moment coaching.',
+        'Mentoring follow-up questions for self-management growth.'
+      ]
+    }
+  },
+  {
+    test: (t) => /decision-making under pressure/i.test(t),
+    pack: {
+      chips: ['Pillar 3', 'Decision Quality', 'POCC'],
+      outcomes: [
+        'Apply structured decision steps in high-pressure scenarios.',
+        'Compare options and predict likely consequences.',
+        'Justify choices with reasoning tied to long-term impact.'
+      ],
+      moves: [
+        'Require option generation before commitment.',
+        'Map short-term versus long-term outcomes explicitly.',
+        'Use consequence review to improve second-attempt quality.'
+      ],
+      activities: [
+        'POCC decision board in live role-play cases.',
+        'Risk-reward sorting activity with stakeholder impact analysis.',
+        'Rapid-response drills with debrief for reasoning quality.'
+      ],
+      assessment: [
+        'Rubric checks for options, consequence mapping, and justification.',
+        'Scenario response quality tracked across repeated practice.',
+        'Reflection prompts on decision revisions and accountability.'
+      ],
+      transfer: [
+        'Applies to peer pressure, digital posting, and workplace choices.',
+        'Strengthens confidence in ambiguous, time-limited moments.',
+        'Reduces short-term relief decisions that create long-term costs.'
+      ],
+      supports: [
+        'Decision framework template for classroom and home.',
+        'Teacher debrief script for consequence analysis.',
+        'Mentor guide for high-stakes choice coaching.'
+      ]
+    }
+  },
+  {
+    test: (t) => /accountability\s*&\s*repair/i.test(t),
+    pack: {
+      chips: ['Pillar 4', 'Repair', 'Follow-Through'],
+      outcomes: [
+        'Take ownership of mistakes without deflection.',
+        'Implement concrete repair actions after harm or misjudgment.',
+        'Follow through over time to rebuild trust.'
+      ],
+      moves: [
+        'Teach ownership language and no-excuse response framing.',
+        'Separate apology words from repair actions in instruction.',
+        'Track follow-through behaviors, not only initial statements.'
+      ],
+      activities: [
+        'Apology versus repair comparison scenarios.',
+        'Trust-rebuild planning worksheet with checkpoints.',
+        'Accountability circle where students present action commitments.'
+      ],
+      assessment: [
+        'Scoring includes ownership clarity and repair feasibility.',
+        'Follow-through checks at delayed intervals.',
+        'Evidence logs capture behavior change, not intent only.'
+      ],
+      transfer: [
+        'Applies to school discipline, family conflict, workplace expectations.',
+        'Develops integrity habits that strengthen long-term credibility.',
+        'Builds practical skills for restoring relationships after mistakes.'
+      ],
+      supports: [
+        'Repair-plan templates for students and mentors.',
+        'Teacher prompts for accountability conferencing.',
+        'Family support guide for reinforcing follow-through.'
+      ]
+    }
+  },
+  {
+    test: (t) => /^how do my everyday choices shape/i.test(t),
+    pack: {
+      chips: ['Compelling Question', 'Choice Impact', 'Trust'],
+      outcomes: [
+        'Analyze how repeated daily choices shape trust and access.',
+        'Identify high-leverage behaviors that influence credibility.',
+        'Connect habits to future opportunity trajectories.'
+      ],
+      moves: [
+        'Use longitudinal examples to show pattern effects over time.',
+        'Prompt learners to forecast outcomes beyond the immediate moment.',
+        'Anchor debriefs in reputation and trust consequences.'
+      ],
+      activities: [
+        'Habit-to-outcome mapping over 30/90/180 day windows.',
+        'Trust account simulation with deposits and withdrawals.',
+        'Personal action plan for one credibility behavior.'
+      ],
+      assessment: [
+        'Learners present evidence chain from choice to consequence.',
+        'Rubric includes clarity of long-view reasoning.',
+        'Reflection checks behavior commitment quality.'
+      ],
+      transfer: [
+        'Applies across school behavior, digital presence, and work reliability.',
+        'Reframes small choices as cumulative opportunity drivers.',
+        'Strengthens future-oriented decision habits.'
+      ],
+      supports: [
+        'Daily credibility checklist handout.',
+        'Family reflection questions on trust-building choices.',
+        'Teacher conference script for habit coaching.'
+      ]
+    }
+  },
+  {
+    test: (t) => /^what does respect look like when no one is watching/i.test(t),
+    pack: {
+      chips: ['Compelling Question', 'Integrity', 'Character'],
+      outcomes: [
+        'Define integrity as consistent behavior across visible and private contexts.',
+        'Recognize self-management behaviors that do not depend on external monitoring.',
+        'Practice value-aligned decision-making when social pressure is absent.'
+      ],
+      moves: [
+        'Use private-choice scenarios to test value alignment.',
+        'Coach internal accountability language.',
+        'Debrief differences between compliance and integrity.'
+      ],
+      activities: [
+        'Integrity decision journal for unobserved moments.',
+        'Values ranking and action alignment practice.',
+        'Scenario comparisons: monitored versus unmonitored settings.'
+      ],
+      assessment: [
+        'Evidence focuses on consistency and follow-through.',
+        'Reflections scored for honesty and specific behavioral commitments.',
+        'Scenario responses evaluated for value-behavior alignment.'
+      ],
+      transfer: [
+        'Applies to digital behavior, independent work, and personal relationships.',
+        'Builds self-leadership and internal standards.',
+        'Supports long-term reputation through private consistency.'
+      ],
+      supports: [
+        'Integrity reflection prompt set.',
+        'Mentor conversation guide on character under no-supervision conditions.',
+        'Family check-in template for values-based choices.'
+      ]
+    }
+  },
+  {
+    test: (t) => /^why do strong emotions make good decisions harder/i.test(t),
+    pack: {
+      chips: ['Compelling Question', 'Emotion + Decision', 'Regulation First'],
+      outcomes: [
+        'Explain why heightened emotion narrows decision quality.',
+        'Use regulation tools to restore thinking capacity before acting.',
+        'Demonstrate improved decision outcomes after emotional reset.'
+      ],
+      moves: [
+        'Teach emotion-cognition links in learner-friendly language.',
+        'Require pause-and-label before response during role-play.',
+        'Compare reactive versus regulated choices in debrief.'
+      ],
+      activities: [
+        'Trigger-to-response flowchart exercises.',
+        'Timed stress scenarios with mandatory pause routine.',
+        'Debrief journal: what changed after regulation?'
+      ],
+      assessment: [
+        'Checks include routine use under emotional pressure.',
+        'Response quality compared pre/post regulation.',
+        'Reasoning clarity evaluated for consequence awareness.'
+      ],
+      transfer: [
+        'Applies to family conflict, peer tension, and workplace stress.',
+        'Reduces escalations and improves long-view choices.',
+        'Builds durable composure skills for real-life moments.'
+      ],
+      supports: [
+        'Emotion-regulation quick reference card.',
+        'Teacher de-escalation prompt list.',
+        'Family coaching script for high-emotion conversations.'
+      ]
+    }
+  },
+  {
+    test: (t) => /^how should my behavior change depending on context/i.test(t),
+    pack: {
+      chips: ['Compelling Question', 'Context Switching', 'Behavior Flexibility'],
+      outcomes: [
+        'Differentiate behavior expectations across contexts.',
+        'Adapt tone, language, and boundaries to audience and setting.',
+        'Maintain core values while adjusting communication style.'
+      ],
+      moves: [
+        'Teach context cues explicitly before scenario practice.',
+        'Model same value, different delivery responses.',
+        'Debrief audience impact after each role-play.'
+      ],
+      activities: [
+        'Context rotation stations: friend, teacher, supervisor, online audience.',
+        'Message rewrite task for multiple audience types.',
+        'Boundary-setting scripts adjusted by context.'
+      ],
+      assessment: [
+        'Rubrics score audience fit and value consistency.',
+        'Performance checks compare adaptability quality.',
+        'Reflections document context-switching strategy use.'
+      ],
+      transfer: [
+        'Supports readiness for school, employment, and digital communication.',
+        'Improves credibility through context-aware responses.',
+        'Reduces avoidable conflict from misread expectations.'
+      ],
+      supports: [
+        'Context cue checklist for learners.',
+        'Teacher modeling templates for audience adaptation.',
+        'Family examples for home reinforcement.'
+      ]
+    }
+  },
+  {
+    test: (t) => /modern manners|emotional intelligence|conflict navigation|digital citizenship|personal growth/i.test(t),
+    pack: {
+      chips: ['Module Profile', 'Scope + Sequence', 'Applied Practice'],
+      outcomes: [
+        'Master core competencies tied to this module title.',
+        'Apply module strategies across familiar and unfamiliar scenarios.',
+        'Demonstrate growth with performance evidence and reflection.'
+      ],
+      moves: [
+        'Deliver direct instruction for module vocabulary and routines.',
+        'Use guided role-play progressing to independent response.',
+        'Reinforce module language in feedback and assessment.'
+      ],
+      activities: [
+        'Module-specific scenario labs with observer checklists.',
+        'Partner coaching and response revision cycles.',
+        'Reflection prompts connecting module skills to real life.'
+      ],
+      assessment: [
+        'Formative checks during module practice.',
+        'Performance task aligned to module outcomes.',
+        'Reflection evidence demonstrating transfer readiness.'
+      ],
+      transfer: [
+        'Module skills apply in school, family, work, and online contexts.',
+        'Learners justify decisions using module language and structured reasoning.',
+        'Independent application is expected by cycle end.'
+      ],
+      supports: [
+        'Facilitator notes for lesson pacing and reteach.',
+        'Family reinforcement prompts tied to module goals.',
+        'Mentoring extension activities for additional practice.'
+      ]
+    }
+  },
+  {
+    test: (t) => /5 modules|16-week semester/i.test(t),
+    pack: {
+      chips: ['Program Structure', '5-Module Arc', '16-Week Timeline'],
+      outcomes: [
+        'Understand how all five modules build progressively across the semester.',
+        'Identify where each module contributes to transfer-ready performance.',
+        'Recognize pacing links between direct instruction, practice, and capstone evidence.'
+      ],
+      moves: [
+        'Preview full-course map before module launch.',
+        'Use milestone checkpoints to verify readiness before moving on.',
+        'Connect each module to shared pillars and summative transfer.'
+      ],
+      activities: [
+        'Semester map walk-through with milestone annotations.',
+        'Module dependency sorting task.',
+        'Pacing reflection at each cycle close.'
+      ],
+      assessment: [
+        'Learners can explain module purpose and order.',
+        'Milestone checks show progression toward transfer.',
+        'Pacing adjustments documented with evidence.'
+      ],
+      transfer: [
+        'Creates coherence from first week to capstone.',
+        'Prevents fragmented skill instruction by preserving sequence logic.',
+        'Supports consistent delivery across cohorts and formats.'
+      ],
+      supports: [
+        'Semester pacing map.',
+        'Module milestone checklist.',
+        'Implementation timeline guide.'
+      ]
+    }
+  },
+  {
+    test: (t) => /school & community/i.test(t),
+    pack: {
+      chips: ['Context: School & Community', 'Relationships', 'Reputation'],
+      outcomes: [
+        'Demonstrate respectful communication with peers, teachers, and community adults.',
+        'Use conflict-repair language when misunderstandings happen in school/community settings.',
+        'Make choices that protect trust and school/community credibility.'
+      ],
+      moves: [
+        'Model hallway, classroom, and activity-based communication routines.',
+        'Teach disagreement scripts for peer conflict and authority interactions.',
+        'Debrief decisions using community impact and trust-restoration prompts.'
+      ],
+      activities: [
+        'Campus scenario labs: class transitions, group work, and event conduct.',
+        'Community civility role-play with observers tracking tone and follow-through.',
+        'Repair-plan practice after simulated disrespect or rumor incidents.'
+      ],
+      assessment: [
+        'Rubric checks tone, listening, repair quality, and follow-through.',
+        'Scenario responses scored for respect and accountability in school contexts.',
+        'Reflection evidence documents how trust was maintained or restored.'
+      ],
+      transfer: [
+        'Applies directly to classrooms, teams, clubs, and neighborhood interactions.',
+        'Builds social credibility that supports long-term opportunities.',
+        'Strengthens community-connected behavior and leadership habits.'
+      ],
+      supports: [
+        'School/community behavior cue sheet.',
+        'Teacher-family conversation prompts for peer conflict repair.',
+        'Facilitator checklist for school-based scenario coaching.'
+      ]
+    }
+  },
+  {
+    test: (t) => /workplace readiness/i.test(t),
+    pack: {
+      chips: ['Context: Workplace Readiness', 'Professional Habits', 'Team Reliability'],
+      outcomes: [
+        'Use workplace communication norms with supervisors, coworkers, and customers.',
+        'Respond to feedback professionally and adjust behavior without defensiveness.',
+        'Show reliability through punctuality, accountability, and follow-through.'
+      ],
+      moves: [
+        'Teach professional language for questions, clarification, and conflict.',
+        'Run supervisor-feedback simulations with response coaching.',
+        'Use consequence mapping for attendance, attitude, and task completion decisions.'
+      ],
+      activities: [
+        'Workplace role-plays: scheduling conflicts, team responsibilities, and service tone.',
+        'Interview and first-day communication drills.',
+        'Problem-solving rounds focused on ownership and repair after mistakes.'
+      ],
+      assessment: [
+        'Performance rubric scores professionalism, coachability, and reliability.',
+        'Observers track response quality during feedback simulations.',
+        'Reflection checks include short-term vs long-term career consequences.'
+      ],
+      transfer: [
+        'Supports job readiness for youth and adults in real employment settings.',
+        'Improves confidence in interviews, onboarding, and team interactions.',
+        'Builds professional reputation through consistent behavior under pressure.'
+      ],
+      supports: [
+        'Workplace communication phrase bank.',
+        'Supervisor feedback response checklist.',
+        'Family/mentor guide for career-readiness practice.'
+      ]
+    }
+  },
+  {
+    test: (t) => /digital & social media/i.test(t),
+    pack: {
+      chips: ['Context: Digital & Social Media', 'Digital Footprint', 'Online Judgment'],
+      outcomes: [
+        'Evaluate digital choices for privacy, permanence, and reputation impact.',
+        'Use respectful tone and boundary-aware communication online.',
+        'Apply a pause-plan routine before posting, sharing, or replying.'
+      ],
+      moves: [
+        'Teach post-before-you-post checks: audience, permanence, and consequence.',
+        'Model text/comment rewrites that shift reactive tone to responsible tone.',
+        'Debrief digital scenarios with legal, safety, and trust implications.'
+      ],
+      activities: [
+        'Digital dilemma simulations: group chats, screenshots, rumor sharing, and comments.',
+        'Reputation audit exercise for real-world online decision patterns.',
+        'Boundary-setting script practice for unwanted contact or pressure.'
+      ],
+      assessment: [
+        'Responses scored for digital judgment, boundary clarity, and consequence awareness.',
+        'Scenario work evaluated for tone quality and stakeholder impact.',
+        'Reflections document better choices for future online interactions.'
+      ],
+      transfer: [
+        'Applies to texting, social platforms, gaming chat, and shared media spaces.',
+        'Reduces impulsive digital behavior that damages trust and opportunity.',
+        'Strengthens long-view online reputation management.'
+      ],
+      supports: [
+        'Digital footprint checklist.',
+        'Parent/guardian conversation guide for online behavior.',
+        'Teacher prompt bank for social-media case debriefs.'
+      ]
+    }
+  },
+  {
+    test: (t) => /high-stress moments/i.test(t),
+    pack: {
+      chips: ['Context: High-Stress Moments', 'De-escalation', 'Composure Under Pressure'],
+      outcomes: [
+        'Recognize stress signals early and apply regulation before reacting.',
+        'Use de-escalation communication in emotionally charged interactions.',
+        'Maintain decision quality when urgency and pressure are high.'
+      ],
+      moves: [
+        'Teach stress-to-response routines with immediate coaching cues.',
+        'Use timed scenarios that require pause-label-reframe before choosing.',
+        'Debrief high-arousal moments with consequence and repair analysis.'
+      ],
+      activities: [
+        'Pressure simulation rounds with escalating social/emotional complexity.',
+        'Composure drills for conflict, embarrassment, and peer-pressure moments.',
+        'Recovery planning exercise after an impulsive decision scenario.'
+      ],
+      assessment: [
+        'Rubric checks regulation routine fidelity under pressure.',
+        'Performance evidence tracks escalation reduction and response quality.',
+        'Reflection compares reactive choice versus regulated choice outcomes.'
+      ],
+      transfer: [
+        'Applies to family conflict, school incidents, workplace stress, and public settings.',
+        'Builds safer and more intentional responses in real high-stakes moments.',
+        'Improves long-term trust by reducing impulsive harm.'
+      ],
+      supports: [
+        'High-stress response card for quick reference.',
+        'Coach prompts for de-escalation and reset language.',
+        'Family/mentor check-in protocol after difficult moments.'
+      ]
+    }
+  },
+  {
+    test: (t) => /^(critical thinking|communication|collaboration|digital citizenship)$/i.test(t),
+    pack: {
+      chips: ['Modern Literacy', 'Skill Transfer', 'Performance Indicators'],
+      outcomes: [
+        'Define and demonstrate the literacy represented by this card.',
+        'Apply this literacy in social and decision-making contexts.',
+        'Use feedback to improve literacy performance over time.'
+      ],
+      moves: [
+        'Teach literacy indicators with examples and counterexamples.',
+        'Embed literacy checks into scenario debrief routines.',
+        'Coach targeted improvement based on observed gaps.'
+      ],
+      activities: [
+        'Literacy challenge tied to current module scenarios.',
+        'Peer feedback cycle focused on literacy indicators.',
+        'Reflection protocol for next-step planning.'
+      ],
+      assessment: [
+        'Rubrics include literacy-specific behavior indicators.',
+        'Formative checks run during individual and group tasks.',
+        'Summative evidence shows independent transfer.'
+      ],
+      transfer: [
+        'Applies across academics, relationships, and workplace readiness.',
+        'Improves adaptive performance in changing contexts.',
+        'Supports long-term opportunity access through practical skill use.'
+      ],
+      supports: [
+        'Literacy indicator anchor chart.',
+        'Teacher question bank for targeted coaching.',
+        'Family prompts to reinforce literacy behaviors.'
+      ]
+    }
+  },
+  {
+    test: (t) => /acquire|connect|similar transfer|dissimilar transfer|student action/i.test(t),
+    pack: {
+      chips: ['Storyboard Phase', 'Learning Progression', 'Transfer Sequence'],
+      outcomes: [
+        'Understand the purpose of this phase in the transfer progression.',
+        'Demonstrate expected performance level for this phase.',
+        'Prepare evidence required to advance to the next phase.'
+      ],
+      moves: [
+        'Clarify phase-specific success criteria before activities.',
+        'Use phase-appropriate scaffolds and gradually release support.',
+        'Debrief how this phase contributes to dissimilar transfer readiness.'
+      ],
+      activities: [
+        'Phase-aligned task set with progression checkpoints.',
+        'Peer/instructor feedback tied to phase outcomes.',
+        'Reflection capture on skills strengthened this cycle.'
+      ],
+      assessment: [
+        'Phase exit checks verify readiness before progression.',
+        'Evidence includes strategy use and reasoning quality.',
+        'Instructor notes identify pacing adjustments when needed.'
+      ],
+      transfer: [
+        'Each phase increases independence and context complexity.',
+        'Learners move from guided use to independent performance.',
+        'Sequence protects quality by avoiding premature complexity jumps.'
+      ],
+      supports: [
+        'Phase guide sheet with teacher prompts.',
+        'Student self-check rubric for phase readiness.',
+        'Adjustment options for pacing variance.'
+      ]
+    }
+  },
+  {
+    test: (t) => /weekly reflection journals|concept sorting|scenario analysis|pre\/post self-efficacy|how i handle it|novel scenario performance task/i.test(t),
+    pack: {
+      chips: ['Assessment Profile', 'Evidence Quality', 'Performance Feedback'],
+      outcomes: [
+        'Understand what this assessment measures and why it matters.',
+        'Produce evidence aligned to rubric expectations.',
+        'Use feedback to improve next performance cycle.'
+      ],
+      moves: [
+        'Preview criteria and exemplars before task launch.',
+        'Collect both process and product evidence.',
+        'Debrief results with explicit next-step coaching.'
+      ],
+      activities: [
+        'Assessment rehearsal with low-stakes calibration.',
+        'Peer scoring practice using shared rubric language.',
+        'Revision pass to strengthen reasoning and strategy clarity.'
+      ],
+      assessment: [
+        'Criteria focus: clarity, strategy use, consequence reasoning, accountability.',
+        'Evidence collection includes written and performance components.',
+        'Growth tracking compares baseline to current quality.'
+      ],
+      transfer: [
+        'Assessment evidence demonstrates real-world transfer, not recall.',
+        'Tasks reflect unfamiliar and high-pressure contexts.',
+        'Learners justify decisions with long-view reasoning.'
+      ],
+      supports: [
+        'Rubric interpretation guide for students and families.',
+        'Teacher calibration notes for scoring reliability.',
+        'Feedback sentence stems for faster coaching cycles.'
+      ]
+    }
+  },
+  {
+    test: (t) => /clarity of scenario|application of strategies|self-reflection|delivery|visual\/support materials/i.test(t),
+    pack: {
+      chips: ['Rubric Criterion', 'Capstone Quality', 'Scoring Clarity'],
+      outcomes: [
+        'Demonstrate strong performance on this specific criterion.',
+        'Use exemplars to distinguish meets versus exceeds levels.',
+        'Apply criterion feedback to improve final capstone delivery.'
+      ],
+      moves: [
+        'Model criterion-specific strengths and common errors.',
+        'Score sample responses collaboratively for calibration.',
+        'Require targeted revision aligned to this criterion.'
+      ],
+      activities: [
+        'Criterion mini-lab with focused practice.',
+        'Peer feedback using one-criterion focus sheets.',
+        'Self-check protocol before final submission.'
+      ],
+      assessment: [
+        'Scoring emphasizes criterion precision over generic comments.',
+        'Evidence includes observable behaviors and artifacts.',
+        'Improvement tracked from draft to final submission.'
+      ],
+      transfer: [
+        'Criterion mastery improves communication quality in real contexts.',
+        'Supports confidence in public and professional presentations.',
+        'Builds transferable performance standards beyond this course.'
+      ],
+      supports: [
+        'Criterion checklist for learners.',
+        'Teacher feedback bank by rubric row.',
+        'Family-friendly explanation of criterion purpose.'
+      ]
+    }
+  },
+  {
+    test: (t) => /objectives-based design|spiral curriculum|experience & education|reinforcement in practice|curriculum planning model|sel competencies|learning that transfers|small teaching & grit/i.test(t),
+    pack: {
+      chips: ['Theory Card', 'Research Basis', 'Design Translation'],
+      outcomes: [
+        'Explain the theory and how it is operationalized in instruction.',
+        'Connect research concept to a concrete classroom routine.',
+        'Demonstrate how theory improves learner transfer outcomes.'
+      ],
+      moves: [
+        'Teach each theory with practical classroom translation examples.',
+        'Use side-by-side theory-to-routine mapping.',
+        'Reinforce research language in planning and debrief artifacts.'
+      ],
+      activities: [
+        'Theory-to-practice mapping exercise.',
+        'Case analysis showing design impact on learner outcomes.',
+        'Reflection: which theory most improves transfer and why?'
+      ],
+      assessment: [
+        'Learners explain theory use in their own scenario responses.',
+        'Planning artifacts show explicit alignment to theory.',
+        'Evaluation checks practical translation quality.'
+      ],
+      transfer: [
+        'Supports design decisions across school, workshop, and mentoring formats.',
+        'Increases coherence between objectives, instruction, and assessment.',
+        'Strengthens long-term program fidelity.'
+      ],
+      supports: [
+        'Research summary one-pager for stakeholders.',
+        'Teacher planning guide with theory checkpoints.',
+        'Presentation notes for board and community communication.'
+      ]
+    }
+  },
+  {
+    test: (t) => /scheduling options|instructional strategies|materials & staff prep/i.test(t),
+    pack: {
+      chips: ['Implementation Card', 'Operational Planning', 'Delivery Readiness'],
+      outcomes: [
+        'Define how this implementation element supports program success.',
+        'Apply practical planning steps for immediate rollout.',
+        'Align operations with instructional quality and learner outcomes.'
+      ],
+      moves: [
+        'Translate this implementation card into a weekly action plan.',
+        'Identify minimum viable setup and ideal setup conditions.',
+        'Use implementation reviews to maintain fidelity.'
+      ],
+      activities: [
+        'Operational checklist build-out for this element.',
+        'Scenario planning for common implementation barriers.',
+        'Readiness scoring with next-step prioritization.'
+      ],
+      assessment: [
+        'Implementation evidence includes completion and quality metrics.',
+        'Progress tracked against timeline milestones.',
+        'Adjustment decisions documented with rationale.'
+      ],
+      transfer: [
+        'Supports consistent delivery across school and private settings.',
+        'Improves facilitator confidence and learner consistency.',
+        'Enables scalable growth without sacrificing quality.'
+      ],
+      supports: [
+        'Implementation checklist templates.',
+        'Facilitator coaching notes.',
+        'Stakeholder update format for transparency.'
+      ]
+    }
+  },
+  {
+    test: (t) => /goal 1:|goal 2:|goal 3:|goal 4:|goal 5:/i.test(t),
+    pack: {
+      chips: ['Evaluation Goal', 'Evidence Alignment', 'Continuous Improvement'],
+      outcomes: [
+        'Understand this evaluation goal and its evidence requirements.',
+        'Connect goal attainment to specific learner behaviors.',
+        'Use data to guide instructional refinement.'
+      ],
+      moves: [
+        'Map this goal to daily formative checks.',
+        'Review trend data at routine intervals.',
+        'Adjust instruction based on goal-specific evidence.'
+      ],
+      activities: [
+        'Goal evidence tracking in weekly checkpoints.',
+        'Data discussion protocol for teacher reflection.',
+        'Action planning tied to identified evidence gaps.'
+      ],
+      assessment: [
+        'Goal metrics are clearly defined and measurable.',
+        'Evidence sources are triangulated for reliability.',
+        'Outcome trends inform planning decisions.'
+      ],
+      transfer: [
+        'Goal alignment improves long-term program impact.',
+        'Data-informed iteration strengthens learner outcomes.',
+        'Evaluation process supports sustainable quality growth.'
+      ],
+      supports: [
+        'Goal tracking template.',
+        'Data interpretation guidance.',
+        'Stakeholder reporting snippets.'
+      ]
+    }
+  },
+  {
+    test: (t) => /\$1,200|\$2,200|\$2,500|\$1,800|\$2,000|\$1,000|\$500|in-kind/i.test(t),
+    pack: {
+      chips: ['Budget Line', 'Resource Impact', 'Program Sustainability'],
+      outcomes: [
+        'Explain how this budget line supports learner outcomes.',
+        'Connect spending to implementation fidelity and quality.',
+        'Use budget transparency to strengthen stakeholder trust.'
+      ],
+      moves: [
+        'Tie this expense category to specific instructional functions.',
+        'Track utilization and impact of this budget element.',
+        'Review return on impact each implementation cycle.'
+      ],
+      activities: [
+        'Budget-to-outcome mapping worksheet.',
+        'Resource priority ranking by learner impact.',
+        'Implementation scenario planning under budget constraints.'
+      ],
+      assessment: [
+        'Impact review includes evidence of learner benefit.',
+        'Spending rationale documented for each category.',
+        'Budget adjustments guided by measurable outcomes.'
+      ],
+      transfer: [
+        'Supports program delivery across school and private settings.',
+        'Improves sustainability through data-informed allocation.',
+        'Enables expansion while maintaining instructional quality.'
+      ],
+      supports: [
+        'Budget narrative template for proposals.',
+        'Stakeholder brief for spending transparency.',
+        'Annual review checklist for continuous improvement.'
+      ]
+    }
+  },
+  {
+    test: (t) => /what was one skill|how did it go|what would you do differently|how did someone else|what is one goal/i.test(t),
+    pack: {
+      chips: ['Journal Prompt', 'Metacognition', 'Growth Evidence'],
+      outcomes: [
+        'Use reflection to convert experiences into actionable learning.',
+        'Identify what worked, what needs adjustment, and what to do next.',
+        'Document growth in decision quality and self-regulation.'
+      ],
+      moves: [
+        'Model concise, specific reflection responses.',
+        'Link prompt responses to strategy evidence.',
+        'Use reflection outputs to set next-cycle goals.'
+      ],
+      activities: [
+        'Weekly guided journal entry with follow-up discussion.',
+        'Peer reflection share using structured response stems.',
+        'Goal update checkpoints tied to previous entries.'
+      ],
+      assessment: [
+        'Responses scored for specificity, strategy alignment, and growth insight.',
+        'Reflection quality tracked across the semester.',
+        'Entries inform personalized feedback planning.'
+      ],
+      transfer: [
+        'Builds self-coaching skills for real-life decision moments.',
+        'Improves independent performance outside classroom support.',
+        'Strengthens long-term habit formation through repeated reflection.'
+      ],
+      supports: [
+        'Journal rubric and exemplar responses.',
+        'Prompt extension questions for mentors/families.',
+        'Teacher conferencing guide based on reflection evidence.'
+      ]
+    }
+  },
+  {
+    test: (t) => /unfamiliar\. high-stakes\. real-world complexity/i.test(t),
+    pack: {
+      chips: ['Novel Scenario', 'Summative Transfer', 'Authentic Audience'],
+      outcomes: [
+        'Demonstrate independent transfer in unfamiliar high-stakes scenarios.',
+        'Integrate regulation, communication, decision, and accountability skills in one response.',
+        'Produce a justified action plan with likely outcomes and repair strategy.'
+      ],
+      moves: [
+        'Present ambiguous scenarios with limited information and pressure.',
+        'Require explicit reasoning chains before final decisions.',
+        'Debrief with audience-impact and second-order consequence analysis.'
+      ],
+      activities: [
+        'Novel scenario performance task with timed response.',
+        'Written or multimedia justification submission.',
+        'Post-task reflection and revision conference.'
+      ],
+      assessment: [
+        'Rubric targets independent transfer and reasoning quality.',
+        'Evidence includes strategy use and accountability plan.',
+        'Performance reviewed for real-world plausibility and coherence.'
+      ],
+      transfer: [
+        'Directly mirrors real-life uncertainty and social pressure.',
+        'Tests whether learners can apply skills without scaffolds.',
+        'Confirms readiness for school, workplace, and community settings.'
+      ],
+      supports: [
+        'Scenario facilitation script and timing guide.',
+        'Audience briefing sheet for external reviewers.',
+        'Scoring calibration notes for reliability.'
+      ]
+    }
+  }
+];
+
+function splitSummarySentences(summaryText) {
+  return String(summaryText || '')
+    .split(/(?<=[.!?])\s+/)
+    .map((s) => s.trim())
+    .filter(Boolean);
+}
+
+function buildCardSpecificPack(basePack, titleText, sectionKey, summaryText) {
+  for (const entry of SPECIAL_CARD_PACKS) {
+    if (entry.test(titleText)) {
+      return entry.pack;
+    }
+  }
+
+  const sectionName = sectionLabel(sectionKey);
+  const keywords = extractKeywords(summaryText);
+  const k1 = keywords[0] || 'decision quality';
+  const k2 = keywords[1] || 'self-regulation';
+  const k3 = keywords[2] || 'accountability';
+  const summarySentences = splitSummarySentences(summaryText);
+  const s1 = summarySentences[0] || `This card focuses on ${titleText}.`;
+  const s2 = summarySentences[1] || `Instruction in this area strengthens ${k1} and ${k2}.`;
+  const s3 = summarySentences[2] || `Learners demonstrate impact through accountable action and reflection.`;
+
+  return {
+    chips: [
+      `Card: ${titleText}`,
+      `Section: ${sectionName}`,
+      `Focus: ${k1}`
+    ],
+    outcomes: [
+      `Mastery objective: ${s1}`,
+      `Application objective: learners use "${titleText}" strategies in school, home, workplace, and online contexts.`,
+      `Reasoning objective: responses connect ${k1}, ${k2}, and long-view consequences.`
+    ],
+    moves: [
+      `Model instructor thinking for "${titleText}" with visible pause/plan language.`,
+      `Use guided prompts that convert this card into explicit decision steps.`,
+      `Coach revision cycles so first responses become evidence-based and accountable.`
+    ],
+    activities: [
+      `Role-play lab: run one scenario focused on "${titleText}" with observer feedback.`,
+      `Decision map: compare at least two options and likely outcomes connected to ${k2}.`,
+      `Reflection: explain what changed and how ${k3} was demonstrated.`
+    ],
+    assessment: [
+      `Formative checks: concept accuracy, strategy use, and explanation clarity tied to "${titleText}".`,
+      `Performance task: applied response scored for decision quality and accountability.`,
+      `Growth check: compare first and revised responses for transfer improvement.`
+    ],
+    transfer: [
+      `Transfer scenario: apply "${titleText}" in an unfamiliar situation with time pressure.`,
+      `Require clear links between short-term actions and long-term trust/opportunity.`,
+      `Document how this card applies in real life beyond class.`
+    ],
+    supports: [
+      `Teacher support: use "${titleText}" as a targeted mini-lesson and reteach anchor.`,
+      `Family support: discuss ${s2.toLowerCase()}`,
+      `Program support: track this card separately in your data sheet for trend analysis.`
+    ]
+  };
+}
+
+function renderList(id, items) {
+  const el = document.getElementById(id);
+  el.innerHTML = '';
+  (items || []).forEach((txt) => {
+    const div = document.createElement('div');
+    div.className = 'item clickable';
+    div.setAttribute('tabindex', '0');
+    div.setAttribute('role', 'button');
+    div.textContent = txt;
+    div.addEventListener('click', () => openPointDetail(id, txt));
+    div.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Enter' || evt.key === ' ') {
+        evt.preventDefault();
+        openPointDetail(id, txt);
+      }
+    });
+    el.appendChild(div);
+  });
+}
+
+function renderResources(items) {
+  const el = document.getElementById('resources');
+  el.innerHTML = '';
+  (items || []).forEach((res) => {
+    const a = document.createElement('a');
+    a.className = 'doc-link';
+    a.href = res.href;
+    a.textContent = res.label;
+    el.appendChild(a);
+  });
+}
+
+function isTeacherModeEnabled() {
+  return localStorage.getItem('dl_teacher_unlocked') === '1'
+    || localStorage.getItem('decision-lab-teacher-mode') === 'true';
+}
+
+function renderChips(items) {
+  const el = document.getElementById('chipRow');
+  el.innerHTML = '';
+  (items || []).forEach((c) => {
+    const chip = document.createElement('span');
+    chip.className = 'chip clickable';
+    chip.setAttribute('tabindex', '0');
+    chip.setAttribute('role', 'button');
+    chip.textContent = c;
+    chip.addEventListener('click', () => openPointDetail('chip', c));
+    chip.addEventListener('keydown', (evt) => {
+      if (evt.key === 'Enter' || evt.key === ' ') {
+        evt.preventDefault();
+        openPointDetail('chip', c);
+      }
+    });
+    el.appendChild(chip);
+  });
+}
+
+const POINT_SECTION_LABELS = {
+  outcomes: 'Learning Targets',
+  moves: 'Instructional Moves',
+  activities: 'Practice and Activities',
+  assessment: 'Assessment Evidence',
+  transfer: 'Transfer and Real-World Application',
+  supports: 'Educator and Family Supports',
+  chip: 'Card Focus'
+};
+
+function originForTitle(titleText, sectionText) {
+  const t = String(titleText || '').toLowerCase();
+  if (t.includes('built from real experience')) return 'This point is included because the course is grounded in real public-service, mentoring, and youth-support situations that were converted into teachable classroom practice.';
+  if (t.includes('school & community')) return 'This point is included because school and community settings require clear expectations for respect, communication, and accountability.';
+  if (t.includes('workplace readiness')) return 'This point is included because employability depends on professional communication, reliability, and coachability.';
+  if (t.includes('digital & social media')) return 'This point is included because digital decisions have permanent reputation and safety consequences.';
+  if (t.includes('high-stress moments')) return 'This point is included because decision quality drops under stress unless regulation tools are practiced in advance.';
+  if (t.includes('post council approved')) return 'This point is included to show standards alignment, implementation credibility, and quality expectations for the program.';
+  if (sectionText === 'Assessment Evidence') return 'This point is included to make learning measurable through clear formative and summative evidence.';
+  if (sectionText === 'Instructional Moves') return 'This point is included because direct instruction plus guided rehearsal produces stronger transfer outcomes.';
+  if (sectionText === 'Practice and Activities') return 'This point is included because repeated scenario practice builds confidence and real-world performance.';
+  if (sectionText === 'Transfer and Real-World Application') return 'This point is included to ensure learners can apply skills in unfamiliar, higher-stakes situations.';
+  return 'This point is included to connect course goals to practical behavior, evidence, and long-view outcomes.';
+}
+
+function buildPointDetail(sectionId, pointText) {
+  const sectionText = POINT_SECTION_LABELS[sectionId] || 'Card Detail';
+  return {
+    sectionText,
+    meaning: `${pointText}`,
+    origin: originForTitle(title, sectionText),
+    apply: 'Practice this by running a realistic scenario, naming the decision options, choosing a response, and explaining the likely outcome. Then reflect on how to apply the same skill at school, home, work, or online.'
+  };
+}
+
+function openPointDetail(sectionId, pointText) {
+  const modal = document.getElementById('detailModal');
+  if (!modal) return;
+  const d = buildPointDetail(sectionId, pointText);
+  document.getElementById('detailKicker').textContent = d.sectionText;
+  document.getElementById('detailTitle').textContent = pointText;
+  document.getElementById('detailMeaning').textContent = d.meaning;
+  document.getElementById('detailOrigin').textContent = d.origin;
+  document.getElementById('detailApply').textContent = d.apply;
+  modal.style.display = 'flex';
+  modal.setAttribute('aria-hidden', 'false');
+}
+
+function closePointDetail() {
+  const modal = document.getElementById('detailModal');
+  if (!modal) return;
+  modal.style.display = 'none';
+  modal.setAttribute('aria-hidden', 'true');
+}
+
+document.getElementById('title').textContent = title;
+document.getElementById('sectionMeta').textContent = section.replace(/-/g, ' ');
+document.title = title + ' | CMP Resource Detail';
+if (summary) {
+  document.getElementById('summary').textContent = summary;
+}
+
+const sectionPack = getPack(section, title);
+const pack = buildCardSpecificPack(sectionPack, title, section, summary || title);
+renderChips(pack.chips || []);
+renderList('outcomes', pack.outcomes || []);
+renderList('moves', pack.moves || []);
+renderList('activities', pack.activities || []);
+renderList('assessment', pack.assessment || []);
+renderList('transfer', pack.transfer || []);
+renderList('supports', pack.supports || []);
+const resourcesCard = document.getElementById('resourcesCard');
+if (resourcesCard && isTeacherModeEnabled()) {
+  resourcesCard.style.display = 'block';
+  renderResources(BASE_DOCS);
+}
+
+const backToCurriculum = document.getElementById('backToCurriculum');
+if (backToCurriculum) {
+  backToCurriculum.addEventListener('click', (evt) => {
+    evt.preventDefault();
+    try {
+      // Prefer native history when available (keeps exact browser position/state).
+      if (window.history.length > 1 && document.referrer.includes(window.location.host)) {
+        window.history.back();
+        return;
+      }
+    } catch (_err) {}
+    window.location.href = 'index.html?restore=1';
+  });
+}
+
+const detailClose = document.getElementById('detailClose');
+if (detailClose) detailClose.addEventListener('click', closePointDetail);
+const detailModal = document.getElementById('detailModal');
+if (detailModal) {
+  detailModal.addEventListener('click', (evt) => {
+    if (evt.target === detailModal) closePointDetail();
+  });
+}
+document.addEventListener('keydown', (evt) => {
+  if (evt.key === 'Escape') closePointDetail();
+});
+</script>
+</body>
+</html>

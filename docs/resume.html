@@ -1,0 +1,587 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Michael R. Terry | Resume Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0e1118;
+      --paper: #f6f3ec;
+      --slate: #253044;
+      --slate2: #344159;
+      --gold: #c49540;
+      --gold-lt: #f2e4c0;
+      --gold-dim: #e8d198;
+      --teal: #1b6b6b;
+      --rust: #b0432e;
+      --sage: #456640;
+      --muted: #697080;
+      --rule: #ddd7cc;
+      --white: #ffffff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body { background: var(--paper); color: var(--ink); font-family: "DM Sans", sans-serif; font-size: 15px; line-height: 1.6; }
+    nav {
+      position: sticky; top: 0; z-index: 30; background: var(--slate); border-bottom: 3px solid var(--gold);
+      display: flex; align-items: center; justify-content: space-between; gap: 16px; padding: 10px 16px;
+    }
+    .brand {
+      color: var(--gold); text-decoration: none; font-family: "DM Mono", monospace; font-size: 10px;
+      letter-spacing: .14em; text-transform: uppercase; white-space: nowrap;
+    }
+    .nav-links { display: flex; flex-wrap: wrap; gap: 8px; }
+    .nav-links a {
+      color: rgba(255,255,255,.78); text-decoration: none; font-size: 11px; font-family: "DM Mono", monospace;
+      letter-spacing: .08em; text-transform: uppercase; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; padding: 6px 10px;
+    }
+    .copyright-warning {
+      background: #fff5df;
+      color: #5f4315;
+      border-top: 1px solid #edd8a6;
+      border-bottom: 1px solid #edd8a6;
+      padding: 10px 28px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .access-gate {
+      background: #f9f0d7;
+      border-bottom: 2px solid var(--gold);
+      padding: 12px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .access-gate-copy { font-size: 12px; color: #5b4518; }
+    .access-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .access-btn {
+      border: 1px solid var(--slate);
+      background: var(--slate);
+      color: #fff;
+      border-radius: 999px;
+      padding: 8px 13px;
+      font-size: 11px;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      font-family: 'DM Mono', monospace;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .access-btn.secondary { background: transparent; color: var(--slate); }
+    body.preview-locked .protected-content {
+      filter: blur(4px) saturate(.85);
+      pointer-events: none;
+      user-select: none;
+    }
+    .protected-shell { position: relative; }
+    .locked-overlay {
+      display: none;
+      position: absolute;
+      left: 50%;
+      top: 120px;
+      transform: translateX(-50%);
+      z-index: 22;
+      width: min(760px, calc(100% - 32px));
+      background: rgba(15,20,30,.95);
+      color: #fff;
+      border: 1px solid rgba(196,149,64,.45);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 22px 40px rgba(0,0,0,.3);
+    }
+    body.preview-locked .locked-overlay { display: block; }
+    .locked-overlay h3 { font-family: "Playfair Display", serif; font-size: 1.6rem; margin-bottom: 8px; }
+    .locked-overlay p { color: rgba(255,255,255,.78); margin-bottom: 14px; }
+    .copyright-floating {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      width: min(280px, 62vw);
+      opacity: .9;
+      z-index: 55;
+      pointer-events: none;
+    }
+    .copyright-floating img { width: 100%; display: block; filter: drop-shadow(0 10px 20px rgba(0,0,0,.2)); }
+    .hero {
+      background: var(--slate); color: white; padding: 62px 28px 54px; position: relative; overflow: hidden;
+      border-bottom: 1px solid rgba(255,255,255,.09);
+    }
+    .hero::before {
+      content: ""; position: absolute; width: 460px; height: 460px; right: -120px; top: -160px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(196,149,64,.19) 0%, transparent 70%);
+    }
+    .hero::after {
+      content: ""; position: absolute; width: 320px; height: 320px; left: 24%; bottom: -130px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(27,107,107,.2) 0%, transparent 70%);
+    }
+    .hero-wrap {
+      max-width: 1160px; margin: 0 auto; display: grid; grid-template-columns: 1fr auto; align-items: end; gap: 30px; position: relative; z-index: 1;
+    }
+    .eyebrow {
+      font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: .2em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px;
+    }
+    h1 { font-family: "Playfair Display", serif; font-size: clamp(2.2rem, 5vw, 4rem); line-height: 1.02; margin-bottom: 10px; }
+    h1 em { color: var(--gold); font-style: italic; }
+    .hero-sub { color: rgba(255,255,255,.75); font-size: 17px; margin-bottom: 22px; }
+    .chips { display: flex; flex-wrap: wrap; gap: 10px; }
+    .chip {
+      background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.2); border-radius: 999px;
+      padding: 6px 12px; font-size: 12px; color: rgba(255,255,255,.83);
+    }
+    .chip strong { color: var(--gold); font-weight: 700; }
+    .hero-badge {
+      background: var(--gold); color: var(--slate); border-radius: 15px; min-width: 170px;
+      text-align: center; padding: 24px 20px; box-shadow: 0 14px 30px rgba(0,0,0,.2);
+    }
+    .hero-badge .num { display: block; font-family: "Playfair Display", serif; font-size: 2.8rem; line-height: 1; font-weight: 900; }
+    .hero-badge .txt { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: .85; font-weight: 700; }
+    .hero-badge .subtxt { margin-top: 6px; font-size: 12px; font-weight: 600; }
+
+    .profile-strip {
+      background: var(--gold-lt); border-top: 1px solid var(--gold-dim); border-bottom: 3px solid var(--gold-dim);
+      padding: 22px 28px; display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center;
+    }
+    .profile-wrap { max-width: 1160px; margin: 0 auto; width: 100%; display: grid; grid-template-columns: auto 1fr auto; gap: 16px; align-items: center; }
+    .avatar { width: 74px; height: 74px; border-radius: 50%; border: 3px solid var(--gold); overflow: hidden; background: var(--slate); }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; display: block; }
+    .name { font-family: "Playfair Display", serif; font-size: 1.55rem; color: var(--slate); line-height: 1.1; }
+    .roles { font-size: 13px; color: var(--muted); margin-top: 4px; }
+    .btn {
+      background: var(--slate); color: white; text-decoration: none; border-radius: 10px; padding: 11px 14px; font-size: 12px; font-weight: 700;
+      border: 1px solid rgba(255,255,255,.1);
+    }
+
+    .section { padding: 44px 28px; border-bottom: 1px solid var(--rule); }
+    .section.dark { background: var(--slate); color: white; }
+    .section.alt { background: var(--white); }
+    .container { max-width: 1160px; margin: 0 auto; }
+    .section-label {
+      font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; margin-bottom: 8px; color: var(--muted);
+    }
+    .section.dark .section-label { color: rgba(255,255,255,.45); }
+    .section-title { font-family: "Playfair Display", serif; font-size: clamp(1.6rem, 3vw, 2.3rem); line-height: 1.15; color: var(--slate); margin-bottom: 22px; }
+    .section.dark .section-title { color: white; }
+    .accent { color: var(--gold); }
+
+    .summary-grid { display: grid; grid-template-columns: 2fr 1fr 1fr; gap: 14px; }
+    .summary-main, .metric {
+      border-radius: 12px; border: 1px solid rgba(255,255,255,.12); background: rgba(255,255,255,.07); padding: 16px;
+    }
+    .summary-main p { color: rgba(255,255,255,.8); }
+    .metric .k { font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.55); }
+    .metric .v { margin-top: 6px; font-family: "Playfair Display", serif; font-size: 1.7rem; color: var(--gold); line-height: 1; }
+    .metric .d { margin-top: 6px; font-size: 12px; color: rgba(255,255,255,.78); }
+
+    .cards3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 14px; }
+    .cards2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+    .card {
+      background: var(--white); border: 1px solid var(--rule); border-radius: 12px; padding: 16px;
+      border-top: 4px solid var(--gold);
+    }
+    .card h3 { font-family: "Playfair Display", serif; font-size: 1.1rem; color: var(--slate); margin-bottom: 4px; }
+    .meta { font-size: 12px; color: var(--muted); margin-bottom: 7px; }
+    .date { font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: .1em; text-transform: uppercase; color: var(--gold); margin-bottom: 9px; }
+    .card ul { margin-left: 18px; }
+    .card li { margin-bottom: 6px; font-size: 13px; color: #2f384a; }
+
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag {
+      background: var(--gold-lt); color: #5b471d; border: 1px solid #e2cf9a; border-radius: 999px; padding: 6px 10px;
+      font-size: 12px; font-weight: 700;
+    }
+    .pub {
+      background: linear-gradient(135deg, #f9f4e8 0%, #f3e6c7 100%); border: 1px solid #ebd7a7; border-radius: 12px; padding: 18px;
+    }
+    .pub strong { font-family: "Playfair Display", serif; font-size: 1.2rem; color: var(--slate); display: block; }
+    .util-btn {
+      border: 1px solid var(--rule);
+      background: var(--white);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .util-btn.primary {
+      border-color: var(--slate);
+      background: var(--slate);
+      color: #fff;
+    }
+    .modal { position: fixed; inset: 0; z-index: 80; display: none; }
+    .modal.open { display: block; }
+    .modal-backdrop { position: absolute; inset: 0; background: rgba(12,16,24,.58); }
+    .modal-panel {
+      position: relative;
+      width: min(580px, calc(100% - 32px));
+      margin: 10vh auto 0;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .modal-title { font-family: "Playfair Display", serif; font-size: 1.3rem; color: var(--slate); margin-bottom: 6px; }
+    .modal-sub { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
+    .form-grid { display: grid; gap: 8px; }
+    .form-grid label { font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .form-grid input {
+      width: 100%;
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: var(--white);
+      color: var(--ink);
+      font-size: 14px;
+    }
+    .form-status {
+      margin-top: 10px;
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: var(--slate);
+      background: var(--white);
+      display: none;
+    }
+    .modal-actions { margin-top: 14px; display: flex; justify-content: flex-end; gap: 8px; }
+
+    @media (max-width: 980px) {
+      .hero-wrap { grid-template-columns: 1fr; }
+      .profile-wrap { grid-template-columns: auto 1fr; }
+      .profile-wrap .btn { grid-column: 1 / -1; width: fit-content; }
+      .summary-grid { grid-template-columns: 1fr; }
+      .cards3 { grid-template-columns: 1fr; }
+      .cards2 { grid-template-columns: 1fr; }
+      .copyright-warning, .access-gate { padding: 12px 24px; }
+      .locked-overlay { top: 80px; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="index.html">Modern Manners & Mental Fortitude</a>
+    <div class="nav-links">
+      <a href="#summary">Summary</a>
+      <a href="#experience">Experience</a>
+      <a href="#education">Education</a>
+      <a href="#awards">Awards</a>
+      <a href="#skills">Skills</a>
+      <a href="index.html">Back to Site</a>
+    </div>
+  </nav>
+  <div class="copyright-warning">
+    Copyright © Michael R. Terry. Protected intellectual property. Unauthorized copying, sharing, screenshots, redistribution, and derivative reuse are prohibited.
+  </div>
+  <div class="access-gate" id="accessGate">
+    <div class="access-gate-copy">Preview mode is active. Purchase licensed access to unlock full resume materials.</div>
+    <div class="access-actions">
+      <a class="access-btn" id="purchaseLinkTop" href="#">Purchase Full Access</a>
+      <button class="access-btn secondary" id="unlockBtnTop" type="button">I Have Access</button>
+    </div>
+  </div>
+
+  <header class="hero">
+    <div class="hero-wrap">
+      <div>
+        <p class="eyebrow">Professional Profile · Career & Service Overview</p>
+        <h1><em>Michael R. Terry</em><br>Resume Profile</h1>
+        <p class="hero-sub">Sergeant, Utah Highway Patrol · MAT Candidate · Published Author</p>
+        <div class="chips">
+          <div class="chip"><strong>18+ Years</strong> Public Safety Service</div>
+          <div class="chip"><strong>Current</strong> MAT Candidate</div>
+          <div class="chip"><strong>Focus</strong> Education + Community Engagement</div>
+          <div class="chip"><strong>Language</strong> Spanish (Professional)</div>
+        </div>
+      </div>
+      <div class="hero-badge">
+        <span class="num">2</span>
+        <span class="txt">Resume Pages</span>
+        <div class="subtxt">Infographic View</div>
+      </div>
+    </div>
+  </header>
+
+  <div class="profile-strip">
+    <div class="profile-wrap">
+      <div class="avatar"><img src="michael-terry-headshot.jpg" alt="Portrait of Michael R. Terry"></div>
+      <div>
+        <div class="name">Michael R. Terry</div>
+        <div class="roles">Salt Lake City Metropolitan Area · (435) 840-1896 · mikeyterry44@gmail.com</div>
+        <div class="roles">linkedin.com/in/miketerry-46618318b · instagram.com/readyforreal.life</div>
+      </div>
+      <a class="btn" href="#experience">Jump to Experience</a>
+    </div>
+  </div>
+
+  <div class="protected-shell">
+  <div class="locked-overlay" id="lockedOverlay">
+    <h3>Full Resume Profile Is Locked</h3>
+    <p>This page is currently in preview mode. Purchase a license to unlock complete details and sections.</p>
+    <div class="access-actions">
+      <a class="access-btn" id="purchaseLinkOverlay" href="#">Purchase Full Access</a>
+      <button class="access-btn secondary" id="unlockBtnOverlay" type="button">Enter Access Code</button>
+    </div>
+  </div>
+  <section class="section dark protected-content" id="summary">
+    <div class="container">
+      <p class="section-label">Career Snapshot</p>
+      <h2 class="section-title">Leadership + Service + <span class="accent">Education</span></h2>
+      <div class="summary-grid">
+        <div class="summary-main">
+          <p>Law enforcement leader transitioning to education with deep experience in K9 operations, criminal interdiction, community outreach, explosive detection, and youth mentorship. Graduate MAT coursework is actively applied to service with refugee families, immigrant communities, and individuals in crisis.</p>
+        </div>
+        <div class="metric">
+          <div class="k">Years of Service</div>
+          <div class="v">18+</div>
+          <div class="d">Public safety and community leadership.</div>
+        </div>
+        <div class="metric">
+          <div class="k">Current Role</div>
+          <div class="v">MAT</div>
+          <div class="d">Graduate preparation in teaching and curriculum design.</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt protected-content" id="experience">
+    <div class="container">
+      <p class="section-label">Professional Experience</p>
+      <h2 class="section-title">Field + Leadership <span class="accent">Roles</span></h2>
+      <div class="cards3">
+        <article class="card">
+          <h3>Explosive Detection K9 Field Supervisor</h3>
+          <div class="meta">Utah Highway Patrol · Salt Lake City, UT</div>
+          <div class="date">Nov 2023 - Present</div>
+          <ul>
+            <li>Oversee explosive detection K9 team at the Utah State Capitol.</li>
+            <li>Manage handler training, deployments, and readiness.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Police Sergeant - Community Engagement & Outreach</h3>
+          <div class="meta">Utah Department of Public Safety · Statewide, UT</div>
+          <div class="date">Aug 2019 - Present</div>
+          <ul>
+            <li>Lead statewide outreach serving diverse communities.</li>
+            <li>Coordinate crisis response, refugee support, and youth mentorship.</li>
+            <li>Apply graduate educational research in field strategy.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>K9 Handler - Narcotics Detection</h3>
+          <div class="meta">Utah Department of Public Safety</div>
+          <div class="date">Jan 2016 - Jan 2020</div>
+          <ul>
+            <li>First single-purpose K9 handler selected in UHP.</li>
+            <li>Deployed during Operation Rio Grande in downtown SLC.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Criminal Interdiction Officer</h3>
+          <div class="meta">Utah Department of Public Safety · Saratoga Springs, UT</div>
+          <div class="date">Jan 2014 - May 2019</div>
+          <ul>
+            <li>Conducted interdiction and narcotics enforcement operations.</li>
+            <li>Recognized for excellence in criminal interdiction (2015).</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Police Officer</h3>
+          <div class="meta">Saratoga Springs Police Department</div>
+          <div class="date">Feb 2012 - Jan 2014</div>
+          <ul>
+            <li>Municipal patrol and community policing service.</li>
+          </ul>
+        </article>
+        <article class="card">
+          <h3>Police Officer</h3>
+          <div class="meta">Tooele City Police Department · Tooele, UT</div>
+          <div class="date">Jan 2008 - Feb 2012</div>
+          <ul>
+            <li>Served in SRO, COP Division, and Graffiti Investigations.</li>
+            <li>Named Officer of the Year (2010).</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section protected-content" id="education">
+    <div class="container">
+      <p class="section-label">Academic Profile</p>
+      <h2 class="section-title">Education + <span class="accent">Credentials</span></h2>
+      <div class="cards2">
+        <article class="card">
+          <h3>Master of Arts in Teaching (MAT)</h3>
+          <div class="meta">Columbia College of Missouri</div>
+          <div class="date">Jan 2025 - Dec 2026</div>
+        </article>
+        <article class="card">
+          <h3>Bachelor of Arts - Criminal Justice / Law Enforcement Administration</h3>
+          <div class="meta">Columbia College of Missouri</div>
+          <div class="date">Jan 2012 - Jan 2024</div>
+        </article>
+        <article class="card">
+          <h3>Associate of Arts and Sciences - Criminal Justice</h3>
+          <div class="meta">Columbia College of Missouri</div>
+          <div class="date">2012 - 2014</div>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section alt protected-content" id="awards">
+    <div class="container">
+      <p class="section-label">Recognition</p>
+      <h2 class="section-title">Honors + <span class="accent">Awards</span></h2>
+      <div class="cards2">
+        <article class="card">
+          <ul>
+            <li>Kappa Delta Pi International Honor Society (KDP), Feb 2026</li>
+            <li>Dr. Martin Luther King Jr. Community Service Award, Jan 2026</li>
+            <li>CCAA Scholar, Oct 2025</li>
+            <li>Dean's List, Fall 2024 and 2021</li>
+          </ul>
+        </article>
+        <article class="card">
+          <ul>
+            <li>SLC District Attorney - Power of Hope Recipient</li>
+            <li>NAACP First Responders Award, Jan 2021</li>
+            <li>Excellence in Criminal Interdiction, Dec 2015</li>
+            <li>Officer of the Year, Dec 2010</li>
+          </ul>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <section class="section protected-content" id="skills">
+    <div class="container">
+      <p class="section-label">Capability Areas</p>
+      <h2 class="section-title">Skills + Publication</h2>
+      <div class="cards2">
+        <article class="card">
+          <h3>Skills & Languages</h3>
+          <div class="tags">
+            <span class="tag">Curriculum Development</span>
+            <span class="tag">Educational Leadership</span>
+            <span class="tag">Training & Instruction</span>
+            <span class="tag">Community Outreach & Crisis Response</span>
+            <span class="tag">K9 Operations</span>
+            <span class="tag">Criminal Interdiction</span>
+            <span class="tag">Spanish (Professional Working)</span>
+          </div>
+        </article>
+        <article class="pub">
+          <strong>Still. Small. Daily</strong>
+          Published Author
+        </article>
+      </div>
+    </div>
+  </section>
+  </div>
+
+  <div class="copyright-floating" aria-hidden="true">
+    <img src="assets/copyright-mark.svg" alt="">
+  </div>
+
+  <div class="modal" id="accessModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-access></div>
+    <div class="modal-panel">
+      <h3 class="modal-title">Enter Licensed Access Code</h3>
+      <p class="modal-sub">Paid customers receive an access code after purchase. Enter it to unlock this page.</p>
+      <div class="form-grid">
+        <label for="accessCodeInput">Access code</label>
+        <input id="accessCodeInput" placeholder="Enter code">
+      </div>
+      <div id="accessStatus" class="form-status"></div>
+      <div class="modal-actions">
+        <button class="util-btn" type="button" id="accessCloseBtn">Close</button>
+        <button class="util-btn primary" type="button" id="accessUnlockBtn">Unlock</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ACCESS_CONTROL = {
+      storageKey: 'rrl_paid_access',
+      unlockCode: 'MRT-PAID-2026',
+      checkoutUrl: 'https://buy.stripe.com/'
+    };
+    const accessGate = document.getElementById('accessGate');
+    const accessModal = document.getElementById('accessModal');
+    const accessCodeInput = document.getElementById('accessCodeInput');
+    const accessStatus = document.getElementById('accessStatus');
+    const purchaseLinkTop = document.getElementById('purchaseLinkTop');
+    const purchaseLinkOverlay = document.getElementById('purchaseLinkOverlay');
+    const unlockBtnTop = document.getElementById('unlockBtnTop');
+    const unlockBtnOverlay = document.getElementById('unlockBtnOverlay');
+    const accessCloseBtn = document.getElementById('accessCloseBtn');
+    const accessUnlockBtn = document.getElementById('accessUnlockBtn');
+    function showAccessStatus(msg, isError) {
+      if (!accessStatus) return;
+      accessStatus.textContent = msg;
+      accessStatus.style.display = 'block';
+      accessStatus.style.borderColor = isError ? '#b0432e' : '#5f7f35';
+    }
+    function setLockedState(locked) {
+      document.body.classList.toggle('preview-locked', locked);
+      if (accessGate) accessGate.style.display = locked ? 'flex' : 'none';
+    }
+    function openAccessModal() {
+      if (!accessModal) return;
+      accessModal.classList.add('open');
+      accessModal.setAttribute('aria-hidden', 'false');
+      if (accessCodeInput) {
+        accessCodeInput.value = '';
+        accessCodeInput.focus();
+      }
+      if (accessStatus) accessStatus.style.display = 'none';
+    }
+    function closeAccessModal() {
+      if (!accessModal) return;
+      accessModal.classList.remove('open');
+      accessModal.setAttribute('aria-hidden', 'true');
+    }
+    function isUnlocked() {
+      return localStorage.getItem(ACCESS_CONTROL.storageKey) === '1';
+    }
+    if (purchaseLinkTop) purchaseLinkTop.href = ACCESS_CONTROL.checkoutUrl;
+    if (purchaseLinkOverlay) purchaseLinkOverlay.href = ACCESS_CONTROL.checkoutUrl;
+    setLockedState(!isUnlocked());
+    unlockBtnTop?.addEventListener('click', openAccessModal);
+    unlockBtnOverlay?.addEventListener('click', openAccessModal);
+    accessCloseBtn?.addEventListener('click', closeAccessModal);
+    document.querySelectorAll('[data-close-access]').forEach((el) => el.addEventListener('click', closeAccessModal));
+    accessUnlockBtn?.addEventListener('click', () => {
+      const code = String(accessCodeInput?.value || '').trim();
+      if (code !== ACCESS_CONTROL.unlockCode) {
+        showAccessStatus('Code not recognized. Please check your purchase email.', true);
+        return;
+      }
+      localStorage.setItem(ACCESS_CONTROL.storageKey, '1');
+      setLockedState(false);
+      closeAccessModal();
+    });
+    document.addEventListener('contextmenu', (evt) => {
+      if (document.body.classList.contains('preview-locked')) evt.preventDefault();
+    });
+    document.addEventListener('copy', (evt) => {
+      if (document.body.classList.contains('preview-locked')) evt.preventDefault();
+    });
+    document.addEventListener('cut', (evt) => {
+      if (document.body.classList.contains('preview-locked')) evt.preventDefault();
+    });
+    document.addEventListener('keydown', (evt) => {
+      if (!document.body.classList.contains('preview-locked')) return;
+      const k = evt.key.toLowerCase();
+      if ((evt.metaKey || evt.ctrlKey) && (k === 'c' || k === 's' || k === 'p' || k === 'u')) evt.preventDefault();
+    });
+  </script>
+</body>
+</html>

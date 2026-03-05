@@ -1,0 +1,1436 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Modern Manners & Mental Fortitude — Full Curriculum Infographic</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink:      #0e1118;
+  --paper:    #f6f3ec;
+  --slate:    #253044;
+  --slate2:   #344159;
+  --gold:     #c49540;
+  --gold-lt:  #f2e4c0;
+  --gold-dim: #e8d198;
+  --teal:     #1b6b6b;
+  --teal-lt:  #cce9e9;
+  --rust:     #b0432e;
+  --rust-lt:  #f3dbd5;
+  --sage:     #456640;
+  --sage-lt:  #d8ecd5;
+  --plum:     #5c3d6e;
+  --plum-lt:  #e5d8ef;
+  --muted:    #697080;
+  --rule:     #ddd7cc;
+  --white:    #ffffff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; font-size: 15px; line-height: 1.6; }
+
+nav { position: sticky; top: 0; z-index: 100; background: var(--slate); display: flex; flex-wrap: wrap; border-bottom: 3px solid var(--gold); }
+nav a { color: rgba(255,255,255,.6); text-decoration: none; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; padding: 12px 16px; transition: color .2s, background .2s; white-space: nowrap; }
+nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
+
+.hero { background: var(--slate); padding: 80px 60px 64px; position: relative; overflow: hidden; }
+.hero::before { content: ''; position: absolute; width: 500px; height: 500px; top: -150px; right: -100px; border-radius: 50%; background: radial-gradient(circle, rgba(196,149,64,.18) 0%, transparent 70%); pointer-events: none; }
+.hero::after { content: ''; position: absolute; width: 320px; height: 320px; bottom: -80px; left: 25%; border-radius: 50%; background: radial-gradient(circle, rgba(27,107,107,.22) 0%, transparent 70%); pointer-events: none; }
+.hero-layout { display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: end; position: relative; z-index: 1; }
+.hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4.2rem); font-weight: 900; line-height: 1.06; color: #fff; margin-bottom: 8px; }
+.hero h1 em { font-style: italic; color: var(--gold); }
+.hero-tagline { font-size: 18px; color: rgba(255,255,255,.6); font-weight: 300; margin-bottom: 36px; }
+.hero-chips { display: flex; flex-wrap: wrap; gap: 10px; }
+.chip { background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.18); border-radius: 40px; padding: 5px 14px; font-size: 12.5px; color: rgba(255,255,255,.8); font-weight: 500; }
+.chip strong { color: var(--gold); }
+.hero-badge { background: var(--gold); color: var(--slate); border-radius: 16px; padding: 28px 26px; text-align: center; min-width: 160px; flex-shrink: 0; }
+.badge-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; line-height: 1; display: block; margin-bottom: 4px; }
+.badge-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .10em; opacity: .75; }
+.badge-sub { font-size: 12px; font-weight: 600; margin-top: 6px; opacity: .85; }
+
+.inst-strip { background: var(--gold-lt); border-bottom: 3px solid var(--gold-dim); padding: 28px 60px; display: flex; align-items: center; gap: 36px; flex-wrap: wrap; }
+.inst-avatar { width: 72px; height: 72px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 3px solid var(--gold); background: var(--slate); }
+.inst-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; display: block; }
+.inst-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--slate); }
+.inst-titles { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+.bio-link {
+  margin-left: auto;
+  background: var(--slate);
+  color: #fff;
+  border-radius: 10px;
+  padding: 12px 16px;
+  font-size: 12px;
+  font-weight: 600;
+  line-height: 1.3;
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,.08);
+  transition: transform .18s ease, box-shadow .18s ease, background .18s ease;
+}
+.bio-link span {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 9px;
+  letter-spacing: .10em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 3px;
+}
+.bio-link:hover,
+.bio-link:focus-visible {
+  background: #1f293b;
+  transform: translateY(-1px);
+  box-shadow: 0 6px 18px rgba(0,0,0,.16);
+}
+
+.section { padding: 60px; border-bottom: 1px solid var(--rule); }
+.section.alt { background: var(--white); }
+.section.dark { background: var(--slate); color: #fff; }
+.section.gold-bg { background: var(--gold-lt); }
+.section-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.section.dark .section-label { color: rgba(255,255,255,.45); }
+.section-title { font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 3vw, 2.1rem); font-weight: 700; line-height: 1.2; color: var(--slate); margin-bottom: 32px; }
+.section.dark .section-title { color: #fff; }
+.accent { color: var(--gold); }
+.accent-rust { color: var(--rust); }
+
+.rat-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px; background: rgba(255,255,255,.12); border-radius: 14px; overflow: hidden; }
+.rat-cell { background: rgba(255,255,255,.06); padding: 32px 28px; }
+.rat-icon { font-size: 28px; margin-bottom: 14px; }
+.rat-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--gold); margin-bottom: 10px; }
+.rat-body { font-size: 13.5px; color: rgba(255,255,255,.68); line-height: 1.7; font-weight: 300; }
+
+.pillars-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 18px; }
+.pillar { border-radius: 14px; padding: 28px 22px 24px; position: relative; overflow: hidden; border: 1.5px solid transparent; transition: transform .2s, box-shadow .2s; }
+.pillar:hover { transform: translateY(-4px); box-shadow: 0 14px 36px rgba(0,0,0,.10); }
+.pillar.p-teal { background: var(--teal-lt); border-color: var(--teal); }
+.pillar.p-rust { background: var(--rust-lt); border-color: var(--rust); }
+.pillar.p-gold { background: var(--gold-lt); border-color: var(--gold); }
+.pillar.p-sage { background: var(--sage-lt); border-color: var(--sage); }
+.pillar-wm { font-family: 'Playfair Display', serif; font-size: 5rem; font-weight: 900; line-height: 1; position: absolute; top: 8px; right: 12px; opacity: .09; }
+.pillar.p-teal .pillar-wm { color: var(--teal); }
+.pillar.p-rust .pillar-wm { color: var(--rust); }
+.pillar.p-gold .pillar-wm { color: var(--gold); }
+.pillar.p-sage .pillar-wm { color: var(--sage); }
+.pillar-icon { font-size: 26px; margin-bottom: 12px; }
+.pillar-title { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--slate); margin-bottom: 10px; }
+.pillar-body { font-size: 13px; color: var(--muted); line-height: 1.65; }
+.pillar-subs { margin-top: 14px; display: flex; flex-direction: column; gap: 5px; }
+.sub-tag { font-size: 11.5px; color: var(--muted); padding-left: 0; border-top: 1px solid var(--rule); padding-top: 5px; }
+.sub-tag::before { content: '→ '; opacity: .5; }
+
+.cq-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; }
+.cq-card { background: var(--white); border-radius: 12px; padding: 24px 26px; border-left: 5px solid var(--gold); box-shadow: 0 2px 10px rgba(0,0,0,.05); }
+.cq-card p { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-style: italic; color: var(--slate); line-height: 1.55; }
+.cq-card p::before { content: '"'; color: var(--gold); }
+.cq-card p::after { content: '"'; color: var(--gold); }
+
+.modules-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 14px; }
+.module-card { background: var(--white); border-radius: 12px; padding: 22px 18px; box-shadow: 0 2px 10px rgba(0,0,0,.04); transition: transform .2s; }
+.module-card:nth-child(1) { border-top: 4px solid var(--gold); }
+.module-card:nth-child(2) { border-top: 4px solid var(--teal); }
+.module-card:nth-child(3) { border-top: 4px solid var(--rust); }
+.module-card:nth-child(4) { border-top: 4px solid var(--sage); }
+.module-card:nth-child(5) { border-top: 4px solid var(--plum); }
+.module-card:hover { transform: translateY(-3px); }
+.module-num { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 6px; }
+.module-icon { font-size: 24px; margin-bottom: 10px; }
+.module-title { font-family: 'Playfair Display', serif; font-size: .95rem; font-weight: 700; color: var(--slate); margin-bottom: 10px; }
+.module-topics { display: flex; flex-direction: column; gap: 5px; }
+.module-topic { font-size: 12px; color: var(--muted); padding-left: 12px; position: relative; line-height: 1.5; }
+.module-topic::before { content: '·'; position: absolute; left: 3px; color: var(--gold); font-weight: 700; }
+
+.spiral-wrapper { display: grid; grid-template-columns: 200px 1fr; gap: 32px; align-items: center; }
+.spiral-diagram { display: flex; flex-direction: column; gap: 8px; }
+.spiral-ring { height: 44px; border-radius: 0 22px 22px 0; display: flex; align-items: center; padding: 0 18px 0 14px; font-size: 12px; font-weight: 600; color: white; white-space: nowrap; }
+.spiral-ring:nth-child(1) { width: 100%; background: var(--teal); }
+.spiral-ring:nth-child(2) { width: 133%; background: var(--gold); color: var(--slate); }
+.spiral-ring:nth-child(3) { width: 166%; background: var(--rust); }
+.spiral-ring:nth-child(4) { width: 200%; background: var(--slate); }
+.spiral-label { font-size: 10.5px; color: var(--muted); font-family: 'DM Mono', monospace; letter-spacing: .10em; text-transform: uppercase; margin-top: 8px; }
+.spiral-desc-col { display: flex; flex-direction: column; gap: 12px; }
+.spiral-item { background: var(--white); border-radius: 10px; padding: 16px 20px; border-left: 4px solid var(--rule); font-size: 13.5px; color: var(--ink); line-height: 1.6; }
+.spiral-item strong { font-weight: 600; color: var(--slate); display: block; margin-bottom: 3px; }
+
+.timeline-outer { overflow-x: auto; }
+.timeline-track { display: flex; position: relative; min-width: 700px; padding-top: 56px; }
+.timeline-line { position: absolute; top: 24px; left: 11px; right: 0; height: 3px; background: linear-gradient(90deg, var(--teal), var(--gold), var(--rust), var(--sage), var(--slate)); border-radius: 3px; }
+.phase { flex: 1; padding-right: 18px; position: relative; }
+.phase:last-child { padding-right: 0; }
+.phase-dot { position: absolute; top: -44px; left: 0; width: 22px; height: 22px; border-radius: 50%; border: 3px solid var(--paper); box-shadow: 0 0 0 2px currentColor; }
+.phase:nth-child(1) .phase-dot { color: var(--teal); background: var(--teal); }
+.phase:nth-child(2) .phase-dot { color: var(--gold); background: var(--gold); }
+.phase:nth-child(3) .phase-dot { color: var(--rust); background: var(--rust); }
+.phase:nth-child(4) .phase-dot { color: var(--sage); background: var(--sage); }
+.phase:nth-child(5) .phase-dot { color: var(--slate); background: var(--slate); }
+.phase-days { font-family: 'DM Mono', monospace; font-size: 9.5px; letter-spacing: .10em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+.phase-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--slate); margin-bottom: 8px; }
+.phase-desc { font-size: 12.5px; color: var(--muted); line-height: 1.65; }
+.phase-tools { margin-top: 10px; display: flex; flex-direction: column; gap: 4px; }
+.phase-tool { font-size: 11.5px; color: var(--muted); padding-left: 10px; position: relative; }
+.phase-tool::before { content: '▸'; position: absolute; left: 0; color: var(--gold); font-size: 9px; top: 2px; }
+
+.fw-row { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; }
+.fw-card { background: var(--white); border-radius: 14px; padding: 30px 28px; border: 1px solid var(--rule); box-shadow: 0 2px 14px rgba(0,0,0,.04); }
+.fw-header { display: flex; align-items: flex-start; gap: 14px; margin-bottom: 22px; padding-bottom: 18px; border-bottom: 1px solid var(--rule); }
+.fw-badge { width: 48px; height: 48px; border-radius: 12px; display: flex; align-items: center; justify-content: center; font-size: 22px; flex-shrink: 0; }
+.fw-badge.teal { background: var(--teal-lt); }
+.fw-badge.rust { background: var(--rust-lt); }
+.fw-title { font-family: 'Playfair Display', serif; font-size: 1.1rem; font-weight: 700; color: var(--slate); line-height: 1.3; margin-bottom: 3px; }
+.fw-subtitle { font-size: 12.5px; color: var(--muted); }
+.fw-steps { display: flex; flex-direction: column; gap: 12px; }
+.fw-step { display: flex; align-items: flex-start; gap: 12px; }
+.fw-letter { font-family: 'Playfair Display', serif; font-size: 1.6rem; font-weight: 900; line-height: 1; min-width: 28px; padding-top: 1px; }
+.fw-letter.teal { color: var(--teal); }
+.fw-letter.rust { color: var(--rust); }
+.fw-step-body { font-size: 13.5px; line-height: 1.55; }
+.fw-step-body strong { color: var(--slate); }
+.fw-step-body span { color: var(--muted); }
+
+.targets-list { display: flex; flex-direction: column; gap: 12px; }
+.t-row { display: flex; align-items: flex-start; gap: 18px; background: var(--white); padding: 18px 22px; border-radius: 10px; border: 1px solid var(--rule); transition: border-color .2s; }
+.t-row:hover { border-color: var(--gold); }
+.t-num { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--gold); line-height: 1; min-width: 36px; padding-top: 2px; }
+.t-text { font-size: 14px; color: var(--ink); line-height: 1.65; flex: 1; }
+.t-tag { margin-left: auto; flex-shrink: 0; font-family: 'DM Mono', monospace; font-size: 10.5px; padding: 4px 10px; border-radius: 20px; background: var(--gold-lt); color: var(--gold); font-weight: 500; align-self: center; white-space: nowrap; }
+
+.contexts-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.ctx-card { background: var(--slate); border-radius: 14px; padding: 28px 22px; text-align: center; transition: transform .2s, box-shadow .2s; border-bottom: 4px solid transparent; }
+.ctx-card:nth-child(1) { border-color: var(--teal); }
+.ctx-card:nth-child(2) { border-color: var(--gold); }
+.ctx-card:nth-child(3) { border-color: var(--rust); }
+.ctx-card:nth-child(4) { border-color: var(--sage); }
+.ctx-card:hover { transform: translateY(-4px); box-shadow: 0 16px 36px rgba(0,0,0,.22); }
+.ctx-icon { font-size: 34px; margin-bottom: 12px; }
+.ctx-name { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+.ctx-desc { font-size: 12.5px; color: rgba(255,255,255,.6); line-height: 1.65; font-weight: 300; }
+
+.lit-row { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; }
+.lit-card { padding: 22px 18px; border-radius: 12px; border: 1.5px solid var(--rule); background: var(--paper); transition: border-color .2s, transform .2s; }
+.lit-card:hover { border-color: var(--gold); transform: translateY(-2px); }
+.lit-icon { font-size: 24px; margin-bottom: 10px; }
+.lit-name { font-family: 'Playfair Display', serif; font-size: .95rem; font-weight: 700; color: var(--slate); margin-bottom: 7px; }
+.lit-desc { font-size: 12.5px; color: var(--muted); line-height: 1.65; }
+
+.pacing-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 10px; }
+.wk { background: var(--white); border-radius: 10px; padding: 14px 16px; border: 1px solid var(--rule); transition: border-color .2s; position: relative; }
+.wk:hover { border-color: var(--gold); }
+.wk.milestone { border-color: var(--rust); background: var(--rust-lt); }
+.wk-num { font-family: 'DM Mono', monospace; font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); margin-bottom: 5px; }
+.wk.milestone .wk-num { color: var(--rust); }
+.wk-text { font-size: 12.5px; color: var(--ink); line-height: 1.55; font-weight: 500; }
+.wk-dot { position: absolute; top: 10px; right: 10px; width: 8px; height: 8px; border-radius: 50%; background: var(--gold); opacity: .5; }
+.wk.milestone .wk-dot { background: var(--rust); opacity: 1; }
+
+.assess-list { display: flex; flex-direction: column; gap: 12px; }
+.assess-row { display: grid; grid-template-columns: 26px 180px 100px 1fr 120px; gap: 18px; align-items: start; background: var(--white); padding: 16px 22px; border-radius: 10px; border: 1px solid var(--rule); }
+.assess-row.hdr { background: var(--slate); border: none; font-family: 'DM Mono', monospace; font-size: 9.5px; letter-spacing: .12em; text-transform: uppercase; color: rgba(255,255,255,.55); padding: 12px 22px; }
+.a-icon { font-size: 18px; padding-top: 1px; }
+.a-name { font-size: 13.5px; font-weight: 600; color: var(--slate); line-height: 1.45; }
+.a-badge { font-family: 'DM Mono', monospace; font-size: 10.5px; padding: 4px 10px; border-radius: 20px; font-weight: 500; width: fit-content; white-space: nowrap; }
+.a-badge.f { background: var(--teal-lt); color: var(--teal); }
+.a-badge.s { background: var(--rust-lt); color: var(--rust); }
+.a-desc { font-size: 13px; color: var(--muted); line-height: 1.65; }
+.a-targets { font-family: 'DM Mono', monospace; font-size: 12px; color: var(--gold); font-weight: 500; text-align: right; }
+
+.rubric-table { width: 100%; border-collapse: collapse; font-size: 13px; background: var(--white); border-radius: 12px; overflow: hidden; box-shadow: 0 2px 12px rgba(0,0,0,.05); }
+.rubric-table thead th { background: var(--slate); color: #fff; padding: 14px 16px; text-align: left; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; font-weight: 400; }
+.rubric-table thead th.col-e { color: var(--gold); }
+.rubric-table thead th.col-m { color: var(--teal-lt); }
+.rubric-table thead th.col-n { color: rgba(255,255,255,.5); }
+.rubric-table tbody tr { border-bottom: 1px solid var(--rule); }
+.rubric-table tbody tr:last-child { border-bottom: none; }
+.rubric-table tbody td { padding: 13px 16px; vertical-align: top; line-height: 1.6; }
+.rubric-table tbody td:first-child { font-weight: 600; color: var(--slate); }
+.rubric-table tbody tr:nth-child(even) td { background: var(--paper); }
+
+.scenario-box { background: var(--rust-lt); border-left: 6px solid var(--rust); border-radius: 0 14px 14px 0; padding: 36px 40px; }
+.scenario-box h3 { font-family: 'Playfair Display', serif; font-size: 1.3rem; font-weight: 700; color: var(--slate); margin-bottom: 14px; }
+.scenario-body { font-size: 14px; color: var(--ink); line-height: 1.75; margin-bottom: 20px; }
+.s-tags { display: flex; flex-wrap: wrap; gap: 8px; }
+.s-tag { background: var(--rust); color: #fff; border-radius: 20px; padding: 5px 15px; font-size: 12.5px; font-weight: 500; }
+
+.journal-grid { display: grid; grid-template-columns: repeat(5, 1fr); gap: 12px; }
+.j-card { background: var(--white); border-radius: 12px; padding: 20px 18px; border: 1px solid var(--rule); border-top: 4px solid var(--gold); }
+.j-icon { font-size: 22px; margin-bottom: 10px; }
+.j-prompt { font-size: 13px; font-style: italic; color: var(--slate); line-height: 1.6; font-family: 'Playfair Display', serif; }
+
+.theory-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; }
+.theory-card { background: var(--white); border-radius: 12px; padding: 22px 20px; border-top: 4px solid var(--gold); box-shadow: 0 2px 10px rgba(0,0,0,.04); }
+.theory-author { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .10em; color: var(--gold); text-transform: uppercase; margin-bottom: 6px; }
+.theory-title { font-family: 'Playfair Display', serif; font-size: .95rem; font-weight: 700; color: var(--slate); margin-bottom: 10px; }
+.theory-body { font-size: 12.5px; color: var(--muted); line-height: 1.65; }
+
+.impl-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; }
+.impl-card { padding: 26px 24px; border-radius: 12px; border: 1px solid var(--rule); background: var(--white); }
+.impl-icon { font-size: 26px; margin-bottom: 12px; }
+.impl-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-weight: 700; color: var(--slate); margin-bottom: 12px; }
+.impl-items { display: flex; flex-direction: column; gap: 6px; }
+.impl-item { font-size: 13px; color: var(--muted); line-height: 1.55; padding-left: 14px; position: relative; }
+.impl-item::before { content: '→'; position: absolute; left: 0; color: var(--gold); font-size: 11px; top: 2px; }
+
+.eval-grid { display: flex; flex-direction: column; gap: 12px; }
+.eval-row { display: grid; grid-template-columns: 260px 1fr; gap: 20px; align-items: center; background: var(--white); padding: 16px 22px; border-radius: 10px; border: 1px solid var(--rule); }
+.eval-goal { font-size: 13.5px; font-weight: 600; color: var(--slate); line-height: 1.5; }
+.eval-method { font-size: 13px; color: var(--muted); line-height: 1.6; padding-left: 18px; border-left: 3px solid var(--gold); }
+
+.budget-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 14px; margin-bottom: 20px; }
+.budget-card { background: var(--white); border-radius: 12px; padding: 20px 18px; border: 1px solid var(--rule); text-align: center; transition: border-color .2s; }
+.budget-card:hover { border-color: var(--gold); }
+.budget-amt { font-family: 'Playfair Display', serif; font-size: 1.7rem; font-weight: 900; color: var(--slate); line-height: 1; margin-bottom: 6px; }
+.budget-cat { font-size: 12.5px; color: var(--muted); line-height: 1.5; }
+.budget-total { background: var(--slate); color: #fff; border-radius: 12px; padding: 20px 28px; display: flex; justify-content: space-between; align-items: center; }
+.budget-total-label { font-size: 14px; font-weight: 600; }
+.budget-total-amt { font-family: 'Playfair Display', serif; font-size: 2rem; font-weight: 900; color: var(--gold); }
+
+footer { background: var(--ink); color: rgba(255,255,255,.5); padding: 36px 60px; display: grid; grid-template-columns: 1fr auto; gap: 24px; align-items: center; }
+.footer-name { font-family: 'Playfair Display', serif; font-size: 1.1rem; color: #fff; font-weight: 700; margin-bottom: 4px; }
+.footer-meta { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: .10em; line-height: 1.8; }
+.footer-refs { font-size: 11.5px; line-height: 1.8; text-align: right; max-width: 400px; }
+
+.fade { opacity: 0; transform: translateY(20px); transition: opacity .5s ease, transform .5s ease; }
+.fade.in { opacity: 1; transform: translateY(0); }
+
+.utility-bar {
+  position: sticky;
+  top: 48px;
+  z-index: 95;
+  background: rgba(246, 243, 236, 0.92);
+  backdrop-filter: blur(6px);
+  border-bottom: 1px solid var(--rule);
+  padding: 10px 16px;
+  display: flex;
+  justify-content: flex-end;
+  gap: 10px;
+}
+.util-btn {
+  border: 1px solid var(--rule);
+  background: var(--white);
+  color: var(--slate);
+  border-radius: 999px;
+  padding: 8px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.util-btn.primary { background: var(--slate); color: #fff; border-color: var(--slate); }
+.util-btn.locked { background: var(--gold-lt); border-color: var(--gold); }
+
+.card-link { cursor: pointer; }
+.card-link:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+.modal {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 18px;
+}
+.modal.open { display: flex; }
+.modal-backdrop { position: absolute; inset: 0; background: rgba(14, 17, 24, 0.55); }
+.modal-panel {
+  position: relative;
+  width: min(680px, 96vw);
+  max-height: 90vh;
+  overflow: auto;
+  background: var(--paper);
+  border-radius: 16px;
+  border: 1px solid var(--rule);
+  padding: 24px;
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.25);
+}
+.modal-title {
+  font-family: 'Playfair Display', serif;
+  color: var(--slate);
+  font-size: 1.7rem;
+  line-height: 1.2;
+  margin-bottom: 8px;
+}
+.modal-sub { color: var(--muted); margin-bottom: 16px; }
+.form-grid { display: grid; gap: 10px; }
+.form-grid label { font-weight: 600; color: var(--slate); font-size: 13px; }
+.form-grid input, .form-grid select, .form-grid textarea {
+  width: 100%;
+  padding: 12px;
+  border-radius: 10px;
+  border: 1px solid var(--rule);
+  background: var(--white);
+  color: var(--ink);
+  font-size: 14px;
+}
+.modal-actions { margin-top: 16px; display: flex; justify-content: flex-end; gap: 8px; }
+.form-status {
+  margin-top: 10px;
+  border: 1px solid var(--rule);
+  border-radius: 10px;
+  padding: 10px 12px;
+  font-size: 13px;
+  color: var(--slate);
+  background: var(--white);
+  display: none;
+}
+.form-status.show { display: block; }
+.copyright-warning {
+  background: #fff5df;
+  color: #5f4315;
+  border-top: 1px solid #edd8a6;
+  border-bottom: 1px solid #edd8a6;
+  padding: 10px 60px;
+  font-size: 12px;
+  line-height: 1.5;
+}
+.copyright-floating {
+  position: fixed;
+  right: 16px;
+  bottom: 16px;
+  width: min(280px, 62vw);
+  opacity: .9;
+  z-index: 55;
+  pointer-events: none;
+}
+.copyright-floating img { width: 100%; height: auto; display: block; filter: drop-shadow(0 10px 20px rgba(0,0,0,.2)); }
+.access-gate {
+  background: #f9f0d7;
+  border-bottom: 2px solid var(--gold);
+  padding: 12px 60px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+.access-gate-copy { font-size: 12.5px; color: #5b4518; max-width: 900px; }
+.access-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.access-btn {
+  border: 1px solid var(--slate);
+  background: var(--slate);
+  color: #fff;
+  border-radius: 999px;
+  padding: 8px 13px;
+  font-size: 11px;
+  letter-spacing: .09em;
+  text-transform: uppercase;
+  font-family: 'DM Mono', monospace;
+  cursor: pointer;
+}
+.access-btn.secondary {
+  background: transparent;
+  color: var(--slate);
+}
+body.preview-locked .protected-content {
+  filter: blur(4px) saturate(.85);
+  pointer-events: none;
+  user-select: none;
+}
+.protected-shell { position: relative; }
+.locked-overlay {
+  display: none;
+  position: absolute;
+  left: 50%;
+  top: 120px;
+  transform: translateX(-50%);
+  z-index: 22;
+  width: min(760px, calc(100% - 32px));
+  background: rgba(15,20,30,.95);
+  color: #fff;
+  border: 1px solid rgba(196,149,64,.45);
+  border-radius: 16px;
+  padding: 22px;
+  box-shadow: 0 22px 40px rgba(0,0,0,.3);
+}
+body.preview-locked .locked-overlay { display: block; }
+.locked-overlay h3 { font-family: 'Playfair Display', serif; font-size: 1.6rem; margin-bottom: 8px; }
+.locked-overlay p { color: rgba(255,255,255,.78); margin-bottom: 14px; }
+.locked-overlay .access-actions { margin-top: 4px; }
+
+@media (max-width: 900px) {
+  .section, .hero { padding: 40px 24px; }
+  .inst-strip { padding: 24px; }
+  .copyright-warning, .access-gate { padding: 12px 24px; }
+  .locked-overlay { top: 80px; }
+  .hero-layout { grid-template-columns: 1fr; }
+  .hero-badge { display: none; }
+  .pillars-grid, .modules-grid, .contexts-grid, .lit-row, .theory-grid, .pacing-grid, .journal-grid, .budget-grid { grid-template-columns: 1fr 1fr; }
+  .rat-grid, .fw-row, .impl-grid, .spiral-wrapper { grid-template-columns: 1fr; }
+  .assess-row { grid-template-columns: 1fr 1fr; }
+  .assess-row.hdr { display: none; }
+  .eval-row { grid-template-columns: 1fr; }
+  footer { grid-template-columns: 1fr; }
+  .footer-refs { text-align: left; }
+  .utility-bar { top: 44px; justify-content: center; flex-wrap: wrap; }
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#overview">Overview</a>
+  <a href="#pillars">Pillars</a>
+  <a href="#modules">Modules</a>
+  <a href="#design">Design</a>
+  <a href="#frameworks">Frameworks</a>
+  <a href="#targets">Targets</a>
+  <a href="#pacing">Pacing</a>
+  <a href="#assessment">Assessment</a>
+  <a href="#theory">Theory</a>
+  <a href="#implementation">Implementation</a>
+</nav>
+<div class="utility-bar">
+  <button class="util-btn primary" id="registerBtn" type="button">Register Now</button>
+  <button class="util-btn locked" id="teacherToggle" type="button">Teacher Mode: Locked</button>
+  <button class="util-btn" id="sheetsTabBtn" type="button" style="display:none;">Sheets</button>
+  <button class="util-btn" id="settingsBtn" type="button" style="display:none;">Settings</button>
+</div>
+<div class="copyright-warning">
+  Copyright © Michael R. Terry. This material is protected intellectual property. Unauthorized copying, sharing, redistribution, screenshots, and derivative reuse are prohibited.
+</div>
+<div class="access-gate" id="accessGate">
+  <div class="access-gate-copy">Preview mode is active. Full curriculum content is restricted to licensed users with paid access.</div>
+  <div class="access-actions">
+    <a class="access-btn" id="purchaseLinkTop" href="#">Purchase Full Access</a>
+    <button class="access-btn secondary" id="unlockBtnTop" type="button">I Have Access</button>
+  </div>
+</div>
+
+<!-- HERO -->
+<header class="hero" id="overview">
+  <div class="hero-layout">
+    <div>
+      <p class="hero-eyebrow">Modern Manners &amp; Mental Fortitude · Real-World Life Skills Program</p>
+      <h1><em>Modern Manners</em><br>&amp; Mental Fortitude</h1>
+      <p class="hero-tagline">For Grades 9-12 through Adult Interest · Individuals, Couples, Families, Educators · Private Classes, Group Workshops, and Online Mentoring</p>
+      <div class="hero-chips">
+        <div class="chip"><strong>16 Weeks</strong> · 2 sessions / week</div>
+        <div class="chip">Class size <strong>20–25 students</strong></div>
+        <div class="chip">Aligns with <strong>Utah CASEL &amp; CCA Core Standards</strong></div>
+        <div class="chip">Research-backed <strong>SEL + Transfer Design</strong></div>
+        <div class="chip">Submitted <strong>August 2025</strong></div>
+      </div>
+    </div>
+    <div class="hero-badge card-link" id="modulesBadge" tabindex="0" role="button" aria-label="Open module list">
+      <span class="badge-num">5</span>
+      <span class="badge-label">Modules</span>
+      <div class="badge-sub">16-Week Semester</div>
+    </div>
+  </div>
+</header>
+
+<!-- INSTRUCTOR STRIP -->
+<div class="inst-strip">
+  <div class="inst-avatar">
+    <img src="michael-terry-headshot.jpg" alt="Portrait of Michael R. Terry">
+  </div>
+  <div>
+    <div class="inst-name">Michael R. Terry</div>
+    <div class="inst-titles">Founder, Modern Manners &amp; Mental Fortitude · Public Service Leader · Curriculum Designer · Published Author · Community Presenter · Spanish Proficient</div>
+  </div>
+  <a class="bio-link" href="resume.html">
+    <span>Resume</span>
+    View Resume
+  </a>
+</div>
+
+<div class="protected-shell">
+<div class="locked-overlay" id="lockedOverlay">
+  <h3>Full Curriculum Is Locked</h3>
+  <p>This page currently shows a limited preview. Purchase a license to unlock full materials and details.</p>
+  <div class="access-actions">
+    <a class="access-btn" id="purchaseLinkOverlay" href="#">Purchase Full Access</a>
+    <button class="access-btn secondary" id="unlockBtnOverlay" type="button">Enter Access Code</button>
+  </div>
+</div>
+
+<!-- RATIONALE -->
+<section class="section dark fade protected-content" id="rationale">
+  <p class="section-label">Why This Course Exists</p>
+  <h2 class="section-title">The <span class="accent">Gap</span> &amp; The Response</h2>
+  <div class="rat-grid">
+    <div class="rat-cell fade"><div class="rat-icon">🏫</div><div class="rat-title">The Unaddressed Gap</div><div class="rat-body">Academic achievement dominates curricula. Students navigate complex social, digital, and emotional landscapes with few tools. Soft skills are assumed — not taught. This course makes them explicit and measurable.</div></div>
+    <div class="rat-cell fade"><div class="rat-icon">👮</div><div class="rat-title">Built from Real Experience</div><div class="rat-body">Nearly 20 years of law enforcement, crisis response, and youth mentorship — including SRO at Blue Peak High School and teaching Lions Quest to every 6th grader in Tooele City — shaped every module in this course.</div></div>
+    <div class="rat-cell fade"><div class="rat-icon">🎯</div><div class="rat-title">The Design Standard</div><div class="rat-body">Transfer, not coverage. Students leave able to apply concepts independently to unfamiliar, high-stakes situations. Every lesson, framework, and assessment is designed backward from that single outcome.</div></div>
+  </div>
+</section>
+
+<!-- PILLARS -->
+<section class="section fade protected-content" id="pillars">
+  <p class="section-label">Anchoring Concepts</p>
+  <h2 class="section-title">Four Core <span class="accent">Pillars</span></h2>
+  <div class="pillars-grid">
+    <div class="pillar p-teal fade"><div class="pillar-wm">01</div><div class="pillar-icon">🤝</div><div class="pillar-title">Respectful Communication</div><div class="pillar-body">Tone, body language, active listening, I-statements, and repair moves across every context — school, workplace, community, and digital.</div><div class="pillar-subs"><div class="sub-tag">Eye contact &amp; nonverbal cues</div><div class="sub-tag">Conflict repair steps</div><div class="sub-tag">Authority &amp; feedback response</div></div></div>
+    <div class="pillar p-rust fade"><div class="pillar-wm">02</div><div class="pillar-icon">🧘</div><div class="pillar-title">Emotional Regulation</div><div class="pillar-body">Identifying triggers, managing stress, and applying the Pause–Label–Reframe–Respond routine as a performance skill — not a therapy tool.</div><div class="pillar-subs"><div class="sub-tag">Escalation vs. de-escalation</div><div class="sub-tag">Peer pressure &amp; belonging</div><div class="sub-tag">Mindfulness &amp; grounding</div></div></div>
+    <div class="pillar p-gold fade"><div class="pillar-wm">03</div><div class="pillar-icon">⚖️</div><div class="pillar-title">Decision-Making Under Pressure</div><div class="pillar-body">Pause–Options–Consequences–Choose: a structured four-step framework applied across scenarios with competing priorities and real stakes.</div><div class="pillar-subs"><div class="sub-tag">Consequence mapping</div><div class="sub-tag">Short vs. long-term thinking</div><div class="sub-tag">Digital permanence</div></div></div>
+    <div class="pillar p-sage fade"><div class="pillar-wm">04</div><div class="pillar-icon">🔁</div><div class="pillar-title">Accountability &amp; Repair</div><div class="pillar-body">Own it, fix it, follow through. How accountability builds trust and long-term opportunity — and why repair after a mistake is a strength.</div><div class="pillar-subs"><div class="sub-tag">Integrity &amp; follow-through</div><div class="sub-tag">Personal growth targets</div><div class="sub-tag">Self-assessment cycles</div></div></div>
+  </div>
+</section>
+
+<!-- COMPELLING QUESTIONS -->
+<section class="section alt gold-bg fade protected-content">
+  <p class="section-label">Unit Inquiry</p>
+  <h2 class="section-title">Compelling <span class="accent">Questions</span></h2>
+  <div class="cq-grid">
+    <div class="cq-card fade"><p>How do my everyday choices shape how others trust me — and the opportunities I get?</p></div>
+    <div class="cq-card fade"><p>What does respect look like when no one is watching?</p></div>
+    <div class="cq-card fade"><p>Why do strong emotions make good decisions harder — and what can I do about it in the moment?</p></div>
+    <div class="cq-card fade"><p>How should my behavior change depending on context: friend group, classroom, workplace, or online?</p></div>
+  </div>
+</section>
+
+<!-- 5 MODULES -->
+<section class="section fade protected-content" id="modules">
+  <p class="section-label">Content Strands</p>
+  <h2 class="section-title">Five <span class="accent">Modules</span></h2>
+  <div class="modules-grid">
+    <div class="module-card fade"><div class="module-num">Module 01</div><div class="module-icon">🎩</div><div class="module-title">Modern Manners</div><div class="module-topics"><div class="module-topic">Eye contact &amp; greetings</div><div class="module-topic">Cell phone etiquette</div><div class="module-topic">Gratitude practices</div><div class="module-topic">Context-appropriate behavior</div></div></div>
+    <div class="module-card fade"><div class="module-num">Module 02</div><div class="module-icon">🧠</div><div class="module-title">Emotional Intelligence</div><div class="module-topics"><div class="module-topic">Self-awareness &amp; triggers</div><div class="module-topic">Stress &amp; anxiety tools</div><div class="module-topic">Mindfulness basics</div><div class="module-topic">Regulation routines</div></div></div>
+    <div class="module-card fade"><div class="module-num">Module 03</div><div class="module-icon">🕊️</div><div class="module-title">Conflict Navigation</div><div class="module-topics"><div class="module-topic">Disagreement without disrespect</div><div class="module-topic">Apologies &amp; repair</div><div class="module-topic">Boundaries</div><div class="module-topic">Peer mediation</div></div></div>
+    <div class="module-card fade"><div class="module-num">Module 04</div><div class="module-icon">📱</div><div class="module-title">Digital Citizenship</div><div class="module-topics"><div class="module-topic">Online tone &amp; posting</div><div class="module-topic">Digital permanence</div><div class="module-topic">Reputation management</div><div class="module-topic">Privacy &amp; boundaries</div></div></div>
+    <div class="module-card fade"><div class="module-num">Module 05</div><div class="module-icon">🌱</div><div class="module-title">Personal Growth</div><div class="module-topics"><div class="module-topic">Goal setting</div><div class="module-topic">Self-assessment</div><div class="module-topic">Integrity &amp; follow-through</div><div class="module-topic">Capstone project</div></div></div>
+  </div>
+</section>
+
+<!-- SPIRAL CURRICULUM DESIGN -->
+<section class="section alt fade protected-content" id="design">
+  <p class="section-label">Curriculum Structure · Bruner (1960)</p>
+  <h2 class="section-title">Spiral <span class="accent">Design</span></h2>
+  <div class="spiral-wrapper">
+    <div>
+      <div class="spiral-diagram">
+        <div class="spiral-ring">Introduce</div>
+        <div class="spiral-ring">Reinforce</div>
+        <div class="spiral-ring">Apply</div>
+        <div class="spiral-ring">Transfer</div>
+        <div class="spiral-label">Increasing Complexity →</div>
+      </div>
+    </div>
+    <div class="spiral-desc-col">
+      <div class="spiral-item fade"><strong>Weeks 1–2: Direct Instruction</strong>Core concepts introduced through mini-lessons, case studies, graphic organizers, and instructor modeling. Shared vocabulary built across the class.</div>
+      <div class="spiral-item fade"><strong>Week 3: Simulation &amp; Role-Play</strong>Students apply learned skills in structured practice. Scenario prompts build fluency before independent application is expected.</div>
+      <div class="spiral-item fade"><strong>Week 4: Collaborative Challenge &amp; Reflection</strong>Team-based tasks reinforce understanding. Reflection journals connect experience to concept and set goals for the next four-week cycle.</div>
+      <div class="spiral-item fade"><strong>All Four Pillars Revisited Every Cycle</strong>Respect, regulation, decision-making, and accountability reappear in every module at increasing levels of complexity — exactly as Bruner's spiral model intended.</div>
+    </div>
+  </div>
+</section>
+
+<!-- UNIT STORYBOARD TIMELINE -->
+<section class="section fade protected-content">
+  <p class="section-label">Unit Storyboard · Stern et al. (2021)</p>
+  <h2 class="section-title">How the <span class="accent">Unit Flows</span></h2>
+  <div class="timeline-outer">
+    <div class="timeline-track">
+      <div class="timeline-line"></div>
+      <div class="phase fade"><div class="phase-dot"></div><div class="phase-days">Days 1–4</div><div class="phase-name">Acquire</div><div class="phase-desc">Build shared vocabulary around all four anchoring concepts.</div><div class="phase-tools"><div class="phase-tool">Concept mapping</div><div class="phase-tool">Guided questioning</div><div class="phase-tool">Short video dilemmas</div><div class="phase-tool">Graphic organizers</div></div></div>
+      <div class="phase fade"><div class="phase-dot"></div><div class="phase-days">Days 5–7</div><div class="phase-name">Connect</div><div class="phase-desc">Examine the relationship between emotions, choices, and consequences.</div><div class="phase-tools"><div class="phase-tool">Cause-effect charts</div><div class="phase-tool">Paired case studies</div><div class="phase-tool">Discussion protocols</div><div class="phase-tool">Reflection journals</div></div></div>
+      <div class="phase fade"><div class="phase-dot"></div><div class="phase-days">Days 8–10</div><div class="phase-name">Similar Transfer</div><div class="phase-desc">Apply concepts to familiar school and peer scenarios.</div><div class="phase-tools"><div class="phase-tool">Role-play &amp; scenario cards</div><div class="phase-tool">Decision frameworks</div><div class="phase-tool">Peer feedback tools</div></div></div>
+      <div class="phase fade"><div class="phase-dot"></div><div class="phase-days">Days 11–13</div><div class="phase-name">Dissimilar Transfer</div><div class="phase-desc">Apply independently to workplace, community, and digital contexts never practiced in class.</div><div class="phase-tools"><div class="phase-tool">Workplace case studies</div><div class="phase-tool">Digital dilemmas</div><div class="phase-tool">Reflective justification</div></div></div>
+      <div class="phase fade"><div class="phase-dot"></div><div class="phase-days">Days 14–15</div><div class="phase-name">Student Action</div><div class="phase-desc">Culminating performance task with a real-world audience.</div><div class="phase-tools"><div class="phase-tool">Novel scenario response</div><div class="phase-tool">Justified decision + repair plan</div><div class="phase-tool">Authentic audience feedback</div></div></div>
+    </div>
+  </div>
+</section>
+
+<!-- FRAMEWORKS -->
+<section class="section alt fade protected-content" id="frameworks">
+  <p class="section-label">Student-Facing Thinking Tools</p>
+  <h2 class="section-title">The Two <span class="accent">Frameworks</span></h2>
+  <div class="fw-row">
+    <div class="fw-card fade">
+      <div class="fw-header"><div class="fw-badge teal">🧘</div><div><div class="fw-title">Regulation Routine</div><div class="fw-subtitle">Self-regulation under stress — used before decision-making</div></div></div>
+      <div class="fw-steps">
+        <div class="fw-step"><div class="fw-letter teal">P</div><div class="fw-step-body"><strong>Pause.</strong> <span>Stop the automatic reaction. Create space before responding.</span></div></div>
+        <div class="fw-step"><div class="fw-letter teal">L</div><div class="fw-step-body"><strong>Label.</strong> <span>Name the emotion. What am I actually feeling right now?</span></div></div>
+        <div class="fw-step"><div class="fw-letter teal">R</div><div class="fw-step-body"><strong>Reframe.</strong> <span>Shift perspective. What is actually happening vs. what I assumed?</span></div></div>
+        <div class="fw-step"><div class="fw-letter teal">R</div><div class="fw-step-body"><strong>Respond.</strong> <span>Choose deliberately — aligned with values and context.</span></div></div>
+      </div>
+    </div>
+    <div class="fw-card fade">
+      <div class="fw-header"><div class="fw-badge rust">⚖️</div><div><div class="fw-title">Decision-Making Framework</div><div class="fw-subtitle">Structured choice-making under pressure and competing priorities</div></div></div>
+      <div class="fw-steps">
+        <div class="fw-step"><div class="fw-letter rust">P</div><div class="fw-step-body"><strong>Pause.</strong> <span>Regulate first. Good decisions require cognitive space.</span></div></div>
+        <div class="fw-step"><div class="fw-letter rust">O</div><div class="fw-step-body"><strong>Options.</strong> <span>Identify multiple possible responses. What are my real choices?</span></div></div>
+        <div class="fw-step"><div class="fw-letter rust">C</div><div class="fw-step-body"><strong>Consequences.</strong> <span>Evaluate short and long-term outcomes. Who is affected and how?</span></div></div>
+        <div class="fw-step"><div class="fw-letter rust">C</div><div class="fw-step-body"><strong>Choose.</strong> <span>Select a response and justify it. Be able to explain the reasoning.</span></div></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- LEARNING TARGETS -->
+<section class="section fade protected-content" id="targets">
+  <p class="section-label">Learning Standards &amp; Objectives</p>
+  <h2 class="section-title">What Students Will <span class="accent">Be Able to Do</span></h2>
+  <div class="targets-list">
+    <div class="t-row fade"><div class="t-num">1</div><div class="t-text">Recognize and actively use respectful communication approaches across school, community, workplace, and digital contexts.</div><div class="t-tag">Introduced: Module 1 · Reinforced: Module 3</div></div>
+    <div class="t-row fade"><div class="t-num">2</div><div class="t-text">Use a decision-making framework (Pause–Options–Consequences–Choose) to analyze scenarios and justify choices with evidence and likely consequences.</div><div class="t-tag">Introduced: Module 2 · Reinforced: Module 3</div></div>
+    <div class="t-row fade"><div class="t-num">3</div><div class="t-text">Apply self-regulation strategies (Pause–Label–Reframe–Respond) during conflict or stress, using the routine as a performance skill, not a therapeutic one.</div><div class="t-tag">Introduced: Module 2 · Reinforced: Module 2</div></div>
+    <div class="t-row fade"><div class="t-num">4</div><div class="t-text">Navigate digital and in-person etiquette with attention to permanence, reputation, and audience — in school, community, and online settings.</div><div class="t-tag">Introduced: Module 4 · Reinforced: Module 4</div></div>
+    <div class="t-row fade"><div class="t-num">5</div><div class="t-text">Explain how accountability — owning a mistake, repairing it, and following through — builds trust and long-term opportunity.</div><div class="t-tag">Introduced: Module 5 · Reinforced: Module 5</div></div>
+    <div class="t-row fade"><div class="t-num">6</div><div class="t-text">Establish personal growth targets, monitor progress through self-assessment, and independently transfer all skills to an unfamiliar, high-stakes scenario.</div><div class="t-tag">Introduced: Module 5 · Reinforced: Module 5</div></div>
+  </div>
+</section>
+
+<!-- TRANSFER CONTEXTS -->
+<section class="section alt fade protected-content">
+  <p class="section-label">Real-World Application</p>
+  <h2 class="section-title">Where Students <span class="accent">Transfer</span></h2>
+  <div class="contexts-grid">
+    <div class="ctx-card fade"><div class="ctx-icon">🏫</div><div class="ctx-name">School &amp; Community</div><div class="ctx-desc">Respectful language, follow-through, and conflict repair in everyday peer and adult interactions across campus and community settings.</div></div>
+    <div class="ctx-card fade"><div class="ctx-icon">💼</div><div class="ctx-name">Workplace Readiness</div><div class="ctx-desc">Professionalism, feedback response, teamwork norms, and decision-making in simulated job and team settings mirroring post-secondary realities.</div></div>
+    <div class="ctx-card fade"><div class="ctx-icon">📱</div><div class="ctx-name">Digital &amp; Social Media</div><div class="ctx-desc">Digital citizenship, tone, privacy, and reputation management — with intentional focus on the permanence of online choices.</div></div>
+    <div class="ctx-card fade"><div class="ctx-icon">🔥</div><div class="ctx-name">High-Stress Moments</div><div class="ctx-desc">Self-regulation and de-escalation when emotions run high or social pressure is present — trained as a performance competency.</div></div>
+  </div>
+</section>
+
+<!-- MODERN LITERACIES -->
+<section class="section fade protected-content">
+  <p class="section-label">Skills Beyond Standards · Stern et al. (2021) &amp; Lang (2021)</p>
+  <h2 class="section-title">Modern <span class="accent">Literacies</span> Developed</h2>
+  <div class="lit-row">
+    <div class="lit-card fade"><div class="lit-icon">🔍</div><div class="lit-name">Critical Thinking</div><div class="lit-desc">Structured decision framework to evaluate options, consequences, and long-term outcomes in any context.</div></div>
+    <div class="lit-card fade"><div class="lit-icon">💬</div><div class="lit-name">Communication</div><div class="lit-desc">Respectful tone, active listening moves, and audience-aware responses in face-to-face and written formats.</div></div>
+    <div class="lit-card fade"><div class="lit-icon">🤝</div><div class="lit-name">Collaboration</div><div class="lit-desc">Group norms, roles, task distribution, disagreement routines, and feedback cycles — with guided reflection built in.</div></div>
+    <div class="lit-card fade"><div class="lit-icon">🌐</div><div class="lit-name">Digital Citizenship</div><div class="lit-desc">Evaluating online behavior, sources, and permanence; aligning online choices with real-world goals and reputation.</div></div>
+  </div>
+</section>
+
+<!-- PACING CALENDAR -->
+<section class="section alt fade protected-content" id="pacing">
+  <p class="section-label">16-Week Pacing Calendar</p>
+  <h2 class="section-title">Week-by-Week <span class="accent">Schedule</span></h2>
+  <div class="pacing-grid">
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 1</div><div class="wk-text">Course Introduction · Expectations · Icebreakers</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 2</div><div class="wk-text">Respectful Communication: Active listening, sentence stems</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 3</div><div class="wk-text">Role-Play: Disagreements &amp; Listening Skills</div></div>
+    <div class="wk milestone fade"><div class="wk-dot"></div><div class="wk-num">Week 4</div><div class="wk-text">Manners Challenge + Group Discussion ★</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 5</div><div class="wk-text">EQ &amp; Emotional Regulation: Triggers, grounding</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 6</div><div class="wk-text">Peer Interviews: How We Cope</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 7</div><div class="wk-text">Team Challenge: Managing Stress</div></div>
+    <div class="wk milestone fade"><div class="wk-dot"></div><div class="wk-num">Week 8</div><div class="wk-text">Guest Speaker: First Responder on Composure ★</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 9</div><div class="wk-text">Modern Etiquette: Digital, public, school settings</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 10</div><div class="wk-text">Scenario Simulations: Online Conversations</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 11</div><div class="wk-text">Role-Play &amp; Manners in Motion Challenge</div></div>
+    <div class="wk milestone fade"><div class="wk-dot"></div><div class="wk-num">Week 12</div><div class="wk-text">Conflict Resolution: Boundaries, apologies ★</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 13</div><div class="wk-text">Simulation: Group Conflicts &amp; Peer Mediation</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 14</div><div class="wk-text">Self-Evaluation &amp; Goal Setting</div></div>
+    <div class="wk fade"><div class="wk-dot"></div><div class="wk-num">Week 15</div><div class="wk-text">Capstone Project Work Week</div></div>
+    <div class="wk milestone fade"><div class="wk-dot"></div><div class="wk-num">Week 16</div><div class="wk-text">Capstone Presentations &amp; Course Reflections ★</div></div>
+  </div>
+</section>
+
+<!-- ASSESSMENT -->
+<section class="section fade protected-content" id="assessment">
+  <p class="section-label">Assessment Framework · Tyler (1949) &amp; Dewey (1938)</p>
+  <h2 class="section-title">How Learning <span class="accent">Is Measured</span></h2>
+  <div class="assess-list">
+    <div class="assess-row hdr"><div></div><div>Assessment</div><div>Type</div><div>Purpose &amp; Use</div><div style="text-align:right">Targets</div></div>
+    <div class="assess-row fade"><div class="a-icon">📝</div><div class="a-name">Weekly Reflection Journals</div><div><div class="a-badge f">Formative</div></div><div class="a-desc">Five guided prompts each week: what was practiced, how it transferred outside class, what to do differently, what others modeled, and a goal for next week. Tracks metacognitive growth across the semester.</div><div class="a-targets">LT 3, 5, 6</div></div>
+    <div class="assess-row fade"><div class="a-icon">🗂️</div><div class="a-name">Concept Sorting &amp; Exit Reflections</div><div><div class="a-badge f">Formative</div></div><div class="a-desc">Determines whether students can accurately define and distinguish anchoring concepts. Informs pacing and re-teaching decisions before moving forward.</div><div class="a-targets">LT 1</div></div>
+    <div class="assess-row fade"><div class="a-icon">🎭</div><div class="a-name">Scenario Analysis &amp; Role-Play Rubrics</div><div><div class="a-badge f">Formative</div></div><div class="a-desc">Observes whether students apply regulation and decision frameworks during structured practice. Peer observation checklists used for conflict resolution scenarios.</div><div class="a-targets">LT 2, 3</div></div>
+    <div class="assess-row fade"><div class="a-icon">📊</div><div class="a-name">Pre/Post Self-Efficacy Surveys</div><div><div class="a-badge f">Formative</div></div><div class="a-desc">CASEL-based competency surveys at course start and end. Quantifies growth in confidence, regulation, and interpersonal skills. Teacher and guest speaker feedback included.</div><div class="a-targets">LT 1–6</div></div>
+    <div class="assess-row fade"><div class="a-icon">🏆</div><div class="a-name">"How I Handle It" Capstone</div><div><div class="a-badge s">Summative</div></div><div class="a-desc">Students present a real or simulated scenario and walk through how they applied course strategies. Evaluated on clarity, strategy application, reflection, delivery, and visual support materials.</div><div class="a-targets">LT 1–6</div></div>
+    <div class="assess-row fade"><div class="a-icon">🎯</div><div class="a-name">Novel Scenario Performance Task</div><div><div class="a-badge s">Summative</div></div><div class="a-desc">Unfamiliar, high-pressure scenario mixing school, digital, and community contexts. Students produce a justified decision, evidence of regulation, and an accountability or repair plan for a real-world audience.</div><div class="a-targets">LT 1–6</div></div>
+  </div>
+</section>
+
+<!-- CAPSTONE RUBRIC -->
+<section class="section alt fade protected-content">
+  <p class="section-label">Summative Rubric</p>
+  <h2 class="section-title">Capstone: <span class="accent">"How I Handle It"</span></h2>
+  <table class="rubric-table">
+    <thead>
+      <tr><th>Criteria</th><th class="col-e">Exceeds (10)</th><th class="col-m">Meets (8)</th><th class="col-n">Needs Improvement (5)</th></tr>
+    </thead>
+    <tbody>
+      <tr><td>Clarity of Scenario</td><td>Clear, relatable, thoughtfully chosen with real-world grounding</td><td>Relevant and understandable</td><td>Unclear or vague scenario</td></tr>
+      <tr><td>Application of Strategies</td><td>Demonstrates mastery of course tools with nuanced, layered application</td><td>Applies most tools correctly</td><td>Few or incorrect applications</td></tr>
+      <tr><td>Self-Reflection</td><td>Insightful and honest reflection showing genuine growth awareness</td><td>Basic self-reflection shown</td><td>Minimal or shallow insight</td></tr>
+      <tr><td>Delivery</td><td>Confident, clear, and engaging throughout the presentation</td><td>Clear but with minor issues</td><td>Unclear or difficult to follow</td></tr>
+      <tr><td>Visual/Support Materials</td><td>Effective, well-prepared visuals that enhance the presentation</td><td>Basic visuals included</td><td>Missing or ineffective visuals</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- NOVEL SCENARIO -->
+<section class="section fade protected-content">
+  <p class="section-label">Summative Performance Task · Part 2</p>
+  <h2 class="section-title">The <span class="accent-rust">Novel Scenario</span></h2>
+  <div class="scenario-box">
+    <h3>Unfamiliar. High-Stakes. Real-World Complexity.</h3>
+    <p class="scenario-body">Students encounter a situation they have never practiced — one that deliberately mixes school expectations, digital communication, and community behavior. It adds pressure, gives partial information, and forces competing priorities. No clean answers, no practiced script. Students must draw on everything they have learned and demonstrate independent transfer to prove the learning is real.</p>
+    <p class="scenario-body">The authentic audience includes school administrators, community leaders, or workplace supervisors. Students observe the impact of their choices by evaluating how decisions affect trust, reputation, and opportunity — exactly the feedback loop the real world provides.</p>
+    <div class="s-tags">
+      <div class="s-tag">Justified Decision</div>
+      <div class="s-tag">Evidence of Self-Regulation</div>
+      <div class="s-tag">Accountability or Repair Plan</div>
+      <div class="s-tag">Written or Multimedia Response</div>
+      <div class="s-tag">Real-World Authentic Audience</div>
+      <div class="s-tag">Metacognitive Reflection</div>
+    </div>
+  </div>
+</section>
+
+<!-- REFLECTION JOURNAL -->
+<section class="section alt fade protected-content">
+  <p class="section-label">Weekly Formative Practice · Dewey (1938)</p>
+  <h2 class="section-title">Reflection <span class="accent">Journal</span> Prompts</h2>
+  <div class="journal-grid">
+    <div class="j-card fade"><div class="j-icon">💡</div><div class="j-prompt">What was one skill or idea you practiced this week?</div></div>
+    <div class="j-card fade"><div class="j-icon">🌍</div><div class="j-prompt">How did it go when you applied it outside the classroom?</div></div>
+    <div class="j-card fade"><div class="j-icon">🔄</div><div class="j-prompt">What would you do differently next time?</div></div>
+    <div class="j-card fade"><div class="j-icon">👀</div><div class="j-prompt">How did someone else demonstrate good manners or emotional control this week?</div></div>
+    <div class="j-card fade"><div class="j-icon">🎯</div><div class="j-prompt">What is one goal you want to set for next week?</div></div>
+  </div>
+</section>
+
+<!-- THEORY -->
+<section class="section fade protected-content" id="theory">
+  <p class="section-label">Theoretical Foundations</p>
+  <h2 class="section-title">The Research <span class="accent">Behind the Design</span></h2>
+  <div class="theory-grid">
+    <div class="theory-card fade"><div class="theory-author">Tyler (1949)</div><div class="theory-title">Objectives-Based Design</div><div class="theory-body">All course goals are intentional, measurable, and aligned with student needs. Backward design from capstone to daily objectives.</div></div>
+    <div class="theory-card fade"><div class="theory-author">Bruner (1960)</div><div class="theory-title">Spiral Curriculum</div><div class="theory-body">Core concepts revisited with increasing complexity across all five modules. Layered understanding builds over time.</div></div>
+    <div class="theory-card fade"><div class="theory-author">Dewey (1938)</div><div class="theory-title">Experience &amp; Education</div><div class="theory-body">Real-world role-play and simulations ground learning. Reflection journals connect experience to concept to future application.</div></div>
+    <div class="theory-card fade"><div class="theory-author">Skinner (1953)</div><div class="theory-title">Reinforcement in Practice</div><div class="theory-body">Peer feedback, instructor recognition, and Manners in Motion challenges reinforce positive skill application across the semester.</div></div>
+    <div class="theory-card fade"><div class="theory-author">Wiles &amp; Bondi (2015)</div><div class="theory-title">Curriculum Planning Model</div><div class="theory-body">CMP links context, goals, implementation, and evaluation into a coherent whole with continuous improvement built in.</div></div>
+    <div class="theory-card fade"><div class="theory-author">CASEL (2020)</div><div class="theory-title">SEL Competencies</div><div class="theory-body">Self-management, interpersonal communication, responsible decision-making, and digital citizenship aligned to Utah CCA Core Standards.</div></div>
+    <div class="theory-card fade"><div class="theory-author">Stern et al. (2021)</div><div class="theory-title">Learning That Transfers</div><div class="theory-body">Anchoring concepts, compelling questions, and dissimilar transfer tasks drive unit structure. Coverage is never the goal.</div></div>
+    <div class="theory-card fade"><div class="theory-author">Lang (2021) &amp; Tough (2012)</div><div class="theory-title">Small Teaching &amp; Grit</div><div class="theory-body">Brief, frequent retrieval and reflection cycles build durable habits. Grit and character development underpin every module.</div></div>
+  </div>
+</section>
+
+<!-- IMPLEMENTATION -->
+<section class="section alt fade protected-content" id="implementation">
+  <p class="section-label">Implementation Plan</p>
+  <h2 class="section-title">How to <span class="accent">Make It Work</span></h2>
+  <div class="impl-grid">
+    <div class="impl-card fade"><div class="impl-icon">🗓️</div><div class="impl-title">Scheduling Options</div><div class="impl-items"><div class="impl-item">Daily elective (45–60 min)</div><div class="impl-item">A/B block (90 min every other day)</div><div class="impl-item">Advisory enrichment block (pilot)</div><div class="impl-item">Class size: 20–25 students</div><div class="impl-item">Flexible seating + open space for simulations</div></div></div>
+    <div class="impl-card fade"><div class="impl-icon">🎯</div><div class="impl-title">Instructional Strategies</div><div class="impl-items"><div class="impl-item">Role-play &amp; scenario simulation</div><div class="impl-item">Team challenges &amp; practice rounds</div><div class="impl-item">Guest speakers: first responders, employers, community leaders</div><div class="impl-item">Peer interviews &amp; guided journaling</div><div class="impl-item">Weekly Manners in Motion challenge</div></div></div>
+    <div class="impl-card fade"><div class="impl-icon">📦</div><div class="impl-title">Materials &amp; Staff Prep</div><div class="impl-items"><div class="impl-item">Student journals or digital reflection logs</div><div class="impl-item">Scenario prompt cards &amp; Manners Challenge Cards</div><div class="impl-item">Projector/whiteboard for modeling &amp; instructional video</div><div class="impl-item">One-day teacher workshop on SEL &amp; group dynamics</div><div class="impl-item">Resource folder: scope, sequence, objectives, rubrics</div></div></div>
+  </div>
+</section>
+
+<!-- EVAL GOALS -->
+<section class="section fade protected-content">
+  <p class="section-label">Evaluation Aligned to Goals · Wiles &amp; Bondi (2015)</p>
+  <h2 class="section-title">Goals Mapped to <span class="accent">Evaluation Methods</span></h2>
+  <div class="eval-grid">
+    <div class="eval-row fade"><div class="eval-goal">Goal 1: Respectful Communication</div><div class="eval-method">Peer role-play and sentence-stem performance rubrics across school, community, workplace, and digital contexts.</div></div>
+    <div class="eval-row fade"><div class="eval-goal">Goal 2: Managing Stress &amp; Triggers</div><div class="eval-method">Weekly guided journaling tracking regulation routine application — plus the final capstone presentation component.</div></div>
+    <div class="eval-row fade"><div class="eval-goal">Goal 3: Modern Etiquette</div><div class="eval-method">Performance tasks and Manners in Motion challenge observations with structured rubrics.</div></div>
+    <div class="eval-row fade"><div class="eval-goal">Goal 4: Conflict Resolution</div><div class="eval-method">Peer observation checklists during scenario simulations. Students evaluate each other using structured observation tools.</div></div>
+    <div class="eval-row fade"><div class="eval-goal">Goal 5: Self-Assessment &amp; Growth</div><div class="eval-method">Pre/post CASEL self-efficacy surveys and teacher-student conferences measuring growth in confidence and accountability.</div></div>
+  </div>
+</section>
+
+<!-- BUDGET -->
+<section class="section alt fade protected-content">
+  <p class="section-label">Proposed Project Budget</p>
+  <h2 class="section-title">Resource <span class="accent">Requirements</span></h2>
+  <div class="budget-grid">
+    <div class="budget-card fade"><div class="budget-amt">$1,200</div><div class="budget-cat">Curriculum Development<br>Research texts, draft printing, revision copies</div></div>
+    <div class="budget-card fade"><div class="budget-amt">$2,200</div><div class="budget-cat">Technology &amp; Software<br>Survey platform, data analysis, simulation tools</div></div>
+    <div class="budget-card fade"><div class="budget-amt">$2,500</div><div class="budget-cat">Professional Development<br>Conference registration, collaborative planning</div></div>
+    <div class="budget-card fade"><div class="budget-amt">$1,800</div><div class="budget-cat">Instructional Materials<br>Workbooks, classroom supplies, pilot materials</div></div>
+    <div class="budget-card fade"><div class="budget-amt">$2,000</div><div class="budget-cat">Evaluation &amp; Data Analysis<br>Assessment development, external review</div></div>
+    <div class="budget-card fade"><div class="budget-amt">$1,000</div><div class="budget-cat">Dissemination<br>Final guide printing, replication documentation</div></div>
+    <div class="budget-card fade"><div class="budget-amt">$500</div><div class="budget-cat">Indirect Costs<br>Administrative &amp; miscellaneous expenses</div></div>
+    <div class="budget-card fade" style="border: 1.5px dashed var(--muted);"><div class="budget-amt" style="font-size:1.1rem; color:var(--muted);">In-Kind</div><div class="budget-cat">Personal time: curriculum design, research, data collection &amp; analysis</div></div>
+  </div>
+  <div class="budget-total">
+    <div class="budget-total-label">Total Proposed Budget (Direct Costs)</div>
+    <div class="budget-total-amt">$11,200</div>
+  </div>
+</section>
+
+<footer class="protected-content">
+  <div>
+    <div class="footer-name">Michael R. Terry</div>
+    <div class="footer-meta">
+      Founder, Modern Manners &amp; Mental Fortitude · Program Designer &amp; Instructor<br>
+      Tooele, Utah · mikeyterry44@gmail.com · (435) 840-1896<br>
+      Curriculum Design · Youth, Adult, Family &amp; Educator Programs · Real-World Decision Training
+    </div>
+  </div>
+  <div class="footer-refs">
+    Bruner (1960) · CASEL (2020) · Dewey (1938) · Lang (2021)<br>
+    Skinner (1953) · Stern, Ferraro &amp; Mohnkern (2021) · Tough (2012)<br>
+    Trilling &amp; Fadel (2009) · Tyler (1949) · Wiles &amp; Bondi (2015)<br>
+    Utah State Board of Education (2023)
+  </div>
+</footer>
+</div>
+
+<div class="copyright-floating" aria-hidden="true">
+  <img src="assets/copyright-mark.svg" alt="">
+</div>
+
+<div class="modal" id="registerModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-register></div>
+  <div class="modal-panel">
+    <h3 class="modal-title">Register for Future Classes</h3>
+    <p class="modal-sub">Leave your info and I will contact you when class dates and locations are posted.</p>
+    <form id="registerForm" novalidate>
+      <div class="form-grid">
+        <label for="regName">Full name</label>
+        <input id="regName" name="name" required>
+        <label for="regEmail">Email</label>
+        <input id="regEmail" name="email" type="email" required>
+        <label for="regPhone">Phone (optional)</label>
+        <input id="regPhone" name="phone">
+        <label for="regGroup">Best fit</label>
+        <select id="regGroup" name="group" required>
+          <option value="">Select one</option>
+          <option>Youth</option>
+          <option>Adult</option>
+          <option>Family</option>
+          <option>Educator</option>
+        </select>
+        <label for="regNotes">Notes (optional)</label>
+        <textarea id="regNotes" name="notes" rows="3"></textarea>
+      </div>
+      <div id="registerStatus" class="form-status"></div>
+      <div class="modal-actions">
+        <button class="util-btn" type="button" id="registerCloseBtn">Close</button>
+        <button class="util-btn primary" type="submit">Submit</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal" id="settingsModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-settings></div>
+  <div class="modal-panel">
+    <h3 class="modal-title">Teacher Settings</h3>
+    <p class="modal-sub">Only visible in Teacher Mode. Route registrations to a dedicated endpoint, separate from response logging.</p>
+    <div class="form-grid">
+      <label for="registrationEndpoint">Registration endpoint URL (optional, recommended)</label>
+      <input id="registrationEndpoint" placeholder="https://script.google.com/macros/s/.../exec">
+      <label for="registrationSecret">Registration secret (optional)</label>
+      <input id="registrationSecret" placeholder="Stored locally">
+      <label for="sheetsDashboardUrl">Google Sheets URL (Teacher tab)</label>
+      <input id="sheetsDashboardUrl" placeholder="https://docs.google.com/spreadsheets/d/...">
+      <label for="sheetsEndpoint">Sheets endpoint URL</label>
+      <input id="sheetsEndpoint" placeholder="https://script.google.com/macros/s/.../exec">
+      <label for="sheetsSecret">Sheets secret (optional)</label>
+      <input id="sheetsSecret" placeholder="Stored locally">
+      <label for="teacherPin">Teacher PIN</label>
+      <input id="teacherPin" type="password" value="4429">
+    </div>
+    <div class="modal-actions">
+      <button class="util-btn" type="button" id="settingsCloseBtn">Close</button>
+      <button class="util-btn primary" type="button" id="settingsSaveBtn">Save</button>
+    </div>
+  </div>
+</div>
+
+<div class="modal" id="accessModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-access></div>
+  <div class="modal-panel">
+    <h3 class="modal-title">Enter Licensed Access Code</h3>
+    <p class="modal-sub">Paid customers receive an access code after purchase. Enter it to unlock the full curriculum.</p>
+    <div class="form-grid">
+      <label for="accessCodeInput">Access code</label>
+      <input id="accessCodeInput" placeholder="Enter code">
+    </div>
+    <div id="accessStatus" class="form-status"></div>
+    <div class="modal-actions">
+      <button class="util-btn" type="button" id="accessCloseBtn">Close</button>
+      <button class="util-btn primary" type="button" id="accessUnlockBtn">Unlock</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(entry => {
+    if (entry.isIntersecting) {
+      entry.target.classList.add('in');
+      const children = entry.target.querySelectorAll(':scope > .fade, :scope > * > .fade');
+      children.forEach((child, i) => setTimeout(() => child.classList.add('in'), i * 65));
+    }
+  });
+}, { threshold: 0.06 });
+document.querySelectorAll('.fade').forEach(el => observer.observe(el));
+
+// Restore prior reading position when returning from details page.
+(() => {
+  try {
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('restore') !== '1') return;
+    const yRaw = sessionStorage.getItem('dl_last_scroll_y');
+    const y = Number(yRaw || 0);
+    if (!Number.isFinite(y) || y < 0) return;
+    requestAnimationFrame(() => {
+      window.scrollTo({ top: y, behavior: 'auto' });
+      const clean = new URL(window.location.href);
+      clean.searchParams.delete('restore');
+      window.history.replaceState({}, '', clean.pathname + clean.search + clean.hash);
+    });
+  } catch (_err) {}
+})();
+
+const LS = {
+  teacherUnlocked: 'dl_teacher_unlocked',
+  teacherPin: 'dl_teacher_pin',
+  sheetsEndpoint: 'dl_sheets_endpoint',
+  sheetsSecret: 'dl_sheets_secret',
+  registrationEndpoint: 'dl_registration_endpoint',
+  registrationSecret: 'dl_registration_secret',
+  sheetsDashboardUrl: 'dl_sheets_dashboard_url'
+};
+const DEFAULT_REGISTRATION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzH2--hkA4ezway034VJ6AKK7AQlkiDkGn2rjQ1tP2PhaY25gOKX89cfJZ7fucx6yUH/exec';
+const DEFAULT_SHEETS_DASHBOARD_URL = 'https://docs.google.com/spreadsheets/d/1yhgF2coWvUk3QKqN347kFGMv8pqFBz79BHWE8kphs_E/edit?gid=0#gid=0';
+const FALLBACK_REGISTRATION_ENDPOINTS = [
+  'https://script.google.com/macros/s/AKfycby9WsQIZXATnaKbC4JeBNT4DRLzIDVXXWutlH01wW-CXg3aWcxxsZyKErNyrLRNaCmf/exec',
+  DEFAULT_REGISTRATION_ENDPOINT
+];
+const LEGACY_SETTINGS_KEY = 'decision-lab-settings-v1';
+const LEGACY_TEACHER_KEY = 'decision-lab-teacher-mode';
+
+const teacherToggle = document.getElementById('teacherToggle');
+const sheetsTabBtn = document.getElementById('sheetsTabBtn');
+const settingsBtn = document.getElementById('settingsBtn');
+const registerBtn = document.getElementById('registerBtn');
+const registerModal = document.getElementById('registerModal');
+const settingsModal = document.getElementById('settingsModal');
+const registerForm = document.getElementById('registerForm');
+const registerStatus = document.getElementById('registerStatus');
+const registerSubmitBtn = registerForm ? registerForm.querySelector('button[type="submit"]') : null;
+const sheetsEndpointInput = document.getElementById('sheetsEndpoint');
+const sheetsSecretInput = document.getElementById('sheetsSecret');
+const sheetsDashboardUrlInput = document.getElementById('sheetsDashboardUrl');
+const registrationEndpointInput = document.getElementById('registrationEndpoint');
+const registrationSecretInput = document.getElementById('registrationSecret');
+const teacherPinInput = document.getElementById('teacherPin');
+let registerSubmitting = false;
+
+function getTeacherPin() {
+  return localStorage.getItem(LS.teacherPin) || '4429';
+}
+
+function isTeacherUnlocked() {
+  return localStorage.getItem(LS.teacherUnlocked) === '1';
+}
+
+function setTeacherUnlocked(v) {
+  localStorage.setItem(LS.teacherUnlocked, v ? '1' : '0');
+  localStorage.setItem(LEGACY_TEACHER_KEY, v ? 'true' : 'false');
+  teacherToggle.textContent = v ? 'Teacher Mode: Unlocked' : 'Teacher Mode: Locked';
+  teacherToggle.classList.toggle('locked', !v);
+  sheetsTabBtn.style.display = v ? 'inline-flex' : 'none';
+  settingsBtn.style.display = v ? 'inline-flex' : 'none';
+}
+
+function openModal(modalEl) {
+  modalEl.classList.add('open');
+  modalEl.setAttribute('aria-hidden', 'false');
+}
+
+function closeModal(modalEl) {
+  modalEl.classList.remove('open');
+  modalEl.setAttribute('aria-hidden', 'true');
+}
+
+function showStatus(text, isError) {
+  registerStatus.textContent = text;
+  registerStatus.classList.add('show');
+  registerStatus.style.borderColor = isError ? '#b0432e' : '#ddd7cc';
+  registerStatus.style.color = isError ? '#b0432e' : '#253044';
+}
+
+async function trySubmitToEndpoint(url, payload, secret) {
+  if (!url) return false;
+  const outbound = { ...payload };
+  if (secret && !outbound.secret) outbound.secret = secret;
+  if (!outbound.secret) outbound.secret = '4429-DECISION-LAB';
+  const body = JSON.stringify(outbound);
+  const opts = {
+    method: 'POST',
+    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    body
+  };
+  try {
+    const res = await fetch(url, opts);
+    if (res.ok) return true;
+  } catch (_err) {}
+  try {
+    if (navigator.sendBeacon) {
+      const sent = navigator.sendBeacon(url, new Blob([body], { type: 'text/plain;charset=utf-8' }));
+      if (sent) return true;
+    }
+  } catch (_err) {}
+  try {
+    await fetch(url, { ...opts, mode: 'no-cors' });
+    return true;
+  } catch (_err) {}
+  return false;
+}
+
+setTeacherUnlocked(isTeacherUnlocked());
+const legacySettingsRaw = localStorage.getItem(LEGACY_SETTINGS_KEY);
+let legacySettings = null;
+if (legacySettingsRaw) {
+  try {
+    legacySettings = JSON.parse(legacySettingsRaw);
+  } catch (_err) {
+    legacySettings = null;
+  }
+}
+const endpointFromStorage =
+  localStorage.getItem(LS.sheetsEndpoint)
+  || (legacySettings && legacySettings.sheetsEndpoint)
+  || '';
+const secretFromStorage =
+  localStorage.getItem(LS.sheetsSecret)
+  || (legacySettings && legacySettings.sheetsSecret)
+  || '';
+const registrationEndpointFromStorage =
+  localStorage.getItem(LS.registrationEndpoint)
+  || (legacySettings && (legacySettings.registrationEndpoint || legacySettings.registerEndpoint))
+  || DEFAULT_REGISTRATION_ENDPOINT;
+const registrationSecretFromStorage =
+  localStorage.getItem(LS.registrationSecret)
+  || (legacySettings && (legacySettings.registrationSecret || legacySettings.registerSecret))
+  || '';
+const sheetsDashboardUrlFromStorage =
+  localStorage.getItem(LS.sheetsDashboardUrl)
+  || DEFAULT_SHEETS_DASHBOARD_URL;
+sheetsEndpointInput.value = endpointFromStorage;
+sheetsSecretInput.value = secretFromStorage;
+sheetsDashboardUrlInput.value = sheetsDashboardUrlFromStorage;
+registrationEndpointInput.value = registrationEndpointFromStorage;
+registrationSecretInput.value = registrationSecretFromStorage;
+teacherPinInput.value = getTeacherPin();
+if (localStorage.getItem(LEGACY_TEACHER_KEY) === 'true') {
+  setTeacherUnlocked(true);
+}
+
+teacherToggle.addEventListener('click', () => {
+  if (isTeacherUnlocked()) {
+    setTeacherUnlocked(false);
+    return;
+  }
+  const entered = window.prompt('Enter Teacher PIN');
+  if (entered === null) return;
+  if (entered === getTeacherPin()) {
+    setTeacherUnlocked(true);
+  } else {
+    window.alert('Incorrect PIN.');
+  }
+});
+
+settingsBtn.addEventListener('click', () => openModal(settingsModal));
+sheetsTabBtn.addEventListener('click', () => {
+  const url = (localStorage.getItem(LS.sheetsDashboardUrl) || DEFAULT_SHEETS_DASHBOARD_URL).trim();
+  if (!url) return;
+  window.location.href = url;
+});
+document.getElementById('settingsCloseBtn').addEventListener('click', () => closeModal(settingsModal));
+document.querySelector('[data-close-settings]').addEventListener('click', () => closeModal(settingsModal));
+document.getElementById('settingsSaveBtn').addEventListener('click', () => {
+  localStorage.setItem(LS.sheetsEndpoint, sheetsEndpointInput.value.trim());
+  localStorage.setItem(LS.sheetsSecret, sheetsSecretInput.value.trim());
+  localStorage.setItem(LS.sheetsDashboardUrl, sheetsDashboardUrlInput.value.trim());
+  localStorage.setItem(LS.registrationEndpoint, registrationEndpointInput.value.trim());
+  localStorage.setItem(LS.registrationSecret, registrationSecretInput.value.trim());
+  if (legacySettings) {
+    legacySettings.sheetsEndpoint = sheetsEndpointInput.value.trim();
+    legacySettings.sheetsSecret = sheetsSecretInput.value.trim();
+    legacySettings.registrationEndpoint = registrationEndpointInput.value.trim();
+    legacySettings.registrationSecret = registrationSecretInput.value.trim();
+    localStorage.setItem(LEGACY_SETTINGS_KEY, JSON.stringify(legacySettings));
+  }
+  const newPin = teacherPinInput.value.trim();
+  if (newPin) {
+    localStorage.setItem(LS.teacherPin, newPin);
+  }
+  closeModal(settingsModal);
+  window.alert('Settings saved.');
+});
+
+registerBtn.addEventListener('click', () => {
+  registerStatus.classList.remove('show');
+  registerForm.reset();
+  registerSubmitting = false;
+  if (registerSubmitBtn) {
+    registerSubmitBtn.disabled = false;
+    registerSubmitBtn.textContent = 'Submit';
+    registerSubmitBtn.style.opacity = '1';
+    registerSubmitBtn.style.cursor = 'pointer';
+  }
+  openModal(registerModal);
+});
+document.getElementById('registerCloseBtn').addEventListener('click', () => closeModal(registerModal));
+document.querySelector('[data-close-register]').addEventListener('click', () => closeModal(registerModal));
+
+registerForm.addEventListener('submit', async (e) => {
+  e.preventDefault();
+  if (registerSubmitting) {
+    showStatus('Submitting... please wait.', false);
+    return;
+  }
+  registerSubmitting = true;
+  if (registerSubmitBtn) {
+    registerSubmitBtn.disabled = true;
+    registerSubmitBtn.textContent = 'Submitting...';
+    registerSubmitBtn.style.opacity = '0.72';
+    registerSubmitBtn.style.cursor = 'not-allowed';
+  }
+  const formData = new FormData(registerForm);
+  const payload = {
+    type: 'registration',
+    event: 'registration',
+    form: 'register_now',
+    name: String(formData.get('name') || '').trim(),
+    email: String(formData.get('email') || '').trim(),
+    phone: String(formData.get('phone') || '').trim(),
+    group: String(formData.get('group') || '').trim(),
+    notes: String(formData.get('notes') || '').trim(),
+    timestamp: new Date().toISOString()
+  };
+  // Backward-compatible fields for older Apps Script handlers.
+  payload.participant_name = payload.name;
+  payload.role_or_level = payload.group;
+  payload.age = '';
+  payload.scenario_title = 'Registration Interest';
+  payload.choice = 'Register Now';
+  payload.tool = payload.email;
+  payload.concept = payload.phone;
+  payload.why = payload.notes;
+  payload.full_name = payload.name;
+  payload.best_fit = payload.group;
+  payload.program = 'Modern Manners and Mental Fortitude';
+  payload.source = 'website-register-modal';
+  if (!payload.name || !payload.email || !payload.group) {
+    showStatus('Please complete name, email, and best fit.', true);
+    registerSubmitting = false;
+    if (registerSubmitBtn) {
+      registerSubmitBtn.disabled = false;
+      registerSubmitBtn.textContent = 'Submit';
+      registerSubmitBtn.style.opacity = '1';
+      registerSubmitBtn.style.cursor = 'pointer';
+    }
+    return;
+  }
+  const primaryEndpoint =
+    localStorage.getItem(LS.registrationEndpoint)
+    || localStorage.getItem(LS.sheetsEndpoint)
+    || DEFAULT_REGISTRATION_ENDPOINT;
+  const secret =
+    localStorage.getItem(LS.registrationSecret)
+    || localStorage.getItem(LS.sheetsSecret)
+    || '';
+  const endpointCandidates = [
+    primaryEndpoint,
+    ...FALLBACK_REGISTRATION_ENDPOINTS
+  ].filter(Boolean).filter((url, idx, arr) => arr.indexOf(url) === idx);
+  if (!endpointCandidates.length) {
+    const queue = JSON.parse(localStorage.getItem('dl_registration_queue') || '[]');
+    queue.push(payload);
+    localStorage.setItem('dl_registration_queue', JSON.stringify(queue));
+    showStatus('Saved locally. Add a Registration endpoint (or Sheets endpoint) in Teacher Settings to sync.', false);
+    registerSubmitting = false;
+    if (registerSubmitBtn) {
+      registerSubmitBtn.disabled = false;
+      registerSubmitBtn.textContent = 'Submit';
+      registerSubmitBtn.style.opacity = '1';
+      registerSubmitBtn.style.cursor = 'pointer';
+    }
+    return;
+  }
+  try {
+    let sent = false;
+    for (const url of endpointCandidates) {
+      // Try each configured endpoint until one accepts/dispatches.
+      // Apps Script deployments vary; this fallback avoids manual endpoint churn.
+      sent = await trySubmitToEndpoint(url, payload, secret);
+      if (sent) break;
+    }
+    if (sent) {
+      showStatus('Submitted. Thank you.', false);
+      setTimeout(() => closeModal(registerModal), 900);
+      registerSubmitting = false;
+      if (registerSubmitBtn) {
+        registerSubmitBtn.disabled = false;
+        registerSubmitBtn.textContent = 'Submit';
+        registerSubmitBtn.style.opacity = '1';
+        registerSubmitBtn.style.cursor = 'pointer';
+      }
+      return;
+    }
+    throw new Error('All endpoints failed');
+  } catch (_err) {
+    const queue = JSON.parse(localStorage.getItem('dl_registration_queue') || '[]');
+    queue.push(payload);
+    localStorage.setItem('dl_registration_queue', JSON.stringify(queue));
+    showStatus('Could not submit. Saved locally to retry later.', true);
+    registerSubmitting = false;
+    if (registerSubmitBtn) {
+      registerSubmitBtn.disabled = false;
+      registerSubmitBtn.textContent = 'Submit';
+      registerSubmitBtn.style.opacity = '1';
+      registerSubmitBtn.style.cursor = 'pointer';
+    }
+  }
+});
+
+const linkTargets = [
+  '.pillar', '.module-card', '.t-row', '.ctx-card', '.lit-card', '.wk',
+  '.assess-row:not(.hdr)', '.theory-card', '.impl-card', '.j-card',
+  '.budget-card', '.eval-row', '.cq-card', '.rat-cell', '.spiral-item',
+  '.phase', '.scenario-box', '.rubric-table tbody tr'
+];
+document.querySelectorAll(linkTargets.join(',')).forEach((el) => {
+  const normalizeText = (node) => (
+    String((node && (node.innerText || node.textContent)) || '')
+      .replace(/\s+/g, ' ')
+      .trim()
+  );
+  const clipAtWord = (text, maxLen) => {
+    const t = String(text || '').trim();
+    if (!t || t.length <= maxLen) return t;
+    const clipped = t.slice(0, maxLen);
+    const lastSpace = clipped.lastIndexOf(' ');
+    return (lastSpace > 20 ? clipped.slice(0, lastSpace) : clipped).trim();
+  };
+  const titleEl =
+    el.querySelector('.pillar-title, .module-title, .ctx-name, .lit-name, .phase-name, .a-name, .theory-title, .impl-title, .eval-goal, .wk-text, .j-prompt, .t-text, .cq-card p, .rat-title, .spiral-item strong')
+    || el;
+  const rawTitle = clipAtWord(normalizeText(titleEl), 180) || 'Detail';
+  const section = el.closest('section')?.id || 'overview';
+  const summary = clipAtWord(normalizeText(el), 900);
+  el.classList.add('card-link');
+  el.setAttribute('tabindex', '0');
+  const openDetail = () => {
+    try {
+      sessionStorage.setItem('dl_last_scroll_y', String(window.scrollY || 0));
+      sessionStorage.setItem('dl_last_section', section);
+    } catch (_err) {}
+    const u = new URL('details.html', window.location.href);
+    u.searchParams.set('section', section);
+    u.searchParams.set('title', rawTitle);
+    u.searchParams.set('summary', summary);
+    window.location.href = u.toString();
+  };
+  el.addEventListener('click', openDetail);
+  el.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Enter' || evt.key === ' ') {
+      evt.preventDefault();
+      openDetail();
+    }
+  });
+});
+
+const modulesBadge = document.getElementById('modulesBadge');
+if (modulesBadge) {
+  const openModuleList = () => {
+    try {
+      sessionStorage.setItem('dl_last_scroll_y', String(window.scrollY || 0));
+      sessionStorage.setItem('dl_last_section', 'modules');
+    } catch (_err) {}
+    const u = new URL('details.html', window.location.href);
+    u.searchParams.set('section', 'modules');
+    u.searchParams.set('title', '5 Modules · 16-Week Semester');
+    u.searchParams.set(
+      'summary',
+      [
+        'Module 1: Modern Manners',
+        'Module 2: Emotional Intelligence',
+        'Module 3: Conflict Navigation',
+        'Module 4: Digital Citizenship',
+        'Module 5: Personal Growth'
+      ].join('\n')
+    );
+    window.location.href = u.toString();
+  };
+  modulesBadge.addEventListener('click', openModuleList);
+  modulesBadge.addEventListener('keydown', (evt) => {
+    if (evt.key === 'Enter' || evt.key === ' ') {
+      evt.preventDefault();
+      openModuleList();
+    }
+  });
+}
+
+const ACCESS_CONTROL = {
+  storageKey: 'rrl_paid_access',
+  unlockCode: 'MRT-PAID-2026',
+  checkoutUrl: 'https://buy.stripe.com/'
+};
+const accessGate = document.getElementById('accessGate');
+const accessModal = document.getElementById('accessModal');
+const accessCodeInput = document.getElementById('accessCodeInput');
+const accessStatus = document.getElementById('accessStatus');
+const purchaseLinkTop = document.getElementById('purchaseLinkTop');
+const purchaseLinkOverlay = document.getElementById('purchaseLinkOverlay');
+const unlockBtnTop = document.getElementById('unlockBtnTop');
+const unlockBtnOverlay = document.getElementById('unlockBtnOverlay');
+const accessCloseBtn = document.getElementById('accessCloseBtn');
+const accessUnlockBtn = document.getElementById('accessUnlockBtn');
+
+function showAccessStatus(msg, isError) {
+  if (!accessStatus) return;
+  accessStatus.textContent = msg;
+  accessStatus.style.display = 'block';
+  accessStatus.style.borderColor = isError ? '#b0432e' : '#5f7f35';
+}
+function setLockedState(locked) {
+  document.body.classList.toggle('preview-locked', locked);
+  if (accessGate) accessGate.style.display = locked ? 'flex' : 'none';
+}
+function openAccessModal() {
+  if (!accessModal) return;
+  accessModal.classList.add('open');
+  accessModal.setAttribute('aria-hidden', 'false');
+  if (accessCodeInput) {
+    accessCodeInput.value = '';
+    accessCodeInput.focus();
+  }
+  if (accessStatus) accessStatus.style.display = 'none';
+}
+function closeAccessModal() {
+  if (!accessModal) return;
+  accessModal.classList.remove('open');
+  accessModal.setAttribute('aria-hidden', 'true');
+}
+function isUnlocked() {
+  return localStorage.getItem(ACCESS_CONTROL.storageKey) === '1';
+}
+if (purchaseLinkTop) purchaseLinkTop.href = ACCESS_CONTROL.checkoutUrl;
+if (purchaseLinkOverlay) purchaseLinkOverlay.href = ACCESS_CONTROL.checkoutUrl;
+setLockedState(!isUnlocked());
+
+unlockBtnTop?.addEventListener('click', openAccessModal);
+unlockBtnOverlay?.addEventListener('click', openAccessModal);
+accessCloseBtn?.addEventListener('click', closeAccessModal);
+document.querySelectorAll('[data-close-access]').forEach((el) => el.addEventListener('click', closeAccessModal));
+accessUnlockBtn?.addEventListener('click', () => {
+  const code = String(accessCodeInput?.value || '').trim();
+  if (code !== ACCESS_CONTROL.unlockCode) {
+    showAccessStatus('Code not recognized. Please check your purchase email.', true);
+    return;
+  }
+  localStorage.setItem(ACCESS_CONTROL.storageKey, '1');
+  setLockedState(false);
+  closeAccessModal();
+});
+
+// Deterrence only: client-side blocks can be bypassed by a determined user.
+document.addEventListener('contextmenu', (evt) => {
+  if (document.body.classList.contains('preview-locked')) evt.preventDefault();
+});
+document.addEventListener('copy', (evt) => {
+  if (document.body.classList.contains('preview-locked')) evt.preventDefault();
+});
+document.addEventListener('cut', (evt) => {
+  if (document.body.classList.contains('preview-locked')) evt.preventDefault();
+});
+document.addEventListener('keydown', (evt) => {
+  if (!document.body.classList.contains('preview-locked')) return;
+  const k = evt.key.toLowerCase();
+  if ((evt.metaKey || evt.ctrlKey) && (k === 'c' || k === 's' || k === 'p' || k === 'u')) evt.preventDefault();
+});
+</script>
+</body>
+</html>
