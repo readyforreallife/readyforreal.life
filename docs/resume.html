@@ -36,6 +36,21 @@
     .nav-links a {
       color: rgba(255,255,255,.78); text-decoration: none; font-size: 11px; font-family: "DM Mono", monospace;
       letter-spacing: .08em; text-transform: uppercase; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; padding: 6px 10px;
+      transition: transform .16s ease, box-shadow .16s ease, background .16s ease, color .16s ease;
+    }
+    .nav-links a.back-link {
+      background: var(--gold);
+      color: #1f2a3a;
+      border-color: #efcd88;
+      font-weight: 700;
+      box-shadow: 0 4px 12px rgba(0,0,0,.18);
+    }
+    .nav-links a.back-link:hover,
+    .nav-links a.back-link:focus-visible {
+      background: #f0c56a;
+      color: #162133;
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(0,0,0,.26);
     }
     .copyright-warning {
       background: #fff5df;
@@ -318,7 +333,7 @@
       <a href="#education">Education</a>
       <a href="#awards">Awards</a>
       <a href="#skills">Skills</a>
-      <a href="index.html">Back to Site</a>
+      <a class="back-link" href="index.html">Back to Site</a>
     </div>
   </nav>
   <div class="copyright-warning">
