@@ -1,0 +1,13 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="420" height="120" viewBox="0 0 420 120" role="img" aria-label="Copyright Michael R. Terry">
+  <defs>
+    <linearGradient id="g" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#253044"/>
+      <stop offset="1" stop-color="#344159"/>
+    </linearGradient>
+  </defs>
+  <rect x="1.5" y="1.5" width="417" height="117" rx="14" fill="url(#g)" stroke="#c49540" stroke-width="3"/>
+  <circle cx="54" cy="60" r="28" fill="#c49540"/>
+  <text x="54" y="69" text-anchor="middle" font-family="DM Sans, Arial, sans-serif" font-size="30" font-weight="700" fill="#253044">©</text>
+  <text x="98" y="52" font-family="DM Sans, Arial, sans-serif" font-size="17" font-weight="700" fill="#f2e4c0">MICHAEL R. TERRY</text>
+  <text x="98" y="76" font-family="DM Sans, Arial, sans-serif" font-size="13" fill="#f2e4c0">All Rights Reserved • Licensed Access Only</text>
+</svg>

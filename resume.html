@@ -37,6 +37,75 @@
       color: rgba(255,255,255,.78); text-decoration: none; font-size: 11px; font-family: "DM Mono", monospace;
       letter-spacing: .08em; text-transform: uppercase; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; padding: 6px 10px;
     }
+    .copyright-warning {
+      background: #fff5df;
+      color: #5f4315;
+      border-top: 1px solid #edd8a6;
+      border-bottom: 1px solid #edd8a6;
+      padding: 10px 28px;
+      font-size: 12px;
+      line-height: 1.5;
+    }
+    .access-gate {
+      background: #f9f0d7;
+      border-bottom: 2px solid var(--gold);
+      padding: 12px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .access-gate-copy { font-size: 12px; color: #5b4518; }
+    .access-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+    .access-btn {
+      border: 1px solid var(--slate);
+      background: var(--slate);
+      color: #fff;
+      border-radius: 999px;
+      padding: 8px 13px;
+      font-size: 11px;
+      letter-spacing: .09em;
+      text-transform: uppercase;
+      font-family: 'DM Mono', monospace;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .access-btn.secondary { background: transparent; color: var(--slate); }
+    body.preview-locked .protected-content {
+      filter: blur(4px) saturate(.85);
+      pointer-events: none;
+      user-select: none;
+    }
+    .protected-shell { position: relative; }
+    .locked-overlay {
+      display: none;
+      position: absolute;
+      left: 50%;
+      top: 120px;
+      transform: translateX(-50%);
+      z-index: 22;
+      width: min(760px, calc(100% - 32px));
+      background: rgba(15,20,30,.95);
+      color: #fff;
+      border: 1px solid rgba(196,149,64,.45);
+      border-radius: 16px;
+      padding: 22px;
+      box-shadow: 0 22px 40px rgba(0,0,0,.3);
+    }
+    body.preview-locked .locked-overlay { display: block; }
+    .locked-overlay h3 { font-family: "Playfair Display", serif; font-size: 1.6rem; margin-bottom: 8px; }
+    .locked-overlay p { color: rgba(255,255,255,.78); margin-bottom: 14px; }
+    .copyright-floating {
+      position: fixed;
+      right: 16px;
+      bottom: 16px;
+      width: min(280px, 62vw);
+      opacity: .9;
+      z-index: 55;
+      pointer-events: none;
+    }
+    .copyright-floating img { width: 100%; display: block; filter: drop-shadow(0 10px 20px rgba(0,0,0,.2)); }
     .hero {
       background: var(--slate); color: white; padding: 62px 28px 54px; position: relative; overflow: hidden;
       border-bottom: 1px solid rgba(255,255,255,.09);
@@ -128,6 +197,57 @@
       background: linear-gradient(135deg, #f9f4e8 0%, #f3e6c7 100%); border: 1px solid #ebd7a7; border-radius: 12px; padding: 18px;
     }
     .pub strong { font-family: "Playfair Display", serif; font-size: 1.2rem; color: var(--slate); display: block; }
+    .util-btn {
+      border: 1px solid var(--rule);
+      background: var(--white);
+      color: var(--ink);
+      border-radius: 999px;
+      padding: 8px 14px;
+      font-size: 12px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+    .util-btn.primary {
+      border-color: var(--slate);
+      background: var(--slate);
+      color: #fff;
+    }
+    .modal { position: fixed; inset: 0; z-index: 80; display: none; }
+    .modal.open { display: block; }
+    .modal-backdrop { position: absolute; inset: 0; background: rgba(12,16,24,.58); }
+    .modal-panel {
+      position: relative;
+      width: min(580px, calc(100% - 32px));
+      margin: 10vh auto 0;
+      background: var(--paper);
+      border: 1px solid var(--rule);
+      border-radius: 14px;
+      padding: 18px;
+    }
+    .modal-title { font-family: "Playfair Display", serif; font-size: 1.3rem; color: var(--slate); margin-bottom: 6px; }
+    .modal-sub { color: var(--muted); font-size: 13px; margin-bottom: 12px; }
+    .form-grid { display: grid; gap: 8px; }
+    .form-grid label { font-family: "DM Mono", monospace; font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); }
+    .form-grid input {
+      width: 100%;
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 10px 12px;
+      background: var(--white);
+      color: var(--ink);
+      font-size: 14px;
+    }
+    .form-status {
+      margin-top: 10px;
+      border: 1px solid var(--rule);
+      border-radius: 10px;
+      padding: 10px 12px;
+      font-size: 13px;
+      color: var(--slate);
+      background: var(--white);
+      display: none;
+    }
+    .modal-actions { margin-top: 14px; display: flex; justify-content: flex-end; gap: 8px; }
 
     @media (max-width: 980px) {
       .hero-wrap { grid-template-columns: 1fr; }
@@ -136,6 +256,8 @@
       .summary-grid { grid-template-columns: 1fr; }
       .cards3 { grid-template-columns: 1fr; }
       .cards2 { grid-template-columns: 1fr; }
+      .copyright-warning, .access-gate { padding: 12px 24px; }
+      .locked-overlay { top: 80px; }
     }
   </style>
 </head>
@@ -151,6 +273,16 @@
       <a href="index.html">Back to Site</a>
     </div>
   </nav>
+  <div class="copyright-warning">
+    Copyright © Michael R. Terry. Protected intellectual property. Unauthorized copying, sharing, screenshots, redistribution, and derivative reuse are prohibited.
+  </div>
+  <div class="access-gate" id="accessGate">
+    <div class="access-gate-copy">Preview mode is active. Purchase licensed access to unlock full resume materials.</div>
+    <div class="access-actions">
+      <a class="access-btn" id="purchaseLinkTop" href="#">Purchase Full Access</a>
+      <button class="access-btn secondary" id="unlockBtnTop" type="button">I Have Access</button>
+    </div>
+  </div>
 
   <header class="hero">
     <div class="hero-wrap">
@@ -185,7 +317,16 @@
     </div>
   </div>
 
-  <section class="section dark" id="summary">
+  <div class="protected-shell">
+  <div class="locked-overlay" id="lockedOverlay">
+    <h3>Full Resume Profile Is Locked</h3>
+    <p>This page is currently in preview mode. Purchase a license to unlock complete details and sections.</p>
+    <div class="access-actions">
+      <a class="access-btn" id="purchaseLinkOverlay" href="#">Purchase Full Access</a>
+      <button class="access-btn secondary" id="unlockBtnOverlay" type="button">Enter Access Code</button>
+    </div>
+  </div>
+  <section class="section dark protected-content" id="summary">
     <div class="container">
       <p class="section-label">Career Snapshot</p>
       <h2 class="section-title">Leadership + Service + <span class="accent">Education</span></h2>
@@ -207,7 +348,7 @@
     </div>
   </section>
 
-  <section class="section alt" id="experience">
+  <section class="section alt protected-content" id="experience">
     <div class="container">
       <p class="section-label">Professional Experience</p>
       <h2 class="section-title">Field + Leadership <span class="accent">Roles</span></h2>
@@ -270,7 +411,7 @@
     </div>
   </section>
 
-  <section class="section" id="education">
+  <section class="section protected-content" id="education">
     <div class="container">
       <p class="section-label">Academic Profile</p>
       <h2 class="section-title">Education + <span class="accent">Credentials</span></h2>
@@ -294,7 +435,7 @@
     </div>
   </section>
 
-  <section class="section alt" id="awards">
+  <section class="section alt protected-content" id="awards">
     <div class="container">
       <p class="section-label">Recognition</p>
       <h2 class="section-title">Honors + <span class="accent">Awards</span></h2>
@@ -319,7 +460,7 @@
     </div>
   </section>
 
-  <section class="section" id="skills">
+  <section class="section protected-content" id="skills">
     <div class="container">
       <p class="section-label">Capability Areas</p>
       <h2 class="section-title">Skills + Publication</h2>
@@ -343,5 +484,104 @@
       </div>
     </div>
   </section>
+  </div>
+
+  <div class="copyright-floating" aria-hidden="true">
+    <img src="assets/copyright-mark.svg" alt="">
+  </div>
+
+  <div class="modal" id="accessModal" aria-hidden="true">
+    <div class="modal-backdrop" data-close-access></div>
+    <div class="modal-panel">
+      <h3 class="modal-title">Enter Licensed Access Code</h3>
+      <p class="modal-sub">Paid customers receive an access code after purchase. Enter it to unlock this page.</p>
+      <div class="form-grid">
+        <label for="accessCodeInput">Access code</label>
+        <input id="accessCodeInput" placeholder="Enter code">
+      </div>
+      <div id="accessStatus" class="form-status"></div>
+      <div class="modal-actions">
+        <button class="util-btn" type="button" id="accessCloseBtn">Close</button>
+        <button class="util-btn primary" type="button" id="accessUnlockBtn">Unlock</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    const ACCESS_CONTROL = {
+      storageKey: 'rrl_paid_access',
+      unlockCode: 'MRT-PAID-2026',
+      checkoutUrl: 'https://buy.stripe.com/'
+    };
+    const accessGate = document.getElementById('accessGate');
+    const accessModal = document.getElementById('accessModal');
+    const accessCodeInput = document.getElementById('accessCodeInput');
+    const accessStatus = document.getElementById('accessStatus');
+    const purchaseLinkTop = document.getElementById('purchaseLinkTop');
+    const purchaseLinkOverlay = document.getElementById('purchaseLinkOverlay');
+    const unlockBtnTop = document.getElementById('unlockBtnTop');
+    const unlockBtnOverlay = document.getElementById('unlockBtnOverlay');
+    const accessCloseBtn = document.getElementById('accessCloseBtn');
+    const accessUnlockBtn = document.getElementById('accessUnlockBtn');
+    function showAccessStatus(msg, isError) {
+      if (!accessStatus) return;
+      accessStatus.textContent = msg;
+      accessStatus.style.display = 'block';
+      accessStatus.style.borderColor = isError ? '#b0432e' : '#5f7f35';
+    }
+    function setLockedState(locked) {
+      document.body.classList.toggle('preview-locked', locked);
+      if (accessGate) accessGate.style.display = locked ? 'flex' : 'none';
+    }
+    function openAccessModal() {
+      if (!accessModal) return;
+      accessModal.classList.add('open');
+      accessModal.setAttribute('aria-hidden', 'false');
+      if (accessCodeInput) {
+        accessCodeInput.value = '';
+        accessCodeInput.focus();
+      }
+      if (accessStatus) accessStatus.style.display = 'none';
+    }
+    function closeAccessModal() {
+      if (!accessModal) return;
+      accessModal.classList.remove('open');
+      accessModal.setAttribute('aria-hidden', 'true');
+    }
+    function isUnlocked() {
+      return localStorage.getItem(ACCESS_CONTROL.storageKey) === '1';
+    }
+    if (purchaseLinkTop) purchaseLinkTop.href = ACCESS_CONTROL.checkoutUrl;
+    if (purchaseLinkOverlay) purchaseLinkOverlay.href = ACCESS_CONTROL.checkoutUrl;
+    setLockedState(!isUnlocked());
+    unlockBtnTop?.addEventListener('click', openAccessModal);
+    unlockBtnOverlay?.addEventListener('click', openAccessModal);
+    accessCloseBtn?.addEventListener('click', closeAccessModal);
+    document.querySelectorAll('[data-close-access]').forEach((el) => el.addEventListener('click', closeAccessModal));
+    accessUnlockBtn?.addEventListener('click', () => {
+      const code = String(accessCodeInput?.value || '').trim();
+      if (code !== ACCESS_CONTROL.unlockCode) {
+        showAccessStatus('Code not recognized. Please check your purchase email.', true);
+        return;
+      }
+      localStorage.setItem(ACCESS_CONTROL.storageKey, '1');
+      setLockedState(false);
+      closeAccessModal();
+    });
+    document.addEventListener('contextmenu', (evt) => {
+      if (document.body.classList.contains('preview-locked')) evt.preventDefault();
+    });
+    document.addEventListener('copy', (evt) => {
+      if (document.body.classList.contains('preview-locked')) evt.preventDefault();
+    });
+    document.addEventListener('cut', (evt) => {
+      if (document.body.classList.contains('preview-locked')) evt.preventDefault();
+    });
+    document.addEventListener('keydown', (evt) => {
+      if (!document.body.classList.contains('preview-locked')) return;
+      const k = evt.key.toLowerCase();
+      if ((evt.metaKey || evt.ctrlKey) && (k === 'c' || k === 's' || k === 'p' || k === 'u')) evt.preventDefault();
+    });
+  </script>
 </body>
 </html>
