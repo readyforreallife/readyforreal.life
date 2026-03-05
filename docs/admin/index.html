@@ -35,16 +35,13 @@ body {
   font-family: 'Playfair Display', serif;
   font-size: clamp(1.6rem, 2.8vw, 2.2rem);
 }
-.header p {
-  margin: 8px 0 0;
-  color: rgba(255, 255, 255, 0.78);
-}
+.header p { margin: 8px 0 0; color: rgba(255,255,255,.8); }
 .wrap {
-  max-width: 1200px;
+  max-width: 1280px;
   margin: 0 auto;
   padding: 24px;
   display: grid;
-  grid-template-columns: 320px 1fr;
+  grid-template-columns: 340px 1fr;
   gap: 18px;
 }
 .card {
@@ -56,7 +53,7 @@ body {
 .card h2 {
   margin: 0 0 10px;
   font-family: 'Playfair Display', serif;
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   color: var(--slate);
 }
 label {
@@ -75,16 +72,12 @@ input, select, textarea {
   background: #fff;
 }
 textarea {
-  min-height: 64vh;
+  min-height: 58vh;
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
   font-size: 13px;
   line-height: 1.5;
 }
-.row {
-  display: flex;
-  gap: 8px;
-  flex-wrap: wrap;
-}
+.row { display: flex; gap: 8px; flex-wrap: wrap; }
 .btn {
   border: 0;
   border-radius: 10px;
@@ -93,37 +86,13 @@ textarea {
   font-weight: 700;
   cursor: pointer;
 }
-.btn.primary {
-  background: var(--slate);
-  color: #fff;
-}
-.btn.gold {
-  background: var(--gold);
-  color: #1d2330;
-}
-.btn.ghost {
-  background: #eef1f5;
-  color: var(--slate);
-}
-.note {
-  font-size: 12px;
-  color: var(--muted);
-  line-height: 1.45;
-}
-.kbd {
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  background: #eef1f5;
-  border-radius: 6px;
-  padding: 2px 6px;
-}
-.status {
-  margin-top: 8px;
-  font-size: 12px;
-  min-height: 16px;
-}
+.btn.primary { background: var(--slate); color: #fff; }
+.btn.gold { background: var(--gold); color: #1d2330; }
+.btn.ghost { background: #eef1f5; color: var(--slate); }
+.status { margin-top: 8px; font-size: 12px; min-height: 16px; }
 .status.ok { color: var(--ok); }
 .status.err { color: var(--danger); }
+.note { font-size: 12px; color: var(--muted); line-height: 1.5; }
 .warn {
   font-size: 12px;
   border-left: 4px solid var(--gold);
@@ -132,30 +101,40 @@ textarea {
   border-radius: 8px;
   color: #5a4b2f;
 }
+.kbd {
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  background: #eef1f5;
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+hr { border: 0; border-top: 1px solid #ece6d8; margin: 14px 0; }
 .editor-head {
   display: flex;
-  align-items: center;
   justify-content: space-between;
   gap: 8px;
+  align-items: center;
   margin-bottom: 10px;
 }
 .small { font-size: 12px; color: var(--muted); }
+.form-panel { display: none; }
+.form-panel.active { display: block; }
 @media (max-width: 980px) {
   .wrap { grid-template-columns: 1fr; }
-  textarea { min-height: 52vh; }
+  textarea { min-height: 48vh; }
 }
 </style>
 </head>
 <body>
 <header class="header">
   <h1>Website Admin Editor</h1>
-  <p>Edit your live site files directly from this page and push changes to GitHub.</p>
+  <p>Edit common content with forms or use raw HTML when needed.</p>
 </header>
 
 <main class="wrap">
   <section class="card">
     <h2>Connection</h2>
-    <div class="warn">Use a GitHub Personal Access Token with repository <strong>contents: write</strong> access. Keep it private.</div>
+    <div class="warn">Use a GitHub Personal Access Token with <strong>Contents: Read and write</strong> for this repo.</div>
 
     <label for="owner">Owner</label>
     <input id="owner" type="text" value="readyforreallife">
@@ -167,14 +146,68 @@ textarea {
     <input id="branch" type="text" value="main">
 
     <label for="token">GitHub Token</label>
-    <input id="token" type="password" placeholder="ghp_... or github_pat_..." autocomplete="off">
+    <input id="token" type="password" placeholder="github_pat_..." autocomplete="off">
 
     <div class="row" style="margin-top:10px;">
-      <button class="btn ghost" id="savePrefsBtn" type="button">Save Non-Secret Settings</button>
+      <button class="btn ghost" id="savePrefsBtn" type="button">Save Settings</button>
       <button class="btn ghost" id="clearTokenBtn" type="button">Clear Token</button>
     </div>
 
-    <h2 style="margin-top:16px;">File</h2>
+    <hr>
+
+    <h2>Simple Form Mode</h2>
+    <label for="formPreset">Choose Update Type</label>
+    <select id="formPreset">
+      <option value="resume_social">Resume: social links + subtitle</option>
+      <option value="modules_hero">Modules card: hero title + summary</option>
+      <option value="homepage_bio">Homepage: bio strip + resume button</option>
+      <option value="raw">Raw editor only</option>
+    </select>
+
+    <div id="panel_resume_social" class="form-panel active">
+      <label for="fResumeSubtitle">Resume hero subtitle</label>
+      <input id="fResumeSubtitle" type="text" placeholder="Sergeant, Utah Highway Patrol · MAT Candidate · Published Author">
+
+      <label for="fLinkedIn">LinkedIn URL</label>
+      <input id="fLinkedIn" type="text" placeholder="https://www.linkedin.com/in/.../">
+
+      <label for="fInstagramMain">Instagram URL (main)</label>
+      <input id="fInstagramMain" type="text" placeholder="https://instagram.com/readyforreal.life">
+
+      <label for="fInstagramHH">Instagram URL (hearhim.daily)</label>
+      <input id="fInstagramHH" type="text" placeholder="https://instagram.com/hearhim.daily">
+    </div>
+
+    <div id="panel_modules_hero" class="form-panel">
+      <label for="fModulesTitle">Modules hero title</label>
+      <input id="fModulesTitle" type="text" placeholder="5 Modules · 16-Week Semester">
+
+      <label for="fModulesSummary">Modules hero summary</label>
+      <input id="fModulesSummary" type="text" placeholder="A sequenced pathway across five modules...">
+    </div>
+
+    <div id="panel_homepage_bio" class="form-panel">
+      <label for="fInstName">Instructor name</label>
+      <input id="fInstName" type="text" placeholder="Michael R. Terry">
+
+      <label for="fInstTitles">Instructor titles line</label>
+      <input id="fInstTitles" type="text" placeholder="Founder, Modern Manners & Mental Fortitude · ...">
+
+      <label for="fBioUrl">Resume button URL</label>
+      <input id="fBioUrl" type="text" placeholder="resume.html">
+
+      <label for="fBioText">Resume button text</label>
+      <input id="fBioText" type="text" placeholder="View Resume Profile">
+    </div>
+
+    <div class="row" style="margin-top:10px;">
+      <button class="btn primary" id="loadFormBtn" type="button">Load Form Data</button>
+      <button class="btn gold" id="applyFormBtn" type="button">Apply Form to File</button>
+    </div>
+
+    <hr>
+
+    <h2>File + Publish</h2>
     <label for="filePreset">Quick Select</label>
     <select id="filePreset">
       <option value="docs/index.html">Homepage (/docs/index.html)</option>
@@ -184,15 +217,15 @@ textarea {
       <option value="custom">Custom path...</option>
     </select>
 
-    <label for="path">Path In Repo</label>
-    <input id="path" type="text" value="docs/index.html">
+    <label for="path">Path in repo</label>
+    <input id="path" type="text" value="docs/resume.html">
 
     <div class="row" style="margin-top:10px;">
       <button class="btn primary" id="loadBtn" type="button">Load File</button>
       <button class="btn ghost" id="reloadBtn" type="button">Reload</button>
     </div>
 
-    <label for="message" style="margin-top:12px;">Commit Message</label>
+    <label for="message" style="margin-top:12px;">Commit message</label>
     <input id="message" type="text" value="Update website content from admin editor">
 
     <div class="row" style="margin-top:10px;">
@@ -200,12 +233,12 @@ textarea {
     </div>
 
     <div id="status" class="status"></div>
-    <p class="note" style="margin-top:10px;">Tip: Use <span class="kbd">Cmd/Ctrl + S</span> to save after editing.</p>
+    <p class="note" style="margin-top:10px;">Tip: <span class="kbd">Cmd/Ctrl + S</span> saves the current file content to GitHub.</p>
   </section>
 
   <section class="card">
     <div class="editor-head">
-      <h2 style="margin:0;">Editor</h2>
+      <h2 style="margin:0;">Raw Editor</h2>
       <div class="small" id="fileMeta">No file loaded</div>
     </div>
     <textarea id="editor" placeholder="Load a file first..."></textarea>
@@ -218,6 +251,9 @@ const els = {
   repo: document.getElementById('repo'),
   branch: document.getElementById('branch'),
   token: document.getElementById('token'),
+  formPreset: document.getElementById('formPreset'),
+  loadFormBtn: document.getElementById('loadFormBtn'),
+  applyFormBtn: document.getElementById('applyFormBtn'),
   filePreset: document.getElementById('filePreset'),
   path: document.getElementById('path'),
   loadBtn: document.getElementById('loadBtn'),
@@ -228,7 +264,17 @@ const els = {
   status: document.getElementById('status'),
   fileMeta: document.getElementById('fileMeta'),
   savePrefsBtn: document.getElementById('savePrefsBtn'),
-  clearTokenBtn: document.getElementById('clearTokenBtn')
+  clearTokenBtn: document.getElementById('clearTokenBtn'),
+  fResumeSubtitle: document.getElementById('fResumeSubtitle'),
+  fLinkedIn: document.getElementById('fLinkedIn'),
+  fInstagramMain: document.getElementById('fInstagramMain'),
+  fInstagramHH: document.getElementById('fInstagramHH'),
+  fModulesTitle: document.getElementById('fModulesTitle'),
+  fModulesSummary: document.getElementById('fModulesSummary'),
+  fInstName: document.getElementById('fInstName'),
+  fInstTitles: document.getElementById('fInstTitles'),
+  fBioUrl: document.getElementById('fBioUrl'),
+  fBioText: document.getElementById('fBioText')
 };
 
 const LS = {
@@ -236,7 +282,14 @@ const LS = {
   repo: 'dl_admin_repo',
   branch: 'dl_admin_branch',
   path: 'dl_admin_path',
-  token: 'dl_admin_token'
+  token: 'dl_admin_token',
+  formPreset: 'dl_admin_form_preset'
+};
+
+const PRESET_PATH = {
+  resume_social: 'docs/resume.html',
+  modules_hero: 'docs/details.html',
+  homepage_bio: 'docs/index.html'
 };
 
 let currentSha = '';
@@ -244,6 +297,19 @@ let currentSha = '';
 function setStatus(msg, isError = false) {
   els.status.textContent = msg || '';
   els.status.className = 'status ' + (isError ? 'err' : 'ok');
+}
+
+function escHtml(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;')
+    .replace(/'/g, '&#39;');
+}
+
+function escJsSingle(s) {
+  return String(s || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
 }
 
 function b64ToUtf8(base64) {
@@ -264,7 +330,7 @@ function utf8ToB64(text) {
 function apiHeaders() {
   const token = els.token.value.trim();
   const headers = {
-    'Accept': 'application/vnd.github+json',
+    Accept: 'application/vnd.github+json',
     'X-GitHub-Api-Version': '2022-11-28'
   };
   if (token) headers.Authorization = 'Bearer ' + token;
@@ -281,6 +347,10 @@ function normalizePath(p) {
   return String(p || '').trim().replace(/^\/+/, '');
 }
 
+function prettyLinkText(url) {
+  return String(url || '').replace(/^https?:\/\//, '').replace(/\/$/, '');
+}
+
 async function loadFile() {
   const path = normalizePath(els.path.value);
   if (!path) return setStatus('Path is required.', true);
@@ -293,6 +363,7 @@ async function loadFile() {
     const txt = await res.text();
     throw new Error(`Load failed (${res.status}): ${txt.slice(0, 220)}`);
   }
+
   const data = await res.json();
   currentSha = data.sha || '';
   els.editor.value = b64ToUtf8(data.content || '');
@@ -317,10 +388,7 @@ async function saveFile() {
 
   const res = await fetch(repoUrl(path), {
     method: 'PUT',
-    headers: {
-      ...apiHeaders(),
-      'Content-Type': 'application/json'
-    },
+    headers: { ...apiHeaders(), 'Content-Type': 'application/json' },
     body: JSON.stringify(body)
   });
 
@@ -332,13 +400,130 @@ async function saveFile() {
   const data = await res.json();
   currentSha = data.content && data.content.sha ? data.content.sha : currentSha;
   els.fileMeta.textContent = `${path} · sha ${String(currentSha).slice(0, 7)}`;
-  setStatus('Saved and pushed to GitHub. Your site should redeploy in about 1-2 minutes.');
+  setStatus('Saved and pushed to GitHub. Site should redeploy in about 1-2 minutes.');
 }
 
-els.filePreset.addEventListener('change', () => {
-  if (els.filePreset.value !== 'custom') {
-    els.path.value = els.filePreset.value;
+function showFormPanel(key) {
+  ['resume_social', 'modules_hero', 'homepage_bio'].forEach((k) => {
+    const panel = document.getElementById('panel_' + k);
+    if (panel) panel.classList.toggle('active', k === key);
+  });
+}
+
+function getFormPath() {
+  const key = els.formPreset.value;
+  return PRESET_PATH[key] || '';
+}
+
+function populateFormFromEditor() {
+  const text = els.editor.value;
+  const mode = els.formPreset.value;
+
+  if (mode === 'resume_social') {
+    const subtitle = text.match(/<p class="hero-sub">([\s\S]*?)<\/p>/i);
+    const linkedin = text.match(/https:\/\/www\.linkedin\.com\/in\/[^"'\s<]+\/?/i);
+    const ig = Array.from(text.matchAll(/https:\/\/instagram\.com\/[^"'\s<]+\/?/ig)).map((m) => m[0]);
+    els.fResumeSubtitle.value = subtitle ? subtitle[1].trim() : '';
+    els.fLinkedIn.value = linkedin ? linkedin[0] : '';
+    els.fInstagramMain.value = ig[0] || '';
+    els.fInstagramHH.value = ig[1] || '';
+    return;
   }
+
+  if (mode === 'modules_hero') {
+    const m = text.match(/if \(isSemesterModulesCard\) \{[\s\S]*?title = '([^']*)';[\s\S]*?summary = '([^']*)';[\s\S]*?\}/);
+    els.fModulesTitle.value = m ? m[1] : '';
+    els.fModulesSummary.value = m ? m[2] : '';
+    return;
+  }
+
+  if (mode === 'homepage_bio') {
+    const n = text.match(/<div class="inst-name">([\s\S]*?)<\/div>/i);
+    const t = text.match(/<div class="inst-titles">([\s\S]*?)<\/div>/i);
+    const b = text.match(/<a class="bio-link" href="([^"]*)">([\s\S]*?)<\/a>/i);
+    els.fInstName.value = n ? n[1].trim() : '';
+    els.fInstTitles.value = t ? t[1].trim() : '';
+    els.fBioUrl.value = b ? b[1].trim() : '';
+    els.fBioText.value = b ? b[2].replace(/<span>[\s\S]*?<\/span>/i, '').trim() : '';
+  }
+}
+
+function applyFormToEditor() {
+  let text = els.editor.value;
+  const mode = els.formPreset.value;
+
+  if (mode === 'resume_social') {
+    const sub = escHtml(els.fResumeSubtitle.value.trim());
+    const li = els.fLinkedIn.value.trim();
+    const ig1 = els.fInstagramMain.value.trim();
+    const ig2 = els.fInstagramHH.value.trim();
+    if (!li || !ig1 || !ig2) throw new Error('LinkedIn and both Instagram URLs are required.');
+
+    text = text.replace(/<p class="hero-sub">[\s\S]*?<\/p>/i, `<p class="hero-sub">${sub}</p>`);
+
+    const socialLine = `<div class="roles"><a class="social-external" href="${escHtml(li)}">${escHtml(prettyLinkText(li))}</a> · <a class="social-external" href="${escHtml(ig1)}">${escHtml(prettyLinkText(ig1))}</a> · <a class="social-external" href="${escHtml(ig2)}">${escHtml(prettyLinkText(ig2))}</a></div>`;
+    const socialRegex = /<div class="roles"><a[^>]*href="https:\/\/www\.linkedin\.com\/in\/[^"]*"[^>]*>[\s\S]*?<\/div>/i;
+    if (!socialRegex.test(text)) throw new Error('Could not find social links block in file.');
+    text = text.replace(socialRegex, socialLine);
+  }
+
+  if (mode === 'modules_hero') {
+    const t = els.fModulesTitle.value.trim();
+    const s = els.fModulesSummary.value.trim();
+    if (!t || !s) throw new Error('Modules title and summary are required.');
+
+    const block = /if \(isSemesterModulesCard\) \{[\s\S]*?\}/;
+    if (!block.test(text)) throw new Error('Could not find Modules hero override block.');
+    text = text.replace(block, `if (isSemesterModulesCard) {\n  title = '${escJsSingle(t)}';\n  summary = '${escJsSingle(s)}';\n}`);
+  }
+
+  if (mode === 'homepage_bio') {
+    const name = escHtml(els.fInstName.value.trim());
+    const titles = escHtml(els.fInstTitles.value.trim());
+    const url = escHtml(els.fBioUrl.value.trim());
+    const txt = escHtml(els.fBioText.value.trim() || 'View Resume Profile');
+    if (!name || !titles || !url) throw new Error('Name, titles, and resume URL are required.');
+
+    text = text.replace(/<div class="inst-name">[\s\S]*?<\/div>/i, `<div class="inst-name">${name}</div>`);
+    text = text.replace(/<div class="inst-titles">[\s\S]*?<\/div>/i, `<div class="inst-titles">${titles}</div>`);
+    text = text.replace(/<a class="bio-link" href="[^"]*">[\s\S]*?<\/a>/i, `<a class="bio-link" href="${url}"><span>RESUME</span>${txt}</a>`);
+  }
+
+  els.editor.value = text;
+  setStatus('Form changes applied to file editor. Click Save to GitHub to publish.');
+}
+
+async function loadForForm() {
+  const p = getFormPath();
+  if (!p) return setStatus('Choose a form preset first.', true);
+  els.path.value = p;
+  els.filePreset.value = [...els.filePreset.options].some(o => o.value === p) ? p : 'custom';
+  await loadFile();
+  populateFormFromEditor();
+  setStatus('Form data loaded from live file.');
+}
+
+els.formPreset.addEventListener('change', () => {
+  const mode = els.formPreset.value;
+  showFormPanel(mode);
+  localStorage.setItem(LS.formPreset, mode);
+  const p = getFormPath();
+  if (p) {
+    els.path.value = p;
+    if ([...els.filePreset.options].some(o => o.value === p)) els.filePreset.value = p;
+  }
+});
+
+els.filePreset.addEventListener('change', () => {
+  if (els.filePreset.value !== 'custom') els.path.value = els.filePreset.value;
+});
+
+els.loadFormBtn.addEventListener('click', async () => {
+  try { await loadForForm(); } catch (err) { setStatus(err.message, true); }
+});
+
+els.applyFormBtn.addEventListener('click', () => {
+  try { applyFormToEditor(); } catch (err) { setStatus(err.message, true); }
 });
 
 els.loadBtn.addEventListener('click', async () => {
@@ -358,8 +543,9 @@ els.savePrefsBtn.addEventListener('click', () => {
   localStorage.setItem(LS.repo, els.repo.value.trim());
   localStorage.setItem(LS.branch, els.branch.value.trim());
   localStorage.setItem(LS.path, normalizePath(els.path.value));
+  localStorage.setItem(LS.formPreset, els.formPreset.value);
   sessionStorage.setItem(LS.token, els.token.value.trim());
-  setStatus('Settings saved (token saved only for this browser session).');
+  setStatus('Settings saved (token is stored only for this browser session).');
 });
 
 els.clearTokenBtn.addEventListener('click', () => {
@@ -379,16 +565,20 @@ document.addEventListener('keydown', async (event) => {
   els.owner.value = localStorage.getItem(LS.owner) || els.owner.value;
   els.repo.value = localStorage.getItem(LS.repo) || els.repo.value;
   els.branch.value = localStorage.getItem(LS.branch) || els.branch.value;
-  const savedPath = localStorage.getItem(LS.path);
-  if (savedPath) {
-    els.path.value = savedPath;
-    if ([...els.filePreset.options].some(o => o.value === savedPath)) {
-      els.filePreset.value = savedPath;
-    } else {
-      els.filePreset.value = 'custom';
-    }
-  }
   els.token.value = sessionStorage.getItem(LS.token) || '';
+
+  const preset = localStorage.getItem(LS.formPreset) || 'resume_social';
+  if ([...els.formPreset.options].some(o => o.value === preset)) els.formPreset.value = preset;
+  showFormPanel(els.formPreset.value);
+
+  const defaultPath = PRESET_PATH[els.formPreset.value] || 'docs/resume.html';
+  const savedPath = localStorage.getItem(LS.path) || defaultPath;
+  els.path.value = savedPath;
+  if ([...els.filePreset.options].some(o => o.value === savedPath)) {
+    els.filePreset.value = savedPath;
+  } else {
+    els.filePreset.value = 'custom';
+  }
 })();
 </script>
 </body>
