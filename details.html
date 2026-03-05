@@ -306,9 +306,17 @@ h1 {
 
 <script>
 const params = new URLSearchParams(window.location.search);
-const title = (params.get('title') || 'Curriculum Detail').trim();
+let title = (params.get('title') || 'Curriculum Detail').trim();
 const section = (params.get('section') || 'overview').trim();
-const summary = (params.get('summary') || '').trim();
+let summary = (params.get('summary') || '').trim();
+
+const isSemesterModulesCard =
+  /modules/i.test(section) && (/5 modules|16-week semester/i.test(title) || /module\s*1/i.test(summary));
+
+if (isSemesterModulesCard) {
+  title = '5 Modules · 16-Week Semester';
+  summary = 'A sequenced pathway across five modules: Modern Manners, Emotional Intelligence, Conflict Navigation, Digital Citizenship, and Personal Growth.';
+}
 
 const BASE_DOCS = [
   { label: 'CMP Full District Proposal', href: 'assets/docs/cmp/cmp-tooele-district-mike-terry.pdf' },
