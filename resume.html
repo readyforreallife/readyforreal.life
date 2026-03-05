@@ -1,0 +1,204 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Michael R. Terry | Resume</title>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --ink: #0e1118;
+      --paper: #f6f3ec;
+      --slate: #253044;
+      --gold: #c49540;
+      --gold-lt: #f2e4c0;
+      --muted: #697080;
+      --rule: #ddd7cc;
+      --white: #fff;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body { background: var(--paper); color: var(--ink); font-family: "DM Sans", sans-serif; line-height: 1.6; }
+    nav { position: sticky; top: 0; z-index: 20; background: var(--slate); border-bottom: 3px solid var(--gold); display: flex; justify-content: space-between; align-items: center; padding: 12px 20px; }
+    .brand { color: var(--gold); text-decoration: none; font-family: "DM Mono", monospace; letter-spacing: .12em; font-size: 11px; text-transform: uppercase; }
+    .home-link { color: #fff; text-decoration: none; border: 1px solid rgba(255,255,255,.2); border-radius: 999px; padding: 6px 12px; font-size: 12px; }
+    .hero { background: linear-gradient(120deg, #1f2d47 0%, #253044 55%, #31445f 100%); color: #fff; padding: 48px 24px; }
+    .hero-wrap { max-width: 1000px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr; gap: 18px; align-items: center; }
+    .avatar { width: 88px; height: 88px; border-radius: 50%; overflow: hidden; border: 3px solid var(--gold); }
+    .avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; display: block; }
+    h1 { font-family: "Playfair Display", serif; font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; margin-bottom: 6px; }
+    .sub { color: rgba(255,255,255,.82); }
+    .meta { margin-top: 10px; font-size: 13px; color: rgba(255,255,255,.75); }
+    .meta a { color: var(--gold-lt); text-decoration: none; }
+    main { max-width: 1000px; margin: 0 auto; padding: 24px; }
+    .grid { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .card { background: var(--white); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; }
+    .card h2 { font-family: "Playfair Display", serif; font-size: 1.45rem; color: var(--slate); margin-bottom: 10px; }
+    .card p { color: #1f2532; }
+    .job { margin-top: 14px; padding-top: 14px; border-top: 1px solid var(--rule); }
+    .job:first-of-type { margin-top: 0; padding-top: 0; border-top: none; }
+    .role { font-weight: 700; color: var(--slate); }
+    .org { color: var(--muted); font-size: 14px; }
+    .date { color: var(--gold); font-family: "DM Mono", monospace; font-size: 12px; text-transform: uppercase; letter-spacing: .06em; }
+    ul { margin: 8px 0 0 18px; }
+    li { margin-bottom: 6px; }
+    .twocol { display: grid; grid-template-columns: 1fr; gap: 16px; }
+    .tags { display: flex; flex-wrap: wrap; gap: 8px; }
+    .tag { background: var(--gold-lt); color: #5b471d; border-radius: 999px; padding: 6px 10px; font-size: 12px; font-weight: 600; }
+    .actions { margin-top: 20px; }
+    .download { display: inline-block; background: var(--slate); color: #fff; text-decoration: none; border-radius: 10px; padding: 10px 14px; font-size: 13px; }
+    @media (min-width: 860px) {
+      .twocol { grid-template-columns: 1fr 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <nav>
+    <a class="brand" href="index.html">Modern Manners & Mental Fortitude</a>
+    <a class="home-link" href="index.html">Back to Site</a>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-wrap">
+      <div class="avatar"><img src="michael-terry-headshot.jpg" alt="Portrait of Michael R. Terry"></div>
+      <div>
+        <h1>Michael R. Terry</h1>
+        <div class="sub">Sergeant, Utah Highway Patrol · MAT Candidate · Published Author</div>
+        <div class="meta">
+          Salt Lake City Metropolitan Area · (435) 840-1896 · mikeyterry44@gmail.com<br>
+          <a href="https://linkedin.com/in/miketerry-46618318b" target="_blank" rel="noopener noreferrer">linkedin.com/in/miketerry-46618318b</a> ·
+          <a href="https://instagram.com/readyforreal.life" target="_blank" rel="noopener noreferrer">instagram.com/readyforreal.life</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="grid">
+      <section class="card">
+        <h2>Summary</h2>
+        <p>Law enforcement leader with over 18 years of service transitioning to education. Career background spans K9 operations, criminal interdiction, community outreach, explosive detection, and youth mentorship. Published author and current MAT candidate at Columbia College, applying coursework directly to service with refugee families, immigrant communities, and individuals in crisis. Fluent in Spanish at a professional working level.</p>
+      </section>
+
+      <section class="card">
+        <h2>Experience</h2>
+
+        <div class="job">
+          <div class="role">Explosive Detection K9 Field Supervisor</div>
+          <div class="org">Utah Highway Patrol · Salt Lake City, UT</div>
+          <div class="date">Nov 2023 - Present</div>
+          <ul>
+            <li>Oversee explosive detection K9 team at the Utah State Capitol.</li>
+            <li>Manage handler training, operational deployments, and team readiness.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="role">Police Sergeant - Community Engagement & Outreach</div>
+          <div class="org">Utah Department of Public Safety · Statewide, UT</div>
+          <div class="date">Aug 2019 - Present</div>
+          <ul>
+            <li>Lead department outreach team serving communities across Utah.</li>
+            <li>Coordinate crisis response, refugee and immigrant family support, and youth mentorship initiatives.</li>
+            <li>Apply educational research from graduate coursework to strengthen community engagement strategies.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="role">K9 Handler - Narcotics Detection</div>
+          <div class="org">Utah Department of Public Safety</div>
+          <div class="date">Jan 2016 - Jan 2020</div>
+          <ul>
+            <li>Served as first-ever single-purpose K9 handler selected within the Utah Highway Patrol.</li>
+            <li>Deployed during Operation Rio Grande to address crime and support homeless resource centers in downtown Salt Lake City.</li>
+            <li>Represented a community-friendly model of police presence through K9 outreach.</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="role">Criminal Interdiction Officer</div>
+          <div class="org">Utah Department of Public Safety · Saratoga Springs, UT</div>
+          <div class="date">Jan 2014 - May 2019</div>
+          <ul>
+            <li>Conducted criminal interdiction operations and narcotics enforcement.</li>
+            <li>Recognized for excellence in criminal interdiction by Utah Highway Patrol (2015).</li>
+          </ul>
+        </div>
+
+        <div class="job">
+          <div class="role">Police Officer</div>
+          <div class="org">Saratoga Springs Police Department · Saratoga Springs, UT</div>
+          <div class="date">Feb 2012 - Jan 2014</div>
+        </div>
+
+        <div class="job">
+          <div class="role">Police Officer</div>
+          <div class="org">Tooele City Police Department · Tooele, UT</div>
+          <div class="date">Jan 2008 - Feb 2012</div>
+          <ul>
+            <li>Served in School Resource Officer, COP Division, and Graffiti Investigations roles.</li>
+            <li>Named Tooele City Officer of the Year (2010).</li>
+          </ul>
+        </div>
+      </section>
+
+      <div class="twocol">
+        <section class="card">
+          <h2>Education</h2>
+          <div class="job">
+            <div class="role">Master of Arts in Teaching (MAT)</div>
+            <div class="org">Columbia College of Missouri</div>
+            <div class="date">Jan 2025 - Dec 2026</div>
+          </div>
+          <div class="job">
+            <div class="role">Bachelor of Arts - Criminal Justice / Law Enforcement Administration</div>
+            <div class="org">Columbia College of Missouri</div>
+            <div class="date">Jan 2012 - Jan 2024</div>
+          </div>
+          <div class="job">
+            <div class="role">Associate of Arts and Sciences - Criminal Justice</div>
+            <div class="org">Columbia College of Missouri</div>
+            <div class="date">2012 - 2014</div>
+          </div>
+        </section>
+
+        <section class="card">
+          <h2>Honors & Awards</h2>
+          <ul>
+            <li>Kappa Delta Pi International Honor Society (KDP), Feb 2026</li>
+            <li>Dr. Martin Luther King Jr. Community Service Award (Individual Recipient), Jan 2026</li>
+            <li>CCAA Scholar, Oct 2025</li>
+            <li>Dean's List, Fall 2024 and 2021</li>
+            <li>SLC District Attorney - Power of Hope Recipient</li>
+            <li>NAACP First Responders Award, Jan 2021</li>
+            <li>Excellence in Criminal Interdiction, Dec 2015</li>
+            <li>Officer of the Year, Dec 2010</li>
+          </ul>
+        </section>
+      </div>
+
+      <div class="twocol">
+        <section class="card">
+          <h2>Publications</h2>
+          <p><strong>Still. Small. Daily</strong> · Published author</p>
+        </section>
+
+        <section class="card">
+          <h2>Skills & Languages</h2>
+          <div class="tags">
+            <span class="tag">Curriculum Development</span>
+            <span class="tag">Educational Leadership</span>
+            <span class="tag">Training & Instruction</span>
+            <span class="tag">Community Outreach & Crisis Response</span>
+            <span class="tag">K9 Operations</span>
+            <span class="tag">Criminal Interdiction</span>
+            <span class="tag">Spanish (Professional Working)</span>
+          </div>
+          <div class="actions">
+            <a class="download" href="michael-terry-resume.pdf">Download PDF Resume</a>
+          </div>
+        </section>
+      </div>
+    </div>
+  </main>
+</body>
+</html>
