@@ -602,6 +602,7 @@
   <script>
     const ACCESS_CONTROL = {
       storageKey: 'rrl_paid_access',
+      unlockedAtKey: 'rrl_paid_access_unlocked_at',
       unlockCode: 'MRT-PAID-2026',
       checkoutUrl: 'https://buy.stripe.com/'
     };
@@ -615,7 +616,7 @@
     const unlockBtnOverlay = document.getElementById('unlockBtnOverlay');
     const accessCloseBtn = document.getElementById('accessCloseBtn');
     const accessUnlockBtn = document.getElementById('accessUnlockBtn');
-    let globalAccessState = { publicUnlocked: false };
+    let globalAccessState = { publicUnlocked: false, updatedAt: '' };
     function showAccessStatus(msg, isError) {
       if (!accessStatus) return;
       accessStatus.textContent = msg;
@@ -641,8 +642,17 @@
       accessModal.classList.remove('open');
       accessModal.setAttribute('aria-hidden', 'true');
     }
+    function setLocalUnlocked(ts) {
+      localStorage.setItem(ACCESS_CONTROL.storageKey, '1');
+      localStorage.setItem(ACCESS_CONTROL.unlockedAtKey, String(ts || new Date().toISOString()));
+    }
     function isUnlocked() {
-      return localStorage.getItem(ACCESS_CONTROL.storageKey) === '1';
+      if (localStorage.getItem(ACCESS_CONTROL.storageKey) !== '1') return false;
+      if (globalAccessState.publicUnlocked) return true;
+      const localTs = Date.parse(String(localStorage.getItem(ACCESS_CONTROL.unlockedAtKey) || '')) || 0;
+      const globalTs = Date.parse(String(globalAccessState.updatedAt || '')) || 0;
+      if (!globalTs) return true;
+      return localTs >= globalTs;
     }
     async function loadGlobalAccessState() {
       try {
@@ -650,6 +660,7 @@
         if (!res.ok) return;
         const data = await res.json();
         globalAccessState.publicUnlocked = !!data.publicUnlocked;
+        globalAccessState.updatedAt = String(data.updatedAt || '');
       } catch (_err) {}
     }
     if (purchaseLinkTop) purchaseLinkTop.href = ACCESS_CONTROL.checkoutUrl;
@@ -668,7 +679,7 @@
         showAccessStatus('Code not recognized. Please check your purchase email.', true);
         return;
       }
-      localStorage.setItem(ACCESS_CONTROL.storageKey, '1');
+      setLocalUnlocked();
       setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
       closeAccessModal();
     });

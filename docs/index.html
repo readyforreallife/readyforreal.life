@@ -1365,11 +1365,11 @@ publicAccessToggle.addEventListener('click', async () => {
     if (ok) {
       if (next) {
         // If teacher toggles global unlock on, unlock this browser immediately.
-        localStorage.setItem(ACCESS_CONTROL.storageKey, '1');
+        setLocalUnlocked(globalAccessState.updatedAt || new Date().toISOString());
       } else {
         // If teacher toggles global lock on, clear this browser's local paid unlock
         // so the lock is visible immediately.
-        localStorage.removeItem(ACCESS_CONTROL.storageKey);
+        clearLocalUnlocked();
       }
       setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
     }
@@ -1584,6 +1584,7 @@ if (modulesBadge) {
 
 const ACCESS_CONTROL = {
   storageKey: 'rrl_paid_access',
+  unlockedAtKey: 'rrl_paid_access_unlocked_at',
   unlockCode: 'MRT-PAID-2026',
   checkoutUrl: 'https://buy.stripe.com/'
 };
@@ -1623,8 +1624,21 @@ function closeAccessModal() {
   accessModal.classList.remove('open');
   accessModal.setAttribute('aria-hidden', 'true');
 }
+function setLocalUnlocked(ts) {
+  localStorage.setItem(ACCESS_CONTROL.storageKey, '1');
+  localStorage.setItem(ACCESS_CONTROL.unlockedAtKey, String(ts || new Date().toISOString()));
+}
+function clearLocalUnlocked() {
+  localStorage.removeItem(ACCESS_CONTROL.storageKey);
+  localStorage.removeItem(ACCESS_CONTROL.unlockedAtKey);
+}
 function isUnlocked() {
-  return localStorage.getItem(ACCESS_CONTROL.storageKey) === '1';
+  if (localStorage.getItem(ACCESS_CONTROL.storageKey) !== '1') return false;
+  if (globalAccessState.publicUnlocked) return true;
+  const localTs = Date.parse(String(localStorage.getItem(ACCESS_CONTROL.unlockedAtKey) || '')) || 0;
+  const globalTs = Date.parse(String(globalAccessState.updatedAt || '')) || 0;
+  if (!globalTs) return true;
+  return localTs >= globalTs;
 }
 if (purchaseLinkTop) purchaseLinkTop.href = ACCESS_CONTROL.checkoutUrl;
 if (purchaseLinkOverlay) purchaseLinkOverlay.href = ACCESS_CONTROL.checkoutUrl;
@@ -1640,7 +1654,7 @@ accessUnlockBtn?.addEventListener('click', () => {
     showAccessStatus('Code not recognized. Please check your purchase email.', true);
     return;
   }
-  localStorage.setItem(ACCESS_CONTROL.storageKey, '1');
+  setLocalUnlocked();
   setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
   closeAccessModal();
 });
