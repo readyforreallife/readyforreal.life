@@ -980,6 +980,23 @@ body.preview-locked .locked-overlay { display: block; }
   </div>
 </div>
 
+<div class="modal" id="teacherPinModal" aria-hidden="true">
+  <div class="modal-backdrop" data-close-teacher-pin></div>
+  <div class="modal-panel">
+    <h3 class="modal-title">Enter Teacher PIN</h3>
+    <p class="modal-sub">Unlock Teacher Mode on this device.</p>
+    <div class="form-grid">
+      <label for="teacherPinUnlockInput">Teacher PIN</label>
+      <input id="teacherPinUnlockInput" type="password" inputmode="numeric" autocomplete="current-password" placeholder="Enter PIN">
+    </div>
+    <div id="teacherPinStatus" class="form-status"></div>
+    <div class="modal-actions">
+      <button class="util-btn" type="button" id="teacherPinCloseBtn">Close</button>
+      <button class="util-btn primary" type="button" id="teacherPinUnlockBtn">Unlock</button>
+    </div>
+  </div>
+</div>
+
 <div class="modal" id="accessModal" aria-hidden="true">
   <div class="modal-backdrop" data-close-access></div>
   <div class="modal-panel">
@@ -1058,6 +1075,7 @@ const adminBtn = document.getElementById('adminBtn');
 const registerBtn = document.getElementById('registerBtn');
 const registerModal = document.getElementById('registerModal');
 const settingsModal = document.getElementById('settingsModal');
+const teacherPinModal = document.getElementById('teacherPinModal');
 const registerForm = document.getElementById('registerForm');
 const registerStatus = document.getElementById('registerStatus');
 const registerSubmitBtn = registerForm ? registerForm.querySelector('button[type="submit"]') : null;
@@ -1068,6 +1086,8 @@ const registrationEndpointInput = document.getElementById('registrationEndpoint'
 const registrationSecretInput = document.getElementById('registrationSecret');
 const teacherPinInput = document.getElementById('teacherPin');
 const githubTokenInput = document.getElementById('githubToken');
+const teacherPinUnlockInput = document.getElementById('teacherPinUnlockInput');
+const teacherPinStatus = document.getElementById('teacherPinStatus');
 let registerSubmitting = false;
 let globalAccessState = { publicUnlocked: false, updatedAt: '' };
 
@@ -1266,6 +1286,37 @@ function showStatus(text, isError) {
   registerStatus.style.color = isError ? '#b0432e' : '#253044';
 }
 
+function showTeacherPinStatus(text, isError) {
+  if (!teacherPinStatus) return;
+  teacherPinStatus.textContent = text;
+  teacherPinStatus.classList.add('show');
+  teacherPinStatus.style.borderColor = isError ? '#b0432e' : '#ddd7cc';
+  teacherPinStatus.style.color = isError ? '#b0432e' : '#253044';
+}
+
+function openTeacherPinModal() {
+  if (teacherPinStatus) teacherPinStatus.classList.remove('show');
+  if (teacherPinUnlockInput) teacherPinUnlockInput.value = '';
+  openModal(teacherPinModal);
+  setTimeout(() => {
+    teacherPinUnlockInput?.focus();
+  }, 50);
+}
+
+function submitTeacherPin() {
+  const entered = String(teacherPinUnlockInput?.value || '').trim();
+  if (!entered) {
+    showTeacherPinStatus('Enter your Teacher PIN.', true);
+    return;
+  }
+  if (entered === getTeacherPin()) {
+    setTeacherUnlocked(true);
+    closeModal(teacherPinModal);
+    return;
+  }
+  showTeacherPinStatus('Incorrect PIN.', true);
+}
+
 async function trySubmitToEndpoint(url, payload, secret) {
   if (!url) return false;
   const outbound = { ...payload };
@@ -1342,13 +1393,7 @@ teacherToggle.addEventListener('click', () => {
     setTeacherUnlocked(false);
     return;
   }
-  const entered = window.prompt('Enter Teacher PIN');
-  if (entered === null) return;
-  if (entered === getTeacherPin()) {
-    setTeacherUnlocked(true);
-  } else {
-    window.alert('Incorrect PIN.');
-  }
+  openTeacherPinModal();
 });
 
 settingsBtn.addEventListener('click', () => openModal(settingsModal));
@@ -1360,6 +1405,15 @@ sheetsTabBtn.addEventListener('click', () => {
 });
 document.getElementById('settingsCloseBtn').addEventListener('click', () => closeModal(settingsModal));
 document.querySelector('[data-close-settings]').addEventListener('click', () => closeModal(settingsModal));
+document.getElementById('teacherPinCloseBtn').addEventListener('click', () => closeModal(teacherPinModal));
+document.querySelector('[data-close-teacher-pin]').addEventListener('click', () => closeModal(teacherPinModal));
+document.getElementById('teacherPinUnlockBtn').addEventListener('click', submitTeacherPin);
+teacherPinUnlockInput?.addEventListener('keydown', (evt) => {
+  if (evt.key === 'Enter') {
+    evt.preventDefault();
+    submitTeacherPin();
+  }
+});
 document.getElementById('settingsSaveBtn').addEventListener('click', () => {
   localStorage.setItem(LS.sheetsEndpoint, sheetsEndpointInput.value.trim());
   localStorage.setItem(LS.sheetsSecret, sheetsSecretInput.value.trim());
