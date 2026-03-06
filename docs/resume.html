@@ -614,6 +614,7 @@
     const unlockBtnOverlay = document.getElementById('unlockBtnOverlay');
     const accessCloseBtn = document.getElementById('accessCloseBtn');
     const accessUnlockBtn = document.getElementById('accessUnlockBtn');
+    let globalAccessState = { publicUnlocked: false };
     function showAccessStatus(msg, isError) {
       if (!accessStatus) return;
       accessStatus.textContent = msg;
@@ -642,9 +643,20 @@
     function isUnlocked() {
       return localStorage.getItem(ACCESS_CONTROL.storageKey) === '1';
     }
+    async function loadGlobalAccessState() {
+      try {
+        const res = await fetch(`site-access.json?t=${Date.now()}`, { cache: 'no-store' });
+        if (!res.ok) return;
+        const data = await res.json();
+        globalAccessState.publicUnlocked = !!data.publicUnlocked;
+      } catch (_err) {}
+    }
     if (purchaseLinkTop) purchaseLinkTop.href = ACCESS_CONTROL.checkoutUrl;
     if (purchaseLinkOverlay) purchaseLinkOverlay.href = ACCESS_CONTROL.checkoutUrl;
-    setLockedState(!isUnlocked());
+    setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
+    loadGlobalAccessState().then(() => {
+      setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
+    });
     unlockBtnTop?.addEventListener('click', openAccessModal);
     unlockBtnOverlay?.addEventListener('click', openAccessModal);
     accessCloseBtn?.addEventListener('click', closeAccessModal);
@@ -656,7 +668,7 @@
         return;
       }
       localStorage.setItem(ACCESS_CONTROL.storageKey, '1');
-      setLockedState(false);
+      setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
       closeAccessModal();
     });
     document.addEventListener('contextmenu', (evt) => {
@@ -691,4 +703,3 @@
 </html>
 
 <!-- deploy-refresh: 2026-03-05T17:24Z -->
-

@@ -517,6 +517,7 @@ body.preview-locked .locked-overlay { display: block; }
 <div class="utility-bar">
   <button class="util-btn primary" id="registerBtn" type="button">Register Now</button>
   <button class="util-btn locked" id="teacherToggle" type="button">Teacher Mode: Locked</button>
+  <button class="util-btn locked" id="publicAccessToggle" type="button" style="display:none;">Public Access: Locked</button>
   <button class="util-btn" id="sheetsTabBtn" type="button" style="display:none;">Sheets</button>
   <button class="util-btn" id="settingsBtn" type="button" style="display:none;">Settings</button>
   <button class="util-btn" id="adminBtn" type="button" style="display:none;">Admin</button>
@@ -967,6 +968,8 @@ body.preview-locked .locked-overlay { display: block; }
       <input id="sheetsSecret" placeholder="Stored locally">
       <label for="teacherPin">Teacher PIN</label>
       <input id="teacherPin" type="password" value="4429">
+      <label for="githubToken">GitHub token (for global public lock toggle)</label>
+      <input id="githubToken" type="password" placeholder="ghp_...">
     </div>
     <div class="modal-actions">
       <button class="util-btn" type="button" id="settingsCloseBtn">Close</button>
@@ -1028,10 +1031,15 @@ const LS = {
   sheetsSecret: 'dl_sheets_secret',
   registrationEndpoint: 'dl_registration_endpoint',
   registrationSecret: 'dl_registration_secret',
-  sheetsDashboardUrl: 'dl_sheets_dashboard_url'
+  sheetsDashboardUrl: 'dl_sheets_dashboard_url',
+  githubToken: 'dl_github_token'
 };
 const DEFAULT_REGISTRATION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzH2--hkA4ezway034VJ6AKK7AQlkiDkGn2rjQ1tP2PhaY25gOKX89cfJZ7fucx6yUH/exec';
 const DEFAULT_SHEETS_DASHBOARD_URL = 'https://docs.google.com/spreadsheets/d/1yhgF2coWvUk3QKqN347kFGMv8pqFBz79BHWE8kphs_E/edit?gid=0#gid=0';
+const GITHUB_REPO_OWNER = 'readyforreallife';
+const GITHUB_REPO_NAME = 'readyforreal.life';
+const GITHUB_REPO_BRANCH = 'main';
+const GLOBAL_ACCESS_PATH = 'docs/site-access.json';
 const FALLBACK_REGISTRATION_ENDPOINTS = [
   'https://script.google.com/macros/s/AKfycby9WsQIZXATnaKbC4JeBNT4DRLzIDVXXWutlH01wW-CXg3aWcxxsZyKErNyrLRNaCmf/exec',
   DEFAULT_REGISTRATION_ENDPOINT
@@ -1040,6 +1048,7 @@ const LEGACY_SETTINGS_KEY = 'decision-lab-settings-v1';
 const LEGACY_TEACHER_KEY = 'decision-lab-teacher-mode';
 
 const teacherToggle = document.getElementById('teacherToggle');
+const publicAccessToggle = document.getElementById('publicAccessToggle');
 const sheetsTabBtn = document.getElementById('sheetsTabBtn');
 const settingsBtn = document.getElementById('settingsBtn');
 const adminBtn = document.getElementById('adminBtn');
@@ -1055,7 +1064,9 @@ const sheetsDashboardUrlInput = document.getElementById('sheetsDashboardUrl');
 const registrationEndpointInput = document.getElementById('registrationEndpoint');
 const registrationSecretInput = document.getElementById('registrationSecret');
 const teacherPinInput = document.getElementById('teacherPin');
+const githubTokenInput = document.getElementById('githubToken');
 let registerSubmitting = false;
+let globalAccessState = { publicUnlocked: false, updatedAt: '' };
 
 function getTeacherPin() {
   return localStorage.getItem(LS.teacherPin) || '4429';
@@ -1070,9 +1081,101 @@ function setTeacherUnlocked(v) {
   localStorage.setItem(LEGACY_TEACHER_KEY, v ? 'true' : 'false');
   teacherToggle.textContent = v ? 'Teacher Mode: Unlocked' : 'Teacher Mode: Locked';
   teacherToggle.classList.toggle('locked', !v);
+  publicAccessToggle.style.display = v ? 'inline-flex' : 'none';
   sheetsTabBtn.style.display = v ? 'inline-flex' : 'none';
   settingsBtn.style.display = v ? 'inline-flex' : 'none';
   adminBtn.style.display = v ? 'inline-flex' : 'none';
+}
+
+function getGithubToken() {
+  return (localStorage.getItem(LS.githubToken) || '').trim();
+}
+
+function encodeBase64Utf8(str) {
+  return btoa(unescape(encodeURIComponent(str)));
+}
+
+function updatePublicAccessToggle() {
+  if (!publicAccessToggle) return;
+  const isUnlocked = !!globalAccessState.publicUnlocked;
+  publicAccessToggle.textContent = isUnlocked ? 'Public Access: Unlocked' : 'Public Access: Locked';
+  publicAccessToggle.classList.toggle('locked', !isUnlocked);
+}
+
+async function loadGlobalAccessState() {
+  try {
+    const res = await fetch(`site-access.json?t=${Date.now()}`, { cache: 'no-store' });
+    if (!res.ok) return;
+    const data = await res.json();
+    globalAccessState = {
+      publicUnlocked: !!data.publicUnlocked,
+      updatedAt: String(data.updatedAt || '')
+    };
+    updatePublicAccessToggle();
+  } catch (_err) {}
+}
+
+async function publishGlobalAccessState(nextUnlocked) {
+  const token = getGithubToken();
+  if (!token) {
+    window.alert('Add your GitHub token in Teacher Settings first, then save.');
+    openModal(settingsModal);
+    return false;
+  }
+
+  const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${encodeURIComponent(GLOBAL_ACCESS_PATH)}`;
+  let sha = null;
+  try {
+    const current = await fetch(`${apiUrl}?ref=${encodeURIComponent(GITHUB_REPO_BRANCH)}`, {
+      headers: {
+        Authorization: `Bearer ${token}`,
+        Accept: 'application/vnd.github+json',
+        'X-GitHub-Api-Version': '2022-11-28'
+      }
+    });
+    if (current.ok) {
+      const currentJson = await current.json();
+      sha = currentJson.sha || null;
+    }
+  } catch (_err) {}
+
+  const nextState = {
+    publicUnlocked: !!nextUnlocked,
+    updatedAt: new Date().toISOString()
+  };
+  const payload = {
+    message: nextState.publicUnlocked ? 'Unlock site for public visitors' : 'Lock site to paid access',
+    content: encodeBase64Utf8(`${JSON.stringify(nextState, null, 2)}\n`),
+    branch: GITHUB_REPO_BRANCH
+  };
+  if (sha) payload.sha = sha;
+
+  const saveRes = await fetch(apiUrl, {
+    method: 'PUT',
+    headers: {
+      Authorization: `Bearer ${token}`,
+      Accept: 'application/vnd.github+json',
+      'X-GitHub-Api-Version': '2022-11-28',
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify(payload)
+  });
+
+  if (!saveRes.ok) {
+    let detail = '';
+    try {
+      const errJson = await saveRes.json();
+      detail = errJson.message ? `\n${errJson.message}` : '';
+    } catch (_err) {}
+    window.alert(`Could not update public access.${detail}`);
+    return false;
+  }
+
+  globalAccessState = nextState;
+  updatePublicAccessToggle();
+  await loadGlobalAccessState();
+  window.alert(nextState.publicUnlocked ? 'Site is now unlocked for everyone.' : 'Site is now locked to paid access.');
+  return true;
 }
 
 function openModal(modalEl) {
@@ -1155,9 +1258,14 @@ sheetsDashboardUrlInput.value = sheetsDashboardUrlFromStorage;
 registrationEndpointInput.value = registrationEndpointFromStorage;
 registrationSecretInput.value = registrationSecretFromStorage;
 teacherPinInput.value = getTeacherPin();
+githubTokenInput.value = getGithubToken();
 if (localStorage.getItem(LEGACY_TEACHER_KEY) === 'true') {
   setTeacherUnlocked(true);
 }
+updatePublicAccessToggle();
+loadGlobalAccessState().then(() => {
+  setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
+});
 
 teacherToggle.addEventListener('click', () => {
   if (isTeacherUnlocked()) {
@@ -1199,8 +1307,26 @@ document.getElementById('settingsSaveBtn').addEventListener('click', () => {
   if (newPin) {
     localStorage.setItem(LS.teacherPin, newPin);
   }
+  localStorage.setItem(LS.githubToken, githubTokenInput.value.trim());
   closeModal(settingsModal);
   window.alert('Settings saved.');
+});
+
+publicAccessToggle.addEventListener('click', async () => {
+  if (!isTeacherUnlocked()) {
+    window.alert('Unlock Teacher Mode first.');
+    return;
+  }
+  const next = !globalAccessState.publicUnlocked;
+  publicAccessToggle.disabled = true;
+  try {
+    const ok = await publishGlobalAccessState(next);
+    if (ok) {
+      setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
+    }
+  } finally {
+    publicAccessToggle.disabled = false;
+  }
 });
 
 registerBtn.addEventListener('click', () => {
@@ -1453,7 +1579,7 @@ function isUnlocked() {
 }
 if (purchaseLinkTop) purchaseLinkTop.href = ACCESS_CONTROL.checkoutUrl;
 if (purchaseLinkOverlay) purchaseLinkOverlay.href = ACCESS_CONTROL.checkoutUrl;
-setLockedState(!isUnlocked());
+setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
 
 unlockBtnTop?.addEventListener('click', openAccessModal);
 unlockBtnOverlay?.addEventListener('click', openAccessModal);
@@ -1466,7 +1592,7 @@ accessUnlockBtn?.addEventListener('click', () => {
     return;
   }
   localStorage.setItem(ACCESS_CONTROL.storageKey, '1');
-  setLockedState(false);
+  setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
   closeAccessModal();
 });
 
@@ -1490,4 +1616,3 @@ document.addEventListener('keydown', (evt) => {
 </html>
 
 <!-- deploy-refresh: 2026-03-05T17:24Z -->
-
