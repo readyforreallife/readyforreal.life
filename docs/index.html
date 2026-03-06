@@ -1125,57 +1125,74 @@ async function publishGlobalAccessState(nextUnlocked) {
   }
 
   const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${encodeURIComponent(GLOBAL_ACCESS_PATH)}`;
-  let sha = null;
-  try {
-    const current = await fetch(`${apiUrl}?ref=${encodeURIComponent(GITHUB_REPO_BRANCH)}`, {
+  const getCurrentSha = async () => {
+    try {
+      const current = await fetch(`${apiUrl}?ref=${encodeURIComponent(GITHUB_REPO_BRANCH)}`, {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          Accept: 'application/vnd.github+json',
+          'X-GitHub-Api-Version': '2022-11-28'
+        }
+      });
+      if (!current.ok) return null;
+      const currentJson = await current.json();
+      return currentJson.sha || null;
+    } catch (_err) {
+      return null;
+    }
+  };
+
+  const saveOnce = async (sha) => {
+    const nextState = {
+      publicUnlocked: !!nextUnlocked,
+      updatedAt: new Date().toISOString()
+    };
+    const payload = {
+      message: nextState.publicUnlocked ? 'Unlock site for public visitors' : 'Lock site to paid access',
+      content: encodeBase64Utf8(`${JSON.stringify(nextState, null, 2)}\n`),
+      branch: GITHUB_REPO_BRANCH
+    };
+    if (sha) payload.sha = sha;
+    const saveRes = await fetch(apiUrl, {
+      method: 'PUT',
       headers: {
         Authorization: `Bearer ${token}`,
         Accept: 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28'
-      }
+        'X-GitHub-Api-Version': '2022-11-28',
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(payload)
     });
-    if (current.ok) {
-      const currentJson = await current.json();
-      sha = currentJson.sha || null;
+    let errJson = null;
+    if (!saveRes.ok) {
+      try {
+        errJson = await saveRes.json();
+      } catch (_err) {}
+      return {
+        ok: false,
+        status: saveRes.status,
+        message: errJson && errJson.message ? String(errJson.message) : ''
+      };
     }
-  } catch (_err) {}
-
-  const nextState = {
-    publicUnlocked: !!nextUnlocked,
-    updatedAt: new Date().toISOString()
+    return { ok: true, nextState };
   };
-  const payload = {
-    message: nextState.publicUnlocked ? 'Unlock site for public visitors' : 'Lock site to paid access',
-    content: encodeBase64Utf8(`${JSON.stringify(nextState, null, 2)}\n`),
-    branch: GITHUB_REPO_BRANCH
-  };
-  if (sha) payload.sha = sha;
 
-  const saveRes = await fetch(apiUrl, {
-    method: 'PUT',
-    headers: {
-      Authorization: `Bearer ${token}`,
-      Accept: 'application/vnd.github+json',
-      'X-GitHub-Api-Version': '2022-11-28',
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify(payload)
-  });
+  let result = await saveOnce(await getCurrentSha());
+  // Handle the common GitHub race: SHA changed between read and write.
+  if (!result.ok && (result.status === 409 || /does not match/i.test(result.message))) {
+    result = await saveOnce(await getCurrentSha());
+  }
 
-  if (!saveRes.ok) {
-    let detail = '';
-    try {
-      const errJson = await saveRes.json();
-      detail = errJson.message ? `\n${errJson.message}` : '';
-    } catch (_err) {}
-    window.alert(`Could not update public access.${detail}`);
+  if (!result.ok) {
+    const detail = result.message ? `\n${result.message}` : '';
+    window.alert(`Could not update public access.${detail}\nIf this keeps happening, click again in 3-5 seconds.`);
     return false;
   }
 
-  globalAccessState = nextState;
+  globalAccessState = result.nextState;
   updatePublicAccessToggle();
   await loadGlobalAccessState();
-  window.alert(nextState.publicUnlocked ? 'Site is now unlocked for everyone.' : 'Site is now locked to paid access.');
+  window.alert(result.nextState.publicUnlocked ? 'Site is now unlocked for everyone.' : 'Site is now locked to paid access.');
   return true;
 }
 
