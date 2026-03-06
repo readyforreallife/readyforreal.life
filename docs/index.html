@@ -83,6 +83,24 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
   transform: translateY(-1px);
   box-shadow: 0 6px 18px rgba(0,0,0,.16);
 }
+.bio-actions {
+  margin-left: auto;
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+.bio-link.secondary {
+  background: #f2e4c0;
+  color: #253044;
+  border-color: #d8c08d;
+}
+.bio-link.secondary span {
+  color: #6f5422;
+}
+.bio-link.secondary:hover,
+.bio-link.secondary:focus-visible {
+  background: #e8d7ad;
+}
 
 .section { padding: 60px; border-bottom: 1px solid var(--rule); }
 .section.alt { background: var(--white); }
@@ -528,10 +546,16 @@ body.preview-locked .locked-overlay { display: block; }
     <div class="inst-name">Michael R. Terry</div>
     <div class="inst-titles">Founder, Modern Manners &amp; Mental Fortitude · Public Service Leader · Curriculum Designer · Published Author · Community Presenter · Spanish Proficient</div>
   </div>
-  <a class="bio-link" href="resume.html">
-    <span>Resume</span>
-    View Resume
-  </a>
+  <div class="bio-actions">
+    <a class="bio-link" href="resume.html">
+      <span>Resume</span>
+      View Resume
+    </a>
+    <a class="bio-link secondary" href="bio.html">
+      <span>Bio</span>
+      Read Bio
+    </a>
+  </div>
 </div>
 
 <div class="protected-shell">

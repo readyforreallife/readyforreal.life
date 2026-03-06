@@ -1,0 +1,256 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Michael R. Terry | Bio</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0e1118;
+  --paper: #f6f3ec;
+  --slate: #253044;
+  --slate2: #344159;
+  --gold: #c49540;
+  --gold-lt: #f2e4c0;
+  --rule: #ddd7cc;
+  --muted: #697080;
+  --white: #ffffff;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; line-height: 1.65; }
+nav {
+  position: sticky; top: 0; z-index: 40;
+  background: var(--slate);
+  border-bottom: 3px solid var(--gold);
+  padding: 10px 16px;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.brand {
+  color: var(--gold);
+  text-decoration: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+}
+.nav-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.nav-actions a {
+  color: rgba(255,255,255,.86);
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+}
+.nav-actions a.primary {
+  background: var(--gold);
+  color: #1f2a3a;
+  border-color: #efcd88;
+  font-weight: 700;
+}
+.hero {
+  background: var(--slate);
+  color: var(--white);
+  padding: 64px 28px 52px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: '';
+  position: absolute;
+  width: 440px;
+  height: 440px;
+  border-radius: 50%;
+  right: -120px;
+  top: -150px;
+  background: radial-gradient(circle, rgba(196,149,64,.18) 0%, transparent 72%);
+}
+.hero-wrap {
+  max-width: 1060px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 28px;
+  align-items: end;
+}
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4.4vw, 3.4rem);
+  line-height: 1.06;
+  margin-bottom: 10px;
+}
+.hero h1 em { color: var(--gold); font-style: italic; }
+.hero-sub { color: rgba(255,255,255,.78); font-size: 17px; }
+.hero-badge {
+  background: var(--gold);
+  color: #253044;
+  border-radius: 14px;
+  padding: 24px 22px;
+  min-width: 170px;
+  text-align: center;
+}
+.hero-badge .n { display: block; font-family: 'Playfair Display', serif; font-size: 2.6rem; line-height: 1; }
+.hero-badge .l { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .11em; text-transform: uppercase; }
+.strip {
+  background: var(--gold-lt);
+  border-top: 1px solid #e8d198;
+  border-bottom: 2px solid #e8d198;
+  padding: 22px 28px;
+}
+.strip-wrap { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; }
+.avatar { width: 76px; height: 76px; border-radius: 50%; overflow: hidden; border: 3px solid var(--gold); background: var(--slate); }
+.avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; }
+.strip-name { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--slate); }
+.strip-role { color: var(--muted); font-size: 14px; }
+.main { max-width: 1060px; margin: 0 auto; padding: 34px 28px 50px; }
+.grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; }
+.card {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 12px;
+  padding: 20px;
+}
+.card h2 {
+  font-family: 'Playfair Display', serif;
+  color: var(--slate);
+  font-size: 1.5rem;
+  margin-bottom: 10px;
+}
+.card h3 {
+  font-family: 'Playfair Display', serif;
+  color: var(--slate);
+  font-size: 1.15rem;
+  margin-bottom: 8px;
+}
+.kicker {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .15em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.copy { font-size: 15px; color: #202938; }
+.stack { display: grid; gap: 14px; }
+.list { padding-left: 18px; }
+.list li { margin-bottom: 8px; }
+.cta-row { margin-top: 16px; display: flex; gap: 8px; flex-wrap: wrap; }
+.cta {
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border: 1px solid rgba(37,48,68,.22);
+  color: #253044;
+  background: #f5f2eb;
+}
+.cta.primary { background: var(--slate); color: #fff; border-color: var(--slate); }
+@media (max-width: 900px) {
+  .hero-wrap { grid-template-columns: 1fr; }
+  .grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="index.html">Modern Manners &amp; Mental Fortitude</a>
+  <div class="nav-actions">
+    <a href="resume.html">Resume</a>
+    <a class="primary" href="index.html">Back to Site</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-wrap">
+    <div>
+      <p class="eyebrow">Biography</p>
+      <h1><em>Michael R. Terry</em><br>Public Service · Education · Faith</h1>
+      <p class="hero-sub">Founder of Modern Manners &amp; Mental Fortitude, Utah public service leader, MAT candidate, and author of <em>Still. Small. Daily.</em></p>
+    </div>
+    <div class="hero-badge">
+      <span class="n">18+</span>
+      <span class="l">Years of Service</span>
+    </div>
+  </div>
+</header>
+
+<div class="strip">
+  <div class="strip-wrap">
+    <div class="avatar"><img src="michael-terry-headshot.jpg" alt="Portrait of Michael R. Terry"></div>
+    <div>
+      <div class="strip-name">Michael R. Terry</div>
+      <div class="strip-role">Sergeant, Utah Highway Patrol · Community Presenter · Curriculum Designer · Published Author</div>
+    </div>
+  </div>
+</div>
+
+<main class="main">
+  <div class="grid">
+    <article class="card">
+      <p class="kicker">Who I Am</p>
+      <h2>Mission-Driven Leadership</h2>
+      <p class="copy">Michael R. Terry is a public service leader and educator-in-training who has spent his career helping people make better decisions under pressure. After years in law enforcement, crisis response, and community outreach, he built <strong>Modern Manners &amp; Mental Fortitude</strong> to teach practical life skills that transfer across school, family, work, and digital settings.</p>
+      <div class="cta-row">
+        <a class="cta primary" href="resume.html">View Resume</a>
+        <a class="cta" href="https://www.linkedin.com/in/mike-terry-46618318b/">LinkedIn</a>
+        <a class="cta" href="https://instagram.com/readyforreal.life">Instagram</a>
+      </div>
+    </article>
+
+    <section class="stack">
+      <article class="card">
+        <p class="kicker">Life Interests</p>
+        <h3>Learning, Mentorship, and Service</h3>
+        <p class="copy">His interests center on mentoring youth and adults, strengthening families, and translating real-world leadership experience into simple tools that people can use immediately. He is especially focused on communication, emotional regulation, and accountability as lifelong performance skills.</p>
+      </article>
+
+      <article class="card">
+        <p class="kicker">Family Life</p>
+        <h3>Family-Centered Purpose</h3>
+        <p class="copy">Family is at the center of Michael’s work. His writing and teaching consistently reflect home-centered values: presence, integrity, and daily follow-through. He speaks frequently about building trust and creating steady habits that strengthen family relationships over time.</p>
+      </article>
+    </section>
+  </div>
+
+  <div class="grid" style="margin-top:18px;">
+    <article class="card">
+      <p class="kicker">Career</p>
+      <h2>Public Safety and Education</h2>
+      <ul class="list copy">
+        <li>Serves as a Sergeant with the Utah Highway Patrol and leads high-accountability field assignments.</li>
+        <li>Oversees specialized K9 operations and readiness efforts, including Utah State Capitol support roles.</li>
+        <li>Leads statewide outreach, crisis response collaboration, and community-based engagement initiatives.</li>
+        <li>Applies graduate study in teaching and learning science to curriculum design and instructional practice.</li>
+      </ul>
+    </article>
+
+    <article class="card">
+      <p class="kicker">Church Service</p>
+      <h2>Faith in Daily Practice</h2>
+      <p class="copy">Michael’s faith-based service is reflected in his <em>Hear Him Daily</em> writing and presentations. His message emphasizes discipleship in ordinary life: hearing the Savior in the middle of work, marriage, parenting, and service to others. This faith perspective shapes both his bio and the values behind his educational work.</p>
+      <div class="cta-row">
+        <a class="cta" href="https://instagram.com/hearhim.daily">@hearhim.daily</a>
+        <a class="cta" href="https://www.amazon.com/Still-Small-Daily-Michael-Terry-ebook/dp/B0G6VXNXHD/ref=tmm_kin_swatch_0">Read the Book</a>
+      </div>
+    </article>
+  </div>
+</main>
+</body>
+</html>
