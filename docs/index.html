@@ -1095,6 +1095,9 @@ function getGithubToken() {
 function encodeBase64Utf8(str) {
   return btoa(unescape(encodeURIComponent(str)));
 }
+function decodeBase64Utf8(b64) {
+  return decodeURIComponent(escape(atob(b64)));
+}
 
 function updatePublicAccessToggle() {
   if (!publicAccessToggle) return;
@@ -1103,11 +1106,32 @@ function updatePublicAccessToggle() {
   publicAccessToggle.classList.toggle('locked', !isUnlocked);
 }
 
-async function loadGlobalAccessState() {
+async function loadGlobalAccessState(preferApi = false) {
   try {
-    const res = await fetch(`site-access.json?t=${Date.now()}`, { cache: 'no-store' });
-    if (!res.ok) return;
-    const data = await res.json();
+    let data = null;
+    if (preferApi) {
+      try {
+        const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${encodeURIComponent(GLOBAL_ACCESS_PATH)}?ref=${encodeURIComponent(GITHUB_REPO_BRANCH)}&t=${Date.now()}`;
+        const apiRes = await fetch(apiUrl, {
+          cache: 'no-store',
+          headers: {
+            Accept: 'application/vnd.github+json',
+            'X-GitHub-Api-Version': '2022-11-28'
+          }
+        });
+        if (apiRes.ok) {
+          const apiJson = await apiRes.json();
+          if (apiJson && apiJson.content) {
+            data = JSON.parse(decodeBase64Utf8(String(apiJson.content).replace(/\n/g, '')));
+          }
+        }
+      } catch (_err) {}
+    }
+    if (!data) {
+      const res = await fetch(`site-access.json?t=${Date.now()}`, { cache: 'no-store' });
+      if (!res.ok) return;
+      data = await res.json();
+    }
     globalAccessState = {
       publicUnlocked: !!data.publicUnlocked,
       updatedAt: String(data.updatedAt || '')
@@ -1190,7 +1214,7 @@ async function publishGlobalAccessState(nextUnlocked) {
 
   if (!result.ok) {
     // Last safety check: if another write already set the desired state, treat as success.
-    await loadGlobalAccessState();
+    await loadGlobalAccessState(true);
     if (globalAccessState.publicUnlocked === !!nextUnlocked) {
       window.alert(globalAccessState.publicUnlocked ? 'Site is now unlocked for everyone.' : 'Site is now locked to paid access.');
       return true;
@@ -1206,7 +1230,7 @@ async function publishGlobalAccessState(nextUnlocked) {
   globalAccessState = result.nextState;
   updatePublicAccessToggle();
   window.alert(result.nextState.publicUnlocked ? 'Site is now unlocked for everyone.' : 'Site is now locked to paid access.');
-  setTimeout(syncGlobalAccessState, 1500);
+  setTimeout(() => syncGlobalAccessState(true), 1500);
   return true;
 }
 
@@ -1629,18 +1653,18 @@ function isUnlocked() {
   if (!globalTs) return true;
   return localTs >= globalTs;
 }
-async function syncGlobalAccessState() {
-  await loadGlobalAccessState();
+async function syncGlobalAccessState(preferApi = false) {
+  await loadGlobalAccessState(preferApi);
   setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
 }
 if (purchaseLinkTop) purchaseLinkTop.href = ACCESS_CONTROL.checkoutUrl;
 if (purchaseLinkOverlay) purchaseLinkOverlay.href = ACCESS_CONTROL.checkoutUrl;
 setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
-setInterval(syncGlobalAccessState, 8000);
+setInterval(() => syncGlobalAccessState(false), 8000);
 document.addEventListener('visibilitychange', () => {
-  if (!document.hidden) syncGlobalAccessState();
+  if (!document.hidden) syncGlobalAccessState(true);
 });
-window.addEventListener('focus', syncGlobalAccessState);
+window.addEventListener('focus', () => syncGlobalAccessState(true));
 
 unlockBtnTop?.addEventListener('click', openAccessModal);
 unlockBtnOverlay?.addEventListener('click', openAccessModal);
