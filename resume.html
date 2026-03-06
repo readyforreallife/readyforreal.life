@@ -31,7 +31,9 @@
     .brand {
       color: var(--gold); text-decoration: none; font-family: "DM Mono", monospace; font-size: 10px;
       letter-spacing: .14em; text-transform: uppercase; white-space: nowrap;
+      display: inline-flex; align-items: center; gap: 8px;
     }
+    .brand img { width: 34px; height: 22px; object-fit: contain; border-radius: 6px; filter: drop-shadow(0 3px 8px rgba(0,0,0,.2)); }
     .nav-links { display: flex; flex-wrap: wrap; gap: 8px; }
     .nav-links a {
       color: rgba(255,255,255,.78); text-decoration: none; font-size: 11px; font-family: "DM Mono", monospace;
@@ -336,7 +338,7 @@
 </head>
 <body>
   <nav>
-    <a class="brand" href="index.html">Modern Manners & Mental Fortitude</a>
+    <a class="brand" href="index.html"><img src="assets/mmmf-site-mark.svg" alt="Site logo">Modern Manners & Mental Fortitude</a>
     <div class="nav-links">
       <a href="#summary">Summary</a>
       <a href="#experience">Experience</a>

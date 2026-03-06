@@ -36,6 +36,8 @@ body {
   font-size: clamp(1.6rem, 2.8vw, 2.2rem);
 }
 .header p { margin: 8px 0 0; color: rgba(255,255,255,.8); }
+.header-top { display: inline-flex; align-items: center; gap: 10px; }
+.header-top img { width: 42px; height: 28px; object-fit: contain; border-radius: 6px; filter: drop-shadow(0 3px 8px rgba(0,0,0,.28)); }
 .wrap {
   max-width: 1280px;
   margin: 0 auto;
@@ -127,7 +129,10 @@ hr { border: 0; border-top: 1px solid #ece6d8; margin: 14px 0; }
 </head>
 <body>
 <header class="header">
-  <h1>Website Admin Editor</h1>
+  <div class="header-top">
+    <img src="../assets/mmmf-site-mark.svg" alt="Site logo">
+    <h1>Website Admin Editor</h1>
+  </div>
   <p>Edit common content with forms or use raw HTML when needed.</p>
 </header>
 
