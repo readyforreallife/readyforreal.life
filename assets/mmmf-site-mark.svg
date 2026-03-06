@@ -1,0 +1,25 @@
+<svg width="900" height="620" viewBox="0 0 900 620" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Modern Manners and Mental Fortitude logo">
+  <defs>
+    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#E7BF73"/>
+      <stop offset="1" stop-color="#C49540"/>
+    </linearGradient>
+    <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#2F3C55"/>
+      <stop offset="1" stop-color="#1B2435"/>
+    </linearGradient>
+  </defs>
+
+  <rect x="20" y="20" width="860" height="580" rx="34" fill="url(#g2)" stroke="url(#g1)" stroke-width="8"/>
+
+  <path d="M118 140 L450 58 L782 140" stroke="url(#g1)" stroke-width="12" stroke-linecap="round"/>
+  <path d="M132 492 L450 558 L768 492" stroke="url(#g1)" stroke-width="12" stroke-linecap="round"/>
+
+  <path d="M230 405 L305 190 L382 322 L450 150 L517 322 L594 190 L670 405" fill="none" stroke="url(#g1)" stroke-width="16" stroke-linejoin="round"/>
+
+  <text x="450" y="252" text-anchor="middle" font-family="DM Mono, Menlo, Monaco, Consolas, monospace" font-size="38" letter-spacing="10" fill="#E8CF9B">MMMF</text>
+  <text x="450" y="305" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="66" font-weight="700" fill="#FFFFFF">Modern Manners</text>
+  <text x="450" y="365" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="56" font-weight="700" fill="#F5E7C8">&amp; Mental Fortitude</text>
+
+  <text x="450" y="454" text-anchor="middle" font-family="DM Mono, Menlo, Monaco, Consolas, monospace" font-size="20" letter-spacing="4" fill="#CFB37A">RESPECT · REGULATION · DECISION · ACCOUNTABILITY</text>
+</svg>

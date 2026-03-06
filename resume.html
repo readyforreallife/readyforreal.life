@@ -149,12 +149,17 @@
     }
     .chip strong { color: var(--gold); font-weight: 700; }
     .hero-badge {
-      background: var(--gold); color: var(--slate); border-radius: 15px; min-width: 170px;
-      text-align: center; padding: 24px 20px; box-shadow: 0 14px 30px rgba(0,0,0,.2);
+      min-width: 260px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
     }
-    .hero-badge .num { display: block; font-family: "Playfair Display", serif; font-size: 2.8rem; line-height: 1; font-weight: 900; }
-    .hero-badge .txt { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; opacity: .85; font-weight: 700; }
-    .hero-badge .subtxt { margin-top: 6px; font-size: 12px; font-weight: 600; }
+    .hero-badge img {
+      width: min(100%, 320px);
+      height: auto;
+      filter: drop-shadow(0 16px 26px rgba(0,0,0,.26));
+      border-radius: 16px;
+    }
 
     .profile-strip {
       background: var(--gold-lt); border-top: 1px solid var(--gold-dim); border-bottom: 3px solid var(--gold-dim);
@@ -360,10 +365,8 @@
           <div class="chip"><strong>Language</strong> Spanish (Professional)</div>
         </div>
       </div>
-      <div class="hero-badge">
-        <span class="num">2</span>
-        <span class="txt">Resume Pages</span>
-        <div class="subtxt">Infographic View</div>
+      <div class="hero-badge" aria-hidden="true">
+        <img src="assets/mmmf-site-mark.svg" alt="Modern Manners &amp; Mental Fortitude logo">
       </div>
     </div>
   </header>
