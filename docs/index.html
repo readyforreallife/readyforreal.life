@@ -1108,15 +1108,10 @@ async function loadGlobalAccessState() {
     const res = await fetch(`site-access.json?t=${Date.now()}`, { cache: 'no-store' });
     if (!res.ok) return;
     const data = await res.json();
-    const next = {
+    globalAccessState = {
       publicUnlocked: !!data.publicUnlocked,
       updatedAt: String(data.updatedAt || '')
     };
-    const currTs = Date.parse(String(globalAccessState.updatedAt || '')) || 0;
-    const nextTs = Date.parse(String(next.updatedAt || '')) || 0;
-    // Prevent older cached data from overriding a newer local toggle result.
-    if (currTs && nextTs && nextTs < currTs) return;
-    globalAccessState = next;
     updatePublicAccessToggle();
   } catch (_err) {}
 }

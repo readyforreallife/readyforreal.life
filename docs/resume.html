@@ -659,15 +659,8 @@
         const res = await fetch(`site-access.json?t=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) return;
         const data = await res.json();
-        const next = {
-          publicUnlocked: !!data.publicUnlocked,
-          updatedAt: String(data.updatedAt || '')
-        };
-        const currTs = Date.parse(String(globalAccessState.updatedAt || '')) || 0;
-        const nextTs = Date.parse(String(next.updatedAt || '')) || 0;
-        if (currTs && nextTs && nextTs < currTs) return;
-        globalAccessState.publicUnlocked = next.publicUnlocked;
-        globalAccessState.updatedAt = next.updatedAt;
+        globalAccessState.publicUnlocked = !!data.publicUnlocked;
+        globalAccessState.updatedAt = String(data.updatedAt || '');
       } catch (_err) {}
     }
     async function syncGlobalAccessState() {
