@@ -1108,10 +1108,15 @@ async function loadGlobalAccessState() {
     const res = await fetch(`site-access.json?t=${Date.now()}`, { cache: 'no-store' });
     if (!res.ok) return;
     const data = await res.json();
-    globalAccessState = {
+    const next = {
       publicUnlocked: !!data.publicUnlocked,
       updatedAt: String(data.updatedAt || '')
     };
+    const currTs = Date.parse(String(globalAccessState.updatedAt || '')) || 0;
+    const nextTs = Date.parse(String(next.updatedAt || '')) || 0;
+    // Prevent older cached data from overriding a newer local toggle result.
+    if (currTs && nextTs && nextTs < currTs) return;
+    globalAccessState = next;
     updatePublicAccessToggle();
   } catch (_err) {}
 }
@@ -1205,8 +1210,12 @@ async function publishGlobalAccessState(nextUnlocked) {
 
   globalAccessState = result.nextState;
   updatePublicAccessToggle();
-  await loadGlobalAccessState();
   window.alert(result.nextState.publicUnlocked ? 'Site is now unlocked for everyone.' : 'Site is now locked to paid access.');
+  setTimeout(() => {
+    loadGlobalAccessState().then(() => {
+      setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
+    });
+  }, 1500);
   return true;
 }
 
