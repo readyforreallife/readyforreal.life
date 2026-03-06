@@ -21,8 +21,8 @@
   <path d="M62 94 L256 50 L450 94" stroke="url(#gold)" stroke-width="6" stroke-linecap="round"/>
   <path d="M62 418 L256 462 L450 418" stroke="url(#gold)" stroke-width="6" stroke-linecap="round"/>
 
-  <path d="M34 330 L98 300 L136 308 L196 252 L242 276 L300 232 L364 276 L418 260 L478 296 L478 374 L34 374 Z" fill="#0E182A"/>
-  <path d="M38 334 L98 304 L136 312 L196 256 L242 280 L300 236 L364 280 L418 264 L474 300" stroke="url(#gold)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <path d="M34 330 L90 296 L130 304 L186 174 L232 226 L292 22 L356 226 L418 152 L478 236 L478 374 L34 374 Z" fill="#0E182A"/>
+  <path d="M38 334 L90 300 L130 308 L186 178 L232 230 L292 26 L356 230 L418 156 L474 240" stroke="url(#gold)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
 
   <text x="256" y="302" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="54" font-weight="700" fill="#FFFFFF">Modern Manners</text>
   <text x="256" y="352" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="45" font-weight="700" fill="#F5E7C8">&amp; Mental Fortitude</text>
