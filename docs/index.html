@@ -1660,6 +1660,7 @@ async function syncGlobalAccessState(preferApi = false) {
 if (purchaseLinkTop) purchaseLinkTop.href = ACCESS_CONTROL.checkoutUrl;
 if (purchaseLinkOverlay) purchaseLinkOverlay.href = ACCESS_CONTROL.checkoutUrl;
 setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
+window.addEventListener('focus', () => syncGlobalAccessState(true));
 
 unlockBtnTop?.addEventListener('click', openAccessModal);
 unlockBtnOverlay?.addEventListener('click', openAccessModal);

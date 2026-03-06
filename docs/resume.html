@@ -699,6 +699,7 @@
     if (purchaseLinkOverlay) purchaseLinkOverlay.href = ACCESS_CONTROL.checkoutUrl;
     setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
     syncGlobalAccessState(true);
+    window.addEventListener('focus', () => syncGlobalAccessState(true));
     unlockBtnTop?.addEventListener('click', openAccessModal);
     unlockBtnOverlay?.addEventListener('click', openAccessModal);
     accessCloseBtn?.addEventListener('click', closeAccessModal);
