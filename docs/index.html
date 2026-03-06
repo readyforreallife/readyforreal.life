@@ -517,6 +517,7 @@ body.preview-locked .locked-overlay { display: block; }
 <div class="utility-bar">
   <button class="util-btn primary" id="registerBtn" type="button">Register Now</button>
   <button class="util-btn locked" id="teacherToggle" type="button">Teacher Mode: Locked</button>
+  <button class="util-btn locked" id="ownerPreviewToggle" type="button" style="display:none;">Owner Preview: Off</button>
   <button class="util-btn locked" id="publicAccessToggle" type="button" style="display:none;">Public Access: Locked</button>
   <button class="util-btn" id="sheetsTabBtn" type="button" style="display:none;">Sheets</button>
   <button class="util-btn" id="settingsBtn" type="button" style="display:none;">Settings</button>
@@ -1049,6 +1050,7 @@ const LEGACY_SETTINGS_KEY = 'decision-lab-settings-v1';
 const LEGACY_TEACHER_KEY = 'decision-lab-teacher-mode';
 
 const teacherToggle = document.getElementById('teacherToggle');
+const ownerPreviewToggle = document.getElementById('ownerPreviewToggle');
 const publicAccessToggle = document.getElementById('publicAccessToggle');
 const sheetsTabBtn = document.getElementById('sheetsTabBtn');
 const settingsBtn = document.getElementById('settingsBtn');
@@ -1082,6 +1084,7 @@ function setTeacherUnlocked(v) {
   localStorage.setItem(LEGACY_TEACHER_KEY, v ? 'true' : 'false');
   teacherToggle.textContent = v ? 'Teacher Mode: Unlocked' : 'Teacher Mode: Locked';
   teacherToggle.classList.toggle('locked', !v);
+  ownerPreviewToggle.style.display = v ? 'inline-flex' : 'none';
   publicAccessToggle.style.display = v ? 'inline-flex' : 'none';
   sheetsTabBtn.style.display = v ? 'inline-flex' : 'none';
   settingsBtn.style.display = v ? 'inline-flex' : 'none';
@@ -1104,6 +1107,18 @@ function updatePublicAccessToggle() {
   const isUnlocked = !!globalAccessState.publicUnlocked;
   publicAccessToggle.textContent = isUnlocked ? 'Public Access: Unlocked' : 'Public Access: Locked';
   publicAccessToggle.classList.toggle('locked', !isUnlocked);
+}
+function isOwnerPreviewOn() {
+  return localStorage.getItem('rrl_owner_preview') === '1';
+}
+function setOwnerPreviewOn(v) {
+  localStorage.setItem('rrl_owner_preview', v ? '1' : '0');
+}
+function updateOwnerPreviewToggle() {
+  if (!ownerPreviewToggle) return;
+  const on = isOwnerPreviewOn();
+  ownerPreviewToggle.textContent = on ? 'Owner Preview: On' : 'Owner Preview: Off';
+  ownerPreviewToggle.classList.toggle('locked', !on);
 }
 
 async function loadGlobalAccessState(preferApi = false) {
@@ -1318,6 +1333,7 @@ githubTokenInput.value = getGithubToken();
 if (localStorage.getItem(LEGACY_TEACHER_KEY) === 'true') {
   setTeacherUnlocked(true);
 }
+updateOwnerPreviewToggle();
 updatePublicAccessToggle();
 syncGlobalAccessState();
 
@@ -1389,6 +1405,16 @@ publicAccessToggle.addEventListener('click', async () => {
   } finally {
     publicAccessToggle.disabled = false;
   }
+});
+ownerPreviewToggle.addEventListener('click', () => {
+  if (!isTeacherUnlocked()) {
+    window.alert('Unlock Teacher Mode first.');
+    return;
+  }
+  const next = !isOwnerPreviewOn();
+  setOwnerPreviewOn(next);
+  updateOwnerPreviewToggle();
+  setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
 });
 
 registerBtn.addEventListener('click', () => {
@@ -1646,6 +1672,7 @@ function clearLocalUnlocked() {
   localStorage.removeItem(ACCESS_CONTROL.unlockedAtKey);
 }
 function isUnlocked() {
+  if (isOwnerPreviewOn()) return true;
   if (localStorage.getItem(ACCESS_CONTROL.storageKey) !== '1') return false;
   if (globalAccessState.publicUnlocked) return true;
   const localTs = Date.parse(String(localStorage.getItem(ACCESS_CONTROL.unlockedAtKey) || '')) || 0;
