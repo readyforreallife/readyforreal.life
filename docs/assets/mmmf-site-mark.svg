@@ -1,4 +1,4 @@
-<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Modern Manners and Mental Fortitude logo">
+<svg width="512" height="512" viewBox="0 0 512 512" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Modern Manners and Mental Fortitude logo" preserveAspectRatio="xMidYMid meet">
   <defs>
     <linearGradient id="bg" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0" stop-color="#223456"/>
@@ -14,20 +14,16 @@
     </linearGradient>
   </defs>
 
-  <!-- Full square fill (no transparent margins) -->
   <rect x="0" y="0" width="512" height="512" rx="20" fill="url(#bg)"/>
   <rect x="0" y="0" width="512" height="512" rx="20" fill="url(#glow)"/>
   <rect x="2" y="2" width="508" height="508" rx="18" stroke="url(#gold)" stroke-width="4"/>
 
-  <!-- Top and bottom frame lines -->
   <path d="M62 94 L256 50 L450 94" stroke="url(#gold)" stroke-width="6" stroke-linecap="round"/>
   <path d="M62 418 L256 462 L450 418" stroke="url(#gold)" stroke-width="6" stroke-linecap="round"/>
 
-  <!-- Deseret Peak-inspired mountain backdrop -->
   <path d="M34 330 L98 300 L136 308 L196 252 L242 276 L300 232 L364 276 L418 260 L478 296 L478 374 L34 374 Z" fill="#0E182A"/>
   <path d="M38 334 L98 304 L136 312 L196 256 L242 280 L300 236 L364 280 L418 264 L474 300" stroke="url(#gold)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <!-- Title -->
-  <text x="256" y="310" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="63" font-weight="700" fill="#FFFFFF">Modern Manners</text>
-  <text x="256" y="366" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="54" font-weight="700" fill="#F5E7C8">&amp; Mental Fortitude</text>
+  <text x="256" y="302" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="54" font-weight="700" fill="#FFFFFF">Modern Manners</text>
+  <text x="256" y="352" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="45" font-weight="700" fill="#F5E7C8">&amp; Mental Fortitude</text>
 </svg>
