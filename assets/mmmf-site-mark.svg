@@ -1,25 +1,29 @@
-<svg width="900" height="620" viewBox="0 0 900 620" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Modern Manners and Mental Fortitude logo">
+<svg width="640" height="420" viewBox="0 0 640 420" fill="none" xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Modern Manners and Mental Fortitude logo with mountain background">
   <defs>
-    <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
+    <linearGradient id="bg" x1="0" y1="0" x2="0" y2="1">
+      <stop offset="0" stop-color="#1E2B41"/>
+      <stop offset="1" stop-color="#111A2A"/>
+    </linearGradient>
+    <linearGradient id="sky" x1="0" y1="0" x2="1" y2="1">
+      <stop offset="0" stop-color="#2E4463" stop-opacity="0.78"/>
+      <stop offset="1" stop-color="#1E2B41" stop-opacity="0.08"/>
+    </linearGradient>
+    <linearGradient id="gold" x1="0" y1="0" x2="1" y2="0">
       <stop offset="0" stop-color="#E7BF73"/>
       <stop offset="1" stop-color="#C49540"/>
     </linearGradient>
-    <linearGradient id="g2" x1="0" y1="0" x2="0" y2="1">
-      <stop offset="0" stop-color="#2F3C55"/>
-      <stop offset="1" stop-color="#1B2435"/>
-    </linearGradient>
   </defs>
 
-  <rect x="20" y="20" width="860" height="580" rx="34" fill="url(#g2)" stroke="url(#g1)" stroke-width="8"/>
+  <rect x="10" y="10" width="620" height="400" rx="24" fill="url(#bg)" stroke="url(#gold)" stroke-width="4"/>
+  <rect x="24" y="24" width="592" height="372" rx="18" fill="url(#sky)"/>
 
-  <path d="M118 140 L450 58 L782 140" stroke="url(#g1)" stroke-width="12" stroke-linecap="round"/>
-  <path d="M132 492 L450 558 L768 492" stroke="url(#g1)" stroke-width="12" stroke-linecap="round"/>
+  <!-- Deseret Peak-inspired ridgeline silhouette -->
+  <path d="M40 294 L128 250 L178 264 L252 188 L306 216 L368 170 L445 216 L520 198 L600 248 L600 320 L40 320 Z" fill="#0C1422"/>
+  <path d="M46 298 L128 255 L176 269 L252 194 L307 222 L368 176 L444 222 L520 205 L594 253" stroke="url(#gold)" stroke-width="3.8" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <path d="M230 405 L305 190 L382 322 L450 150 L517 322 L594 190 L670 405" fill="none" stroke="url(#g1)" stroke-width="16" stroke-linejoin="round"/>
+  <path d="M120 106 L320 62 L520 106" stroke="url(#gold)" stroke-width="6" stroke-linecap="round"/>
+  <path d="M120 346 L320 382 L520 346" stroke="url(#gold)" stroke-width="6" stroke-linecap="round"/>
 
-  <text x="450" y="252" text-anchor="middle" font-family="DM Mono, Menlo, Monaco, Consolas, monospace" font-size="38" letter-spacing="10" fill="#E8CF9B">MMMF</text>
-  <text x="450" y="305" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="66" font-weight="700" fill="#FFFFFF">Modern Manners</text>
-  <text x="450" y="365" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="56" font-weight="700" fill="#F5E7C8">&amp; Mental Fortitude</text>
-
-  <text x="450" y="454" text-anchor="middle" font-family="DM Mono, Menlo, Monaco, Consolas, monospace" font-size="20" letter-spacing="4" fill="#CFB37A">RESPECT · REGULATION · DECISION · ACCOUNTABILITY</text>
+  <text x="320" y="254" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="52" font-weight="700" fill="#FFFFFF">Modern Manners</text>
+  <text x="320" y="300" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="44" font-weight="700" fill="#F4E3BF">&amp; Mental Fortitude</text>
 </svg>
