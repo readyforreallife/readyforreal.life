@@ -1125,9 +1125,10 @@ async function publishGlobalAccessState(nextUnlocked) {
   }
 
   const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${encodeURIComponent(GLOBAL_ACCESS_PATH)}`;
-  const getCurrentSha = async () => {
+  const getCurrentSha = async (attempt = 0) => {
     try {
-      const current = await fetch(`${apiUrl}?ref=${encodeURIComponent(GITHUB_REPO_BRANCH)}`, {
+      const current = await fetch(`${apiUrl}?ref=${encodeURIComponent(GITHUB_REPO_BRANCH)}&t=${Date.now()}_${attempt}`, {
+        cache: 'no-store',
         headers: {
           Authorization: `Bearer ${token}`,
           Accept: 'application/vnd.github+json',
@@ -1177,15 +1178,28 @@ async function publishGlobalAccessState(nextUnlocked) {
     return { ok: true, nextState };
   };
 
-  let result = await saveOnce(await getCurrentSha());
-  // Handle the common GitHub race: SHA changed between read and write.
-  if (!result.ok && (result.status === 409 || /does not match/i.test(result.message))) {
-    result = await saveOnce(await getCurrentSha());
+  const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
+  let result = { ok: false, status: 0, message: '' };
+  for (let attempt = 0; attempt < 5; attempt += 1) {
+    result = await saveOnce(await getCurrentSha(attempt));
+    if (result.ok) break;
+    const isShaConflict = result.status === 409 || /does not match/i.test(result.message);
+    if (!isShaConflict) break;
+    await wait(250 + attempt * 200);
+  }
+
+  if (!result.ok) {
+    // Last safety check: if another write already set the desired state, treat as success.
+    await loadGlobalAccessState();
+    if (globalAccessState.publicUnlocked === !!nextUnlocked) {
+      window.alert(globalAccessState.publicUnlocked ? 'Site is now unlocked for everyone.' : 'Site is now locked to paid access.');
+      return true;
+    }
   }
 
   if (!result.ok) {
     const detail = result.message ? `\n${result.message}` : '';
-    window.alert(`Could not update public access.${detail}\nIf this keeps happening, click again in 3-5 seconds.`);
+    window.alert(`Could not update public access.${detail}\nRetry in a few seconds.`);
     return false;
   }
 
