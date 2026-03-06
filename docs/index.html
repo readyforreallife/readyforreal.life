@@ -40,6 +40,7 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
 .hero::before { content: ''; position: absolute; width: 500px; height: 500px; top: -150px; right: -100px; border-radius: 50%; background: radial-gradient(circle, rgba(196,149,64,.18) 0%, transparent 70%); pointer-events: none; }
 .hero::after { content: ''; position: absolute; width: 320px; height: 320px; bottom: -80px; left: 25%; border-radius: 50%; background: radial-gradient(circle, rgba(27,107,107,.22) 0%, transparent 70%); pointer-events: none; }
 .hero-layout { display: grid; grid-template-columns: 1fr auto; gap: 48px; align-items: end; position: relative; z-index: 1; }
+.hero-mark { width: 96px; height: auto; display: block; margin-bottom: 14px; opacity: .94; filter: drop-shadow(0 6px 14px rgba(0,0,0,.26)); border-radius: 8px; }
 .hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
 .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4.2rem); font-weight: 900; line-height: 1.06; color: #fff; margin-bottom: 8px; }
 .hero h1 em { font-style: italic; color: var(--gold); }
@@ -523,6 +524,7 @@ body.preview-locked .locked-overlay { display: block; }
 <header class="hero" id="overview">
   <div class="hero-layout">
     <div>
+      <img class="hero-mark" src="assets/mmmf-site-mark.svg" alt="Modern Manners &amp; Mental Fortitude logo">
       <p class="hero-eyebrow">Modern Manners &amp; Mental Fortitude · Real-World Life Skills Program</p>
       <h1><em>Modern Manners</em><br>&amp; Mental Fortitude</h1>
       <p class="hero-tagline">For Grades 9-12 through Adult Interest · Individuals, Couples, Families, Educators · Private Classes, Group Workshops, and Online Mentoring</p>
