@@ -1363,6 +1363,11 @@ publicAccessToggle.addEventListener('click', async () => {
   try {
     const ok = await publishGlobalAccessState(next);
     if (ok) {
+      if (!next) {
+        // If teacher toggles global lock on, clear this browser's local paid unlock
+        // so the lock is visible immediately.
+        localStorage.removeItem(ACCESS_CONTROL.storageKey);
+      }
       setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
     }
   } finally {
