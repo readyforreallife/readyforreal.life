@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Program Offer | Modern Manners & Mental Fortitude</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --ink: #0e1118;
+  --paper: #f6f3ec;
+  --slate: #253044;
+  --slate2: #344159;
+  --gold: #c49540;
+  --gold-lt: #f2e4c0;
+  --teal: #1d6b69;
+  --white: #fff;
+  --rule: #ddd7cc;
+  --muted: #697080;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; line-height: 1.65; }
+nav {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--slate); border-bottom: 3px solid var(--gold);
+  padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.brand { color: var(--gold); text-decoration: none; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 8px; }
+.brand img { width: 30px; height: 20px; object-fit: contain; border-radius: 4px; }
+.nav-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.nav-actions a { text-decoration: none; border: 1px solid rgba(255,255,255,.24); border-radius: 999px; padding: 7px 11px; font-size: 11px; font-family: 'DM Mono', monospace; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.86); }
+.nav-actions a.primary { background: var(--gold); color: #1f2a3a; border-color: #efcd88; font-weight: 700; }
+
+.hero {
+  background: linear-gradient(125deg, var(--slate) 0%, #21314d 62%, #2a4566 100%);
+  color: #fff;
+  padding: 62px 26px 54px;
+  position: relative;
+  overflow: hidden;
+}
+.hero::before {
+  content: ''; position: absolute; width: 420px; height: 420px; right: -110px; top: -130px; border-radius: 50%;
+  background: radial-gradient(circle, rgba(196,149,64,.2) 0%, transparent 72%);
+}
+.hero-wrap { max-width: 1140px; margin: 0 auto; position: relative; z-index: 1; display: grid; grid-template-columns: 1.2fr .9fr; gap: 20px; align-items: end; }
+.eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2rem, 4.8vw, 3.8rem); line-height: 1.04; margin-bottom: 10px; }
+.hero h1 em { color: var(--gold); font-style: italic; }
+.hero-sub { color: rgba(255,255,255,.85); font-size: 17px; max-width: 680px; }
+.value-stack { display: grid; gap: 10px; }
+.value-card {
+  background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.2); border-radius: 12px; padding: 12px 14px;
+}
+.value-card h3 { font-family: 'Playfair Display', serif; font-size: 1.05rem; margin-bottom: 4px; color: #fff; }
+.value-card p { font-size: 13.5px; color: rgba(255,255,255,.82); }
+
+.main { max-width: 1140px; margin: 0 auto; padding: 30px 26px 48px; }
+.grid { display: grid; grid-template-columns: 1.1fr .9fr; gap: 14px; margin-bottom: 14px; }
+.card { background: var(--white); border: 1px solid var(--rule); border-radius: 12px; padding: 18px; }
+.kicker { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; color: var(--muted); margin-bottom: 8px; }
+.card h2 { font-family: 'Playfair Display', serif; color: var(--slate); font-size: 1.6rem; line-height: 1.15; margin-bottom: 10px; }
+.card p { color: #1f2736; font-size: 15px; }
+
+.offer-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-top: 10px; }
+.offer { border-radius: 10px; border: 1px solid var(--rule); background: #fbfaf7; padding: 12px; }
+.offer h4 { font-family: 'Playfair Display', serif; color: var(--slate); font-size: 1.05rem; margin-bottom: 6px; }
+.offer p { font-size: 13px; color: var(--muted); }
+
+.points { display: grid; gap: 8px; }
+.point { background: #f8f5ef; border-left: 4px solid var(--gold); border-radius: 8px; padding: 9px 12px; font-size: 14px; color: #1e2634; }
+
+.cta {
+  margin-top: 14px;
+  display: flex; gap: 8px; flex-wrap: wrap;
+}
+.cta a {
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 9px 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border: 1px solid rgba(37,48,68,.2);
+}
+.cta .primary { background: var(--teal); color: #fff; border-color: var(--teal); }
+.cta .secondary { background: var(--gold-lt); color: #27354c; border-color: #dbc189; }
+
+@media (max-width: 980px) {
+  .hero-wrap { grid-template-columns: 1fr; }
+  .grid { grid-template-columns: 1fr; }
+  .offer-grid { grid-template-columns: 1fr; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="index.html"><img src="assets/mmmf-site-mark.svg" alt="Site logo">Modern Manners &amp; Mental Fortitude</a>
+  <div class="nav-actions">
+    <a href="resume.html">Resume</a>
+    <a href="bio.html">Bio</a>
+    <a class="primary" href="index.html">Back to Site</a>
+  </div>
+</nav>
+
+<header class="hero">
+  <div class="hero-wrap">
+    <div>
+      <p class="eyebrow">Program Offer Infographic</p>
+      <h1><em>What This Course Offers</em><br>And Why It Changes Lives</h1>
+      <p class="hero-sub">A practical, values-centered life skills program built from real public service experience and graduate-level instructional design.</p>
+    </div>
+    <div class="value-stack">
+      <div class="value-card"><h3>Who I Am</h3><p>Public service leader, educator-in-training, and author focused on transfer-ready life skills.</p></div>
+      <div class="value-card"><h3>What I’m Building</h3><p>A modern course/workshop model that teaches respect, regulation, decision quality, and accountability.</p></div>
+      <div class="value-card"><h3>Why It Matters</h3><p>People leave with tools they can use immediately in school, work, family, and community life.</p></div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <div class="grid">
+    <section class="card">
+      <p class="kicker">Program Snapshot</p>
+      <h2>What I Am Doing</h2>
+      <p>I am delivering a structured course/class/workshop experience that closes the gap between knowledge and real-life performance. The program is built for teens through adults and includes direct instruction, scenario practice, reflection, and application coaching.</p>
+      <div class="offer-grid">
+        <div class="offer"><h4>Course</h4><p>16-week sequence with five modules and scaffolded growth.</p></div>
+        <div class="offer"><h4>Class</h4><p>High-engagement sessions with discussion, drills, and role-play.</p></div>
+        <div class="offer"><h4>Workshop</h4><p>Condensed intensive format for schools, groups, and organizations.</p></div>
+      </div>
+    </section>
+
+    <section class="card">
+      <p class="kicker">Core Promise</p>
+      <h2>What Participants Gain</h2>
+      <div class="points">
+        <div class="point">Clear communication and social confidence in real interactions.</div>
+        <div class="point">Emotional regulation tools for pressure moments.</div>
+        <div class="point">Better decisions with long-term consequences in mind.</div>
+        <div class="point">Accountability and repair habits that rebuild trust.</div>
+      </div>
+    </section>
+  </div>
+
+  <div class="grid">
+    <section class="card">
+      <p class="kicker">Why People Should Take It</p>
+      <h2>Life-Level Benefits</h2>
+      <div class="points">
+        <div class="point">Stronger relationships at home, school, and work.</div>
+        <div class="point">More credibility with peers, mentors, and employers.</div>
+        <div class="point">Higher confidence in conflict and difficult conversations.</div>
+        <div class="point">Practical tools to lead self and influence others positively.</div>
+      </div>
+    </section>
+
+    <section class="card">
+      <p class="kicker">Action</p>
+      <h2>Ready to Register?</h2>
+      <p>If you want a program that goes beyond theory and produces measurable real-world growth, this course is designed for you. Register to join the next cohort and apply these skills immediately.</p>
+      <div class="cta">
+        <a class="primary" href="index.html">Register on Homepage</a>
+        <a class="secondary" href="resume.html">View Instructor Resume</a>
+      </div>
+    </section>
+  </div>
+</main>
+</body>
+</html>

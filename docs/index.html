@@ -53,6 +53,14 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
 .badge-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; line-height: 1; display: block; margin-bottom: 4px; }
 .badge-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .10em; opacity: .75; }
 .badge-sub { font-size: 12px; font-weight: 600; margin-top: 6px; opacity: .85; }
+.offer-badge {
+  background: linear-gradient(145deg, #1d6b69 0%, #254a63 100%);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.18);
+}
+.offer-badge .badge-label { color: rgba(255,255,255,.82); }
+.offer-badge .badge-sub { color: #d7eee9; }
+.offer-badge .badge-num { color: #f2e4c0; }
 
 .inst-strip { background: var(--gold-lt); border-bottom: 3px solid var(--gold-dim); padding: 28px 60px; display: flex; align-items: center; gap: 36px; flex-wrap: wrap; }
 .inst-avatar { width: 72px; height: 72px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 3px solid var(--gold); background: var(--slate); }
@@ -476,7 +484,8 @@ body.preview-locked .locked-overlay { display: block; }
   .hero-layout { grid-template-columns: 1fr; }
   .hero-side { align-items: flex-start; transform: translateY(0); }
   .hero-logo-large { width: 140px; height: 140px; object-fit: contain; }
-  .hero-badge { display: none; }
+  #modulesBadge { display: none; }
+  .offer-badge { display: inline-flex; }
   .pillars-grid, .modules-grid, .contexts-grid, .lit-row, .theory-grid, .pacing-grid, .journal-grid, .budget-grid { grid-template-columns: 1fr 1fr; }
   .rat-grid, .fw-row, .impl-grid, .spiral-wrapper { grid-template-columns: 1fr; }
   .assess-row { grid-template-columns: 1fr 1fr; }
@@ -545,6 +554,11 @@ body.preview-locked .locked-overlay { display: block; }
         <span class="badge-label">Modules</span>
         <div class="badge-sub">16-Week Semester</div>
       </div>
+      <a class="hero-badge offer-badge" href="offer.html" aria-label="Open course offer infographic">
+        <span class="badge-num">+</span>
+        <span class="badge-label">Course Offer</span>
+        <div class="badge-sub">Why Join</div>
+      </a>
     </div>
   </div>
 </header>
