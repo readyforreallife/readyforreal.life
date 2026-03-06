@@ -519,6 +519,8 @@ body.preview-locked .locked-overlay { display: block; }
   <button class="util-btn locked" id="teacherToggle" type="button">Teacher Mode: Locked</button>
   <button class="util-btn locked" id="ownerPreviewToggle" type="button" style="display:none;">Owner Preview: Off</button>
   <button class="util-btn locked" id="publicAccessToggle" type="button" style="display:none;">Public Access: Locked</button>
+  <button class="util-btn" id="stripeDashboardBtn" type="button" style="display:none;">Stripe Dashboard</button>
+  <button class="util-btn" id="stripeBillingBtn" type="button" style="display:none;">Billing Portal</button>
   <button class="util-btn" id="sheetsTabBtn" type="button" style="display:none;">Sheets</button>
   <button class="util-btn" id="settingsBtn" type="button" style="display:none;">Settings</button>
   <button class="util-btn" id="adminBtn" type="button" style="display:none;">Admin</button>
@@ -1069,6 +1071,8 @@ const LEGACY_TEACHER_KEY = 'decision-lab-teacher-mode';
 const teacherToggle = document.getElementById('teacherToggle');
 const ownerPreviewToggle = document.getElementById('ownerPreviewToggle');
 const publicAccessToggle = document.getElementById('publicAccessToggle');
+const stripeDashboardBtn = document.getElementById('stripeDashboardBtn');
+const stripeBillingBtn = document.getElementById('stripeBillingBtn');
 const sheetsTabBtn = document.getElementById('sheetsTabBtn');
 const settingsBtn = document.getElementById('settingsBtn');
 const adminBtn = document.getElementById('adminBtn');
@@ -1106,6 +1110,8 @@ function setTeacherUnlocked(v) {
   teacherToggle.classList.toggle('locked', !v);
   ownerPreviewToggle.style.display = v ? 'inline-flex' : 'none';
   publicAccessToggle.style.display = v ? 'inline-flex' : 'none';
+  stripeDashboardBtn.style.display = v ? 'inline-flex' : 'none';
+  stripeBillingBtn.style.display = v ? 'inline-flex' : 'none';
   sheetsTabBtn.style.display = v ? 'inline-flex' : 'none';
   settingsBtn.style.display = v ? 'inline-flex' : 'none';
   adminBtn.style.display = v ? 'inline-flex' : 'none';
@@ -1398,6 +1404,12 @@ teacherToggle.addEventListener('click', () => {
 
 settingsBtn.addEventListener('click', () => openModal(settingsModal));
 adminBtn.addEventListener('click', () => { window.location.href = '/admin/'; });
+stripeDashboardBtn.addEventListener('click', () => {
+  window.open('https://dashboard.stripe.com', '_blank', 'noopener,noreferrer');
+});
+stripeBillingBtn.addEventListener('click', () => {
+  window.open('https://billing.stripe.com/p/login/9B628r30NcCG1qd1s8dIA00', '_blank', 'noopener,noreferrer');
+});
 sheetsTabBtn.addEventListener('click', () => {
   const url = (localStorage.getItem(LS.sheetsDashboardUrl) || DEFAULT_SHEETS_DASHBOARD_URL).trim();
   if (!url) return;
