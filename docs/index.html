@@ -1211,11 +1211,7 @@ async function publishGlobalAccessState(nextUnlocked) {
   globalAccessState = result.nextState;
   updatePublicAccessToggle();
   window.alert(result.nextState.publicUnlocked ? 'Site is now unlocked for everyone.' : 'Site is now locked to paid access.');
-  setTimeout(() => {
-    loadGlobalAccessState().then(() => {
-      setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
-    });
-  }, 1500);
+  setTimeout(syncGlobalAccessState, 1500);
   return true;
 }
 
@@ -1304,9 +1300,7 @@ if (localStorage.getItem(LEGACY_TEACHER_KEY) === 'true') {
   setTeacherUnlocked(true);
 }
 updatePublicAccessToggle();
-loadGlobalAccessState().then(() => {
-  setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
-});
+syncGlobalAccessState();
 
 teacherToggle.addEventListener('click', () => {
   if (isTeacherUnlocked()) {
@@ -1640,9 +1634,18 @@ function isUnlocked() {
   if (!globalTs) return true;
   return localTs >= globalTs;
 }
+async function syncGlobalAccessState() {
+  await loadGlobalAccessState();
+  setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
+}
 if (purchaseLinkTop) purchaseLinkTop.href = ACCESS_CONTROL.checkoutUrl;
 if (purchaseLinkOverlay) purchaseLinkOverlay.href = ACCESS_CONTROL.checkoutUrl;
 setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
+setInterval(syncGlobalAccessState, 8000);
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden) syncGlobalAccessState();
+});
+window.addEventListener('focus', syncGlobalAccessState);
 
 unlockBtnTop?.addEventListener('click', openAccessModal);
 unlockBtnOverlay?.addEventListener('click', openAccessModal);

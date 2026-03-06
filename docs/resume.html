@@ -659,16 +659,30 @@
         const res = await fetch(`site-access.json?t=${Date.now()}`, { cache: 'no-store' });
         if (!res.ok) return;
         const data = await res.json();
-        globalAccessState.publicUnlocked = !!data.publicUnlocked;
-        globalAccessState.updatedAt = String(data.updatedAt || '');
+        const next = {
+          publicUnlocked: !!data.publicUnlocked,
+          updatedAt: String(data.updatedAt || '')
+        };
+        const currTs = Date.parse(String(globalAccessState.updatedAt || '')) || 0;
+        const nextTs = Date.parse(String(next.updatedAt || '')) || 0;
+        if (currTs && nextTs && nextTs < currTs) return;
+        globalAccessState.publicUnlocked = next.publicUnlocked;
+        globalAccessState.updatedAt = next.updatedAt;
       } catch (_err) {}
+    }
+    async function syncGlobalAccessState() {
+      await loadGlobalAccessState();
+      setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
     }
     if (purchaseLinkTop) purchaseLinkTop.href = ACCESS_CONTROL.checkoutUrl;
     if (purchaseLinkOverlay) purchaseLinkOverlay.href = ACCESS_CONTROL.checkoutUrl;
     setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
-    loadGlobalAccessState().then(() => {
-      setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
+    syncGlobalAccessState();
+    setInterval(syncGlobalAccessState, 8000);
+    document.addEventListener('visibilitychange', () => {
+      if (!document.hidden) syncGlobalAccessState();
     });
+    window.addEventListener('focus', syncGlobalAccessState);
     unlockBtnTop?.addEventListener('click', openAccessModal);
     unlockBtnOverlay?.addEventListener('click', openAccessModal);
     accessCloseBtn?.addEventListener('click', closeAccessModal);
