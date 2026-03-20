@@ -519,12 +519,28 @@ body.preview-locked .locked-overlay { display: block; }
   <button class="util-btn locked" id="teacherToggle" type="button">Teacher Mode: Locked</button>
   <button class="util-btn locked" id="ownerPreviewToggle" type="button" style="display:none;">Owner Preview: Off</button>
   <button class="util-btn locked" id="publicAccessToggle" type="button" style="display:none;">Public Access: Locked</button>
-  <button class="util-btn" id="stripeDashboardBtn" type="button" style="display:none;">Stripe Dashboard</button>
-  <button class="util-btn" id="stripeBillingBtn" type="button" style="display:none;">Billing Portal</button>
+ Dashboard</button>
   <button class="util-btn" id="sheetsTabBtn" type="button" style="display:none;">Sheets</button>
   <button class="util-btn" id="settingsBtn" type="button" style="display:none;">Settings</button>
   <button class="util-btn" id="adminBtn" type="button" style="display:none;">Admin</button>
 </div>
+</div>
+<div class="inst-strip" id="teacherResourcesStrip" style="display:none;">
+  <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
+    <div>
+      <div class="mini-title">Teacher Resources</div>
+      <div style="color: rgba(255,255,255,.78); margin-top:6px;">
+        Private management shortcuts for billing and site operations.
+      </div>
+    </div>
+    <div class="access-actions">
+      <button class="util-btn" id="stripeDashboardBtn" type="button">Stripe Dashboard</button>
+      <button class="util-btn" id="stripeBillingBtn" type="button">Billing Portal</button>
+    </div>
+  </div>
+</div>
+<div class="access-gate" id="accessGate">
+
 <div class="access-gate" id="accessGate">
   <div class="access-gate-copy">Preview mode is active. Full curriculum content is restricted to licensed users with paid access.</div>
   <div class="access-actions">
@@ -1071,6 +1087,7 @@ const LEGACY_TEACHER_KEY = 'decision-lab-teacher-mode';
 const teacherToggle = document.getElementById('teacherToggle');
 const ownerPreviewToggle = document.getElementById('ownerPreviewToggle');
 const publicAccessToggle = document.getElementById('publicAccessToggle');
+const teacherResourcesStrip = document.getElementById('teacherResourcesStrip');
 const stripeDashboardBtn = document.getElementById('stripeDashboardBtn');
 const stripeBillingBtn = document.getElementById('stripeBillingBtn');
 const sheetsTabBtn = document.getElementById('sheetsTabBtn');
@@ -1110,8 +1127,7 @@ function setTeacherUnlocked(v) {
   teacherToggle.classList.toggle('locked', !v);
   ownerPreviewToggle.style.display = v ? 'inline-flex' : 'none';
   publicAccessToggle.style.display = v ? 'inline-flex' : 'none';
-  stripeDashboardBtn.style.display = v ? 'inline-flex' : 'none';
-  stripeBillingBtn.style.display = v ? 'inline-flex' : 'none';
+if (teacherResourcesStrip) teacherResourcesStrip.style.display = v ? 'block' : 'none';
   sheetsTabBtn.style.display = v ? 'inline-flex' : 'none';
   settingsBtn.style.display = v ? 'inline-flex' : 'none';
   adminBtn.style.display = v ? 'inline-flex' : 'none';
