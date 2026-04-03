@@ -68,6 +68,7 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
 .inst-person { display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 120px; }
 .inst-avatar { width: 72px; height: 72px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 3px solid var(--gold); background: var(--slate); }
 .inst-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; display: block; }
+.inst-avatar img.mekenzi-avatar { transform: scale(1.22); transform-origin: center 26%; object-position: center 14%; }
 .inst-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--slate); margin-top: 10px; }
 .inst-copy { display: flex; flex-direction: column; gap: 4px; min-width: 260px; }
 .inst-titles { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
@@ -602,7 +603,7 @@ body.preview-locked .locked-overlay { display: block; }
     </div>
     <div class="inst-person">
       <div class="inst-avatar">
-        <img src="mekenzi-terry-headshot.png" alt="Portrait of Mekenzi G. Terry">
+        <img class="mekenzi-avatar" src="mekenzi-terry-headshot.png" alt="Portrait of Mekenzi G. Terry">
       </div>
       <div class="inst-name">Mekenzi G. Terry</div>
     </div>
