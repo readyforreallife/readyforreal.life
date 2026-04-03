@@ -141,13 +141,14 @@ nav {
 .main { max-width: 1060px; margin: 0 auto; padding: 34px 28px 50px; }
 .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; }
 .grid.equal { grid-template-columns: 1fr 1fr; }
-.founder-columns { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: start; }
-.founder-column { display: grid; gap: 18px; }
+.founder-rows { display: grid; gap: 18px; }
+.founder-row { display: grid; grid-template-columns: 1fr 1fr; gap: 22px; align-items: stretch; }
 .card {
   background: var(--white);
   border: 1px solid var(--rule);
   border-radius: 12px;
   padding: 20px;
+  height: 100%;
 }
 .card h2 {
   font-family: 'Playfair Display', serif;
@@ -197,7 +198,7 @@ nav {
 }
 @media (max-width: 900px) {
   .hero-wrap { grid-template-columns: 1fr; }
-  .grid, .grid.equal, .strip-wrap, .founder-spotlight, .founder-columns { grid-template-columns: 1fr; }
+  .grid, .grid.equal, .strip-wrap, .founder-spotlight, .founder-row { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -246,11 +247,17 @@ nav {
 </div>
 
 <main class="main">
-  <div class="founder-columns">
-    <section class="founder-column">
+  <div class="founder-rows">
+    <div class="founder-row">
       <div class="section-heading">
         <p class="kicker">Michael R. Terry</p>
       </div>
+      <div class="section-heading">
+        <p class="kicker">Mekenzi G. Terry</p>
+      </div>
+    </div>
+
+    <div class="founder-row">
       <article class="card">
         <p class="kicker">Who He Is</p>
         <h2>Mission-Driven Leadership</h2>
@@ -262,15 +269,40 @@ nav {
         </div>
       </article>
       <article class="card">
+        <p class="kicker">Who She Is</p>
+        <h2>Rooted in Community and Excellence</h2>
+        <p class="copy">Mekenzi Terry grew up in Tooele, Utah, just down the road from the man she would later marry. From the beginning, she was known as someone who did everything and did it well. She competed in dance and basketball, cheered on the sidelines, and earned three state championships with the Tooele High School softball team. She was crowned homecoming queen, not because she chased attention, but because people were naturally drawn to her.</p>
+        <p class="copy" style="margin-top:12px;">She married Mike in 2008 and has built a life alongside him through the demands of law enforcement, raising five children, and investing deeply in every community she has been part of. In many ways, Mekenzi is the original teacher behind Modern Manners &amp; Mental Fortitude. Mike will be the first to say she taught him much of what he knows about how children learn, how people carry themselves, and how adults communicate with integrity.</p>
+      </article>
+    </div>
+
+    <div class="founder-row">
+      <article class="card">
         <p class="kicker">Life Interests</p>
         <h2>Learning, Mentorship, and Service</h2>
         <p class="copy">His interests center on mentoring youth and adults, strengthening families, and translating real-world leadership experience into simple tools that people can use immediately. He is especially focused on communication, emotional regulation, and accountability as lifelong performance skills.</p>
       </article>
       <article class="card">
+        <p class="kicker">Leadership</p>
+        <h2>Builder of Programs and People</h2>
+        <p class="copy">Long before titles or formal programs, Mekenzi was simply a mother who walked her daughter through the doors of Ken's Gym and never really left. What began as support for her own child became a calling. She became the pioneer of what is now a large and thriving Tumblebees Preschool Gymnastics program, serving as its Coach and Director.</p>
+      </article>
+    </div>
+
+    <div class="founder-row">
+      <article class="card">
         <p class="kicker">Family Life</p>
         <h2>Family-Centered Purpose</h2>
         <p class="copy">Family is at the center of Michael’s work. His writing and teaching consistently reflect home-centered values: presence, integrity, and daily follow-through. He speaks frequently about building trust and creating steady habits that strengthen family relationships over time.</p>
       </article>
+      <article class="card">
+        <p class="kicker">Work and Service</p>
+        <h2>Showing Up Across Every Setting</h2>
+        <p class="copy">Before stepping into gymnastics leadership full-time, Mekenzi spent five years running her own clothing business, proving she knows how to build something from the ground up. She also served as a crossing guard and as a Special Education Aide in the Tooele County School District, adding to a long record of showing up for children in every stage and setting.</p>
+      </article>
+    </div>
+
+    <div class="founder-row">
       <article class="card">
         <p class="kicker">Career</p>
         <h2>Public Safety and Education</h2>
@@ -282,6 +314,14 @@ nav {
         </ul>
       </article>
       <article class="card">
+        <p class="kicker">Faith and Family</p>
+        <h2>Centered on Gospel and Home</h2>
+        <p class="copy">Mekenzi is an active member of The Church of Jesus Christ of Latter-day Saints and loves the Gospel above all else. Her life reflects steadiness, humor, warmth, and conviction. She is a mother of five and a coach to many more, and her influence reaches well beyond the walls of any one home, classroom, or gym.</p>
+      </article>
+    </div>
+
+    <div class="founder-row">
+      <article class="card">
         <p class="kicker">Church Service</p>
         <h2>Faith in Daily Practice</h2>
         <p class="copy">Michael’s faith-based service is reflected in his <em>Hear Him Daily</em> writing and presentations. His message emphasizes discipleship in ordinary life: hearing the Savior in the middle of work, marriage, parenting, and service to others. This faith perspective shapes both his bio and the values behind his educational work.</p>
@@ -289,33 +329,6 @@ nav {
           <a class="cta" href="https://instagram.com/hearhim.daily">@hearhim.daily</a>
           <a class="cta" href="https://www.amazon.com/Still-Small-Daily-Michael-Terry-ebook/dp/B0G6VXNXHD/ref=tmm_kin_swatch_0">Read the Book</a>
         </div>
-      </article>
-    </section>
-
-    <section class="founder-column">
-      <div class="section-heading">
-        <p class="kicker">Mekenzi G. Terry</p>
-      </div>
-      <article class="card">
-        <p class="kicker">Who She Is</p>
-        <h2>Rooted in Community and Excellence</h2>
-        <p class="copy">Mekenzi Terry grew up in Tooele, Utah, just down the road from the man she would later marry. From the beginning, she was known as someone who did everything and did it well. She competed in dance and basketball, cheered on the sidelines, and earned three state championships with the Tooele High School softball team. She was crowned homecoming queen, not because she chased attention, but because people were naturally drawn to her.</p>
-        <p class="copy" style="margin-top:12px;">She married Mike in 2008 and has built a life alongside him through the demands of law enforcement, raising five children, and investing deeply in every community she has been part of. In many ways, Mekenzi is the original teacher behind Modern Manners &amp; Mental Fortitude. Mike will be the first to say she taught him much of what he knows about how children learn, how people carry themselves, and how adults communicate with integrity.</p>
-      </article>
-      <article class="card">
-        <p class="kicker">Leadership</p>
-        <h2>Builder of Programs and People</h2>
-        <p class="copy">Long before titles or formal programs, Mekenzi was simply a mother who walked her daughter through the doors of Ken's Gym and never really left. What began as support for her own child became a calling. She became the pioneer of what is now a large and thriving Tumblebees Preschool Gymnastics program, serving as its Coach and Director.</p>
-      </article>
-      <article class="card">
-        <p class="kicker">Work and Service</p>
-        <h2>Showing Up Across Every Setting</h2>
-        <p class="copy">Before stepping into gymnastics leadership full-time, Mekenzi spent five years running her own clothing business, proving she knows how to build something from the ground up. She also served as a crossing guard and as a Special Education Aide in the Tooele County School District, adding to a long record of showing up for children in every stage and setting.</p>
-      </article>
-      <article class="card">
-        <p class="kicker">Faith and Family</p>
-        <h2>Centered on Gospel and Home</h2>
-        <p class="copy">Mekenzi is an active member of The Church of Jesus Christ of Latter-day Saints and loves the Gospel above all else. Her life reflects steadiness, humor, warmth, and conviction. She is a mother of five and a coach to many more, and her influence reaches well beyond the walls of any one home, classroom, or gym.</p>
       </article>
       <article class="card">
         <p class="kicker">Life in Full Color</p>
@@ -325,7 +338,7 @@ nav {
           <a class="cta" href="https://instagram.com/mamamekenzi">@mamamekenzi</a>
         </div>
       </article>
-    </section>
+    </div>
   </div>
 </main>
 </body>
