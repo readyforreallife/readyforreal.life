@@ -203,8 +203,9 @@ nav {
 <nav>
   <a class="brand" href="index.html"><img src="assets/mmmf-site-mark.svg" alt="Site logo">Modern Manners &amp; Mental Fortitude</a>
   <div class="nav-actions">
+    <a href="index.html" onclick="if (window.history.length > 1) { event.preventDefault(); window.history.back(); }">Back</a>
+    <a class="primary" href="index.html">Main Homepage</a>
     <a href="resume.html">Resume</a>
-    <a class="primary" href="index.html">Back to Site</a>
   </div>
 </nav>
 <script src="site-search.js" data-search-index="site-search-index.json" defer></script>
