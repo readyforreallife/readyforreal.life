@@ -158,6 +158,47 @@ body {
   margin-top: 0;
 }
 
+.founders-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+  margin-top: 12px;
+}
+
+.founder-card {
+  display: grid;
+  grid-template-columns: 78px 1fr;
+  gap: 12px;
+  align-items: start;
+  padding: 12px;
+  border-radius: 14px;
+  border: 1px solid rgba(0,0,0,0.08);
+  background: rgba(255,255,255,0.92);
+}
+
+.founder-card h3 {
+  margin: 0 0 4px;
+  font-size: 18px;
+}
+
+.founder-card p {
+  margin: 0 0 8px;
+}
+
+.founder-photo {
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center 18%;
+  border: 3px solid var(--accent-2);
+  background: #fff;
+}
+
+.founder-photo-mekenzi {
+  object-position: center 12%;
+}
+
 .signature {
   font-weight: 700;
   margin-top: 8px;
@@ -166,4 +207,10 @@ body {
 @media print {
   body { background: #fff; }
   .flyer { box-shadow: none; border: none; margin: 0; }
+}
+
+@media (max-width: 760px) {
+  .founders-grid {
+    grid-template-columns: 1fr;
+  }
 }
