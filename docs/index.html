@@ -64,6 +64,7 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
 .offer-badge .badge-num { color: #f2e4c0; }
 
 .inst-strip { background: var(--gold-lt); border-bottom: 3px solid var(--gold-dim); padding: 28px 60px; display: flex; align-items: center; gap: 36px; flex-wrap: wrap; }
+.inst-strip .mini-title { color: var(--slate); font-weight: 700; }
 .inst-people { display: flex; align-items: flex-start; gap: 28px; flex-wrap: wrap; }
 .inst-person { display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 120px; }
 .inst-avatar { width: 72px; height: 72px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 3px solid var(--gold); background: var(--slate); }
@@ -439,6 +440,8 @@ footer { background: var(--ink); color: rgba(255,255,255,.5); padding: 36px 60px
 }
 .access-gate-copy { font-size: 12.5px; color: #5b4518; max-width: 900px; }
 .access-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.teacher-shortcuts { display:flex; gap:10px; flex-wrap:wrap; }
+.teacher-shortcuts .util-btn { background:#fff; }
 .access-btn {
   border: 1px solid var(--slate);
   background: var(--slate);
@@ -527,9 +530,6 @@ body.preview-locked .locked-overlay { display: block; }
   <button class="util-btn locked" id="teacherToggle" type="button">Teacher Mode: Locked</button>
   <button class="util-btn locked" id="ownerPreviewToggle" type="button" style="display:none;">Owner Preview: Off</button>
   <button class="util-btn locked" id="publicAccessToggle" type="button" style="display:none;">Public Access: Locked</button>
-  <button class="util-btn" id="stripeDashboardBtn" type="button" style="display:none;">Stripe Dashboard</button>
-  <button class="util-btn" id="stripeBillingBtn" type="button" style="display:none;">Billing Portal</button>
-  <button class="util-btn" id="sheetsTabBtn" type="button" style="display:none;">Sheets</button>
   <button class="util-btn" id="settingsBtn" type="button" style="display:none;">Settings</button>
   <button class="util-btn" id="adminBtn" type="button" style="display:none;">Admin</button>
 </div>
@@ -538,13 +538,16 @@ body.preview-locked .locked-overlay { display: block; }
   <div style="display:flex; align-items:center; justify-content:space-between; gap:16px; flex-wrap:wrap;">
     <div>
       <div class="mini-title">Teacher Resources</div>
-      <div style="color: rgba(255,255,255,.78); margin-top:6px;">
-        Private management shortcuts for billing and site operations.
+      <div style="color: var(--slate2); margin-top:6px;">
+        Private management shortcuts for registrations, certificates, billing, and site operations.
       </div>
     </div>
-    <div class="access-actions">
-      <button class="util-btn" id="stripeDashboardBtn" type="button">Stripe Dashboard</button>
-      <button class="util-btn" id="stripeBillingBtn" type="button">Billing Portal</button>
+    <div class="teacher-shortcuts">
+      <a class="util-btn" id="registrationFolderBtn" href="https://readyforreallife.github.io/mmmf-codex/web/agreement-tracker.html#registration-folder">Registration Folder</a>
+      <a class="util-btn" id="certificateFolderBtn" href="https://readyforreallife.github.io/mmmf-codex/web/agreement-tracker.html#certificate-folder">Certificate Folder</a>
+      <a class="util-btn" id="stripeCenterBtn" href="billing.html">Billing Center</a>
+      <button class="util-btn" id="stripeDashboardShortcutBtn" type="button">Stripe Dashboard</button>
+      <button class="util-btn" id="stripeBillingShortcutBtn" type="button">Billing Portal</button>
     </div>
   </div>
 </div>
@@ -1000,18 +1003,12 @@ body.preview-locked .locked-overlay { display: block; }
   <div class="modal-backdrop" data-close-settings></div>
   <div class="modal-panel">
     <h3 class="modal-title">Teacher Settings</h3>
-    <p class="modal-sub">Only visible in Teacher Mode. Route registrations to a dedicated endpoint, separate from response logging.</p>
+    <p class="modal-sub">Only visible in Teacher Mode. Route registrations directly into your protected MMMF registration folder.</p>
     <div class="form-grid">
       <label for="registrationEndpoint">Registration endpoint URL (optional, recommended)</label>
-      <input id="registrationEndpoint" placeholder="https://script.google.com/macros/s/.../exec">
+      <input id="registrationEndpoint" placeholder="https://your-worker.your-subdomain.workers.dev">
       <label for="registrationSecret">Registration secret (optional)</label>
       <input id="registrationSecret" placeholder="Stored locally">
-      <label for="sheetsDashboardUrl">Google Sheets URL (Teacher tab)</label>
-      <input id="sheetsDashboardUrl" placeholder="https://docs.google.com/spreadsheets/d/...">
-      <label for="sheetsEndpoint">Sheets endpoint URL</label>
-      <input id="sheetsEndpoint" placeholder="https://script.google.com/macros/s/.../exec">
-      <label for="sheetsSecret">Sheets secret (optional)</label>
-      <input id="sheetsSecret" placeholder="Stored locally">
       <label for="teacherPin">Teacher PIN</label>
       <input id="teacherPin" type="password" value="4429">
       <label for="githubToken">GitHub token (for global public lock toggle)</label>
@@ -1090,15 +1087,11 @@ document.querySelectorAll('.fade').forEach(el => observer.observe(el));
 const LS = {
   teacherUnlocked: 'dl_teacher_unlocked',
   teacherPin: 'dl_teacher_pin',
-  sheetsEndpoint: 'dl_sheets_endpoint',
-  sheetsSecret: 'dl_sheets_secret',
   registrationEndpoint: 'dl_registration_endpoint',
   registrationSecret: 'dl_registration_secret',
-  sheetsDashboardUrl: 'dl_sheets_dashboard_url',
   githubToken: 'dl_github_token'
 };
-const DEFAULT_REGISTRATION_ENDPOINT = 'https://script.google.com/macros/s/AKfycbzH2--hkA4ezway034VJ6AKK7AQlkiDkGn2rjQ1tP2PhaY25gOKX89cfJZ7fucx6yUH/exec';
-const DEFAULT_SHEETS_DASHBOARD_URL = 'https://docs.google.com/spreadsheets/d/1yhgF2coWvUk3QKqN347kFGMv8pqFBz79BHWE8kphs_E/edit?gid=0#gid=0';
+const DEFAULT_REGISTRATION_ENDPOINT = 'https://flat-flower-4af8mmmf-agreement-admin.mikeyterry44.workers.dev';
 const GITHUB_REPO_OWNER = 'readyforreallife';
 const GITHUB_REPO_NAME = 'readyforreal.life';
 const GITHUB_REPO_BRANCH = 'main';
@@ -1114,9 +1107,8 @@ const teacherToggle = document.getElementById('teacherToggle');
 const ownerPreviewToggle = document.getElementById('ownerPreviewToggle');
 const publicAccessToggle = document.getElementById('publicAccessToggle');
 const teacherResourcesStrip = document.getElementById('teacherResourcesStrip');
-const stripeDashboardBtn = document.getElementById('stripeDashboardBtn');
-const stripeBillingBtn = document.getElementById('stripeBillingBtn');
-const sheetsTabBtn = document.getElementById('sheetsTabBtn');
+const stripeDashboardShortcutBtn = document.getElementById('stripeDashboardShortcutBtn');
+const stripeBillingShortcutBtn = document.getElementById('stripeBillingShortcutBtn');
 const settingsBtn = document.getElementById('settingsBtn');
 const adminBtn = document.getElementById('adminBtn');
 const registerBtn = document.getElementById('registerBtn');
@@ -1126,9 +1118,6 @@ const teacherPinModal = document.getElementById('teacherPinModal');
 const registerForm = document.getElementById('registerForm');
 const registerStatus = document.getElementById('registerStatus');
 const registerSubmitBtn = registerForm ? registerForm.querySelector('button[type="submit"]') : null;
-const sheetsEndpointInput = document.getElementById('sheetsEndpoint');
-const sheetsSecretInput = document.getElementById('sheetsSecret');
-const sheetsDashboardUrlInput = document.getElementById('sheetsDashboardUrl');
 const registrationEndpointInput = document.getElementById('registrationEndpoint');
 const registrationSecretInput = document.getElementById('registrationSecret');
 const teacherPinInput = document.getElementById('teacherPin');
@@ -1154,7 +1143,6 @@ function setTeacherUnlocked(v) {
   ownerPreviewToggle.style.display = v ? 'inline-flex' : 'none';
   publicAccessToggle.style.display = v ? 'inline-flex' : 'none';
   if (teacherResourcesStrip) teacherResourcesStrip.style.display = v ? 'block' : 'none';
-  sheetsTabBtn.style.display = v ? 'inline-flex' : 'none';
   settingsBtn.style.display = v ? 'inline-flex' : 'none';
   adminBtn.style.display = v ? 'inline-flex' : 'none';
 }
@@ -1368,12 +1356,10 @@ function submitTeacherPin() {
 async function trySubmitToEndpoint(url, payload, secret) {
   if (!url) return false;
   const outbound = { ...payload };
-  if (secret && !outbound.secret) outbound.secret = secret;
-  if (!outbound.secret) outbound.secret = '4429-DECISION-LAB';
   const body = JSON.stringify(outbound);
   const opts = {
     method: 'POST',
-    headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+    headers: { 'Content-Type': 'application/json' },
     body
   };
   try {
@@ -1404,14 +1390,6 @@ if (legacySettingsRaw) {
   }
 }
 const endpointFromStorage =
-  localStorage.getItem(LS.sheetsEndpoint)
-  || (legacySettings && legacySettings.sheetsEndpoint)
-  || '';
-const secretFromStorage =
-  localStorage.getItem(LS.sheetsSecret)
-  || (legacySettings && legacySettings.sheetsSecret)
-  || '';
-const registrationEndpointFromStorage =
   localStorage.getItem(LS.registrationEndpoint)
   || (legacySettings && (legacySettings.registrationEndpoint || legacySettings.registerEndpoint))
   || DEFAULT_REGISTRATION_ENDPOINT;
@@ -1419,13 +1397,7 @@ const registrationSecretFromStorage =
   localStorage.getItem(LS.registrationSecret)
   || (legacySettings && (legacySettings.registrationSecret || legacySettings.registerSecret))
   || '';
-const sheetsDashboardUrlFromStorage =
-  localStorage.getItem(LS.sheetsDashboardUrl)
-  || DEFAULT_SHEETS_DASHBOARD_URL;
-sheetsEndpointInput.value = endpointFromStorage;
-sheetsSecretInput.value = secretFromStorage;
-sheetsDashboardUrlInput.value = sheetsDashboardUrlFromStorage;
-registrationEndpointInput.value = registrationEndpointFromStorage;
+registrationEndpointInput.value = endpointFromStorage;
 registrationSecretInput.value = registrationSecretFromStorage;
 teacherPinInput.value = getTeacherPin();
 githubTokenInput.value = getGithubToken();
@@ -1446,16 +1418,11 @@ teacherToggle.addEventListener('click', () => {
 
 settingsBtn.addEventListener('click', () => openModal(settingsModal));
 adminBtn.addEventListener('click', () => { window.location.href = '/admin/'; });
-stripeDashboardBtn.addEventListener('click', () => {
-  window.open('https://dashboard.stripe.com', '_blank', 'noopener,noreferrer');
+stripeDashboardShortcutBtn.addEventListener('click', () => {
+  window.location.href = 'https://dashboard.stripe.com';
 });
-stripeBillingBtn.addEventListener('click', () => {
-  window.open('https://billing.stripe.com/p/login/9B628r30NcCG1qd1s8dIA00', '_blank', 'noopener,noreferrer');
-});
-sheetsTabBtn.addEventListener('click', () => {
-  const url = (localStorage.getItem(LS.sheetsDashboardUrl) || DEFAULT_SHEETS_DASHBOARD_URL).trim();
-  if (!url) return;
-  window.location.href = url;
+stripeBillingShortcutBtn.addEventListener('click', () => {
+  window.location.href = 'https://billing.stripe.com/p/login/9B628r30NcCG1qd1s8dIA00';
 });
 document.getElementById('settingsCloseBtn').addEventListener('click', () => closeModal(settingsModal));
 document.querySelector('[data-close-settings]').addEventListener('click', () => closeModal(settingsModal));
@@ -1469,14 +1436,9 @@ teacherPinUnlockInput?.addEventListener('keydown', (evt) => {
   }
 });
 document.getElementById('settingsSaveBtn').addEventListener('click', () => {
-  localStorage.setItem(LS.sheetsEndpoint, sheetsEndpointInput.value.trim());
-  localStorage.setItem(LS.sheetsSecret, sheetsSecretInput.value.trim());
-  localStorage.setItem(LS.sheetsDashboardUrl, sheetsDashboardUrlInput.value.trim());
   localStorage.setItem(LS.registrationEndpoint, registrationEndpointInput.value.trim());
   localStorage.setItem(LS.registrationSecret, registrationSecretInput.value.trim());
   if (legacySettings) {
-    legacySettings.sheetsEndpoint = sheetsEndpointInput.value.trim();
-    legacySettings.sheetsSecret = sheetsSecretInput.value.trim();
     legacySettings.registrationEndpoint = registrationEndpointInput.value.trim();
     legacySettings.registrationSecret = registrationSecretInput.value.trim();
     localStorage.setItem(LEGACY_SETTINGS_KEY, JSON.stringify(legacySettings));
@@ -1555,6 +1517,7 @@ registerForm.addEventListener('submit', async (e) => {
   }
   const formData = new FormData(registerForm);
   const payload = {
+    action: 'registration_submit',
     type: 'registration',
     event: 'registration',
     form: 'register_now',
@@ -1565,19 +1528,12 @@ registerForm.addEventListener('submit', async (e) => {
     notes: String(formData.get('notes') || '').trim(),
     timestamp: new Date().toISOString()
   };
-  // Backward-compatible fields for older Apps Script handlers.
-  payload.participant_name = payload.name;
-  payload.role_or_level = payload.group;
-  payload.age = '';
-  payload.scenario_title = 'Registration Interest';
-  payload.choice = 'Register Now';
-  payload.tool = payload.email;
-  payload.concept = payload.phone;
-  payload.why = payload.notes;
-  payload.full_name = payload.name;
-  payload.best_fit = payload.group;
   payload.program = 'Modern Manners and Mental Fortitude';
-  payload.source = 'website-register-modal';
+  payload.organization = '';
+  payload.details_json = JSON.stringify({
+    source: 'website-register-modal',
+    bestFit: payload.group
+  });
   if (!payload.name || !payload.email || !payload.group) {
     showStatus('Please complete name, email, and best fit.', true);
     registerSubmitting = false;
@@ -1591,11 +1547,9 @@ registerForm.addEventListener('submit', async (e) => {
   }
   const primaryEndpoint =
     localStorage.getItem(LS.registrationEndpoint)
-    || localStorage.getItem(LS.sheetsEndpoint)
     || DEFAULT_REGISTRATION_ENDPOINT;
   const secret =
     localStorage.getItem(LS.registrationSecret)
-    || localStorage.getItem(LS.sheetsSecret)
     || '';
   const endpointCandidates = [
     primaryEndpoint,
@@ -1605,7 +1559,7 @@ registerForm.addEventListener('submit', async (e) => {
     const queue = JSON.parse(localStorage.getItem('dl_registration_queue') || '[]');
     queue.push(payload);
     localStorage.setItem('dl_registration_queue', JSON.stringify(queue));
-    showStatus('Saved locally. Add a Registration endpoint (or Sheets endpoint) in Teacher Settings to sync.', false);
+    showStatus('Saved locally. Add a Registration endpoint in Teacher Settings to sync.', false);
     registerSubmitting = false;
     if (registerSubmitBtn) {
       registerSubmitBtn.disabled = false;

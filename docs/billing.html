@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Billing Center | Modern Manners & Mental Fortitude</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root {
+  --paper:#f6f3ec;
+  --white:#ffffff;
+  --ink:#0e1118;
+  --slate:#253044;
+  --slate2:#344159;
+  --gold:#c49540;
+  --gold-lt:#f2e4c0;
+  --rule:#ddd7cc;
+  --muted:#697080;
+}
+* { box-sizing:border-box; }
+body { margin:0; font-family:'DM Sans',sans-serif; background:var(--paper); color:var(--ink); }
+.hero { background:var(--slate); color:#fff; padding:48px 24px; border-bottom:4px solid var(--gold); }
+.wrap { max-width:1100px; margin:0 auto; }
+.eyebrow { font-family:'DM Mono',monospace; font-size:11px; letter-spacing:.16em; text-transform:uppercase; color:var(--gold); margin-bottom:10px; }
+h1 { font-family:'Playfair Display',serif; font-size:clamp(2rem,4vw,3.3rem); margin:0 0 10px; }
+.hero p { max-width:740px; color:rgba(255,255,255,.76); margin:0; }
+.actions { margin-top:18px; display:flex; gap:10px; flex-wrap:wrap; }
+.btn { display:inline-flex; align-items:center; justify-content:center; gap:8px; padding:12px 16px; border-radius:999px; text-decoration:none; border:1px solid rgba(255,255,255,.18); background:rgba(255,255,255,.08); color:#fff; font-weight:700; }
+.btn.light { background:var(--gold-lt); color:var(--slate); border-color:#d8c08d; }
+main { padding:28px 24px 52px; }
+.grid { display:grid; grid-template-columns:1.1fr .9fr; gap:24px; }
+.card { background:var(--white); border:1px solid var(--rule); border-radius:18px; padding:24px; box-shadow:0 10px 30px rgba(0,0,0,.04); }
+.card h2 { font-family:'Playfair Display',serif; font-size:1.5rem; color:var(--slate); margin:0 0 12px; }
+.card p { color:var(--slate2); margin:0 0 14px; line-height:1.7; }
+.list { display:grid; gap:12px; margin-top:12px; }
+.item { border:1px solid var(--rule); border-radius:14px; padding:16px; background:#fcfaf5; }
+.item strong { display:block; color:var(--slate); margin-bottom:6px; }
+.item span { color:var(--muted); font-size:.95rem; }
+.action-stack { display:grid; gap:12px; margin-top:18px; }
+.action-stack a { display:flex; align-items:center; justify-content:space-between; gap:14px; padding:16px 18px; border-radius:14px; background:var(--slate); color:#fff; text-decoration:none; font-weight:700; }
+.action-stack a.alt { background:var(--gold-lt); color:var(--slate); border:1px solid #d8c08d; }
+.note { margin-top:18px; padding:14px 16px; border-radius:12px; background:#fff8e8; border:1px solid #ead8a9; color:#7d5d1e; }
+@media (max-width: 860px) {
+  .grid { grid-template-columns:1fr; }
+}
+</style>
+</head>
+<body>
+  <header class="hero">
+    <div class="wrap">
+      <div class="eyebrow">Billing Center</div>
+      <h1>Manage payments from one clear place.</h1>
+      <p>This page keeps billing navigation inside your site first. Secure payment management still happens on Stripe itself, because Stripe does not allow its dashboard or billing portal to be embedded directly inside a website.</p>
+      <div class="actions">
+        <a class="btn" href="index.html">Back to Homepage</a>
+        <a class="btn light" href="https://readyforreallife.github.io/mmmf-codex/web/agreement-tracker.html">Open Teacher Mode</a>
+      </div>
+    </div>
+  </header>
+
+  <main>
+    <div class="wrap grid">
+      <section class="card">
+        <h2>What this page is for</h2>
+        <p>Use this page as the internal starting point for billing. From here, you can move to the secure Stripe tools you need without hunting through the homepage or broken shortcuts.</p>
+        <div class="list">
+          <div class="item">
+            <strong>Billing Portal</strong>
+            <span>Best for subscriptions, invoices, payment methods, and customer billing management.</span>
+          </div>
+          <div class="item">
+            <strong>Stripe Dashboard</strong>
+            <span>Best for owner-level review of payments, products, links, revenue, and account-level settings.</span>
+          </div>
+          <div class="item">
+            <strong>Teacher Mode Records</strong>
+            <span>Use your registration and certificate folders inside Teacher Mode to see who signed up and what credentials have been issued.</span>
+          </div>
+        </div>
+        <div class="note">Stripe’s secure tools cannot be fully hosted inside your website. The cleanest user-friendly option is what you have here: an on-site Billing Center that sends you to the secure Stripe page only when needed.</div>
+      </section>
+
+      <aside class="card">
+        <h2>Billing Actions</h2>
+        <div class="action-stack">
+          <a class="alt" href="https://billing.stripe.com/p/login/9B628r30NcCG1qd1s8dIA00">Open Billing Portal <span>→</span></a>
+          <a href="https://dashboard.stripe.com">Open Stripe Dashboard <span>→</span></a>
+          <a class="alt" href="https://readyforreallife.github.io/mmmf-codex/web/agreement-tracker.html">Open Registration & Certificate Folders <span>→</span></a>
+        </div>
+      </aside>
+    </div>
+  </main>
+</body>
+</html>
