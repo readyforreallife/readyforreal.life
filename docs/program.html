@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>What Is Our Program? | Modern Manners & Mental Fortitude</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site-search.css">
+<style>
+:root {
+  --ink: #0e1118;
+  --paper: #f6f3ec;
+  --slate: #253044;
+  --slate2: #344159;
+  --gold: #c49540;
+  --gold-lt: #f2e4c0;
+  --white: #ffffff;
+  --rule: #ddd7cc;
+  --muted: #697080;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body { background: var(--paper); color: var(--ink); font-family: 'DM Sans', sans-serif; line-height: 1.75; }
+nav {
+  position: sticky; top: 0; z-index: 50;
+  background: var(--slate); border-bottom: 3px solid var(--gold);
+  padding: 10px 16px; display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+.brand { color: var(--gold); text-decoration: none; font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .14em; text-transform: uppercase; display: inline-flex; align-items: center; gap: 8px; }
+.brand img { width: 30px; height: 20px; object-fit: contain; border-radius: 4px; }
+.nav-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.nav-actions a { text-decoration: none; border: 1px solid rgba(255,255,255,.24); border-radius: 999px; padding: 7px 11px; font-size: 11px; font-family: 'DM Mono', monospace; letter-spacing: .08em; text-transform: uppercase; color: rgba(255,255,255,.86); }
+.nav-actions a.primary { background: var(--gold); color: #1f2a3a; border-color: #efcd88; font-weight: 700; }
+.hero {
+  background: linear-gradient(125deg, var(--slate) 0%, #21314d 62%, #2a4566 100%);
+  color: #fff;
+  padding: 64px 28px 56px;
+}
+.hero-wrap { max-width: 1000px; margin: 0 auto; }
+.eyebrow { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 14px; }
+.hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.1rem, 4.6vw, 4rem); line-height: 1.04; margin-bottom: 12px; }
+.hero h1 em { color: var(--gold); font-style: italic; }
+.hero-sub { color: rgba(255,255,255,.86); font-size: 18px; max-width: 760px; }
+.main { max-width: 1000px; margin: 0 auto; padding: 34px 28px 56px; }
+.section {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 24px;
+  margin-bottom: 18px;
+}
+.section-label { font-family: 'DM Mono', monospace; font-size: 10px; letter-spacing: .15em; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; }
+.section h2 { font-family: 'Playfair Display', serif; color: var(--slate); font-size: 1.7rem; margin-bottom: 12px; }
+.section p + p { margin-top: 12px; }
+.section ul { padding-left: 20px; margin-top: 10px; }
+.section li + li { margin-top: 8px; }
+.closing {
+  background: var(--gold-lt);
+  border: 1px solid #e6cf98;
+}
+.cta-row { margin-top: 16px; display: flex; gap: 10px; flex-wrap: wrap; }
+.cta-row a {
+  text-decoration: none;
+  border-radius: 999px;
+  padding: 10px 14px;
+  font-family: 'DM Mono', monospace;
+  font-size: 11px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  border: 1px solid rgba(37,48,68,.2);
+  color: #253044;
+  background: #f5f2eb;
+}
+.cta-row a.primary { background: var(--slate); color: #fff; border-color: var(--slate); }
+@media (max-width: 900px) {
+  .hero, .main { padding-left: 20px; padding-right: 20px; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="index.html"><img src="assets/mmmf-site-mark.svg" alt="Site logo">Modern Manners &amp; Mental Fortitude</a>
+  <div class="nav-actions">
+    <a href="index.html" onclick="if (window.history.length > 1) { event.preventDefault(); window.history.back(); }">Back</a>
+    <a class="primary" href="index.html">Main Homepage</a>
+    <a href="bio.html">Founders Bio</a>
+  </div>
+</nav>
+<script src="site-search.js" data-search-index="site-search-index.json" defer></script>
+
+<header class="hero">
+  <div class="hero-wrap">
+    <p class="eyebrow">Program Overview</p>
+    <h1><em>What Is Our Program?</em><br>And What Is This Website For?</h1>
+    <p class="hero-sub">Modern Manners &amp; Mental Fortitude is a real-world life skills program designed to help people strengthen communication, emotional regulation, decision-making, and accountability in everyday life. This website exists to explain the program clearly, show the curriculum structure, introduce the founders, and give visitors a direct path to the materials, documents, and next steps.</p>
+  </div>
+</header>
+
+<main class="main">
+  <section class="section">
+    <p class="section-label">What It Is</p>
+    <h2>A practical life skills program, not just a motivational website.</h2>
+    <p>This site is the public home for Modern Manners &amp; Mental Fortitude. It is here to help parents, students, families, educators, school leaders, and community partners understand exactly what the program teaches and why it matters. The focus is not on abstract inspiration alone. The focus is on giving people clear tools they can use in real conversations, real decisions, real relationships, and real moments of pressure.</p>
+    <p>The program teaches life-level skills that are often assumed but not explicitly taught: respectful communication, emotional regulation, decision-making under pressure, and accountability with repair. These are the skills that shape trust, opportunity, leadership, and long-term credibility across school, work, family life, and community settings.</p>
+  </section>
+
+  <section class="section">
+    <p class="section-label">Who It Is For</p>
+    <h2>Built for students, families, educators, and community groups.</h2>
+    <p>The website explains a program that can serve multiple audiences. For teens and young adults, it offers tools for handling pressure, speaking with respect, thinking through consequences, and responding with maturity. For families, it offers a shared language for standards, habits, and accountability. For schools and organizations, it provides a structured program that can support character development, leadership growth, behavior support, and practical preparation for real life.</p>
+    <p>This is why the site includes different kinds of pages. Some pages are meant to give a quick overview. Others show curriculum details, frameworks, lesson structure, program materials, or founder background. Together, they help visitors see not only what the program says, but how it is organized and how it can actually be used.</p>
+  </section>
+
+  <section class="section">
+    <p class="section-label">What The Website Contains</p>
+    <h2>A full explanation of the program, the people behind it, and the supporting materials.</h2>
+    <p>The homepage gives the big picture. It shows the core pillars, the program modules, the learning design, and the overall direction of the curriculum. The founders section introduces the people behind the work. The bio page explains the background, values, and lived experience that shaped the program. The resume page gives professional credibility and experience. The program hub and MMMF materials connect visitors to the larger body of curriculum tools, training resources, and implementation documents.</p>
+    <p>In other words, this site is both an introduction and a guide. It tells visitors what the program is, why it exists, who it serves, and where to go next if they want more detail.</p>
+  </section>
+
+  <section class="section">
+    <p class="section-label">What The Program Actually Teaches</p>
+    <h2>Four areas that influence how people live, relate, and lead.</h2>
+    <p>The curriculum is centered on four core pillars. First, it teaches respectful communication, which includes tone, listening, body language, conflict response, and the ability to speak with clarity and self-control. Second, it teaches emotional regulation, helping participants recognize what is happening internally and respond with steadiness instead of escalation. Third, it teaches decision-making under pressure so that people can pause, consider consequences, and choose with greater maturity. Fourth, it teaches accountability and repair, because mistakes are inevitable, but character is built by how people respond after those mistakes.</p>
+    <p>The goal is not simply to help people know these ideas. The goal is to help them apply them in real settings where the stakes are high and the choices matter.</p>
+  </section>
+
+  <section class="section">
+    <p class="section-label">Why It Matters</p>
+    <h2>This work fills a gap many people feel but struggle to name.</h2>
+    <p>Many young people and adults are expected to know how to communicate well, regulate themselves, navigate conflict, and make wise choices, but they are rarely taught those skills directly. This program responds to that gap. It takes the “soft skills” people talk about and turns them into teachable, discussable, repeatable practices. That is why the website spends so much time showing not just ideas, but structure. The intention is to make the program understandable, credible, and actionable.</p>
+  </section>
+
+  <section class="section closing">
+    <p class="section-label">What To Do Next</p>
+    <h2>If you are wondering whether this is for you, start with the pages that match your need.</h2>
+    <p>If you want to understand the people behind the work, read the founders bio. If you want professional background and credentials, open the resume. If you want to see the curriculum and program design in more detail, stay on the homepage and work through the sections there. If you want the broader MMMF implementation materials, use the MMMF Hub button. This website is meant to remove confusion, not create it, and give visitors a straightforward path into the program.</p>
+    <div class="cta-row">
+      <a class="primary" href="index.html">Main Homepage</a>
+      <a href="bio.html">Founders Bio</a>
+      <a href="resume.html">Resume</a>
+      <a href="https://readyforreallife.github.io/mmmf-codex/web/index.html">MMMF Hub</a>
+    </div>
+  </section>
+</main>
+</body>
+</html>
