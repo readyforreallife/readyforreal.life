@@ -64,9 +64,12 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
 .offer-badge .badge-num { color: #f2e4c0; }
 
 .inst-strip { background: var(--gold-lt); border-bottom: 3px solid var(--gold-dim); padding: 28px 60px; display: flex; align-items: center; gap: 36px; flex-wrap: wrap; }
+.inst-people { display: flex; align-items: flex-start; gap: 28px; flex-wrap: wrap; }
+.inst-person { display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 120px; }
 .inst-avatar { width: 72px; height: 72px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 3px solid var(--gold); background: var(--slate); }
 .inst-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; display: block; }
-.inst-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--slate); }
+.inst-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--slate); margin-top: 10px; }
+.inst-copy { display: flex; flex-direction: column; gap: 4px; min-width: 260px; }
 .inst-titles { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
 .bio-link {
   margin-left: auto;
@@ -480,6 +483,8 @@ body.preview-locked .locked-overlay { display: block; }
 @media (max-width: 900px) {
   .section, .hero { padding: 40px 24px; }
   .inst-strip { padding: 24px; }
+  .inst-people { width: 100%; justify-content: center; }
+  .inst-copy { width: 100%; text-align: center; }
   .copyright-warning, .access-gate { padding: 12px 24px; }
   .locked-overlay { top: 80px; }
   .hero-layout { grid-template-columns: 1fr; }
@@ -588,11 +593,21 @@ body.preview-locked .locked-overlay { display: block; }
 
 <!-- INSTRUCTOR STRIP -->
 <div class="inst-strip">
-  <div class="inst-avatar">
-    <img src="michael-terry-headshot.jpg" alt="Portrait of Michael R. Terry">
+  <div class="inst-people">
+    <div class="inst-person">
+      <div class="inst-avatar">
+        <img src="michael-terry-headshot.jpg" alt="Portrait of Michael R. Terry">
+      </div>
+      <div class="inst-name">Michael R. Terry</div>
+    </div>
+    <div class="inst-person">
+      <div class="inst-avatar">
+        <img src="mekenzi-terry-headshot.png" alt="Portrait of Mekenzi G. Terry">
+      </div>
+      <div class="inst-name">Mekenzi G. Terry</div>
+    </div>
   </div>
-  <div>
-    <div class="inst-name">Michael R. Terry</div>
+  <div class="inst-copy">
     <div class="inst-titles">Founder, Modern Manners &amp; Mental Fortitude · Public Service Leader · Curriculum Designer · Published Author · Community Presenter · Spanish Proficient</div>
   </div>
   <div class="bio-actions">
