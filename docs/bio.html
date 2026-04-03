@@ -122,14 +122,25 @@ nav {
   border-bottom: 2px solid #e8d198;
   padding: 22px 28px;
 }
-.strip-wrap { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: auto 1fr; gap: 16px; align-items: center; }
+.strip-wrap { max-width: 1060px; margin: 0 auto; display: grid; grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 18px; align-items: stretch; }
+.founder-spotlight {
+  background: rgba(255,255,255,.34);
+  border: 1px solid rgba(37,48,68,.08);
+  border-radius: 14px;
+  padding: 18px;
+  display: grid;
+  grid-template-columns: auto 1fr;
+  gap: 14px;
+  align-items: center;
+}
 .avatar { width: 76px; height: 76px; border-radius: 50%; overflow: hidden; border: 3px solid var(--gold); background: var(--slate); }
 .avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; }
 .avatar img.mekenzi { transform: scale(1.08); transform-origin: center 24%; object-position: center 12%; }
-.strip-name { font-family: 'Playfair Display', serif; font-size: 1.6rem; color: var(--slate); }
+.strip-name { font-family: 'Playfair Display', serif; font-size: 1.45rem; color: var(--slate); }
 .strip-role { color: var(--muted); font-size: 14px; }
 .main { max-width: 1060px; margin: 0 auto; padding: 34px 28px 50px; }
 .grid { display: grid; grid-template-columns: 1.2fr 1fr; gap: 18px; }
+.grid.equal { grid-template-columns: 1fr 1fr; }
 .card {
   background: var(--white);
   border: 1px solid var(--rule);
@@ -179,9 +190,12 @@ nav {
   padding-top: 18px;
   border-top: 1px solid var(--rule);
 }
+.section-heading {
+  margin-bottom: 14px;
+}
 @media (max-width: 900px) {
   .hero-wrap { grid-template-columns: 1fr; }
-  .grid { grid-template-columns: 1fr; }
+  .grid, .grid.equal, .strip-wrap, .founder-spotlight { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -211,18 +225,30 @@ nav {
 
 <div class="strip">
   <div class="strip-wrap">
-    <div class="avatar"><img src="michael-terry-headshot.jpg" alt="Portrait of Michael R. Terry"></div>
-    <div>
-      <div class="strip-name">Michael R. Terry</div>
-      <div class="strip-role">Sergeant, Utah Highway Patrol · Community Presenter · Curriculum Designer · Published Author</div>
+    <div class="founder-spotlight">
+      <div class="avatar"><img src="michael-terry-headshot.jpg" alt="Portrait of Michael R. Terry"></div>
+      <div>
+        <div class="strip-name">Michael R. Terry</div>
+        <div class="strip-role">Co-Founder · Public Service Leader · Curriculum Designer · Published Author</div>
+      </div>
+    </div>
+    <div class="founder-spotlight">
+      <div class="avatar"><img class="mekenzi" src="mekenzi-terry-headshot.png" alt="Portrait of Mekenzi G. Terry"></div>
+      <div>
+        <div class="strip-name">Mekenzi G. Terry</div>
+        <div class="strip-role">Co-Founder · Coach · Director · Mother of Five · Community Builder</div>
+      </div>
     </div>
   </div>
 </div>
 
 <main class="main">
-  <div class="grid">
+  <div class="section-heading">
+    <p class="kicker">Michael R. Terry</p>
+  </div>
+  <div class="grid equal">
     <article class="card">
-      <p class="kicker">Who I Am</p>
+      <p class="kicker">Who He Is</p>
       <h2>Mission-Driven Leadership</h2>
       <p class="copy">Michael R. Terry is a public service leader and educator-in-training who has spent his career helping people make better decisions under pressure. After years in law enforcement, crisis response, and community outreach, he built <strong>Modern Manners &amp; Mental Fortitude</strong> to teach practical life skills that transfer across school, family, work, and digital settings.</p>
       <div class="cta-row">
@@ -247,7 +273,7 @@ nav {
     </section>
   </div>
 
-  <div class="grid" style="margin-top:18px;">
+  <div class="grid equal" style="margin-top:18px;">
     <article class="card">
       <p class="kicker">Career</p>
       <h2>Public Safety and Education</h2>
@@ -271,18 +297,10 @@ nav {
   </div>
 
   <div class="section-break"></div>
-
-  <div class="strip" style="margin:0 -28px 18px;">
-    <div class="strip-wrap">
-      <div class="avatar"><img class="mekenzi" src="mekenzi-terry-headshot.png" alt="Portrait of Mekenzi G. Terry"></div>
-      <div>
-        <div class="strip-name">Mekenzi G. Terry</div>
-        <div class="strip-role">Co-Founder · Coach · Director, Tumblebees Preschool Gymnastics · Mother of Five · Community Builder</div>
-      </div>
-    </div>
+  <div class="section-heading">
+    <p class="kicker">Mekenzi G. Terry</p>
   </div>
-
-  <div class="grid">
+  <div class="grid equal">
     <article class="card">
       <p class="kicker">Who She Is</p>
       <h2>Rooted in Community and Excellence</h2>
@@ -305,7 +323,7 @@ nav {
     </section>
   </div>
 
-  <div class="grid" style="margin-top:18px;">
+  <div class="grid equal" style="margin-top:18px;">
     <article class="card">
       <p class="kicker">Faith and Family</p>
       <h2>Centered on Gospel and Home</h2>
