@@ -1094,10 +1094,6 @@ const LS = {
   githubToken: 'dl_github_token'
 };
 const DEFAULT_REGISTRATION_ENDPOINT = 'https://flat-flower-4af8mmmf-agreement-admin.mikeyterry44.workers.dev';
-const GITHUB_REPO_OWNER = 'readyforreallife';
-const GITHUB_REPO_NAME = 'readyforreal.life';
-const GITHUB_REPO_BRANCH = 'main';
-const GLOBAL_ACCESS_PATH = 'docs/site-access.json';
 const FALLBACK_REGISTRATION_ENDPOINTS = [
   'https://script.google.com/macros/s/AKfycby9WsQIZXATnaKbC4JeBNT4DRLzIDVXXWutlH01wW-CXg3aWcxxsZyKErNyrLRNaCmf/exec',
   DEFAULT_REGISTRATION_ENDPOINT
@@ -1182,20 +1178,25 @@ function updateOwnerPreviewToggle() {
 async function loadGlobalAccessState(preferApi = false) {
   try {
     let data = null;
-    if (preferApi) {
+    const savedRegistrationEndpoint = String(localStorage.getItem(LS.registrationEndpoint) || '').trim();
+    const workerEndpoint =
+      (/script\.google\.com/i.test(savedRegistrationEndpoint) ? DEFAULT_REGISTRATION_ENDPOINT : savedRegistrationEndpoint)
+      || DEFAULT_REGISTRATION_ENDPOINT;
+    if (preferApi && workerEndpoint) {
       try {
-        const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${encodeURIComponent(GLOBAL_ACCESS_PATH)}?ref=${encodeURIComponent(GITHUB_REPO_BRANCH)}&t=${Date.now()}`;
-        const apiRes = await fetch(apiUrl, {
-          cache: 'no-store',
-          headers: {
-            Accept: 'application/vnd.github+json',
-            'X-GitHub-Api-Version': '2022-11-28'
-          }
+        const workerRes = await fetch(workerEndpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'public_access_get' }),
+          cache: 'no-store'
         });
-        if (apiRes.ok) {
-          const apiJson = await apiRes.json();
-          if (apiJson && apiJson.content) {
-            data = JSON.parse(decodeBase64Utf8(String(apiJson.content).replace(/\n/g, '')));
+        if (workerRes.ok) {
+          const workerJson = await workerRes.json();
+          if (workerJson && workerJson.ok) {
+            data = {
+              publicUnlocked: !!workerJson.publicUnlocked,
+              updatedAt: String(workerJson.updatedAt || '')
+            };
           }
         }
       } catch (_err) {}
@@ -1214,96 +1215,56 @@ async function loadGlobalAccessState(preferApi = false) {
 }
 
 async function publishGlobalAccessState(nextUnlocked) {
-  const token = getGithubToken();
-  if (!token) {
-    window.alert('Add your GitHub token in Teacher Settings first, then save.');
+  const savedRegistrationEndpoint = String(localStorage.getItem(LS.registrationEndpoint) || '').trim();
+  const workerEndpoint =
+    (/script\.google\.com/i.test(savedRegistrationEndpoint) ? DEFAULT_REGISTRATION_ENDPOINT : savedRegistrationEndpoint)
+    || DEFAULT_REGISTRATION_ENDPOINT;
+  if (!workerEndpoint) {
+    window.alert('Add the registration/admin Worker URL in Teacher Settings first, then save.');
     openModal(settingsModal);
     return false;
   }
 
-  const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${encodeURIComponent(GLOBAL_ACCESS_PATH)}`;
-  const getCurrentSha = async (attempt = 0) => {
-    try {
-      const current = await fetch(`${apiUrl}?ref=${encodeURIComponent(GITHUB_REPO_BRANCH)}&t=${Date.now()}_${attempt}`, {
-        cache: 'no-store',
-        headers: {
-          Authorization: `Bearer ${token}`,
-          Accept: 'application/vnd.github+json',
-          'X-GitHub-Api-Version': '2022-11-28'
-        }
-      });
-      if (!current.ok) return null;
-      const currentJson = await current.json();
-      return currentJson.sha || null;
-    } catch (_err) {
-      return null;
-    }
-  };
-
-  const saveOnce = async (sha) => {
-    const nextState = {
-      publicUnlocked: !!nextUnlocked,
-      updatedAt: new Date().toISOString()
-    };
-    const payload = {
-      message: nextState.publicUnlocked ? 'Unlock site for public visitors' : 'Lock site to paid access',
-      content: encodeBase64Utf8(`${JSON.stringify(nextState, null, 2)}\n`),
-      branch: GITHUB_REPO_BRANCH
-    };
-    if (sha) payload.sha = sha;
-    const saveRes = await fetch(apiUrl, {
-      method: 'PUT',
-      headers: {
-        Authorization: `Bearer ${token}`,
-        Accept: 'application/vnd.github+json',
-        'X-GitHub-Api-Version': '2022-11-28',
-        'Content-Type': 'application/json'
-      },
-      body: JSON.stringify(payload)
-    });
-    let errJson = null;
-    if (!saveRes.ok) {
-      try {
-        errJson = await saveRes.json();
-      } catch (_err) {}
-      return {
-        ok: false,
-        status: saveRes.status,
-        message: errJson && errJson.message ? String(errJson.message) : ''
-      };
-    }
-    return { ok: true, nextState };
-  };
-
-  const wait = (ms) => new Promise((resolve) => setTimeout(resolve, ms));
-  let result = { ok: false, status: 0, message: '' };
-  for (let attempt = 0; attempt < 5; attempt += 1) {
-    result = await saveOnce(await getCurrentSha(attempt));
-    if (result.ok) break;
-    const isShaConflict = result.status === 409 || /does not match/i.test(result.message);
-    if (!isShaConflict) break;
-    await wait(250 + attempt * 200);
-  }
-
-  if (!result.ok) {
-    // Last safety check: if another write already set the desired state, treat as success.
-    await loadGlobalAccessState(true);
-    if (globalAccessState.publicUnlocked === !!nextUnlocked) {
-      window.alert(globalAccessState.publicUnlocked ? 'Site is now unlocked for everyone.' : 'Site is now locked to paid access.');
-      return true;
-    }
-  }
-
-  if (!result.ok) {
-    const detail = result.message ? `\n${result.message}` : '';
-    window.alert(`Could not update public access.${detail}\nRetry in a few seconds.`);
+  const accessCode = getTeacherPin();
+  if (!accessCode) {
+    window.alert('Add your teacher PIN in Teacher Settings first, then save.');
+    openModal(settingsModal);
     return false;
   }
 
-  globalAccessState = result.nextState;
+  let result = null;
+  try {
+    const res = await fetch(workerEndpoint, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        action: 'public_access_set',
+        access_code: accessCode,
+        public_unlocked: !!nextUnlocked
+      })
+    });
+    result = await res.json().catch(() => null);
+    if (!res.ok || !result || !result.ok) {
+      const message = (result && result.error) ? String(result.error) : 'Could not update public access.';
+      if (/incorrect access code/i.test(message)) {
+        window.alert('The teacher PIN saved in this browser does not match the admin backend code.\nOpen Settings, confirm the PIN, and try again.');
+      } else {
+        window.alert(`${message}\nRetry in a few seconds.`);
+      }
+      return false;
+    }
+  } catch (_err) {
+    window.alert('Could not update public access.\nThe admin backend could not be reached.');
+    return false;
+  }
+
+  globalAccessState = {
+    publicUnlocked: !!result.publicUnlocked,
+    updatedAt: String(result.updatedAt || '')
+  };
   updatePublicAccessToggle();
-  window.alert(result.nextState.publicUnlocked ? 'Site is now unlocked for everyone.' : 'Site is now locked to paid access.');
-  setTimeout(() => syncGlobalAccessState(true), 1500);
+  window.alert(globalAccessState.publicUnlocked ? 'Site is now unlocked for everyone.' : 'Site is now locked to paid access.');
+  setTimeout(() => syncGlobalAccessState(true), 500);
   return true;
 }
 
