@@ -1035,19 +1035,22 @@ async function trySubmitToEndpoint(url, payload, secret) {
   };
   try {
     const res = await fetch(url, opts);
-    if (res.ok) return true;
+    const text = await res.text();
+    let data = null;
+    try { data = text ? JSON.parse(text) : null; } catch (_err) {}
+    if (res.ok) return { ok: true, data };
   } catch (_err) {}
   try {
     if (navigator.sendBeacon) {
       const sent = navigator.sendBeacon(url, new Blob([body], { type: 'text/plain;charset=utf-8' }));
-      if (sent) return true;
+      if (sent) return { ok: true, data: null };
     }
   } catch (_err) {}
   try {
     await fetch(url, { ...opts, mode: 'no-cors' });
-    return true;
+    return { ok: true, data: null };
   } catch (_err) {}
-  return false;
+  return { ok: false, data: null };
 }
 
 setTeacherUnlocked(isTeacherUnlocked());
@@ -1196,15 +1199,22 @@ registerForm.addEventListener('submit', async (e) => {
     return;
   }
   try {
-    let sent = false;
+    let result = { ok: false, data: null };
     for (const url of endpointCandidates) {
       // Try each configured endpoint until one accepts/dispatches.
       // Apps Script deployments vary; this fallback avoids manual endpoint churn.
-      sent = await trySubmitToEndpoint(url, payload, secret);
-      if (sent) break;
+      result = await trySubmitToEndpoint(url, payload, secret);
+      if (result.ok) break;
     }
-    if (sent) {
-      showStatus('Submitted. Thank you.', false);
+    if (result.ok) {
+      const emailSent = !!(result.data && result.data.email_sent);
+      const emailConfigured = !!(result.data && result.data.email_service_configured);
+      const message = emailSent
+        ? 'Submitted. Thank you. A confirmation email is on its way.'
+        : (emailConfigured
+          ? 'Submitted. Your registration was saved, but the confirmation email could not be sent yet.'
+          : 'Submitted. Thank you. Your registration was saved.');
+      showStatus(message, false);
       setTimeout(() => closeModal(registerModal), 900);
       registerSubmitting = false;
       if (registerSubmitBtn) {
