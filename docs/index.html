@@ -1397,7 +1397,11 @@ const registrationSecretFromStorage =
   localStorage.getItem(LS.registrationSecret)
   || (legacySettings && (legacySettings.registrationSecret || legacySettings.registerSecret))
   || '';
-registrationEndpointInput.value = endpointFromStorage;
+const effectiveRegistrationEndpoint =
+  /script\.google\.com/i.test(String(endpointFromStorage || ''))
+    ? DEFAULT_REGISTRATION_ENDPOINT
+    : endpointFromStorage;
+registrationEndpointInput.value = effectiveRegistrationEndpoint;
 registrationSecretInput.value = registrationSecretFromStorage;
 teacherPinInput.value = getTeacherPin();
 githubTokenInput.value = getGithubToken();
@@ -1545,8 +1549,9 @@ registerForm.addEventListener('submit', async (e) => {
     }
     return;
   }
+  const savedRegistrationEndpoint = String(localStorage.getItem(LS.registrationEndpoint) || '').trim();
   const primaryEndpoint =
-    localStorage.getItem(LS.registrationEndpoint)
+    (/script\.google\.com/i.test(savedRegistrationEndpoint) ? DEFAULT_REGISTRATION_ENDPOINT : savedRegistrationEndpoint)
     || DEFAULT_REGISTRATION_ENDPOINT;
   const secret =
     localStorage.getItem(LS.registrationSecret)
