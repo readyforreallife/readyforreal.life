@@ -65,14 +65,47 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
 
 .inst-strip { background: var(--gold-lt); border-bottom: 3px solid var(--gold-dim); padding: 18px 60px 22px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; margin-top: -12px; position: relative; z-index: 3; }
 .inst-strip .mini-title { color: var(--slate); font-weight: 700; }
-.inst-people { display: flex; align-items: flex-start; gap: 28px; flex-wrap: wrap; }
-.inst-person { display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 120px; }
-.inst-avatar { width: 72px; height: 72px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 3px solid var(--gold); background: var(--slate); }
+.founder-strip {
+  display: grid;
+  grid-template-columns: minmax(220px, 1fr) auto minmax(240px, auto);
+  align-items: center;
+  gap: 28px;
+}
+.founder-quote {
+  max-width: 320px;
+  color: var(--slate);
+}
+.founder-quote-text {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.2rem;
+  line-height: 1.45;
+  color: var(--slate);
+}
+.founder-quote-mark {
+  display: block;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+  color: #7c5d26;
+  margin-top: 12px;
+}
+.founder-center {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 14px;
+}
+.inst-people { display: flex; align-items: flex-start; justify-content: center; gap: 40px; flex-wrap: wrap; }
+.inst-person { display: flex; flex-direction: column; align-items: center; text-align: center; min-width: 150px; }
+.inst-avatar { width: 96px; height: 96px; border-radius: 50%; overflow: hidden; flex-shrink: 0; border: 4px solid var(--gold); background: var(--slate); }
 .inst-avatar img { width: 100%; height: 100%; object-fit: cover; object-position: center 18%; display: block; }
 .inst-avatar img.mekenzi-avatar { transform: scale(1.22); transform-origin: center 26%; object-position: center 14%; }
-.inst-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; font-weight: 700; color: var(--slate); margin-top: 10px; }
-.inst-copy { display: flex; flex-direction: column; gap: 4px; min-width: 260px; }
-.inst-titles { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.5; }
+.inst-name { font-family: 'Playfair Display', serif; font-size: 1.2rem; font-weight: 700; color: var(--slate); margin-top: 12px; }
+.inst-copy { display: flex; flex-direction: column; gap: 4px; min-width: 260px; align-items: center; }
+.inst-titles { font-size: 13px; color: var(--muted); margin-top: 3px; line-height: 1.5; max-width: 520px; }
 .bio-link {
   margin-left: auto;
   background: var(--slate);
@@ -102,10 +135,10 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
   box-shadow: 0 6px 18px rgba(0,0,0,.16);
 }
 .bio-actions {
-  margin-left: auto;
   display: flex;
   gap: 10px;
   flex-wrap: wrap;
+  justify-content: flex-end;
 }
 .bio-link.secondary {
   background: #f2e4c0;
@@ -489,8 +522,11 @@ body.preview-locked .locked-overlay { display: block; }
 @media (max-width: 900px) {
   .section, .hero { padding: 40px 24px; }
   .inst-strip { padding: 22px 24px; margin-top: 0; }
+  .founder-strip { grid-template-columns: 1fr; }
+  .founder-quote { max-width: none; text-align: center; }
   .inst-people { width: 100%; justify-content: center; }
   .inst-copy { width: 100%; text-align: center; }
+  .bio-actions { justify-content: center; }
   .copyright-warning, .access-gate { padding: 12px 24px; }
   .locked-overlay { top: 80px; }
   .hero-layout { grid-template-columns: 1fr; }
@@ -598,23 +634,29 @@ body.preview-locked .locked-overlay { display: block; }
 </header>
 
 <!-- INSTRUCTOR STRIP -->
-<div class="inst-strip">
-  <div class="inst-people">
-    <div class="inst-person">
-      <a class="inst-avatar" href="bio.html" aria-label="Open founders bio for Michael R. Terry">
-        <img src="michael-terry-headshot.jpg" alt="Portrait of Michael R. Terry">
-      </a>
-      <a class="inst-name" href="bio.html">Michael R. Terry</a>
-    </div>
-    <div class="inst-person">
-      <a class="inst-avatar" href="bio.html" aria-label="Open founders bio for Mekenzi G. Terry">
-        <img class="mekenzi-avatar" src="mekenzi-terry-headshot.png" alt="Portrait of Mekenzi G. Terry">
-      </a>
-      <a class="inst-name" href="bio.html">Mekenzi G. Terry</a>
-    </div>
+<div class="inst-strip founder-strip">
+  <div class="founder-quote">
+    <div class="founder-quote-text">"Teach the tools students will actually need when pressure is real, choices matter, and character has to show up in action."</div>
+    <span class="founder-quote-mark">Why MMMF Exists</span>
   </div>
-  <div class="inst-copy">
-    <div class="inst-titles">Founders, Modern Manners &amp; Mental Fortitude · Public Service Leadership · Curriculum Design · Community Presentation</div>
+  <div class="founder-center">
+    <div class="inst-people">
+      <div class="inst-person">
+        <a class="inst-avatar" href="bio.html" aria-label="Open founders bio for Michael R. Terry">
+          <img src="michael-terry-headshot.jpg" alt="Portrait of Michael R. Terry">
+        </a>
+        <a class="inst-name" href="bio.html">Michael R. Terry</a>
+      </div>
+      <div class="inst-person">
+        <a class="inst-avatar" href="bio.html" aria-label="Open founders bio for Mekenzi G. Terry">
+          <img class="mekenzi-avatar" src="mekenzi-terry-headshot.png" alt="Portrait of Mekenzi G. Terry">
+        </a>
+        <a class="inst-name" href="bio.html">Mekenzi G. Terry</a>
+      </div>
+    </div>
+    <div class="inst-copy">
+      <div class="inst-titles">Founders, Modern Manners &amp; Mental Fortitude · Public Service Leadership · Curriculum Design · Community Presentation</div>
+    </div>
   </div>
   <div class="bio-actions">
     <a class="bio-link secondary" href="program.html">
