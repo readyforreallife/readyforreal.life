@@ -622,10 +622,10 @@
       unlockCode: 'MRT-PAID-2026',
       checkoutUrl: 'https://buy.stripe.com/9B628r30NcCG1qd1s8dIA00'
     };
-    const GITHUB_REPO_OWNER = 'readyforreallife';
-    const GITHUB_REPO_NAME = 'readyforreal.life';
-    const GITHUB_REPO_BRANCH = 'main';
-    const GLOBAL_ACCESS_PATH = 'docs/site-access.json';
+    const DEFAULT_REGISTRATION_ENDPOINT = 'https://flat-flower-4af8mmmf-agreement-admin.mikeyterry44.workers.dev';
+    const LS = {
+      registrationEndpoint: 'dl_registration_endpoint'
+    };
     const accessGate = document.getElementById('accessGate');
     const accessModal = document.getElementById('accessModal');
     const accessCodeInput = document.getElementById('accessCodeInput');
@@ -637,9 +637,6 @@
     const accessCloseBtn = document.getElementById('accessCloseBtn');
     const accessUnlockBtn = document.getElementById('accessUnlockBtn');
     let globalAccessState = { publicUnlocked: false, updatedAt: '' };
-    function decodeBase64Utf8(b64) {
-      return decodeURIComponent(escape(atob(b64)));
-    }
     function showAccessStatus(msg, isError) {
       if (!accessStatus) return;
       accessStatus.textContent = msg;
@@ -678,45 +675,31 @@
       if (!globalTs) return true;
       return localTs >= globalTs;
     }
-    async function loadGlobalAccessState(preferApi = false) {
+    async function loadGlobalAccessState() {
       try {
-        let data = null;
-        if (preferApi) {
-          try {
-            const apiUrl = `https://api.github.com/repos/${GITHUB_REPO_OWNER}/${GITHUB_REPO_NAME}/contents/${encodeURIComponent(GLOBAL_ACCESS_PATH)}?ref=${encodeURIComponent(GITHUB_REPO_BRANCH)}&t=${Date.now()}`;
-            const apiRes = await fetch(apiUrl, {
-              cache: 'no-store',
-              headers: {
-                Accept: 'application/vnd.github+json',
-                'X-GitHub-Api-Version': '2022-11-28'
-              }
-            });
-            if (apiRes.ok) {
-              const apiJson = await apiRes.json();
-              if (apiJson && apiJson.content) {
-                data = JSON.parse(decodeBase64Utf8(String(apiJson.content).replace(/\n/g, '')));
-              }
-            }
-          } catch (_err) {}
-        }
-        if (!data) {
-          const res = await fetch(`site-access.json?t=${Date.now()}`, { cache: 'no-store' });
-          if (!res.ok) return;
-          data = await res.json();
-        }
+        const savedEndpoint = String(localStorage.getItem(LS.registrationEndpoint) || '').trim();
+        const endpoint = (/script\.google\.com/i.test(savedEndpoint) ? DEFAULT_REGISTRATION_ENDPOINT : savedEndpoint) || DEFAULT_REGISTRATION_ENDPOINT;
+        const res = await fetch(endpoint, {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ action: 'public_access_get' }),
+          cache: 'no-store'
+        });
+        const data = await res.json().catch(() => null);
+        if (!res.ok || !data || !data.ok) return;
         globalAccessState.publicUnlocked = !!data.publicUnlocked;
         globalAccessState.updatedAt = String(data.updatedAt || '');
       } catch (_err) {}
     }
-    async function syncGlobalAccessState(preferApi = false) {
-      await loadGlobalAccessState(preferApi);
+    async function syncGlobalAccessState() {
+      await loadGlobalAccessState();
       setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
     }
     if (purchaseLinkTop) purchaseLinkTop.href = ACCESS_CONTROL.checkoutUrl;
     if (purchaseLinkOverlay) purchaseLinkOverlay.href = ACCESS_CONTROL.checkoutUrl;
     setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
-    syncGlobalAccessState(true);
-    window.addEventListener('focus', () => syncGlobalAccessState(true));
+    syncGlobalAccessState();
+    window.addEventListener('focus', syncGlobalAccessState);
     unlockBtnTop?.addEventListener('click', openAccessModal);
     unlockBtnOverlay?.addEventListener('click', openAccessModal);
     accessCloseBtn?.addEventListener('click', closeAccessModal);
