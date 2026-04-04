@@ -65,6 +65,15 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
 .hero-chips { display: flex; flex-wrap: wrap; gap: 10px; }
 .chip { background: rgba(255,255,255,.09); border: 1px solid rgba(255,255,255,.18); border-radius: 40px; padding: 5px 14px; font-size: 12.5px; color: rgba(255,255,255,.8); font-weight: 500; }
 .chip strong { color: var(--gold); }
+.chip-link { text-decoration: none; transition: transform .18s ease, background .18s ease, border-color .18s ease, color .18s ease; }
+.chip-link:hover,
+.chip-link:focus-visible {
+  background: rgba(255,255,255,.16);
+  border-color: rgba(255,255,255,.28);
+  color: #fff;
+  transform: translateY(-1px);
+}
+.chip-link::after { content: ' ↗'; color: var(--gold); opacity: .9; }
 .hero-badge { background: var(--gold); color: var(--slate); border-radius: 16px; padding: 22px 18px; text-align: center; min-width: 0; min-height: 142px; display: flex; flex-direction: column; justify-content: center; flex-shrink: 0; box-shadow: 0 10px 24px rgba(0,0,0,.18); }
 .badge-num { font-family: 'Playfair Display', serif; font-size: 3rem; font-weight: 900; line-height: 1; display: block; margin-bottom: 4px; }
 .badge-label { font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: .10em; opacity: .75; }
@@ -167,6 +176,36 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
 .bio-link.secondary:focus-visible {
   background: #e8d7ad;
 }
+.explainer-strip {
+  background: #f8f1df;
+  border-bottom: 1px solid #e6d8b8;
+  padding: 22px 60px 28px;
+}
+.explainer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+.explainer-card {
+  background: #fff;
+  border: 1px solid #e0d4b6;
+  border-radius: 16px;
+  padding: 22px 24px;
+  box-shadow: 0 4px 14px rgba(24,35,56,.06);
+}
+.explainer-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  line-height: 1.2;
+  color: var(--slate);
+  margin-bottom: 10px;
+}
+.explainer-body {
+  font-size: 14px;
+  color: var(--muted);
+  line-height: 1.7;
+}
+.explainer-body strong { color: var(--slate); }
 
 .section { padding: 60px; border-bottom: 1px solid var(--rule); }
 .section.alt { background: var(--white); }
@@ -542,6 +581,8 @@ body.preview-locked .locked-overlay { display: block; }
   .inst-people { width: 100%; justify-content: center; }
   .inst-copy { width: 100%; text-align: center; }
   .bio-actions { justify-content: center; }
+  .explainer-strip { padding: 18px 24px 24px; }
+  .explainer-grid { grid-template-columns: 1fr; }
   .copyright-warning, .access-gate { padding: 12px 24px; }
   .locked-overlay { top: 80px; }
   .hero-layout { grid-template-columns: 1fr; }
@@ -627,9 +668,8 @@ body.preview-locked .locked-overlay { display: block; }
       <div class="hero-chips">
         <div class="chip"><strong>16 Weeks</strong> · 2 sessions / week</div>
         <div class="chip">Class size <strong>20–25 students</strong></div>
-        <div class="chip">Aligns with <strong>Utah CASEL &amp; CCA Core Standards</strong></div>
-        <div class="chip">Research-backed <strong>SEL + Transfer Design</strong></div>
-        <div class="chip">Submitted <strong>August 2025</strong></div>
+        <a class="chip chip-link" href="#utah-alignment">Aligns with <strong>Utah CASEL &amp; CCA Core Standards</strong></a>
+        <a class="chip chip-link" href="#research-design">Research-backed <strong>SEL + Transfer Design</strong></a>
       </div>
     </div>
     <div class="hero-side">
@@ -692,6 +732,25 @@ body.preview-locked .locked-overlay { display: block; }
     </a>
   </div>
 </div>
+
+<section class="explainer-strip">
+  <div class="explainer-grid">
+    <article class="explainer-card" id="utah-alignment">
+      <p class="section-label">Utah Alignment</p>
+      <h2 class="explainer-title">What CASEL and CCA mean here.</h2>
+      <div class="explainer-body">
+        <strong>CASEL</strong> refers to the Collaborative for Academic, Social, and Emotional Learning framework. <strong>CCA</strong> refers to Utah's College and Career Awareness standards. MMMF applies those expectations through practical communication, regulation, decision-making, digital citizenship, and accountability lessons that students can use in school, work, family, and community settings.
+      </div>
+    </article>
+    <article class="explainer-card" id="research-design">
+      <p class="section-label">Research Base</p>
+      <h2 class="explainer-title">What SEL and transfer design mean in this curriculum.</h2>
+      <div class="explainer-body">
+        <strong>SEL</strong> means social and emotional learning, and <strong>transfer design</strong> means students practice until they can use the skill somewhere new, not just repeat it in class. MMMF is built around research-backed routines, scenario work, reflection, and dissimilar transfer tasks so the learning carries into real decisions and real pressure.
+      </div>
+    </article>
+  </div>
+</section>
 
 <div class="protected-shell">
 <div class="locked-overlay" id="lockedOverlay">
