@@ -46,9 +46,15 @@
   }
 
   async function init() {
-    const anchor = document.querySelector("nav");
+    const utilityBar = document.querySelector(".utility-bar");
+    const anchor = utilityBar || document.querySelector("nav");
     const shell = buildMarkup();
-    if (anchor && anchor.parentNode) anchor.insertAdjacentElement("afterend", shell);
+    if (utilityBar) {
+      shell.classList.add("site-search-inline");
+      utilityBar.insertAdjacentElement("afterbegin", shell);
+    } else if (anchor && anchor.parentNode) {
+      anchor.insertAdjacentElement("afterend", shell);
+    }
     else document.body.insertAdjacentElement("afterbegin", shell);
 
     const input = document.getElementById("site-search-input");
