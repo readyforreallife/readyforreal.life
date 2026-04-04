@@ -1175,7 +1175,7 @@ function updateOwnerPreviewToggle() {
   ownerPreviewToggle.classList.toggle('locked', !on);
 }
 
-async function loadGlobalAccessState(preferApi = false) {
+async function loadGlobalAccessState(preferApi = true) {
   try {
     let data = null;
     const savedRegistrationEndpoint = String(localStorage.getItem(LS.registrationEndpoint) || '').trim();
@@ -1724,7 +1724,7 @@ function isUnlocked() {
   if (!globalTs) return true;
   return localTs >= globalTs;
 }
-async function syncGlobalAccessState(preferApi = false) {
+async function syncGlobalAccessState(preferApi = true) {
   await loadGlobalAccessState(preferApi);
   setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
 }
