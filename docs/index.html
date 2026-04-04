@@ -1439,6 +1439,10 @@ publicAccessToggle.addEventListener('click', async () => {
         // If teacher toggles global lock on, clear this browser's local paid unlock
         // so the lock is visible immediately.
         clearLocalUnlocked();
+        if (isOwnerPreviewOn()) {
+          setOwnerPreviewOn(false);
+          updateOwnerPreviewToggle();
+        }
       }
       setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
     }
