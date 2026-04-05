@@ -310,6 +310,110 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
 .fw-step-body { font-size: 13.5px; line-height: 1.55; }
 .fw-step-body strong { color: var(--slate); }
 .fw-step-body span { color: var(--muted); }
+.fw-explainer {
+  margin-top: 24px;
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 28px;
+  box-shadow: 0 2px 14px rgba(0,0,0,.04);
+}
+.fw-explainer-header {
+  display: flex;
+  justify-content: space-between;
+  gap: 18px;
+  align-items: flex-start;
+  margin-bottom: 18px;
+  padding-bottom: 14px;
+  border-bottom: 1px solid var(--rule);
+}
+.fw-explainer-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.35rem;
+  font-weight: 700;
+  color: var(--slate);
+  line-height: 1.2;
+  margin-bottom: 4px;
+}
+.fw-explainer-subtitle {
+  font-size: 12.5px;
+  color: var(--muted);
+  line-height: 1.5;
+}
+.fw-explainer-pill {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--gold);
+  background: var(--gold-lt);
+  border-radius: 999px;
+  padding: 8px 12px;
+  white-space: nowrap;
+}
+.fw-explainer-grid {
+  display: grid;
+  grid-template-columns: 1.1fr .9fr;
+  gap: 22px;
+}
+.fw-copy {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.fw-copy p {
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.75;
+  color: var(--ink);
+}
+.fw-copy strong {
+  color: var(--slate);
+}
+.fw-practical {
+  background: #fbf8f1;
+  border: 1px solid #eadfc9;
+  border-radius: 12px;
+  padding: 18px 18px 16px;
+}
+.fw-practical-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.fw-practical p {
+  margin: 0 0 14px;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: var(--ink);
+}
+.fw-practical p:last-child {
+  margin-bottom: 0;
+}
+.fw-callout {
+  margin-top: 14px;
+  background: linear-gradient(135deg, var(--slate), #243c5d);
+  color: #fff;
+  border-radius: 12px;
+  padding: 16px 18px;
+}
+.fw-callout-title {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: #e8c778;
+  margin-bottom: 8px;
+}
+.fw-callout-body {
+  margin: 0;
+  font-size: 13.5px;
+  line-height: 1.7;
+  color: rgba(255,255,255,.88);
+}
 
 .targets-list { display: flex; flex-direction: column; gap: 12px; }
 .t-row { display: flex; align-items: flex-start; gap: 18px; background: var(--white); padding: 18px 22px; border-radius: 10px; border: 1px solid var(--rule); transition: border-color .2s; }
@@ -592,6 +696,8 @@ body.preview-locked .locked-overlay { display: block; }
   .offer-badge { display: flex; }
   .pillars-grid, .modules-grid, .contexts-grid, .lit-row, .theory-grid, .pacing-grid, .journal-grid, .budget-grid { grid-template-columns: 1fr 1fr; }
   .rat-grid, .fw-row, .impl-grid, .spiral-wrapper { grid-template-columns: 1fr; }
+  .fw-explainer-grid { grid-template-columns: 1fr; }
+  .fw-explainer-header { flex-direction: column; }
   .assess-row { grid-template-columns: 1fr 1fr; }
   .assess-row.hdr { display: none; }
   .eval-row { grid-template-columns: 1fr; }
@@ -875,6 +981,31 @@ body.preview-locked .locked-overlay { display: block; }
         <div class="fw-step"><div class="fw-letter rust">O</div><div class="fw-step-body"><strong>Options.</strong> <span>Identify multiple possible responses. What are my real choices?</span></div></div>
         <div class="fw-step"><div class="fw-letter rust">C</div><div class="fw-step-body"><strong>Consequences.</strong> <span>Evaluate short and long-term outcomes. Who is affected and how?</span></div></div>
         <div class="fw-step"><div class="fw-letter rust">C</div><div class="fw-step-body"><strong>Choose.</strong> <span>Select a response and justify it. Be able to explain the reasoning.</span></div></div>
+      </div>
+    </div>
+  </div>
+  <div class="fw-explainer fade">
+    <div class="fw-explainer-header">
+      <div>
+        <div class="fw-explainer-title">The Sequence Matters Because the Brain Matters</div>
+        <div class="fw-explainer-subtitle">PLRR is the prerequisite skill. POCC is the target skill. Sequence here is instruction, not preference.</div>
+      </div>
+      <div class="fw-explainer-pill">PLRR Before POCC</div>
+    </div>
+    <div class="fw-explainer-grid">
+      <div class="fw-copy">
+        <p><strong>POCC is a decision-making framework.</strong> It requires executive function, which means the prefrontal cortex has to be online and working. Students have to identify options, weigh consequences, and choose. That is a cognitively demanding process even for adults in a calm state.</p>
+        <p><strong>PLRR is a regulation framework.</strong> It is what gets a student to the point where POCC is even possible. Pause stops the reactive spiral. Label names the emotion, which research consistently shows reduces its intensity. Reframe shifts the cognitive lens from threat to manageable challenge. Respond, not react, is the product of that process.</p>
+        <p><strong>If you hand a dysregulated student a decision-making tool, you are handing them a wrench when the power is out.</strong> The tool is fine. The conditions are not right. For our curriculum, the argument is clean: PLRR is the prerequisite skill. POCC is the target skill. You would not teach long division before subtraction. Same logic applies here.</p>
+      </div>
+      <div class="fw-practical">
+        <div class="fw-practical-title">The Practical Reality</div>
+        <p>A student who just got into an argument in the hallway, who is embarrassed in front of peers, or who is carrying something from home that has nothing to do with your classroom cannot access POCC yet. They are in a stress response. Cortisol and adrenaline are doing the driving. Asking them to list options and consequences in that moment does not build the skill. It builds frustration and confirms that “this stuff doesn’t work.”</p>
+        <p>But if that same student has practiced PLRR enough that it becomes a habit, if Pause is a reflex and Label gives them language for what is happening inside, they land in a regulated enough state that POCC actually functions as intended.</p>
+        <div class="fw-callout">
+          <div class="fw-callout-title">Why This Matters for Schools</div>
+          <p class="fw-callout-body">MMMF is not just teaching decision-making. It is building the neurological conditions that make decision-making possible. That is why the sequence matters, and that is why this curriculum is built the way it is.</p>
+        </div>
       </div>
     </div>
   </div>
