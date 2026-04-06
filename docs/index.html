@@ -56,8 +56,16 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
 .hero::before { content: ''; position: absolute; width: 500px; height: 500px; top: -150px; right: -100px; border-radius: 50%; background: radial-gradient(circle, rgba(196,149,64,.18) 0%, transparent 70%); pointer-events: none; }
 .hero::after { content: ''; position: absolute; width: 320px; height: 320px; bottom: -80px; left: 25%; border-radius: 50%; background: radial-gradient(circle, rgba(27,107,107,.22) 0%, transparent 70%); pointer-events: none; }
 .hero-layout { display: grid; grid-template-columns: minmax(0, 1.15fr) auto; gap: 28px; align-items: end; position: relative; z-index: 1; }
-.hero-side { display: grid; grid-template-columns: repeat(3, minmax(132px, 1fr)); gap: 14px; align-items: stretch; transform: translateY(-8px); }
-.hero-logo-large { width: 142px; height: 142px; object-fit: contain; background: transparent; border-radius: 16px; border: 1px solid rgba(255,255,255,.2); box-shadow: 0 10px 24px rgba(0,0,0,.26); padding: 0; }
+.hero-side {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(112px, 1fr));
+  gap: 14px;
+  align-items: stretch;
+  justify-content: center;
+  width: min(100%, 520px);
+  transform: translateY(-8px);
+}
+.hero-logo-large { width: 100%; height: 142px; object-fit: contain; background: transparent; border-radius: 16px; border: 1px solid rgba(255,255,255,.2); box-shadow: 0 10px 24px rgba(0,0,0,.26); padding: 0; }
 .hero-eyebrow { font-family: 'DM Mono', monospace; font-size: 10.5px; letter-spacing: .18em; text-transform: uppercase; color: var(--gold); margin-bottom: 20px; }
 .hero h1 { font-family: 'Playfair Display', serif; font-size: clamp(2.4rem, 5vw, 4.2rem); font-weight: 900; line-height: 1.06; color: #fff; margin-bottom: 8px; }
 .hero h1 em { font-style: italic; color: var(--gold); }
@@ -94,7 +102,7 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
 .founder-badge .badge-label { color: rgba(255,255,255,.76); }
 .founder-badge .badge-sub { color: #e8d198; }
 .founder-badge .badge-num { color: var(--gold); }
-.mobile-only { display: none; }
+.desktop-hidden { display: none; }
 
 .inst-strip { background: var(--gold-lt); border-bottom: 3px solid var(--gold-dim); padding: 18px 60px 22px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; margin-top: -12px; position: relative; z-index: 3; }
 .inst-strip .mini-title { color: var(--slate); font-weight: 700; }
@@ -714,24 +722,16 @@ body.preview-locked .locked-overlay { display: block; }
   .copyright-warning, .access-gate { padding: 12px 24px; }
   .locked-overlay { top: 80px; }
   .hero-layout { grid-template-columns: 1fr; }
-  .hero-side {
-    grid-template-columns: repeat(2, minmax(132px, 1fr));
-    align-items: stretch;
-    justify-content: center;
-    transform: translateY(0);
-    width: min(100%, 320px);
-    margin: 8px auto 0;
-  }
+  .hero-side { transform: translateY(0); margin: 8px auto 0; }
   .hero-logo-large {
     width: 100%;
     height: 142px;
     object-fit: contain;
-    grid-column: auto;
     justify-self: stretch;
   }
   #modulesBadge { display: flex; }
   .offer-badge { display: flex; }
-  .mobile-only { display: flex; }
+  .desktop-hidden { display: flex; }
   .pillars-grid, .modules-grid, .contexts-grid, .lit-row, .theory-grid, .pacing-grid, .journal-grid, .budget-grid { grid-template-columns: 1fr 1fr; }
   .rat-grid, .fw-row, .impl-grid, .spiral-wrapper { grid-template-columns: 1fr; }
   .fw-explainer-grid { grid-template-columns: 1fr; }
@@ -830,7 +830,7 @@ body.preview-locked .locked-overlay { display: block; }
         <span class="badge-label">Course Offer</span>
         <div class="badge-sub">Why Join</div>
       </a>
-      <a class="hero-badge founder-badge mobile-only" href="bio.html" aria-label="Open founders page">
+      <a class="hero-badge founder-badge" href="bio.html" aria-label="Open founders page">
         <span class="badge-num">◦</span>
         <span class="badge-label">Founders</span>
         <div class="badge-sub">Meet Michael &amp; Mekenzi</div>
