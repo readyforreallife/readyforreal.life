@@ -86,6 +86,15 @@ nav a:hover { color: var(--gold); background: rgba(255,255,255,.05); }
 .offer-badge .badge-label { color: rgba(255,255,255,.82); }
 .offer-badge .badge-sub { color: #d7eee9; }
 .offer-badge .badge-num { color: #f2e4c0; }
+.founder-badge {
+  background: linear-gradient(145deg, #32435f 0%, #223249 100%);
+  color: #fff;
+  border: 1px solid rgba(255,255,255,.16);
+}
+.founder-badge .badge-label { color: rgba(255,255,255,.76); }
+.founder-badge .badge-sub { color: #e8d198; }
+.founder-badge .badge-num { color: var(--gold); }
+.mobile-only { display: none; }
 
 .inst-strip { background: var(--gold-lt); border-bottom: 3px solid var(--gold-dim); padding: 18px 60px 22px; display: flex; align-items: center; gap: 28px; flex-wrap: wrap; margin-top: -12px; position: relative; z-index: 3; }
 .inst-strip .mini-title { color: var(--slate); font-weight: 700; }
@@ -684,16 +693,45 @@ body.preview-locked .locked-overlay { display: block; }
   .founder-quote { max-width: none; text-align: center; }
   .inst-people { width: 100%; justify-content: center; }
   .inst-copy { width: 100%; text-align: center; }
-  .bio-actions { justify-content: center; }
+  .bio-actions {
+    width: 100%;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 12px;
+    justify-content: stretch;
+  }
+  .bio-link {
+    margin-left: 0;
+    min-height: 72px;
+    width: 100%;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
   .explainer-strip { padding: 18px 24px 24px; }
   .explainer-grid { grid-template-columns: 1fr; }
   .copyright-warning, .access-gate { padding: 12px 24px; }
   .locked-overlay { top: 80px; }
   .hero-layout { grid-template-columns: 1fr; }
-  .hero-side { grid-template-columns: repeat(2, minmax(130px, 1fr)); align-items: stretch; transform: translateY(0); }
-  .hero-logo-large { width: 140px; height: 140px; object-fit: contain; grid-column: 1 / -1; justify-self: flex-start; }
+  .hero-side {
+    grid-template-columns: repeat(2, minmax(132px, 1fr));
+    align-items: stretch;
+    justify-content: center;
+    transform: translateY(0);
+    width: min(100%, 320px);
+    margin: 8px auto 0;
+  }
+  .hero-logo-large {
+    width: 100%;
+    height: 142px;
+    object-fit: contain;
+    grid-column: auto;
+    justify-self: stretch;
+  }
   #modulesBadge { display: flex; }
   .offer-badge { display: flex; }
+  .mobile-only { display: flex; }
   .pillars-grid, .modules-grid, .contexts-grid, .lit-row, .theory-grid, .pacing-grid, .journal-grid, .budget-grid { grid-template-columns: 1fr 1fr; }
   .rat-grid, .fw-row, .impl-grid, .spiral-wrapper { grid-template-columns: 1fr; }
   .fw-explainer-grid { grid-template-columns: 1fr; }
@@ -704,6 +742,7 @@ body.preview-locked .locked-overlay { display: block; }
   footer { grid-template-columns: 1fr; }
   .footer-refs { text-align: left; }
   .utility-bar { top: 44px; justify-content: center; flex-wrap: wrap; }
+  .copyright-floating { display: none; }
 }
 </style>
 </head>
@@ -790,6 +829,11 @@ body.preview-locked .locked-overlay { display: block; }
         <span class="badge-num">+</span>
         <span class="badge-label">Course Offer</span>
         <div class="badge-sub">Why Join</div>
+      </a>
+      <a class="hero-badge founder-badge mobile-only" href="bio.html" aria-label="Open founders page">
+        <span class="badge-num">◦</span>
+        <span class="badge-label">Founders</span>
+        <div class="badge-sub">Meet Michael &amp; Mekenzi</div>
       </a>
     </div>
   </div>
