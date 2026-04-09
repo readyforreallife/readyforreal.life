@@ -11,6 +11,11 @@
   flex: 1 1 360px;
   min-width: min(420px, 100%);
 }
+.site-search-shell.site-search-page {
+  position: static;
+  top: auto;
+  padding: 16px 16px 0;
+}
 
 .site-search-wrap {
   max-width: 1160px;
@@ -115,6 +120,9 @@
   .site-search-shell.site-search-inline {
     min-width: 100%;
     flex-basis: 100%;
+  }
+  .site-search-shell.site-search-page {
+    padding: 12px 12px 0;
   }
   .site-search-shell.site-search-inline .site-search-bar {
     align-items: center;

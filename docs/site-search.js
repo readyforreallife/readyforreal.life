@@ -53,9 +53,13 @@
       shell.classList.add("site-search-inline");
       utilityBar.insertAdjacentElement("afterbegin", shell);
     } else if (anchor && anchor.parentNode) {
+      shell.classList.add("site-search-page");
       anchor.insertAdjacentElement("afterend", shell);
     }
-    else document.body.insertAdjacentElement("afterbegin", shell);
+    else {
+      shell.classList.add("site-search-page");
+      document.body.insertAdjacentElement("afterbegin", shell);
+    }
 
     const input = document.getElementById("site-search-input");
     const results = document.getElementById("site-search-results");
