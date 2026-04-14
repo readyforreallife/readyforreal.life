@@ -21,6 +21,9 @@ const startLiveSessionBtn = document.getElementById("startLiveSessionBtn");
 const liveCodeRow = document.getElementById("liveCodeRow");
 const liveSessionCodeEl = document.getElementById("liveSessionCode");
 const copyJoinLinkBtn = document.getElementById("copyJoinLinkBtn");
+const liveQrPanelEl = document.getElementById("liveQrPanel");
+const liveQrImageEl = document.getElementById("liveQrImage");
+const liveQrLinkEl = document.getElementById("liveQrLink");
 const liveSessionStatusEl = document.getElementById("liveSessionStatus");
 const joinCodeInput = document.getElementById("joinCodeInput");
 const joinNameInput = document.getElementById("joinNameInput");
@@ -483,6 +486,22 @@ function setLiveStatus(text) {
   liveSessionStatusEl.textContent = text;
 }
 
+function updateLiveQr(code) {
+  if (!liveQrPanelEl || !liveQrImageEl || !liveQrLinkEl) return;
+  if (!code) {
+    liveQrPanelEl.hidden = true;
+    liveQrImageEl.removeAttribute("src");
+    liveQrLinkEl.href = "#";
+    liveQrLinkEl.textContent = "Join link will appear here once the host code is created.";
+    return;
+  }
+  const joinLink = getJoinLink(code);
+  liveQrPanelEl.hidden = false;
+  liveQrImageEl.src = `https://api.qrserver.com/v1/create-qr-code/?size=220x220&margin=12&data=${encodeURIComponent(joinLink)}`;
+  liveQrLinkEl.href = joinLink;
+  liveQrLinkEl.textContent = joinLink;
+}
+
 function showWaitingCard(title, text) {
   waitingCardEl.hidden = false;
   waitingTitleEl.textContent = title;
@@ -641,6 +660,7 @@ function applyLiveSession(session) {
   updateLiveHud(session);
   syncLiveClock(session);
   liveCodeRow.hidden = !state.live.host;
+  updateLiveQr(state.live.host ? session.code : "");
   startLiveSessionBtn.hidden = !state.live.host || session.started;
   liveSessionCodeEl.textContent = session.code;
 
@@ -697,6 +717,7 @@ async function hostLiveSession() {
     state.live.hostKey = response.host_key;
     state.live.participantName = state.playerName;
     liveCodeRow.hidden = false;
+    updateLiveQr(response.session.code);
     startLiveSessionBtn.hidden = false;
     liveSessionCodeEl.textContent = response.session.code;
     setLiveStatus(`Live session ${response.session.code} is ready. Share the code and start when your teams are in.`);
