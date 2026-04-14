@@ -111,7 +111,11 @@ async function workerRequest(payload) {
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok || data.ok === false) {
-    throw new Error(data.error || "The live challenge request failed.");
+    const rawError = String(data.error || "").trim();
+    if (rawError === "Unknown action.") {
+      throw new Error("The live challenge backend is still on the older Worker version. Redeploy the latest Worker code, then try Host Live Session again.");
+    }
+    throw new Error(rawError || "The live challenge request failed.");
   }
   return data;
 }
