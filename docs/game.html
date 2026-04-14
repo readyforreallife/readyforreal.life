@@ -258,6 +258,62 @@ nav {
   background: #fbf8f1;
   padding: 18px;
 }
+.live-block {
+  margin-top: 14px;
+  border-top: 1px solid var(--rule);
+  padding-top: 16px;
+  display: grid;
+  gap: 14px;
+}
+.live-actions,
+.live-code-row,
+.join-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  align-items: center;
+}
+.live-status {
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--muted);
+}
+.live-code {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 110px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: #18304f;
+  color: #fff;
+  font-family: 'DM Mono', monospace;
+  font-size: 18px;
+  letter-spacing: .16em;
+  text-transform: uppercase;
+}
+.join-grid {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+}
+.join-note {
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.waiting-card {
+  margin-top: 16px;
+  padding: 16px;
+  border-radius: 16px;
+  background: #eef3fb;
+  border: 1px solid #d4deee;
+}
+.waiting-card strong {
+  display: block;
+  margin-bottom: 6px;
+  color: var(--slate);
+}
 .teacher-label {
   font-family: 'DM Mono', monospace;
   font-size: 10px;
@@ -487,6 +543,10 @@ nav {
   outline: 3px solid #67b67b;
   box-shadow: 0 0 0 4px rgba(103,182,123,.18);
 }
+.answer-card.selected {
+  outline: 3px solid #f0d38a;
+  box-shadow: 0 0 0 4px rgba(240,211,138,.2);
+}
 .answer-card.incorrect {
   outline: 3px solid #d36f62;
   box-shadow: 0 0 0 4px rgba(211,111,98,.18);
@@ -682,7 +742,8 @@ nav {
   .hero-side { grid-template-columns: 1fr; }
   .nav-actions { justify-content: flex-start; }
   .setup-grid,
-  .team-grid { grid-template-columns: 1fr; }
+  .team-grid,
+  .join-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -798,6 +859,39 @@ nav {
             <div class="team-grid" id="teamGrid"></div>
           </div>
           <p class="teacher-help">Classroom mode rotates turns team by team, keeps a projected scoreboard, and lets you run fast themed rounds without losing the instructional discussion.</p>
+          <div class="live-block">
+            <div class="teacher-label">Live classroom session</div>
+            <p class="teacher-help">Host a shared round, project the teacher screen, and let students or teams join with a code from their own device.</p>
+            <div class="live-actions">
+              <button class="btn" type="button" id="hostLiveBtn">Host Live Session</button>
+              <button class="btn" type="button" id="startLiveSessionBtn" hidden>Start Live Round</button>
+            </div>
+            <div class="live-code-row" id="liveCodeRow" hidden>
+              <span class="live-code" id="liveSessionCode">------</span>
+              <button class="btn" type="button" id="copyJoinLinkBtn">Copy Join Link</button>
+            </div>
+            <p class="live-status" id="liveSessionStatus">Create a host code first if you want students or teams to join from other devices.</p>
+            <div class="join-grid">
+              <div class="field-row">
+                <label for="joinCodeInput">Join code</label>
+                <input id="joinCodeInput" type="text" maxlength="6" placeholder="ABC123">
+              </div>
+              <div class="field-row">
+                <label for="joinNameInput">Join name</label>
+                <input id="joinNameInput" type="text" maxlength="22" placeholder="Student or team name">
+              </div>
+              <div class="field-row">
+                <label for="joinTeamSelect">Team</label>
+                <select id="joinTeamSelect">
+                  <option value="">Choose team</option>
+                </select>
+              </div>
+            </div>
+            <div class="join-actions">
+              <button class="btn" type="button" id="joinLiveBtn">Join Live Session</button>
+            </div>
+            <p class="join-note" id="joinHint">Use a join code from the teacher screen, then choose the team you belong to before class starts.</p>
+          </div>
         </div>
         <div class="start-actions">
           <button class="btn gold" type="button" id="startChallengeBtnDuplicate">Start 10-Question Round</button>
@@ -816,6 +910,10 @@ nav {
             <div class="label">Teaching value</div>
             <p>It makes your curriculum feel alive by letting people practice judgment instead of just hearing definitions.</p>
           </div>
+        </div>
+        <div class="waiting-card" id="waitingCard" hidden>
+          <strong id="waitingTitle">Live session ready.</strong>
+          <p id="waitingText" class="panel-sub">Once the teacher starts the round, the question will appear here and your answer button will become active.</p>
         </div>
       </section>
 
