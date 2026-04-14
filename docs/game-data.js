@@ -1,262 +1,262 @@
 window.RFRL_GAME_QUESTIONS = [
   {
-    category: "Frameworks",
-    difficulty: "Core",
-    prompt: "What does PLRR stand for in this curriculum?",
+    category: "Hallway Pressure",
+    difficulty: "Real Life",
+    prompt: "You just got mocked in front of a crowd between classes. Your first instinct is to clap back loud enough for everyone to hear. What is the strongest move?",
     choices: [
-      "Pause, Label, Reframe, Respond",
-      "Plan, Listen, Reflect, Repair",
-      "Pause, Learn, Repair, Reset",
-      "Prepare, Lead, Regulate, Respond"
-    ],
-    answer: 0,
-    explanation: "PLRR is the regulation routine: Pause, Label, Reframe, Respond. It is the prerequisite skill students practice before higher-pressure decision-making."
-  },
-  {
-    category: "Frameworks",
-    difficulty: "Core",
-    prompt: "What does POCC stand for?",
-    choices: [
-      "Pause, Own, Commit, Change",
-      "Pause, Options, Consequences, Choose",
-      "Plan, Observe, Confirm, Commit",
-      "Pause, Outline, Clarify, Choose"
+      "Match their energy so nobody thinks you're weak",
+      "Pause, steady yourself, and respond once you can think clearly",
+      "Post about them immediately so your side gets out first",
+      "Shove past them and leave without saying anything"
     ],
     answer: 1,
-    explanation: "POCC is the decision-making framework: Pause, Options, Consequences, Choose. It helps students explain and justify choices under pressure."
+    explanation: "The strongest move is to regulate first. A sharp response after you’re steady protects your dignity better than a public reaction you’ll regret."
   },
   {
-    category: "Brain Science",
-    difficulty: "Core",
-    prompt: "Why does the curriculum teach PLRR before POCC?",
+    category: "Group Chat",
+    difficulty: "Real Life",
+    prompt: "A group chat is roasting someone who is not in it. You know one screenshot could spread everywhere. What is the best next move?",
     choices: [
-      "Because PLRR is easier to memorize",
-      "Because regulation creates the conditions for decision-making",
-      "Because POCC only works in written assignments",
-      "Because PLRR replaces decision-making entirely"
-    ],
-    answer: 1,
-    explanation: "PLRR is taught first because students cannot access strong executive function when they are dysregulated. Regulation is the prerequisite; decision-making is the target skill."
-  },
-  {
-    category: "Modules",
-    difficulty: "Core",
-    prompt: "Which module centers on triggers, grounding, and emotional regulation tools?",
-    choices: [
-      "Modern Manners",
-      "Conflict Navigation",
-      "Emotional Intelligence",
-      "Personal Growth"
+      "Add one funny line and leave before it gets worse",
+      "Screenshot it and send it to more people so they know what happened",
+      "Shut down your part in it and push the chat toward stopping",
+      "Ignore it because it doesn't involve you directly"
     ],
     answer: 2,
-    explanation: "Emotional Intelligence is the module where triggers, grounding, stress tools, and regulation routines are taught directly."
+    explanation: "Digital moments become reputation moments fast. The strongest response is to stop adding harm and redirect the group instead of feeding it."
   },
   {
-    category: "Modules",
-    difficulty: "Core",
-    prompt: "Which module deals most directly with digital permanence and online reputation?",
+    category: "Classroom Conflict",
+    difficulty: "Real Life",
+    prompt: "A teacher corrects you in class and you feel embarrassed. What's the strongest response if you want to keep your standing and your options open?",
     choices: [
-      "Conflict Navigation",
-      "Digital Citizenship",
-      "Modern Manners",
-      "Personal Growth"
-    ],
-    answer: 1,
-    explanation: "Digital Citizenship teaches posting choices, permanence, privacy, reputation, and online tone."
-  },
-  {
-    category: "Pillars",
-    difficulty: "Core",
-    prompt: "Which pillar focuses on owning mistakes, making repairs, and following through?",
-    choices: [
-      "Emotional Regulation",
-      "Respectful Communication",
-      "Decision-Making Under Pressure",
-      "Accountability & Repair"
-    ],
-    answer: 3,
-    explanation: "Accountability & Repair is the pillar centered on integrity, repair, follow-through, and trust rebuilding."
-  },
-  {
-    category: "Scenarios",
-    difficulty: "Applied",
-    prompt: "A student is embarrassed after an argument in the hallway and is still heated. Which framework should come first?",
-    choices: [
-      "POCC, because they need to choose quickly",
-      "PLRR, because they need to regulate before making a decision",
-      "Both at the same time",
-      "Neither; wait until the end of class"
-    ],
-    answer: 1,
-    explanation: "This is exactly the sequencing logic of the curriculum. In a dysregulated state, PLRR comes first so the student can get regulated enough for POCC to work."
-  },
-  {
-    category: "Scenarios",
-    difficulty: "Applied",
-    prompt: "A teen has to choose between extra work shifts and studying for major exams. Which framework is most useful after they have regulated?",
-    choices: [
-      "POCC",
-      "PLRR",
-      "Only accountability",
-      "Only journaling"
-    ],
-    answer: 0,
-    explanation: "Once the student is regulated, POCC helps weigh options, consequences, and long-term priorities in a real decision."
-  },
-  {
-    category: "Standards",
-    difficulty: "Core",
-    prompt: "Which Utah-aligned frameworks are named on the homepage and in the program materials?",
-    choices: [
-      "Utah CASEL and Utah CCA Core Standards",
-      "Utah STEM and NCAA Standards",
-      "Only Utah CASEL",
-      "Only district-created behavior standards"
-    ],
-    answer: 0,
-    explanation: "The public-facing alignment language names Utah CASEL and Utah CCA Core Standards."
-  },
-  {
-    category: "Design",
-    difficulty: "Core",
-    prompt: "What does transfer design mean in this curriculum?",
-    choices: [
-      "Students repeat the same task until it becomes automatic",
-      "Students memorize key vocabulary for tests",
-      "Students apply skills in unfamiliar, real-life situations",
-      "Students only practice in one classroom context"
+      "Roll your eyes and tell your friends later how ridiculous it was",
+      "Argue in front of everyone so the teacher knows you disagree",
+      "Stay composed, finish the moment, and talk privately after class if needed",
+      "Refuse to participate for the rest of the period"
     ],
     answer: 2,
-    explanation: "Transfer design means the learning is meant to carry into unfamiliar, high-stakes settings, not stay trapped in one lesson or one room."
+    explanation: "Private repair keeps your self-respect without turning the classroom into a power contest."
   },
   {
-    category: "Tracks",
-    difficulty: "Core",
-    prompt: "Which implementation track is built for workplace, family, and adult personal development contexts?",
+    category: "Workplace Readiness",
+    difficulty: "Real Life",
+    prompt: "You’re late to a shift and your manager asks what happened. Which response shows the most maturity?",
     choices: [
-      "Grades 7–8",
-      "Grades 9–12",
-      "Community Youth",
-      "Community Adult"
-    ],
-    answer: 3,
-    explanation: "Community Adult uses the same frameworks in workplace, family, and personal development settings."
-  },
-  {
-    category: "Tracks",
-    difficulty: "Core",
-    prompt: "Which track uses increasing complexity from grade 9 through grade 12?",
-    choices: [
-      "Community Adult",
-      "Grades 9–12",
-      "Community Youth",
-      "Grades 7–8"
+      "Blame traffic even if you left late",
+      "Own it, apologize clearly, and say how you'll prevent it next time",
+      "Say nothing and hope they move on",
+      "Tell them everybody is late sometimes"
     ],
     answer: 1,
-    explanation: "The Grades 9–12 track levels up annually so students revisit core ideas with growing complexity instead of repeating the same content."
+    explanation: "Owning it and naming the fix builds trust. Excuses shrink credibility fast."
   },
   {
-    category: "Assessment",
-    difficulty: "Applied",
-    prompt: "What is the capstone designed to show?",
+    category: "Friend Loyalty",
+    difficulty: "Real Life",
+    prompt: "Your friend wants you to lie for them so they can avoid consequences. What is the strongest play?",
     choices: [
-      "Whether students can memorize module names",
-      "Whether students can present and apply strategies in a real or simulated scenario",
-      "Whether students can repeat teacher notes word-for-word",
-      "Whether students can finish a worksheet without help"
+      "Cover for them because that's what real friends do",
+      "Refuse to lie and help them face it honestly",
+      "Lie this one time, but tell them not to ask again",
+      "Avoid the situation and ghost both sides"
     ],
     answer: 1,
-    explanation: "The capstone is about application, reflection, and transfer in a meaningful scenario, not rote recall."
+    explanation: "Real loyalty does not mean helping someone make the situation worse. Honesty plus support is stronger than covering damage."
   },
   {
-    category: "Frameworks",
-    difficulty: "Core",
-    prompt: "Which question belongs to the Label step of PLRR?",
+    category: "Online Reputation",
+    difficulty: "Real Life",
+    prompt: "You’re about to post something funny, but it also makes your teacher, coach, or future employer look foolish. What is the best call?",
     choices: [
-      "What are my real options here?",
-      "Who will be affected by this choice?",
-      "What am I actually feeling right now?",
-      "What consequence matters most?"
+      "Post it because humor matters more than perception",
+      "Post it for a few minutes and delete it later",
+      "Hold it, rethink the long-term consequence, and decide if it's worth your name on it",
+      "Send it only to a private story because those never leak"
     ],
     answer: 2,
-    explanation: "Label asks the student to name the emotion or internal state. That naming step helps reduce intensity and supports regulation."
+    explanation: "The right question is not just 'Can I post this?' but 'Do I want this attached to me later?'"
   },
   {
-    category: "Frameworks",
-    difficulty: "Core",
-    prompt: "Which question belongs to the Options step of POCC?",
+    category: "Dating Respect",
+    difficulty: "Real Life",
+    prompt: "Someone you like stops responding. Your emotions spike and you want to send three more messages demanding an answer. What is the strongest move?",
     choices: [
-      "What am I actually feeling?",
-      "What is actually happening versus what I assumed?",
-      "What are my real choices right now?",
-      "How do I repair this after the fact?"
+      "Send everything while the feeling is fresh",
+      "Ask your friends to message them too",
+      "Pause, regulate, and decide on one respectful message or no message at all",
+      "Post something indirect so they feel bad"
     ],
     answer: 2,
-    explanation: "Options is where students widen the field and identify real possible responses before rushing into a choice."
+    explanation: "Strong communication is not about urgency. It is about self-control, clarity, and respect even when emotions are high."
   },
   {
-    category: "Program Use",
-    difficulty: "Applied",
-    prompt: "Which statement best matches the purpose of the Manners in Motion cards?",
+    category: "Rumor Control",
+    difficulty: "Real Life",
+    prompt: "You hear that someone is spreading a false rumor about you. What is the strongest first move?",
     choices: [
-      "They replace the main curriculum with isolated drills",
-      "They give repeated challenge prompts for facilitation, discussion, and behavior practice",
-      "They are only for adult workplace trainings",
-      "They exist only as display pieces for the website"
+      "Start a louder rumor about them",
+      "Confront them publicly so everybody sees it",
+      "Get clear on what is actually true, then choose a calm direct response",
+      "Assume the worst and cut off everyone connected to them"
     ],
-    answer: 1,
-    explanation: "The cards are designed for repetition, prompting, challenge, and facilitation across settings."
+    answer: 2,
+    explanation: "The strongest first move is clarity. Reacting before you know what is real usually adds damage instead of control."
   },
   {
-    category: "Program Use",
-    difficulty: "Applied",
-    prompt: "Which statement best matches the purpose of the Scenario Cards?",
+    category: "Family Stress",
+    difficulty: "Real Life",
+    prompt: "You had a bad morning at home and now someone at school says one small thing that sets you off. What is the best move?",
     choices: [
-      "They are primarily decorative handouts",
-      "They are printable prompts for guided discussion, transfer practice, and facilitated reflection",
-      "They are only intended for teacher grading",
-      "They are legal licensing documents"
+      "Unload on them because they caught you at the wrong time",
+      "Recognize the stress you're carrying and keep yourself from dumping it on the next person",
+      "Walk out and let everyone guess what happened",
+      "Pretend you're fine and explode later"
     ],
     answer: 1,
-    explanation: "The Scenario Cards support guided discussion and transfer practice by putting students into realistic dilemmas."
+    explanation: "A lot of real-life growth is learning not to pass your pressure to the next person in line."
   },
   {
-    category: "Mission",
-    difficulty: "Core",
-    prompt: "Which phrase best captures the program mission?",
+    category: "Leadership",
+    difficulty: "Real Life",
+    prompt: "You’re leading a group project and one person keeps doing almost nothing. What is the strongest response?",
     choices: [
-      "Coverage, not transfer",
-      "Transfer, not coverage",
-      "Compliance, not reflection",
-      "Memorization, not application"
+      "Trash them in the group chat so everyone knows who failed",
+      "Do all the work yourself and stay resentful",
+      "Address it directly, clearly, and early before the whole group breaks down",
+      "Wait until the grade comes back, then complain"
     ],
-    answer: 1,
-    explanation: "The stated mission is transfer, not coverage. Students should leave able to apply concepts in unfamiliar, high-stakes situations."
+    answer: 2,
+    explanation: "Leadership means dealing with tension while there is still time to change the outcome."
   },
   {
-    category: "Real Life",
-    difficulty: "Applied",
-    prompt: "If a student is pressured by peers to make a quick choice online, what is the strongest instructional sequence?",
+    category: "Public Behavior",
+    difficulty: "Real Life",
+    prompt: "A younger student watches how you treat staff when something doesn't go your way. What matters most in that moment?",
     choices: [
-      "Jump straight to consequences",
-      "Use PLRR first, then move into POCC",
-      "Skip regulation and focus on punishment",
-      "Only ask for a written reflection later"
+      "Winning the argument",
+      "Showing that pressure does not erase your character",
+      "Making sure your friends think you're funny",
+      "Getting the last word"
     ],
     answer: 1,
-    explanation: "The program teaches that students regulate first through PLRR, then make a defensible choice through POCC."
+    explanation: "One of the deepest themes in your curriculum is that character has to show up under pressure, not just in easy moments."
   },
   {
-    category: "Program Identity",
-    difficulty: "Core",
-    prompt: "What is the current public-facing primary name of the program?",
+    category: "Repair",
+    difficulty: "Real Life",
+    prompt: "You realize you were the one who escalated a situation. What repair move is strongest?",
     choices: [
-      "Modern Manners & Mental Fortitude",
-      "Ready for Real Life Instruction and Education",
-      "MMMF Course System",
-      "Ready for Real Life Training Hub"
+      "Wait and hope it blows over",
+      "Say 'my bad' without changing anything",
+      "Own what you did, apologize specifically, and follow through with changed behavior",
+      "Explain why the other person made you do it"
+    ],
+    answer: 2,
+    explanation: "Repair is not just words. It is ownership plus behavior that matches the apology."
+  },
+  {
+    category: "Peer Pressure",
+    difficulty: "Real Life",
+    prompt: "Your friends pressure you to join in humiliating someone because 'it's not that serious.' What is the strongest response?",
+    choices: [
+      "Join in lightly so you don't get targeted",
+      "Stay silent and let it happen",
+      "Refuse to add to it, even if that costs you social points in the moment",
+      "Laugh now and apologize later"
+    ],
+    answer: 2,
+    explanation: "The strongest decisions often cost something in the short term. That does not make them weak. It makes them deliberate."
+  },
+  {
+    category: "Decision Moment",
+    difficulty: "Real Life",
+    prompt: "You have two real options, and both come with a cost. What should guide you most?",
+    choices: [
+      "Whatever feels best right now",
+      "Whichever choice makes you look toughest",
+      "The long-term consequence and the kind of person you want to be",
+      "Whatever gets the biggest reaction from other people"
+    ],
+    answer: 2,
+    explanation: "Strong decisions are not only about immediate comfort. They are about consequence, integrity, and the future version of you."
+  },
+  {
+    category: "Digital Citizenship",
+    difficulty: "Real Life",
+    prompt: "Someone sends you a private photo or message that would get attention if shared. What is the strongest response?",
+    choices: [
+      "Share it with one trusted friend only",
+      "Save it just in case you need leverage later",
+      "Respect the boundary and do not pass private content around",
+      "Use it if they ever make you mad"
+    ],
+    answer: 2,
+    explanation: "Digital citizenship is not abstract. It is about trust, privacy, and what kind of person you are when nobody is forcing your hand."
+  },
+  {
+    category: "Respectful Communication",
+    difficulty: "Real Life",
+    prompt: "You strongly disagree with someone in class. Which response is strongest?",
+    choices: [
+      "Interrupt until they stop talking",
+      "Use a sentence stem that disagrees without disrespect",
+      "Mock their idea so people stop taking it seriously",
+      "Shut down and refuse to engage"
     ],
     answer: 1,
-    explanation: "Ready for Real Life Instruction and Education is the primary public-facing name. MMMF remains the supporting legal identifier and shorthand."
+    explanation: "Respectful disagreement is a real skill. It lets you stay strong without becoming reckless."
+  },
+  {
+    category: "Coaching Moment",
+    difficulty: "Real Life",
+    prompt: "A younger sibling or student copies what they see you do online. What is the strongest standard to hold yourself to?",
+    choices: [
+      "If it is funny, it is fine",
+      "If others do it, it must be okay",
+      "Model the standard you would want repeated by someone younger than you",
+      "Only behave well when adults are watching"
+    ],
+    answer: 2,
+    explanation: "Leadership shows up in example. If someone copied your behavior exactly, would you be proud of what you modeled?"
+  },
+  {
+    category: "Conflict Navigation",
+    difficulty: "Real Life",
+    prompt: "A conversation is getting hotter by the second and both people keep cutting each other off. What is the best move?",
+    choices: [
+      "Raise your voice so your side gets heard",
+      "Step back, slow the pace, and reset the conversation before it gets worse",
+      "Threaten to expose the other person",
+      "Keep going until someone wins"
+    ],
+    answer: 1,
+    explanation: "When the pace speeds up, the quality of the decision usually drops. Slowing the moment can save the whole interaction."
+  },
+  {
+    category: "Integrity",
+    difficulty: "Real Life",
+    prompt: "You can either look good immediately or do the harder thing that is right. What is the stronger choice?",
+    choices: [
+      "Protect the image now and fix the truth later",
+      "Choose the harder right over the easier impressive",
+      "Do whichever option no one can prove",
+      "Avoid choosing at all"
+    ],
+    answer: 1,
+    explanation: "A lot of your curriculum is really about this: not just image, but integrity under pressure."
+  },
+  {
+    category: "Pressure Test",
+    difficulty: "Real Life",
+    prompt: "If pressure is high, emotions are loud, and everybody is watching, what is usually the strongest first move?",
+    choices: [
+      "React fast before anyone else can control the story",
+      "Pause long enough to stop the spiral and get your brain back online",
+      "Say the harshest thing first so you stay in control",
+      "Walk away forever and never deal with it"
+    ],
+    answer: 1,
+    explanation: "That is the heart of the curriculum. Under pressure, regulation first creates the conditions for a strong decision instead of a reactive one."
   }
 ];
