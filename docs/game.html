@@ -520,18 +520,31 @@ nav {
   list-style: none;
   display: grid;
   gap: 10px;
+  max-height: 420px;
+  overflow-y: auto;
+  padding-right: 4px;
 }
 .leaderboard li {
   display: flex;
   justify-content: space-between;
+  align-items: center;
   gap: 12px;
   padding: 12px 14px;
   border-radius: 14px;
-  background: #f7f2e7;
-  border: 1px solid #eadfc9;
+  background: rgba(255,255,255,.96);
+  border: 1px solid rgba(31,42,58,.12);
+  box-shadow: 0 8px 18px rgba(17,24,39,.08);
+}
+.leaderboard li span {
+  color: #21314b;
+  font-weight: 700;
+  line-height: 1.35;
 }
 .leaderboard li strong {
-  color: var(--slate);
+  color: #0f1726;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.1rem;
+  white-space: nowrap;
 }
 .classroom-board {
   list-style: none;

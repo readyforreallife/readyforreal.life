@@ -88,7 +88,7 @@ function loadLeaderboard() {
     return;
   }
 
-  history.slice(0, 5).forEach((entry, index) => {
+  history.slice(0, 10).forEach((entry, index) => {
     const row = document.createElement("li");
     row.innerHTML = `<span>#${index + 1} · ${entry.name}</span><strong>${entry.score.toLocaleString()}</strong>`;
     leaderboardEl.appendChild(row);
