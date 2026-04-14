@@ -486,6 +486,25 @@ function setLiveStatus(text) {
   liveSessionStatusEl.textContent = text;
 }
 
+function normalizeJoinCode(value) {
+  const raw = String(value || "").trim();
+  if (!raw) return "";
+  if (/^[A-Z0-9]{6}$/i.test(raw)) {
+    return raw.toUpperCase();
+  }
+  try {
+    const url = new URL(raw);
+    const join = String(url.searchParams.get("join") || "").trim();
+    if (/^[A-Z0-9]{6}$/i.test(join)) {
+      return join.toUpperCase();
+    }
+  } catch {
+    // Not a full URL, fall through.
+  }
+  const fallback = raw.match(/[A-Z0-9]{6}/i);
+  return fallback ? fallback[0].toUpperCase() : "";
+}
+
 function updateLiveQr(code) {
   if (!liveQrPanelEl || !liveQrImageEl || !liveQrLinkEl) return;
   if (!code) {
@@ -743,12 +762,13 @@ async function startHostedLiveSession() {
 
 async function joinLiveSession() {
   try {
-    const code = String(joinCodeInput.value || "").trim().toUpperCase();
+    const code = normalizeJoinCode(joinCodeInput.value);
     const name = String(joinNameInput.value || "").trim() || "Participant";
     const teamName = String(joinTeamSelect.value || "").trim();
     if (!code) {
-      throw new Error("Enter a live join code first.");
+      throw new Error("Enter a 6-character live join code or paste the full join link first.");
     }
+    joinCodeInput.value = code;
 
     const joinResponse = await workerRequest({
       action: "challenge_join",
@@ -836,7 +856,7 @@ async function hostNextLiveQuestion() {
 
 function hydrateJoinFromQuery() {
   const params = new URLSearchParams(window.location.search);
-  const joinCode = String(params.get("join") || "").trim().toUpperCase();
+  const joinCode = normalizeJoinCode(params.get("join"));
   if (!joinCode) return;
   joinCodeInput.value = joinCode;
   setLiveStatus(`Join code ${joinCode} loaded from the link. Add your name, choose a team, and join.`);
@@ -876,6 +896,12 @@ function attachEvents() {
     renderTeamInputs();
     updateModeSummary();
     populateJoinTeams(getTeamNames().map((name) => ({ name })));
+  });
+  joinCodeInput?.addEventListener("blur", () => {
+    const normalized = normalizeJoinCode(joinCodeInput.value);
+    if (normalized) {
+      joinCodeInput.value = normalized;
+    }
   });
   hostLiveBtn?.addEventListener("click", hostLiveSession);
   startLiveSessionBtn?.addEventListener("click", startHostedLiveSession);
