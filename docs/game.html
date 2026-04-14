@@ -366,6 +366,26 @@ nav {
   color: var(--slate);
   margin-bottom: 20px;
 }
+.objective-card {
+  margin-bottom: 16px;
+  padding: 14px 16px;
+  border-radius: 16px;
+  background: #f8f4ea;
+  border: 1px solid #e5d6b6;
+}
+.objective-card .label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.objective-card p {
+  color: var(--slate);
+  font-size: 13.5px;
+  line-height: 1.65;
+}
 .answer-grid {
   display: grid;
   grid-template-columns: repeat(2, minmax(0, 1fr));
@@ -429,6 +449,11 @@ nav {
   color: var(--slate);
   line-height: 1.75;
   min-height: 72px;
+}
+.feedback-meta {
+  margin-top: 8px;
+  font-size: 13px;
+  color: var(--muted);
 }
 .question-actions {
   display: flex;
@@ -638,6 +663,10 @@ nav {
       <div class="badge-row">
         <span class="badge" id="categoryBadge">Frameworks</span>
         <span class="badge" id="difficultyBadge">Core</span>
+      </div>
+      <div class="objective-card">
+        <div class="label">Learning Objective</div>
+        <p id="questionObjective"></p>
       </div>
       <h2 class="question-prompt" id="questionPrompt"></h2>
       <div class="answer-grid" id="answerGrid"></div>

@@ -17,6 +17,7 @@ const timerEl = document.getElementById("timerCount");
 const progressFillEl = document.getElementById("progressFill");
 const categoryBadgeEl = document.getElementById("categoryBadge");
 const difficultyBadgeEl = document.getElementById("difficultyBadge");
+const questionObjectiveEl = document.getElementById("questionObjective");
 const questionPromptEl = document.getElementById("questionPrompt");
 const answersEl = document.getElementById("answerGrid");
 const explanationEl = document.getElementById("answerExplanation");
@@ -36,6 +37,14 @@ let timeLeft = QUESTION_TIME;
 let timerId = null;
 let answered = false;
 let playerName = "Player";
+
+function renderAnswerFeedback(prefix, question) {
+  explanationEl.innerHTML = `
+    <div><strong>${prefix}</strong> ${question.explanation}</div>
+    <div class="feedback-meta"><strong>Correct answer:</strong> ${question.correctAnswer}</div>
+    <div class="feedback-meta"><strong>Bloom's level:</strong> ${question.bloom} — ${question.bloomExplanation}</div>
+  `;
+}
 
 function shuffle(list) {
   return [...list]
@@ -135,9 +144,12 @@ function showQuestion() {
   answered = false;
   timeLeft = QUESTION_TIME;
   categoryBadgeEl.textContent = question.category;
-  difficultyBadgeEl.textContent = question.difficulty;
+  difficultyBadgeEl.textContent = question.bloom;
+  if (questionObjectiveEl) {
+    questionObjectiveEl.textContent = question.objective;
+  }
   questionPromptEl.textContent = question.prompt;
-  explanationEl.textContent = "";
+  explanationEl.innerHTML = "";
   nextBtn.hidden = true;
   answersEl.innerHTML = "";
 
@@ -170,7 +182,7 @@ function handleTimeout(question) {
   if (answered) return;
   answered = true;
   streak = 0;
-  explanationEl.textContent = `Time. ${question.explanation}`;
+  renderAnswerFeedback("Time.", question);
   answersEl.querySelectorAll("button").forEach((button) => {
     button.disabled = true;
     if (button.textContent.includes(question.choices[question.answer])) {
@@ -194,7 +206,7 @@ function handleAnswer(button, isCorrect, question) {
     score += points;
     streak += 1;
     button.classList.add("correct");
-    explanationEl.textContent = `Correct. +${points.toLocaleString()} points. ${question.explanation}`;
+    renderAnswerFeedback(`Correct. +${points.toLocaleString()} points.`, question);
     startBurst();
   } else {
     streak = 0;
@@ -204,7 +216,7 @@ function handleAnswer(button, isCorrect, question) {
         choice.classList.add("correct");
       }
     });
-    explanationEl.textContent = `Not this one. ${question.explanation}`;
+    renderAnswerFeedback("Not this one.", question);
   }
 
   nextBtn.hidden = false;
