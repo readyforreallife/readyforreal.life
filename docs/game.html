@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ready for Real Life Challenge Arena | Ready for Real Life Instruction and Education</title>
+<meta name="description" content="Play a fast, curriculum-based challenge game built from Ready for Real Life Instruction and Education. Practice PLRR, POCC, modules, tracks, and real scenario judgment in a fun interactive format.">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="Ready for Real Life Instruction and Education">
+<meta property="og:title" content="Ready for Real Life Challenge Arena">
+<meta property="og:description" content="A fast, curriculum-based challenge game using PLRR, POCC, modules, tracks, and real-world MMMF scenarios.">
+<meta property="og:url" content="https://readyforreal.life/game.html">
+<meta property="og:image" content="https://readyforreal.life/assets/mmmf-email-avatar.png">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Ready for Real Life Challenge Arena">
+<meta name="twitter:description" content="Play a curriculum-based challenge game built from PLRR, POCC, modules, tracks, and real-life scenarios.">
+<meta name="twitter:image" content="https://readyforreal.life/assets/mmmf-email-avatar.png">
+<link rel="icon" type="image/png" href="assets/mmmf-email-avatar.png">
+<link rel="apple-touch-icon" href="assets/mmmf-email-avatar.png">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="site-search.css">
+<style>
+:root {
+  --ink:#0e1118;
+  --paper:#f6f3ec;
+  --slate:#253044;
+  --slate2:#344159;
+  --gold:#c49540;
+  --gold-lt:#f2e4c0;
+  --gold-dim:#e8d198;
+  --teal:#1b6b6b;
+  --teal-lt:#cce9e9;
+  --rose:#e8d6d1;
+  --blue:#d9e7f8;
+  --white:#fff;
+  --muted:#697080;
+  --rule:#ddd7cc;
+}
+* { box-sizing: border-box; margin: 0; padding: 0; }
+body {
+  background: linear-gradient(180deg, #1f2a3f 0%, #253044 32%, #f6f3ec 32%, #f6f3ec 100%);
+  color: var(--ink);
+  font-family: 'DM Sans', sans-serif;
+  min-height: 100vh;
+}
+nav {
+  position: sticky;
+  top: 0;
+  z-index: 50;
+  background: var(--slate);
+  border-bottom: 3px solid var(--gold);
+  padding: 10px 16px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.brand {
+  color: var(--gold);
+  text-decoration: none;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+.brand img { width: 30px; height: 20px; object-fit: contain; border-radius: 4px; }
+.nav-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+.nav-actions a {
+  text-decoration: none;
+  border: 1px solid rgba(255,255,255,.24);
+  border-radius: 999px;
+  padding: 7px 11px;
+  font-size: 11px;
+  font-family: 'DM Mono', monospace;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.86);
+}
+.nav-actions a.primary {
+  background: var(--gold);
+  color: #1f2a3a;
+  border-color: #efcd88;
+  font-weight: 700;
+}
+.hero {
+  padding: 56px 28px 24px;
+  color: #fff;
+}
+.hero-wrap {
+  max-width: 1160px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
+  gap: 26px;
+  align-items: end;
+}
+.eyebrow {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .18em;
+  text-transform: uppercase;
+  color: var(--gold);
+  margin-bottom: 14px;
+}
+.hero h1 {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.2rem, 5vw, 4.6rem);
+  line-height: 1.02;
+  margin-bottom: 12px;
+}
+.hero h1 em { color: var(--gold); font-style: italic; }
+.hero-sub {
+  color: rgba(255,255,255,.82);
+  font-size: 17px;
+  line-height: 1.7;
+  max-width: 760px;
+}
+.hero-cta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 20px;
+}
+.hero-cta a, .hero-cta button {
+  border-radius: 999px;
+  border: 1px solid rgba(255,255,255,.18);
+  background: rgba(255,255,255,.09);
+  color: #fff;
+  text-decoration: none;
+  padding: 10px 14px;
+  font-size: 12px;
+  font-weight: 600;
+  cursor: pointer;
+}
+.hero-cta .primary {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #1f2a3a;
+}
+.hero-side {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(120px, 1fr));
+  gap: 14px;
+}
+.stat-card {
+  background: rgba(255,255,255,.1);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 18px;
+  padding: 18px 16px;
+  min-height: 132px;
+  box-shadow: 0 16px 32px rgba(10,15,24,.16);
+}
+.stat-card .label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.62);
+  margin-bottom: 10px;
+}
+.stat-card .value {
+  font-family: 'Playfair Display', serif;
+  font-size: 2rem;
+  line-height: 1;
+  color: #fff;
+  margin-bottom: 8px;
+}
+.stat-card p {
+  font-size: 12.5px;
+  color: rgba(255,255,255,.78);
+  line-height: 1.6;
+}
+.shell {
+  max-width: 1160px;
+  margin: 0 auto;
+  padding: 0 28px 60px;
+}
+.game-shell {
+  background: rgba(255,255,255,.88);
+  border: 1px solid var(--rule);
+  border-radius: 26px;
+  padding: 26px;
+  box-shadow: 0 24px 60px rgba(16,24,38,.16);
+  backdrop-filter: blur(10px);
+}
+.top-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) 320px;
+  gap: 24px;
+  align-items: start;
+}
+.panel {
+  background: var(--white);
+  border: 1px solid var(--rule);
+  border-radius: 20px;
+  padding: 22px;
+}
+.panel-title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.6rem;
+  color: var(--slate);
+  margin-bottom: 8px;
+}
+.panel-sub {
+  color: var(--muted);
+  font-size: 14px;
+  line-height: 1.7;
+}
+.stack {
+  display: grid;
+  gap: 18px;
+}
+.name-row {
+  display: grid;
+  gap: 8px;
+  margin-top: 20px;
+}
+.name-row label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.name-row input {
+  width: 100%;
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 14px 16px;
+  font-size: 15px;
+  background: #fff;
+}
+.start-actions {
+  display: flex;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 18px;
+}
+.btn {
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  padding: 12px 16px;
+  background: #fff;
+  color: var(--slate);
+  font-weight: 700;
+  cursor: pointer;
+}
+.btn.primary {
+  background: var(--slate);
+  color: #fff;
+  border-color: var(--slate);
+}
+.btn.gold {
+  background: var(--gold);
+  border-color: var(--gold);
+  color: #1f2a3a;
+}
+.mini-grid {
+  display: grid;
+  gap: 12px;
+}
+.mini-card {
+  border-radius: 16px;
+  padding: 16px;
+  background: linear-gradient(135deg, #21314b, #2a4566);
+  color: #fff;
+}
+.mini-card:nth-child(2) {
+  background: linear-gradient(135deg, #174f58, #1b6b6b);
+}
+.mini-card:nth-child(3) {
+  background: linear-gradient(135deg, #be9450, #c49540);
+  color: #1f2a3a;
+}
+.mini-card .label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  opacity: .75;
+  margin-bottom: 8px;
+}
+.mini-card strong {
+  display: block;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.55rem;
+  line-height: 1.1;
+}
+.mini-card span {
+  display: block;
+  margin-top: 8px;
+  font-size: 12.5px;
+  line-height: 1.55;
+}
+.hud {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 12px;
+  margin-bottom: 16px;
+}
+.hud-card {
+  background: #f8f4ea;
+  border: 1px solid #e5d6b6;
+  border-radius: 14px;
+  padding: 14px 16px;
+}
+.hud-card .label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 6px;
+}
+.hud-card strong {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  color: var(--slate);
+}
+.progress {
+  height: 10px;
+  background: #e9e2d2;
+  border-radius: 999px;
+  overflow: hidden;
+  margin-bottom: 18px;
+}
+.progress-fill {
+  width: 0;
+  height: 100%;
+  background: linear-gradient(90deg, var(--gold), #e8d198);
+  transition: width .25s ease;
+}
+.question-shell {
+  position: relative;
+  overflow: hidden;
+}
+.badge-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 16px;
+}
+.badge {
+  border-radius: 999px;
+  padding: 7px 12px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  background: #edf0f5;
+  color: var(--slate);
+}
+.question-prompt {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+  line-height: 1.2;
+  color: var(--slate);
+  margin-bottom: 20px;
+}
+.answer-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+}
+.answer-card {
+  border: none;
+  border-radius: 18px;
+  padding: 18px 18px 18px 16px;
+  min-height: 120px;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  text-align: left;
+  font-size: 16px;
+  font-weight: 700;
+  line-height: 1.45;
+  cursor: pointer;
+  color: #fff;
+  box-shadow: 0 12px 26px rgba(25,36,58,.12);
+  transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
+}
+.answer-card:hover:not(:disabled),
+.answer-card:focus-visible {
+  transform: translateY(-2px);
+  box-shadow: 0 16px 30px rgba(25,36,58,.16);
+}
+.answer-card:disabled {
+  cursor: default;
+}
+.answer-symbol {
+  width: 44px;
+  height: 44px;
+  border-radius: 14px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(255,255,255,.18);
+  font-size: 20px;
+  flex: 0 0 auto;
+}
+.palette-0 { background: linear-gradient(135deg, #c49540, #d7ab58); }
+.palette-1 { background: linear-gradient(135deg, #1b6b6b, #32888a); }
+.palette-2 { background: linear-gradient(135deg, #31415c, #425779); }
+.palette-3 { background: linear-gradient(135deg, #915242, #b06452); }
+.answer-card.correct {
+  outline: 3px solid #67b67b;
+  box-shadow: 0 0 0 4px rgba(103,182,123,.18);
+}
+.answer-card.incorrect {
+  outline: 3px solid #d36f62;
+  box-shadow: 0 0 0 4px rgba(211,111,98,.18);
+  opacity: .78;
+}
+.explanation {
+  margin-top: 18px;
+  padding: 16px 18px;
+  border-radius: 16px;
+  background: #f7f2e7;
+  border: 1px solid #eadfc9;
+  color: var(--slate);
+  line-height: 1.75;
+  min-height: 72px;
+}
+.question-actions {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: 16px;
+}
+.results-grid {
+  display: grid;
+  gap: 16px;
+}
+.leaderboard {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+.leaderboard li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #f7f2e7;
+  border: 1px solid #eadfc9;
+}
+.leaderboard li strong {
+  color: var(--slate);
+}
+.tips {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  gap: 12px;
+  margin-top: 18px;
+}
+.tip-card {
+  background: #fff;
+  border: 1px solid var(--rule);
+  border-radius: 16px;
+  padding: 16px;
+}
+.tip-card .label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 8px;
+}
+.tip-card p {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.7;
+}
+.burst-layer {
+  pointer-events: none;
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+.burst-dot {
+  position: absolute;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  left: 50%;
+  top: 50%;
+  opacity: 0;
+  animation: burst 900ms ease-out forwards;
+}
+@keyframes burst {
+  0% { opacity: 1; transform: translate(-50%, -50%) scale(.6); }
+  100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.15); }
+}
+[hidden] { display: none !important; }
+@media (max-width: 980px) {
+  .hero-wrap, .top-grid { grid-template-columns: 1fr; }
+  .hud { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .tips { grid-template-columns: 1fr; }
+}
+@media (max-width: 720px) {
+  .shell { padding: 0 18px 40px; }
+  .hero { padding: 42px 18px 18px; }
+  .game-shell { padding: 18px; border-radius: 20px; }
+  .answer-grid { grid-template-columns: 1fr; }
+  .hero-side { grid-template-columns: 1fr; }
+  .nav-actions { justify-content: flex-start; }
+}
+</style>
+</head>
+<body>
+<nav>
+  <a class="brand" href="index.html"><img src="assets/mmmf-site-mark.svg" alt="Site logo">Ready for Real Life Instruction and Education</a>
+  <div class="nav-actions">
+    <a href="index.html" onclick="if (window.history.length > 1) { event.preventDefault(); window.history.back(); }">Back</a>
+    <a class="primary" href="index.html">Main Homepage</a>
+    <a href="program.html">Program</a>
+  </div>
+</nav>
+<script src="site-search.js" data-search-index="site-search-index.json" defer></script>
+<script src="access-gate.js" defer></script>
+
+<header class="hero">
+  <div class="hero-wrap">
+    <div>
+      <p class="eyebrow">Interactive Curriculum Game</p>
+      <h1><em>Ready for Real Life</em><br>Challenge Arena</h1>
+      <p class="hero-sub">A fast, playful challenge built from your actual curriculum. Players move through PLRR, POCC, modules, tracks, and real-life scenarios with timer pressure, streak bonuses, and instant feedback.</p>
+      <div class="hero-cta">
+        <button class="primary" id="startChallengeBtn" type="button">Start the Challenge</button>
+        <a href="program.html">See the Program Structure</a>
+        <a href="https://readyforreallife.github.io/mmmf-codex/web/index.html">Open MMMF Hub</a>
+      </div>
+    </div>
+    <div class="hero-side">
+      <div class="stat-card">
+        <div class="label">Question Mix</div>
+        <div class="value">10</div>
+        <p>Each round pulls a fresh set from frameworks, scenarios, modules, tracks, and program design.</p>
+      </div>
+      <div class="stat-card">
+        <div class="label">Built From</div>
+        <div class="value">PLRR</div>
+        <p>Regulation, decision-making, transfer, and accountability are built directly into the question bank.</p>
+      </div>
+      <div class="stat-card">
+        <div class="label">Play Style</div>
+        <div class="value">Fast</div>
+        <p>Timed rounds, speed-based points, streak bonuses, and instant feedback make it feel lively, not flat.</p>
+      </div>
+      <div class="stat-card">
+        <div class="label">Use It For</div>
+        <div class="value">Teach</div>
+        <p>Use it for warm-ups, reteaching, family nights, review, or one-on-one coaching conversations.</p>
+      </div>
+    </div>
+  </div>
+</header>
+
+<main class="shell">
+  <div class="game-shell">
+    <div class="top-grid">
+      <section class="panel" id="startPanel">
+        <h2 class="panel-title">Play like a live classroom challenge.</h2>
+        <p class="panel-sub">This is not generic trivia. The round bank comes straight from your curriculum structure: PLRR, POCC, modules, implementation tracks, standards alignment, and scenario-based judgment calls.</p>
+        <div class="name-row">
+          <label for="playerName">Player name</label>
+          <input id="playerName" type="text" maxlength="22" placeholder="Type a name or team name">
+        </div>
+        <div class="start-actions">
+          <button class="btn gold" type="button" id="startChallengeBtnDuplicate">Start 10-Question Round</button>
+          <a class="btn" href="https://readyforreallife.github.io/mmmf-codex/docs/viewer.html?file=MMMF_Community_OnePager.pdf&title=Community%20One-Pager&type=pdf">View Program Flyer</a>
+        </div>
+        <div class="tips">
+          <div class="tip-card">
+            <div class="label">Classroom use</div>
+            <p>Project it, let teams vote, and talk through why the right answer fits the curriculum logic.</p>
+          </div>
+          <div class="tip-card">
+            <div class="label">Family use</div>
+            <p>Use the scenario questions to explain the difference between regulating first and choosing well after that.</p>
+          </div>
+          <div class="tip-card">
+            <div class="label">Teaching value</div>
+            <p>It reinforces that PLRR is the prerequisite skill and POCC is the target skill when pressure is real.</p>
+          </div>
+        </div>
+      </section>
+
+      <aside class="stack">
+        <div class="mini-card">
+          <div class="label">Round Size</div>
+          <strong id="roundCount">10 / 10</strong>
+          <span>Each round uses a shuffled set so the game keeps feeling fresh.</span>
+        </div>
+        <div class="mini-card">
+          <div class="label">Best Score</div>
+          <strong id="bestScore">0</strong>
+          <span>Your top local score stays saved on this device.</span>
+        </div>
+        <div class="mini-card">
+          <div class="label">Leaderboard</div>
+          <ul class="leaderboard" id="leaderboard"></ul>
+        </div>
+      </aside>
+    </div>
+
+    <section class="panel question-shell" id="gamePanel" hidden>
+      <div class="burst-layer" id="burstLayer"></div>
+      <div class="hud">
+        <div class="hud-card">
+          <div class="label">Score</div>
+          <strong id="liveScore">0</strong>
+        </div>
+        <div class="hud-card">
+          <div class="label">Streak</div>
+          <strong id="streakCount">0</strong>
+        </div>
+        <div class="hud-card">
+          <div class="label">Timer</div>
+          <strong id="timerCount">20</strong>
+        </div>
+        <div class="hud-card">
+          <div class="label">Question</div>
+          <strong id="roundCountLive">1 / 10</strong>
+        </div>
+      </div>
+      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
+      <div class="badge-row">
+        <span class="badge" id="categoryBadge">Frameworks</span>
+        <span class="badge" id="difficultyBadge">Core</span>
+      </div>
+      <h2 class="question-prompt" id="questionPrompt"></h2>
+      <div class="answer-grid" id="answerGrid"></div>
+      <div class="explanation" id="answerExplanation"></div>
+      <div class="question-actions">
+        <button class="btn primary" id="nextQuestionBtn" type="button" hidden>Next Question</button>
+      </div>
+    </section>
+
+    <section class="panel results-grid" id="resultsPanel" hidden>
+      <h2 class="panel-title">Round complete.</h2>
+      <p class="panel-sub" id="resultsSummary"></p>
+      <div class="mini-grid">
+        <div class="mini-card">
+          <div class="label">Final Score</div>
+          <strong id="resultsScore">0</strong>
+          <span>Use this as a replay target or as a team score in live instruction.</span>
+        </div>
+      </div>
+      <div class="start-actions">
+        <button class="btn gold" id="playAgainBtn" type="button">Play Another Round</button>
+        <a class="btn" href="program.html">Go to Program Page</a>
+      </div>
+    </section>
+  </div>
+</main>
+
+<script src="game-data.js"></script>
+<script src="game.js"></script>
+</body>
+</html>
