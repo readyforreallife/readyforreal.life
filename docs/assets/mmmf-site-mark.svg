@@ -24,6 +24,6 @@
   <path d="M34 330 L90 296 L130 304 L186 174 L232 226 L292 22 L356 226 L418 152 L478 236 L478 374 L34 374 Z" fill="#0E182A"/>
   <path d="M38 334 L90 300 L130 308 L186 178 L232 230 L292 26 L356 230 L418 156 L474 240" stroke="url(#gold)" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
 
-  <text x="256" y="302" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="54" font-weight="700" fill="#FFFFFF">Modern Manners</text>
-  <text x="256" y="352" text-anchor="middle" font-family="Playfair Display, Georgia, serif" font-size="45" font-weight="700" fill="#F5E7C8">&amp; Mental Fortitude</text>
+  <text x="256" y="300" text-anchor="middle" font-family="Avenir Next, Helvetica, Arial, sans-serif" font-size="70" font-weight="800" letter-spacing="3" fill="#FFFFFF">READY</text>
+  <text x="256" y="364" text-anchor="middle" font-family="Avenir Next, Helvetica, Arial, sans-serif" font-size="62" font-weight="800" letter-spacing="2" fill="#F5E7C8">FOR REAL LIFE</text>
 </svg>
