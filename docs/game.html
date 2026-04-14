@@ -224,6 +224,16 @@ nav {
   gap: 8px;
   margin-top: 20px;
 }
+.setup-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 14px;
+  margin-top: 18px;
+}
+.field-row {
+  display: grid;
+  gap: 8px;
+}
 .name-row label {
   font-family: 'DM Mono', monospace;
   font-size: 10px;
@@ -231,13 +241,55 @@ nav {
   text-transform: uppercase;
   color: var(--muted);
 }
-.name-row input {
+.name-row input,
+.field-row select,
+.team-input input {
   width: 100%;
   border: 1px solid var(--rule);
   border-radius: 14px;
   padding: 14px 16px;
   font-size: 15px;
   background: #fff;
+}
+.teacher-block {
+  margin-top: 18px;
+  border: 1px solid var(--rule);
+  border-radius: 18px;
+  background: #fbf8f1;
+  padding: 18px;
+}
+.teacher-label {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-bottom: 10px;
+}
+.teacher-help {
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+  margin-top: 10px;
+}
+.team-fields {
+  margin-top: 14px;
+}
+.team-grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.team-input {
+  display: grid;
+  gap: 8px;
+}
+.team-input span {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
 }
 .start-actions {
   display: flex;
@@ -303,7 +355,7 @@ nav {
 }
 .hud {
   display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
+  grid-template-columns: repeat(5, minmax(0, 1fr));
   gap: 12px;
   margin-bottom: 16px;
 }
@@ -481,6 +533,39 @@ nav {
 .leaderboard li strong {
   color: var(--slate);
 }
+.classroom-board {
+  list-style: none;
+  display: grid;
+  gap: 10px;
+}
+.classroom-board li {
+  display: flex;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #eef3fb;
+  border: 1px solid #d4deee;
+}
+.classroom-board li.active {
+  background: #f7f2e7;
+  border-color: #eadfc9;
+}
+.classroom-board li span {
+  color: var(--slate);
+  font-weight: 700;
+}
+.classroom-board li small {
+  display: block;
+  margin-top: 2px;
+  color: var(--muted);
+}
+.mode-note {
+  margin-top: 12px;
+  color: var(--muted);
+  font-size: 13px;
+  line-height: 1.65;
+}
 .tips {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
@@ -539,6 +624,8 @@ nav {
   .answer-grid { grid-template-columns: 1fr; }
   .hero-side { grid-template-columns: 1fr; }
   .nav-actions { justify-content: flex-start; }
+  .setup-grid,
+  .team-grid { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -601,6 +688,60 @@ nav {
           <label for="playerName">Player name</label>
           <input id="playerName" type="text" maxlength="22" placeholder="Type a name or team name">
         </div>
+        <div class="setup-grid">
+          <div class="field-row">
+            <label for="gameMode">Game mode</label>
+            <select id="gameMode">
+              <option value="solo">Solo / individual</option>
+              <option value="classroom">Classroom teams</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="themeSelect">Round theme</label>
+            <select id="themeSelect">
+              <option value="Mixed">Mixed real-life round</option>
+              <option value="Conflict">Conflict</option>
+              <option value="Digital">Digital choices</option>
+              <option value="Peer Pressure">Peer pressure</option>
+              <option value="Work">Work and integrity</option>
+              <option value="Family">Family and home pressure</option>
+              <option value="Relationships">Relationships</option>
+              <option value="School">School and leadership</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="questionCountSelect">Question count</label>
+            <select id="questionCountSelect">
+              <option value="8">8 questions</option>
+              <option value="10" selected>10 questions</option>
+              <option value="12">12 questions</option>
+            </select>
+          </div>
+          <div class="field-row">
+            <label for="timerSelect">Timer per question</label>
+            <select id="timerSelect">
+              <option value="15">15 seconds</option>
+              <option value="20" selected>20 seconds</option>
+              <option value="30">30 seconds</option>
+              <option value="45">45 seconds</option>
+            </select>
+          </div>
+        </div>
+        <div class="teacher-block">
+          <div class="teacher-label">Teacher setup</div>
+          <div class="field-row" style="max-width:220px;">
+            <label for="teamCountSelect">Team count</label>
+            <select id="teamCountSelect">
+              <option value="2">2 teams</option>
+              <option value="3" selected>3 teams</option>
+              <option value="4">4 teams</option>
+            </select>
+          </div>
+          <div class="team-fields" id="teamFields" hidden>
+            <div class="team-grid" id="teamGrid"></div>
+          </div>
+          <p class="teacher-help">Classroom mode rotates turns team by team, keeps a projected scoreboard, and lets you run fast themed rounds without losing the instructional discussion.</p>
+        </div>
         <div class="start-actions">
           <button class="btn gold" type="button" id="startChallengeBtnDuplicate">Start 10-Question Round</button>
           <a class="btn" href="https://readyforreallife.github.io/mmmf-codex/docs/viewer.html?file=MMMF_Community_OnePager.pdf&title=Community%20One-Pager&type=pdf">View Program Flyer</a>
@@ -626,6 +767,11 @@ nav {
           <div class="label">Round Size</div>
           <strong id="roundCount">10 / 10</strong>
           <span>Each round uses a shuffled set so the game keeps feeling fresh.</span>
+        </div>
+        <div class="mini-card">
+          <div class="label">Mode Snapshot</div>
+          <strong id="modeSummary">Solo</strong>
+          <span id="themeSummary">Mixed real-life scenarios with one running score.</span>
         </div>
         <div class="mini-card">
           <div class="label">Best Score</div>
@@ -658,6 +804,10 @@ nav {
           <div class="label">Question</div>
           <strong id="roundCountLive">1 / 10</strong>
         </div>
+        <div class="hud-card">
+          <div class="label">Turn</div>
+          <strong id="currentTurn">Player</strong>
+        </div>
       </div>
       <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
       <div class="badge-row">
@@ -674,6 +824,7 @@ nav {
       <div class="question-actions">
         <button class="btn primary" id="nextQuestionBtn" type="button" hidden>Next Question</button>
       </div>
+      <p class="mode-note" id="modeNote"></p>
     </section>
 
     <section class="panel results-grid" id="resultsPanel" hidden>
@@ -685,6 +836,10 @@ nav {
           <strong id="resultsScore">0</strong>
           <span>Use this as a replay target or as a team score in live instruction.</span>
         </div>
+      </div>
+      <div class="panel">
+        <div class="teacher-label">Classroom scoreboard</div>
+        <ul class="classroom-board" id="classroomBoard"></ul>
       </div>
       <div class="start-actions">
         <button class="btn gold" id="playAgainBtn" type="button">Play Another Round</button>

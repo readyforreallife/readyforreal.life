@@ -14,6 +14,7 @@ const OBJECTIVES = {
 window.RFRL_GAME_QUESTIONS = [
   {
     category: "Hallway Pressure",
+    theme: "Conflict",
     bloom: "Applying",
     objective: OBJECTIVES.regulation,
     prompt: "You get mocked in front of a crowd between classes, and your first instinct is to fire back loudly. What is the strongest first move?",
@@ -30,6 +31,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Group Chat",
+    theme: "Digital",
     bloom: "Applying",
     objective: OBJECTIVES.digital,
     prompt: "A group chat is roasting someone who is not in it. You know one screenshot could spread everywhere. What is the best move?",
@@ -46,6 +48,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Classroom Conflict",
+    theme: "Conflict",
     bloom: "Applying",
     objective: OBJECTIVES.communication,
     prompt: "A teacher corrects you in class and you feel embarrassed. What response keeps your standing and your options open?",
@@ -62,6 +65,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Workplace Readiness",
+    theme: "Work",
     bloom: "Applying",
     objective: OBJECTIVES.accountability,
     prompt: "You are late to a shift and your manager asks what happened. Which response shows the most maturity?",
@@ -78,6 +82,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Friend Loyalty",
+    theme: "Peer Pressure",
     bloom: "Applying",
     objective: OBJECTIVES.accountability,
     prompt: "A friend wants you to lie for them so they can avoid consequences. What is the strongest move?",
@@ -94,6 +99,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Online Reputation",
+    theme: "Digital",
     bloom: "Applying",
     objective: OBJECTIVES.digital,
     prompt: "You are about to post something funny, but it also makes a teacher, coach, or employer look foolish. What is the best call?",
@@ -110,6 +116,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Dating Respect",
+    theme: "Relationships",
     bloom: "Applying",
     objective: OBJECTIVES.communication,
     prompt: "Someone you like stops responding. Your emotions spike and you want to send several demanding messages. What is the strongest response?",
@@ -126,6 +133,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Rumor Control",
+    theme: "Conflict",
     bloom: "Applying",
     objective: OBJECTIVES.decision,
     prompt: "You hear someone is spreading a false rumor about you. What is the strongest first move?",
@@ -142,6 +150,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Family Stress",
+    theme: "Family",
     bloom: "Applying",
     objective: OBJECTIVES.regulation,
     prompt: "You had a bad morning at home and now someone at school says one small thing that sets you off. What is the strongest move?",
@@ -158,6 +167,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Leadership",
+    theme: "School",
     bloom: "Applying",
     objective: OBJECTIVES.communication,
     prompt: "You are leading a group project and one person keeps doing almost nothing. What is the strongest response?",
@@ -174,6 +184,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Public Behavior",
+    theme: "School",
     bloom: "Understanding",
     objective: OBJECTIVES.decision,
     prompt: "A younger student is watching how you treat staff when something goes wrong. What matters most in that moment?",
@@ -190,6 +201,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Repair",
+    theme: "Conflict",
     bloom: "Applying",
     objective: OBJECTIVES.accountability,
     prompt: "You realize you were the one who escalated a situation. What repair move is strongest?",
@@ -206,6 +218,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Peer Pressure",
+    theme: "Peer Pressure",
     bloom: "Applying",
     objective: OBJECTIVES.decision,
     prompt: "Friends pressure you to help humiliate someone because 'it is not that serious.' What is the strongest response?",
@@ -222,6 +235,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Decision Moment",
+    theme: "Mixed",
     bloom: "Applying",
     objective: OBJECTIVES.decision,
     prompt: "You have two real options, and both come with a cost. What should guide you most?",
@@ -238,6 +252,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Digital Citizenship",
+    theme: "Digital",
     bloom: "Applying",
     objective: OBJECTIVES.digital,
     prompt: "Someone sends you a private photo or message that would get attention if shared. What is the strongest response?",
@@ -254,6 +269,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Respectful Communication",
+    theme: "Conflict",
     bloom: "Applying",
     objective: OBJECTIVES.communication,
     prompt: "You strongly disagree with someone in class. Which response is strongest?",
@@ -270,6 +286,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Coaching Moment",
+    theme: "Family",
     bloom: "Understanding",
     objective: OBJECTIVES.decision,
     prompt: "A younger student or sibling copies what they see you do online. What is the strongest standard to hold yourself to?",
@@ -286,6 +303,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Conflict Navigation",
+    theme: "Conflict",
     bloom: "Applying",
     objective: OBJECTIVES.regulation,
     prompt: "A conversation is getting hotter by the second and both people keep cutting each other off. What is the strongest move?",
@@ -302,6 +320,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Integrity",
+    theme: "Work",
     bloom: "Understanding",
     objective: OBJECTIVES.accountability,
     prompt: "You can either look good immediately or do the harder thing that is right. What is the stronger choice?",
@@ -318,6 +337,7 @@ window.RFRL_GAME_QUESTIONS = [
   },
   {
     category: "Pressure Test",
+    theme: "Mixed",
     bloom: "Applying",
     objective: OBJECTIVES.regulation,
     prompt: "If pressure is high, emotions are loud, and everybody is watching, what is usually the strongest first move?",
