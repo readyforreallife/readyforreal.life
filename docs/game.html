@@ -38,7 +38,7 @@
 }
 * { box-sizing: border-box; margin: 0; padding: 0; }
 body {
-  background: linear-gradient(180deg, #1f2a3f 0%, #253044 32%, #f6f3ec 32%, #f6f3ec 100%);
+  background: var(--paper);
   color: var(--ink);
   font-family: 'DM Sans', sans-serif;
   min-height: 100vh;
@@ -86,8 +86,12 @@ nav {
   font-weight: 700;
 }
 .hero {
+  background:
+    radial-gradient(circle at top right, rgba(196,149,64,.18), transparent 28%),
+    linear-gradient(180deg, #1f2a3f 0%, #253044 100%);
   padding: 56px 28px 24px;
   color: #fff;
+  border-bottom: 1px solid rgba(196,149,64,.24);
 }
 .hero-wrap {
   max-width: 1160px;
@@ -95,7 +99,7 @@ nav {
   display: grid;
   grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
   gap: 26px;
-  align-items: end;
+  align-items: start;
 }
 .eyebrow {
   font-family: 'DM Mono', monospace;
@@ -113,10 +117,11 @@ nav {
 }
 .hero h1 em { color: var(--gold); font-style: italic; }
 .hero-sub {
-  color: rgba(255,255,255,.82);
+  color: rgba(255,255,255,.9);
   font-size: 17px;
   line-height: 1.7;
   max-width: 760px;
+  text-shadow: 0 1px 0 rgba(0,0,0,.08);
 }
 .hero-cta {
   display: flex;
@@ -146,12 +151,13 @@ nav {
   gap: 14px;
 }
 .stat-card {
-  background: rgba(255,255,255,.1);
-  border: 1px solid rgba(255,255,255,.14);
+  background: rgba(255,255,255,.12);
+  border: 1px solid rgba(255,255,255,.16);
   border-radius: 18px;
   padding: 18px 16px;
   min-height: 132px;
   box-shadow: 0 16px 32px rgba(10,15,24,.16);
+  backdrop-filter: blur(4px);
 }
 .stat-card .label {
   font-family: 'DM Mono', monospace;
@@ -176,7 +182,7 @@ nav {
 .shell {
   max-width: 1160px;
   margin: 0 auto;
-  padding: 0 28px 60px;
+  padding: 26px 28px 60px;
 }
 .game-shell {
   background: rgba(255,255,255,.88);
