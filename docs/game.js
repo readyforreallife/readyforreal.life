@@ -82,6 +82,7 @@ const state = {
     participantName: "",
     participantTeam: "",
     pollId: null,
+    clockId: null,
     session: null,
     selectedChoice: -1
   }
@@ -503,6 +504,40 @@ function stopLivePolling() {
   }
 }
 
+function stopLiveClock() {
+  if (state.live.clockId) {
+    window.clearInterval(state.live.clockId);
+    state.live.clockId = null;
+  }
+}
+
+function getLiveTimeRemaining(session) {
+  if (!session || !session.started || session.completed || session.revealed) {
+    return Number(session && session.timerSeconds ? session.timerSeconds : DEFAULT_QUESTION_TIME);
+  }
+  const startedAt = String(session.questionStartedAt || "").trim();
+  if (!startedAt) {
+    return Number(session.timerSeconds || DEFAULT_QUESTION_TIME);
+  }
+  const elapsedMs = Date.now() - new Date(startedAt).getTime();
+  const elapsedSeconds = Math.max(0, Math.floor(elapsedMs / 1000));
+  return Math.max(0, Number(session.timerSeconds || DEFAULT_QUESTION_TIME) - elapsedSeconds);
+}
+
+function refreshLiveClock() {
+  if (!state.live.session) return;
+  timerEl.textContent = String(getLiveTimeRemaining(state.live.session));
+}
+
+function syncLiveClock(session) {
+  stopLiveClock();
+  timerEl.textContent = String(getLiveTimeRemaining(session));
+  if (!session || !session.started || session.completed || session.revealed) {
+    return;
+  }
+  state.live.clockId = window.setInterval(refreshLiveClock, 1000);
+}
+
 function startLivePolling() {
   stopLivePolling();
   state.live.pollId = window.setInterval(async () => {
@@ -527,16 +562,24 @@ function updateLiveHud(session) {
   const winnerScore = (session.teams || []).reduce((max, team) => Math.max(max, Number(team.score || 0)), 0);
   liveScoreEl.textContent = state.live.host ? winnerScore.toLocaleString() : Number((myTeam && myTeam.score) || 0).toLocaleString();
   streakEl.textContent = String(session.voteCounts ? Object.keys(session.voteCounts).length : 0);
-  timerEl.textContent = String(session.timerSeconds || DEFAULT_QUESTION_TIME);
+  timerEl.textContent = String(getLiveTimeRemaining(session));
   roundCountEl.textContent = roundText;
   roundCountLiveEl.textContent = roundText;
   progressFillEl.style.width = `${(session.currentIndex / Math.max(session.questionCount, 1)) * 100}%`;
   currentTurnEl.textContent = session.activeTeam || (state.live.host ? state.playerName : state.live.participantName || "Participant");
   modeSummaryEl.textContent = state.live.host ? "Live host screen" : "Live participant";
   themeSummaryEl.textContent = `${session.theme} · ${session.questionCount} questions · ${session.timerSeconds}s pacing`;
-  modeNoteEl.textContent = state.live.host
-    ? `${session.activeTeam || "Current team"} is active. Reveal the strongest answer after teams vote, then advance the round when you are ready.`
-    : `You are joined as ${state.live.participantName || "participant"} on ${state.live.participantTeam || "your team"}. Wait for the teacher to reveal the strongest response after voting.`;
+  if (state.live.host) {
+    const timeLeft = getLiveTimeRemaining(session);
+    modeNoteEl.textContent = timeLeft > 0
+      ? `${session.activeTeam || "Current team"} is active. Let teams vote before time runs out, then reveal the strongest answer and advance when you are ready.`
+      : `${session.activeTeam || "Current team"} is out of time. Reveal the strongest answer to discuss it, then move to the next question.`;
+  } else {
+    const voteText = state.live.selectedChoice >= 0 && !session.revealed
+      ? "Your vote is locked. Wait for the teacher to reveal the strongest response."
+      : "Choose the strongest response before time runs out.";
+    modeNoteEl.textContent = `You are joined as ${state.live.participantName || "participant"} on ${state.live.participantTeam || "your team"}. ${voteText}`;
+  }
   renderClassroomBoardFromTeams(session.teams || [], session.activeTeam || "", state.live.participantName || state.playerName);
 }
 
@@ -596,11 +639,13 @@ function applyLiveSession(session) {
   state.live.session = session;
   populateJoinTeams(session.teams || []);
   updateLiveHud(session);
+  syncLiveClock(session);
   liveCodeRow.hidden = !state.live.host;
   startLiveSessionBtn.hidden = !state.live.host || session.started;
   liveSessionCodeEl.textContent = session.code;
 
   if (!session.started) {
+    stopLiveClock();
     startPanel.hidden = false;
     gamePanel.hidden = true;
     resultsPanel.hidden = true;

@@ -302,6 +302,37 @@ nav {
   font-size: 12px;
   line-height: 1.6;
 }
+.live-guide {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 12px;
+}
+.live-guide-card {
+  border: 1px solid var(--rule);
+  border-radius: 14px;
+  background: #fff;
+  padding: 14px;
+}
+.live-guide-card .label {
+  display: inline-block;
+  margin-bottom: 8px;
+}
+.live-guide-card p {
+  margin: 0;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.6;
+}
+.live-steps {
+  margin: 0;
+  padding-left: 18px;
+  color: var(--muted);
+  font-size: 12px;
+  line-height: 1.7;
+}
+.live-steps li + li {
+  margin-top: 4px;
+}
 .waiting-card {
   margin-top: 16px;
   padding: 16px;
@@ -752,6 +783,7 @@ nav {
   .setup-grid,
   .team-grid,
   .join-grid { grid-template-columns: 1fr; }
+  .live-guide { grid-template-columns: 1fr; }
 }
 </style>
 </head>
@@ -899,6 +931,23 @@ nav {
               <button class="btn" type="button" id="joinLiveBtn">Join Live Session</button>
             </div>
             <p class="join-note" id="joinHint">Use a join code from the teacher screen, then choose the team you belong to before class starts.</p>
+            <div class="live-guide">
+              <div class="live-guide-card">
+                <div class="label">Host screen</div>
+                <p>Use one projected teacher screen to host the code, start the round, reveal the strongest answer, and move the class forward question by question.</p>
+              </div>
+              <div class="live-guide-card">
+                <div class="label">Student devices</div>
+                <p>Students or teams join with the code, choose a team, and submit one vote each round before the countdown reaches zero.</p>
+              </div>
+            </div>
+            <ol class="live-steps">
+              <li>Teacher clicks <strong>Host Live Session</strong>.</li>
+              <li>Share the 6-character code or copy the join link.</li>
+              <li>Students or teams join on their own device.</li>
+              <li>Teacher clicks <strong>Start Live Round</strong>.</li>
+              <li>Teams vote, teacher reveals the strongest answer, then advances.</li>
+            </ol>
           </div>
         </div>
         <div class="start-actions">
