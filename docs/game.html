@@ -617,6 +617,12 @@ nav {
   display: grid;
   gap: 12px;
 }
+.leaderboard-section {
+  background: rgba(255,255,255,.08);
+  border: 1px solid rgba(255,255,255,.14);
+  border-radius: 16px;
+  padding: 12px;
+}
 .leaderboard-head {
   display: flex;
   align-items: center;
@@ -647,8 +653,10 @@ nav {
   font-size: 10px;
   letter-spacing: .12em;
   text-transform: uppercase;
-  color: rgba(255,255,255,.75);
-  margin-bottom: 2px;
+  color: #ffffff;
+  font-weight: 700;
+  margin-bottom: 8px;
+  text-shadow: 0 1px 0 rgba(0,0,0,.18);
 }
 .classroom-board {
   list-style: none;
@@ -939,11 +947,11 @@ nav {
               <strong>Leaderboard</strong>
               <button class="leaderboard-clear" id="clearLeaderboardBtn" type="button">Clear</button>
             </div>
-            <div>
+            <div class="leaderboard-section">
               <div class="leaderboard-subtitle">Solo Top 10</div>
               <ul class="leaderboard" id="soloLeaderboard"></ul>
             </div>
-            <div>
+            <div class="leaderboard-section">
               <div class="leaderboard-subtitle">Classroom Top 10</div>
               <ul class="leaderboard" id="classroomLeaderboard"></ul>
             </div>
