@@ -37,7 +37,9 @@ const gamePanel = document.getElementById("gamePanel");
 const resultsPanel = document.getElementById("resultsPanel");
 const resultsScoreEl = document.getElementById("resultsScore");
 const resultsSummaryEl = document.getElementById("resultsSummary");
-const leaderboardEl = document.getElementById("leaderboard");
+const soloLeaderboardEl = document.getElementById("soloLeaderboard");
+const classroomLeaderboardEl = document.getElementById("classroomLeaderboard");
+const clearLeaderboardBtn = document.getElementById("clearLeaderboardBtn");
 const classroomBoardEl = document.getElementById("classroomBoard");
 const burstEl = document.getElementById("burstLayer");
 
@@ -80,18 +82,26 @@ function loadBestScore() {
 
 function loadLeaderboard() {
   const history = JSON.parse(localStorage.getItem(GAME_HISTORY_KEY) || "[]");
-  leaderboardEl.innerHTML = "";
-  if (!history.length) {
+  const soloHistory = history.filter((entry) => (entry.mode || "solo") === "solo");
+  const classroomHistory = history.filter((entry) => entry.mode === "classroom");
+  renderLeaderboardList(soloLeaderboardEl, soloHistory, "Be the first to set a solo score.");
+  renderLeaderboardList(classroomLeaderboardEl, classroomHistory, "Be the first to set a classroom score.");
+}
+
+function renderLeaderboardList(target, entries, emptyText) {
+  target.innerHTML = "";
+  if (!entries.length) {
     const empty = document.createElement("li");
-    empty.textContent = "Be the first to set a score.";
-    leaderboardEl.appendChild(empty);
+    empty.textContent = emptyText;
+    target.appendChild(empty);
     return;
   }
 
-  history.slice(0, 10).forEach((entry, index) => {
+  entries.slice(0, 10).forEach((entry, index) => {
     const row = document.createElement("li");
-    row.innerHTML = `<span>#${index + 1} · ${entry.name}</span><strong>${entry.score.toLocaleString()}</strong>`;
-    leaderboardEl.appendChild(row);
+    const theme = entry.theme || "Mixed";
+    row.innerHTML = `<span>#${index + 1} · ${entry.name}<small>${theme} round</small></span><strong>${entry.score.toLocaleString()}</strong>`;
+    target.appendChild(row);
   });
 }
 
@@ -108,6 +118,8 @@ function saveScore() {
 
   history.push({
     name: label,
+    mode: state.mode,
+    theme: state.theme,
     score: state.score,
     playedAt: new Date().toISOString()
   });
@@ -407,6 +419,21 @@ function attachEvents() {
   teamCountSelectEl?.addEventListener("change", () => {
     renderTeamInputs();
     updateModeSummary();
+  });
+  clearLeaderboardBtn?.addEventListener("click", () => {
+    const code = window.prompt("Enter passcode to clear the saved leaderboard.");
+    if (code === null) {
+      return;
+    }
+    if (code.trim() !== "4429") {
+      window.alert("That passcode is not correct.");
+      return;
+    }
+    localStorage.removeItem(GAME_HISTORY_KEY);
+    localStorage.removeItem(GAME_STORAGE_KEY);
+    loadBestScore();
+    loadLeaderboard();
+    window.alert("Leaderboard cleared.");
   });
 }
 

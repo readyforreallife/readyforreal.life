@@ -520,7 +520,7 @@ nav {
   list-style: none;
   display: grid;
   gap: 10px;
-  max-height: 420px;
+  max-height: 240px;
   overflow-y: auto;
   padding-right: 4px;
 }
@@ -540,11 +540,55 @@ nav {
   font-weight: 700;
   line-height: 1.35;
 }
+.leaderboard li small {
+  display: block;
+  margin-top: 4px;
+  color: var(--muted);
+  font-weight: 500;
+  font-size: 12px;
+}
 .leaderboard li strong {
   color: #0f1726;
   font-family: 'Playfair Display', serif;
   font-size: 1.1rem;
   white-space: nowrap;
+}
+.leaderboard-block {
+  display: grid;
+  gap: 12px;
+}
+.leaderboard-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.leaderboard-head strong {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.75);
+}
+.leaderboard-clear {
+  border: 1px solid rgba(255,255,255,.28);
+  background: rgba(255,255,255,.12);
+  color: #fff;
+  border-radius: 999px;
+  padding: 7px 10px;
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .08em;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.leaderboard-subtitle {
+  font-family: 'DM Mono', monospace;
+  font-size: 10px;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,.75);
+  margin-bottom: 2px;
 }
 .classroom-board {
   list-style: none;
@@ -792,8 +836,20 @@ nav {
           <span>Your top local score stays saved on this device.</span>
         </div>
         <div class="mini-card">
-          <div class="label">Leaderboard</div>
-          <ul class="leaderboard" id="leaderboard"></ul>
+          <div class="leaderboard-block">
+            <div class="leaderboard-head">
+              <strong>Leaderboard</strong>
+              <button class="leaderboard-clear" id="clearLeaderboardBtn" type="button">Clear</button>
+            </div>
+            <div>
+              <div class="leaderboard-subtitle">Solo Top 10</div>
+              <ul class="leaderboard" id="soloLeaderboard"></ul>
+            </div>
+            <div>
+              <div class="leaderboard-subtitle">Classroom Top 10</div>
+              <ul class="leaderboard" id="classroomLeaderboard"></ul>
+            </div>
+          </div>
         </div>
       </aside>
     </div>
