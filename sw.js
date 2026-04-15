@@ -8,6 +8,7 @@ const APP_SHELL = [
   "/index.html",
   "/manifest.json",
   "/offline.html",
+  "/pwa-gestures.js",
   "/site-search.css",
   "/site-search.js",
   "/site-search-index.json",
