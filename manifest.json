@@ -1,20 +1,27 @@
 {
+  "id": "/",
   "name": "Ready for Real Life Instruction and Education",
   "short_name": "Ready for Real Life",
+  "description": "An installable real-world life skills app for curriculum access, classroom challenge play, and Ready for Real Life program materials.",
   "start_url": "/",
+  "scope": "/",
   "display": "standalone",
+  "orientation": "portrait-primary",
   "background_color": "#f7f3ea",
-  "theme_color": "#0b6b6b",
+  "theme_color": "#253044",
+  "categories": ["education", "productivity", "lifestyle"],
   "icons": [
     {
       "src": "assets/icons/icon-192-rfrl.png",
       "sizes": "192x192",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     },
     {
       "src": "assets/icons/icon-512-rfrl.png",
       "sizes": "512x512",
-      "type": "image/png"
+      "type": "image/png",
+      "purpose": "any"
     }
   ]
 }

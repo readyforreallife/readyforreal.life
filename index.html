@@ -10,6 +10,14 @@
       name="description"
       content="Ready for Real Life Instruction and Education is a real-world life skills curriculum led by founders Michael R. Terry and Mekenzi G. Terry. Explore the full program, founder background, and MMMF materials."
     />
+    <meta name="theme-color" content="#253044" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Ready for Real Life" />
     <link rel="canonical" href="https://readyforreal.life/" />
     <meta property="og:type" content="website" />
     <meta
@@ -57,6 +65,7 @@
       href="apple-touch-icon-rfrl.png"
     />
     <link rel="apple-touch-icon" href="apple-touch-icon-rfrl.png" />
+    <link rel="manifest" href="manifest.json" />
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap"
       rel="stylesheet"
@@ -3660,6 +3669,14 @@
         )
           evt.preventDefault();
       });
+
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/sw.js").catch((error) => {
+            console.warn("Service worker registration failed.", error);
+          });
+        });
+      }
     </script>
   </body>
 </html>
