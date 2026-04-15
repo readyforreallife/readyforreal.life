@@ -2,18 +2,16 @@
   let startX = 0;
   let startY = 0;
   let active = false;
+  const MOBILE_QUERY = "(max-width: 900px)";
 
-  function isInstalledApp() {
-    return (
-      window.matchMedia("(display-mode: standalone)").matches ||
-      window.navigator.standalone === true
-    );
+  function shouldLockHorizontalPan() {
+    return window.matchMedia(MOBILE_QUERY).matches;
   }
 
   window.addEventListener(
     "touchstart",
     (event) => {
-      if (!isInstalledApp()) return;
+      if (!shouldLockHorizontalPan()) return;
       const touch = event.touches && event.touches[0];
       if (!touch) return;
       startX = touch.clientX;
@@ -26,7 +24,7 @@
   window.addEventListener(
     "touchmove",
     (event) => {
-      if (!active || !isInstalledApp()) return;
+      if (!active || !shouldLockHorizontalPan()) return;
       const touch = event.touches && event.touches[0];
       if (!touch) return;
       const deltaX = Math.abs(touch.clientX - startX);
@@ -46,6 +44,6 @@
     { passive: true },
   );
 
-  document.documentElement.style.touchAction = "pan-y manipulation";
-  document.body.style.touchAction = "pan-y manipulation";
+  document.documentElement.style.touchAction = "pan-y pinch-zoom";
+  document.body.style.touchAction = "pan-y pinch-zoom";
 })();
