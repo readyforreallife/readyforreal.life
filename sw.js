@@ -5,6 +5,7 @@ const OFFLINE_URL = "/offline.html";
 
 const APP_SHELL = [
   "/",
+  "/app.html",
   "/index.html",
   "/manifest.json",
   "/offline.html",

@@ -1,0 +1,302 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <meta name="theme-color" content="#253044" />
+    <meta name="mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta
+      name="apple-mobile-web-app-status-bar-style"
+      content="black-translucent"
+    />
+    <meta name="apple-mobile-web-app-title" content="Ready for Real Life" />
+    <title>Ready for Real Life App</title>
+    <link rel="icon" href="favicon.ico" />
+    <link rel="apple-touch-icon" href="apple-touch-icon-rfrl.png" />
+    <link rel="manifest" href="manifest.json" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #0e1118;
+        --paper: #f6f3ec;
+        --slate: #253044;
+        --slate2: #344159;
+        --gold: #c49540;
+        --gold-lt: #f2e4c0;
+        --teal: #1b6b6b;
+        --teal-lt: #cce9e9;
+        --rust: #b0432e;
+        --rust-lt: #f3dbd5;
+        --sage: #456640;
+        --white: #ffffff;
+        --rule: #ddd7cc;
+        --muted: #697080;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      html,
+      body {
+        margin: 0;
+        max-width: 100%;
+        overflow-x: hidden;
+        overscroll-behavior-x: none;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "DM Sans", sans-serif;
+        touch-action: pan-y pinch-zoom;
+      }
+      body {
+        min-height: 100vh;
+        background:
+          radial-gradient(
+            circle at top,
+            rgba(196, 149, 64, 0.16),
+            transparent 34%
+          ),
+          linear-gradient(180deg, #f8f4ec 0%, #f3ede1 100%);
+      }
+      .app-shell {
+        width: min(100%, 760px);
+        margin: 0 auto;
+        padding: calc(env(safe-area-inset-top, 0px) + 20px) 20px
+          calc(env(safe-area-inset-bottom, 0px) + 28px);
+      }
+      .hero {
+        background: linear-gradient(180deg, #1f2a3f 0%, #253044 100%);
+        color: #fff;
+        border: 1px solid rgba(196, 149, 64, 0.18);
+        border-radius: 28px;
+        padding: 24px 20px;
+        box-shadow: 0 24px 50px rgba(21, 28, 40, 0.18);
+      }
+      .hero-top {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 18px;
+      }
+      .hero-logo {
+        width: 54px;
+        height: 54px;
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.08);
+        display: grid;
+        place-items: center;
+        flex-shrink: 0;
+      }
+      .hero-logo img {
+        width: 36px;
+        height: 36px;
+        object-fit: contain;
+      }
+      .eyebrow {
+        margin: 0 0 6px;
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+      h1 {
+        margin: 0;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2rem, 8vw, 3rem);
+        line-height: 1.02;
+      }
+      .hero p {
+        margin: 14px 0 0;
+        color: rgba(255, 255, 255, 0.84);
+        line-height: 1.65;
+      }
+      .quick-grid,
+      .secondary-grid {
+        display: grid;
+        gap: 14px;
+        margin-top: 18px;
+      }
+      .quick-grid {
+        grid-template-columns: 1fr;
+      }
+      .secondary-grid {
+        grid-template-columns: 1fr 1fr;
+      }
+      .card {
+        display: block;
+        text-decoration: none;
+        color: inherit;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(37, 48, 68, 0.1);
+        border-radius: 24px;
+        padding: 18px;
+        box-shadow: 0 14px 30px rgba(37, 48, 68, 0.08);
+      }
+      .card.primary {
+        background: linear-gradient(180deg, #fffaf2 0%, #fff 100%);
+        border-color: rgba(196, 149, 64, 0.28);
+      }
+      .card-label {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: var(--gold-lt);
+        color: var(--slate);
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .card h2,
+      .card h3 {
+        margin: 14px 0 8px;
+        font-family: "Playfair Display", serif;
+        color: var(--slate);
+      }
+      .card h2 {
+        font-size: 1.8rem;
+      }
+      .card h3 {
+        font-size: 1.2rem;
+      }
+      .card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+      .meta {
+        margin-top: 14px;
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+      .section-title {
+        margin: 24px 0 10px;
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .footer-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 22px;
+      }
+      .footer-actions a {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 14px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-weight: 700;
+        font-size: 13px;
+      }
+      .footer-actions .primary {
+        background: var(--slate);
+        color: #fff;
+      }
+      .footer-actions .secondary {
+        border: 1px solid rgba(37, 48, 68, 0.14);
+        color: var(--slate);
+        background: rgba(255, 255, 255, 0.72);
+      }
+      @media (max-width: 640px) {
+        .secondary-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="hero">
+        <div class="hero-top">
+          <div class="hero-logo">
+            <img
+              src="assets/mmmf-site-mark.svg"
+              alt="Ready for Real Life logo"
+            />
+          </div>
+          <div>
+            <p class="eyebrow">App Home</p>
+            <h1>Ready for Real Life</h1>
+          </div>
+        </div>
+        <p>
+          Open the parts of the program you actually need on your phone without
+          getting dropped into the full website layout.
+        </p>
+      </section>
+
+      <div class="section-title">Start Here</div>
+      <div class="quick-grid">
+        <a class="card primary" href="/game.html">
+          <span class="card-label">Interactive</span>
+          <h2>Challenge Game</h2>
+          <p>
+            Run a live classroom round, play solo, or host teams from your
+            phone.
+          </p>
+          <div class="meta">Launch Game</div>
+        </a>
+      </div>
+
+      <div class="section-title">Program</div>
+      <div class="secondary-grid">
+        <a class="card" href="/program.html">
+          <span class="card-label">Overview</span>
+          <h3>Program</h3>
+          <p>See the structure, frameworks, and implementation details.</p>
+          <div class="meta">Open Program</div>
+        </a>
+        <a class="card" href="/resume.html">
+          <span class="card-label">Profile</span>
+          <h3>Resume</h3>
+          <p>Open the professional background and teaching profile.</p>
+          <div class="meta">View Resume</div>
+        </a>
+        <a class="card" href="/bio.html">
+          <span class="card-label">Founders</span>
+          <h3>Founders</h3>
+          <p>Read about Michael and Mekenzi and the origin of the program.</p>
+          <div class="meta">Meet the Team</div>
+        </a>
+        <a class="card" href="/">
+          <span class="card-label">Website</span>
+          <h3>Full Site</h3>
+          <p>
+            Jump to the full website when you want the complete browsing view.
+          </p>
+          <div class="meta">Open Website</div>
+        </a>
+      </div>
+
+      <div class="footer-actions">
+        <a class="primary" href="/program.html">Open Program</a>
+        <a class="secondary" href="/">Full Website</a>
+      </div>
+    </main>
+    <script src="/pwa-gestures.js"></script>
+    <script>
+      if ("serviceWorker" in navigator) {
+        window.addEventListener("load", () => {
+          navigator.serviceWorker.register("/sw.js").catch(() => {});
+        });
+      }
+    </script>
+  </body>
+</html>

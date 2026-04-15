@@ -1,9 +1,9 @@
 {
-  "id": "/",
+  "id": "/app.html",
   "name": "Ready for Real Life Instruction and Education",
   "short_name": "Ready for Real Life",
   "description": "An installable real-world life skills app for curriculum access, classroom challenge play, and Ready for Real Life program materials.",
-  "start_url": "/",
+  "start_url": "/app.html",
   "scope": "/",
   "display": "standalone",
   "orientation": "portrait-primary",
