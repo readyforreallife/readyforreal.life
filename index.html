@@ -1645,6 +1645,59 @@
         .hero-layout {
           grid-template-columns: 1fr;
         }
+        .spiral-diagram {
+          width: 100%;
+        }
+        .spiral-ring,
+        .spiral-ring:nth-child(1),
+        .spiral-ring:nth-child(2),
+        .spiral-ring:nth-child(3),
+        .spiral-ring:nth-child(4) {
+          width: 100%;
+          white-space: normal;
+          border-radius: 14px;
+        }
+        .timeline-track {
+          min-width: 0;
+          flex-direction: column;
+          gap: 16px;
+          padding-top: 0;
+        }
+        .timeline-line {
+          display: none;
+        }
+        .phase {
+          padding-right: 0;
+          padding-left: 36px;
+        }
+        .phase-dot {
+          top: 2px;
+          left: 0;
+        }
+        .assess-list {
+          gap: 14px;
+        }
+        .assess-row,
+        .assess-row.hdr {
+          grid-template-columns: 1fr;
+          gap: 8px;
+          padding: 16px;
+        }
+        .assess-row.hdr {
+          display: none;
+        }
+        .a-targets {
+          text-align: left;
+        }
+        .eval-row {
+          grid-template-columns: 1fr;
+          gap: 12px;
+        }
+        .budget-total {
+          flex-direction: column;
+          align-items: flex-start;
+          gap: 10px;
+        }
         .hero-badge {
           display: none;
         }
