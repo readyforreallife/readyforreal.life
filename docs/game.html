@@ -71,11 +71,20 @@
         margin: 0;
         padding: 0;
       }
+      html {
+        max-width: 100%;
+        overflow-x: hidden;
+        overscroll-behavior-x: none;
+      }
       body {
         background: var(--paper);
         color: var(--ink);
         font-family: "DM Sans", sans-serif;
         min-height: 100vh;
+        max-width: 100%;
+        overflow-x: hidden;
+        overscroll-behavior-x: none;
+        position: relative;
       }
       nav {
         position: sticky;
