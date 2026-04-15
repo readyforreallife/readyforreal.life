@@ -10,6 +10,7 @@ const startBtnDuplicate = document.getElementById("startChallengeBtnDuplicate");
 const playAgainBtn = document.getElementById("playAgainBtn");
 const nextBtn = document.getElementById("nextQuestionBtn");
 const playerNameInput = document.getElementById("playerName");
+const playerNameLabel = document.getElementById("playerNameLabel");
 const gameModeEl = document.getElementById("gameMode");
 const themeSelectEl = document.getElementById("themeSelect");
 const questionCountSelectEl = document.getElementById("questionCountSelect");
@@ -476,19 +477,27 @@ function renderTeamInputs() {
 
 function updateModeSummary() {
   const mode = gameModeEl.value;
+  const isClassroom = mode === "classroom";
   const theme = themeSelectEl.value;
   const count = Number(questionCountSelectEl.value || DEFAULT_QUESTION_COUNT);
   const timer = Number(timerSelectEl.value || DEFAULT_QUESTION_TIME);
   const themeLabel =
     theme === "Mixed" ? "Mixed real-life scenarios" : `${theme} scenarios`;
-  modeSummaryEl.textContent = mode === "classroom" ? "Classroom teams" : "Solo";
+  if (playerNameLabel) {
+    playerNameLabel.textContent = isClassroom ? "Teacher name" : "Player name";
+  }
+  if (playerNameInput) {
+    playerNameInput.placeholder = isClassroom
+      ? "Type the teacher or host name"
+      : "Type a player name";
+  }
+  modeSummaryEl.textContent = isClassroom ? "Classroom teams" : "Solo";
   themeSummaryEl.textContent = `${themeLabel} · ${count} questions · ${timer}s each.`;
   roundCountEl.textContent = `1 / ${count}`;
   roundCountLiveEl.textContent = `1 / ${count}`;
-  startBtnDuplicate.textContent =
-    mode === "classroom"
-      ? "Start Classroom Round"
-      : `Start ${count}-Question Round`;
+  startBtnDuplicate.textContent = isClassroom
+    ? "Start Classroom Round"
+    : `Start ${count}-Question Round`;
 }
 
 function beginGame() {
@@ -509,8 +518,10 @@ function beginGame() {
   };
   waitingCardEl.hidden = true;
 
-  state.playerName = playerNameInput.value.trim() || "Player";
   state.mode = gameModeEl.value;
+  state.playerName =
+    playerNameInput.value.trim() ||
+    (state.mode === "classroom" ? "Teacher" : "Player");
   state.theme = themeSelectEl.value;
   state.questionCount = Number(
     questionCountSelectEl.value || DEFAULT_QUESTION_COUNT,
