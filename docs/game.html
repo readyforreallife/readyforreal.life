@@ -94,9 +94,11 @@
         border-bottom: 3px solid var(--gold);
         padding: 10px 16px;
         display: flex;
+        flex-wrap: wrap;
         align-items: center;
         justify-content: space-between;
         gap: 12px;
+        overflow-x: clip;
       }
       .brand {
         color: var(--gold);
@@ -108,6 +110,11 @@
         display: inline-flex;
         align-items: center;
         gap: 8px;
+        min-width: 0;
+        flex: 1 1 100%;
+        white-space: normal;
+        overflow-wrap: anywhere;
+        line-height: 1.35;
       }
       .brand img {
         width: 30px;
@@ -119,6 +126,7 @@
         display: flex;
         gap: 8px;
         flex-wrap: wrap;
+        width: 100%;
       }
       .nav-actions a {
         text-decoration: none;
@@ -924,6 +932,12 @@
         }
       }
       @media (max-width: 720px) {
+        nav {
+          align-items: flex-start;
+        }
+        .brand {
+          font-size: 9px;
+        }
         .shell {
           padding: 0 18px 40px;
         }
@@ -942,6 +956,10 @@
         }
         .nav-actions {
           justify-content: flex-start;
+        }
+        .nav-actions a {
+          white-space: normal;
+          text-align: center;
         }
         .setup-grid,
         .team-grid,
