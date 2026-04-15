@@ -1,0 +1,14 @@
+{
+  "name": "decision-lab-site",
+  "private": true,
+  "scripts": {
+    "dev": "serve .",
+    "format": "prettier --write \"**/*.{html,css,js,json,md}\"",
+    "format:check": "prettier --check \"**/*.{html,css,js,json,md}\"",
+    "check:js": "node --check docs/game.js && node --check app.js && node --check docs/app.js"
+  },
+  "devDependencies": {
+    "prettier": "^3.6.2",
+    "serve": "^14.2.5"
+  }
+}

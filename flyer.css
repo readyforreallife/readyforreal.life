@@ -4,23 +4,30 @@
   --accent-2: #f08a4b;
 }
 
-* { box-sizing: border-box; }
+* {
+  box-sizing: border-box;
+}
 
 body {
   margin: 0;
   font-family: "IBM Plex Sans", "Space Grotesk", "Source Sans 3", sans-serif;
   color: var(--ink);
-  background: radial-gradient(circle at top left, #f5f0ff 0%, #e6f7ff 40%, #fff2e1 100%);
+  background: radial-gradient(
+    circle at top left,
+    #f5f0ff 0%,
+    #e6f7ff 40%,
+    #fff2e1 100%
+  );
 }
 
 .flyer {
   max-width: 900px;
   margin: 24px auto;
   padding: 28px;
-  background: rgba(255,255,255,0.9);
+  background: rgba(255, 255, 255, 0.9);
   border-radius: 24px;
-  border: 1px solid rgba(0,0,0,0.1);
-  box-shadow: 0 30px 70px rgba(0,0,0,0.18);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  box-shadow: 0 30px 70px rgba(0, 0, 0, 0.18);
   position: relative;
   overflow: hidden;
 }
@@ -30,12 +37,33 @@ body {
   position: absolute;
   inset: 0;
   background-image:
-    radial-gradient(circle at 10% 10%, rgba(240,138,75,0.2), transparent 35%),
-    radial-gradient(circle at 90% 15%, rgba(11,107,107,0.18), transparent 40%),
-    radial-gradient(circle at 70% 80%, rgba(98, 75, 255, 0.16), transparent 40%),
-    repeating-linear-gradient(135deg, rgba(11,107,107,0.08) 0 10px, transparent 10px 28px),
+    radial-gradient(
+      circle at 10% 10%,
+      rgba(240, 138, 75, 0.2),
+      transparent 35%
+    ),
+    radial-gradient(
+      circle at 90% 15%,
+      rgba(11, 107, 107, 0.18),
+      transparent 40%
+    ),
+    radial-gradient(
+      circle at 70% 80%,
+      rgba(98, 75, 255, 0.16),
+      transparent 40%
+    ),
+    repeating-linear-gradient(
+      135deg,
+      rgba(11, 107, 107, 0.08) 0 10px,
+      transparent 10px 28px
+    ),
     radial-gradient(rgba(11, 107, 107, 0.1) 1px, transparent 1px);
-  background-size: auto, auto, auto, auto, 18px 18px;
+  background-size:
+    auto,
+    auto,
+    auto,
+    auto,
+    18px 18px;
   opacity: 0.6;
   pointer-events: none;
 }
@@ -52,7 +80,11 @@ body {
   align-items: center;
   padding: 16px;
   border-radius: 18px;
-  background: linear-gradient(120deg, rgba(11,107,107,0.18), rgba(240,138,75,0.2));
+  background: linear-gradient(
+    120deg,
+    rgba(11, 107, 107, 0.18),
+    rgba(240, 138, 75, 0.2)
+  );
 }
 
 .logo {
@@ -72,7 +104,9 @@ body {
   margin: 0 0 6px;
 }
 
-.subtitle { margin: 0; }
+.subtitle {
+  margin: 0;
+}
 
 .coming-soon {
   padding: 8px 14px;
@@ -95,8 +129,8 @@ body {
 .panel {
   padding: 14px;
   border-radius: 16px;
-  border: 1px solid rgba(0,0,0,0.1);
-  background: rgba(255,255,255,0.95);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.95);
 }
 
 .panel h2 {
@@ -132,7 +166,7 @@ body {
   width: 120px;
   height: 120px;
   border-radius: 10px;
-  border: 1px solid rgba(0,0,0,0.12);
+  border: 1px solid rgba(0, 0, 0, 0.12);
 }
 
 .contact {
@@ -140,7 +174,7 @@ body {
   justify-content: space-between;
   gap: 20px;
   padding-top: 10px;
-  border-top: 1px solid rgba(0,0,0,0.1);
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
 }
 
 .about {
@@ -150,8 +184,8 @@ body {
 .about-card {
   padding: 16px;
   border-radius: 16px;
-  border: 1px solid rgba(0,0,0,0.1);
-  background: rgba(255,255,255,0.96);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  background: rgba(255, 255, 255, 0.96);
 }
 
 .about-card h2 {
@@ -172,8 +206,8 @@ body {
   align-items: start;
   padding: 12px;
   border-radius: 14px;
-  border: 1px solid rgba(0,0,0,0.08);
-  background: rgba(255,255,255,0.92);
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  background: rgba(255, 255, 255, 0.92);
 }
 
 .founder-card h3 {
@@ -205,8 +239,14 @@ body {
 }
 
 @media print {
-  body { background: #fff; }
-  .flyer { box-shadow: none; border: none; margin: 0; }
+  body {
+    background: #fff;
+  }
+  .flyer {
+    box-shadow: none;
+    border: none;
+    margin: 0;
+  }
 }
 
 @media (max-width: 760px) {

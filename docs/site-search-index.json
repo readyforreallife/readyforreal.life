@@ -1,21 +1,184 @@
 [
-  {"title":"Homepage overview","page":"Homepage","section":"Overview","url":"index.html#overview","snippet":"Main program homepage for Ready for Real Life Instruction and Education.","keywords":["home","overview","homepage","ready for real life","mmmf"]},
-  {"title":"Four core pillars","page":"Homepage","section":"Pillars","url":"index.html#pillars","snippet":"Respectful communication, emotional regulation, decision-making under pressure, and accountability.","keywords":["pillars","communication","regulation","accountability","decision making"]},
-  {"title":"Five modules","page":"Homepage","section":"Modules","url":"index.html#modules","snippet":"The five curriculum modules across the 16-week semester.","keywords":["modules","semester","content strands"]},
-  {"title":"Spiral design","page":"Homepage","section":"Design","url":"index.html#design","snippet":"Curriculum structure using Bruner's spiral design model.","keywords":["design","spiral","bruner","curriculum structure"]},
-  {"title":"Frameworks","page":"Homepage","section":"Frameworks","url":"index.html#frameworks","snippet":"Program frameworks that support transfer and real-world application.","keywords":["frameworks","plrr","pocc","transfer"]},
-  {"title":"Targets and outcomes","page":"Homepage","section":"Targets","url":"index.html#targets","snippet":"Target behaviors, outcomes, and program aims.","keywords":["targets","outcomes","goals"]},
-  {"title":"Pacing guide","page":"Homepage","section":"Pacing","url":"index.html#pacing","snippet":"Program pacing across the semester and instructional sequence.","keywords":["pacing","timeline","semester","schedule"]},
-  {"title":"Assessment","page":"Homepage","section":"Assessment","url":"index.html#assessment","snippet":"Assessment design and evidence of learning.","keywords":["assessment","rubric","evidence","learning"]},
-  {"title":"Theory and research base","page":"Homepage","section":"Theory","url":"index.html#theory","snippet":"Learning science, theory, and research grounding for the course.","keywords":["theory","research","learning science"]},
-  {"title":"Implementation plan","page":"Homepage","section":"Implementation","url":"index.html#implementation","snippet":"Implementation guidance for running the course.","keywords":["implementation","delivery","rollout"]},
-  {"title":"Instructor resume","page":"Resume","section":"Summary","url":"resume.html#summary","snippet":"Michael R. Terry professional resume profile.","keywords":["resume","experience","education","awards","skills"]},
-  {"title":"Resume awards","page":"Resume","section":"Awards","url":"resume.html#awards","snippet":"Recognition, honors, and award history.","keywords":["awards","honors","recognition","kdp","mlk","ccaa"]},
-  {"title":"Founders bio","page":"Bio","section":"Biography","url":"bio.html","snippet":"Michael R. Terry and Mekenzi G. Terry founders biography page covering public service, family, coaching, education, and faith.","keywords":["bio","biography","michael terry","mekenzi terry","founders","family","service","coaching"]},
-  {"title":"What is our program","page":"Program Overview","section":"Website Purpose","url":"program.html","snippet":"Clear explanation of what Ready for Real Life Instruction and Education (MMMF) is, who it serves, what the website contains, and why the program exists.","keywords":["what is our program","program overview","about this website","what this site is about","ready for real life","mmmf"]},
-  {"title":"Program offer","page":"Offer","section":"Offer Overview","url":"offer.html","snippet":"Program offer, value proposition, and pricing overview.","keywords":["offer","pricing","course offer","why join"]},
-  {"title":"Billing Center","page":"Billing","section":"Billing Tools","url":"billing.html","snippet":"In-site billing center for secure Stripe billing, dashboard access, and teacher-mode billing workflow.","keywords":["billing","stripe","payments","billing portal","dashboard"]},
-  {"title":"Challenge game","page":"Game","section":"Challenge Arena","url":"game.html","snippet":"Fast interactive curriculum game based on PLRR, POCC, modules, tracks, Utah alignment, and real-world scenarios.","keywords":["game","kahoot","challenge","quiz","plrr","pocc","interactive"]},
-  {"title":"MMMF Hub","page":"Program Hub","section":"Web Hub","url":"https://readyforreallife.github.io/mmmf-codex/web/index.html","snippet":"External hub for the MMMF interactive tools and supporting materials.","keywords":["mmmf hub","portal","interactive tools"]},
-  {"title":"CMP resource details","page":"Details","section":"Resource Detail","url":"details.html","snippet":"Detailed view for CMP-related resource materials.","keywords":["details","cmp","resource detail"]}
+  {
+    "title": "Homepage overview",
+    "page": "Homepage",
+    "section": "Overview",
+    "url": "index.html#overview",
+    "snippet": "Main program homepage for Ready for Real Life Instruction and Education.",
+    "keywords": ["home", "overview", "homepage", "ready for real life", "mmmf"]
+  },
+  {
+    "title": "Four core pillars",
+    "page": "Homepage",
+    "section": "Pillars",
+    "url": "index.html#pillars",
+    "snippet": "Respectful communication, emotional regulation, decision-making under pressure, and accountability.",
+    "keywords": [
+      "pillars",
+      "communication",
+      "regulation",
+      "accountability",
+      "decision making"
+    ]
+  },
+  {
+    "title": "Five modules",
+    "page": "Homepage",
+    "section": "Modules",
+    "url": "index.html#modules",
+    "snippet": "The five curriculum modules across the 16-week semester.",
+    "keywords": ["modules", "semester", "content strands"]
+  },
+  {
+    "title": "Spiral design",
+    "page": "Homepage",
+    "section": "Design",
+    "url": "index.html#design",
+    "snippet": "Curriculum structure using Bruner's spiral design model.",
+    "keywords": ["design", "spiral", "bruner", "curriculum structure"]
+  },
+  {
+    "title": "Frameworks",
+    "page": "Homepage",
+    "section": "Frameworks",
+    "url": "index.html#frameworks",
+    "snippet": "Program frameworks that support transfer and real-world application.",
+    "keywords": ["frameworks", "plrr", "pocc", "transfer"]
+  },
+  {
+    "title": "Targets and outcomes",
+    "page": "Homepage",
+    "section": "Targets",
+    "url": "index.html#targets",
+    "snippet": "Target behaviors, outcomes, and program aims.",
+    "keywords": ["targets", "outcomes", "goals"]
+  },
+  {
+    "title": "Pacing guide",
+    "page": "Homepage",
+    "section": "Pacing",
+    "url": "index.html#pacing",
+    "snippet": "Program pacing across the semester and instructional sequence.",
+    "keywords": ["pacing", "timeline", "semester", "schedule"]
+  },
+  {
+    "title": "Assessment",
+    "page": "Homepage",
+    "section": "Assessment",
+    "url": "index.html#assessment",
+    "snippet": "Assessment design and evidence of learning.",
+    "keywords": ["assessment", "rubric", "evidence", "learning"]
+  },
+  {
+    "title": "Theory and research base",
+    "page": "Homepage",
+    "section": "Theory",
+    "url": "index.html#theory",
+    "snippet": "Learning science, theory, and research grounding for the course.",
+    "keywords": ["theory", "research", "learning science"]
+  },
+  {
+    "title": "Implementation plan",
+    "page": "Homepage",
+    "section": "Implementation",
+    "url": "index.html#implementation",
+    "snippet": "Implementation guidance for running the course.",
+    "keywords": ["implementation", "delivery", "rollout"]
+  },
+  {
+    "title": "Instructor resume",
+    "page": "Resume",
+    "section": "Summary",
+    "url": "resume.html#summary",
+    "snippet": "Michael R. Terry professional resume profile.",
+    "keywords": ["resume", "experience", "education", "awards", "skills"]
+  },
+  {
+    "title": "Resume awards",
+    "page": "Resume",
+    "section": "Awards",
+    "url": "resume.html#awards",
+    "snippet": "Recognition, honors, and award history.",
+    "keywords": ["awards", "honors", "recognition", "kdp", "mlk", "ccaa"]
+  },
+  {
+    "title": "Founders bio",
+    "page": "Bio",
+    "section": "Biography",
+    "url": "bio.html",
+    "snippet": "Michael R. Terry and Mekenzi G. Terry founders biography page covering public service, family, coaching, education, and faith.",
+    "keywords": [
+      "bio",
+      "biography",
+      "michael terry",
+      "mekenzi terry",
+      "founders",
+      "family",
+      "service",
+      "coaching"
+    ]
+  },
+  {
+    "title": "What is our program",
+    "page": "Program Overview",
+    "section": "Website Purpose",
+    "url": "program.html",
+    "snippet": "Clear explanation of what Ready for Real Life Instruction and Education (MMMF) is, who it serves, what the website contains, and why the program exists.",
+    "keywords": [
+      "what is our program",
+      "program overview",
+      "about this website",
+      "what this site is about",
+      "ready for real life",
+      "mmmf"
+    ]
+  },
+  {
+    "title": "Program offer",
+    "page": "Offer",
+    "section": "Offer Overview",
+    "url": "offer.html",
+    "snippet": "Program offer, value proposition, and pricing overview.",
+    "keywords": ["offer", "pricing", "course offer", "why join"]
+  },
+  {
+    "title": "Billing Center",
+    "page": "Billing",
+    "section": "Billing Tools",
+    "url": "billing.html",
+    "snippet": "In-site billing center for secure Stripe billing, dashboard access, and teacher-mode billing workflow.",
+    "keywords": ["billing", "stripe", "payments", "billing portal", "dashboard"]
+  },
+  {
+    "title": "Challenge game",
+    "page": "Game",
+    "section": "Challenge Arena",
+    "url": "game.html",
+    "snippet": "Fast interactive curriculum game based on PLRR, POCC, modules, tracks, Utah alignment, and real-world scenarios.",
+    "keywords": [
+      "game",
+      "kahoot",
+      "challenge",
+      "quiz",
+      "plrr",
+      "pocc",
+      "interactive"
+    ]
+  },
+  {
+    "title": "MMMF Hub",
+    "page": "Program Hub",
+    "section": "Web Hub",
+    "url": "https://readyforreallife.github.io/mmmf-codex/web/index.html",
+    "snippet": "External hub for the MMMF interactive tools and supporting materials.",
+    "keywords": ["mmmf hub", "portal", "interactive tools"]
+  },
+  {
+    "title": "CMP resource details",
+    "page": "Details",
+    "section": "Resource Detail",
+    "url": "details.html",
+    "snippet": "Detailed view for CMP-related resource materials.",
+    "keywords": ["details", "cmp", "resource detail"]
+  }
 ]

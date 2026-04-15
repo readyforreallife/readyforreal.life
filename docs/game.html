@@ -1,1155 +1,1411 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ready for Real Life Challenge Arena | Ready for Real Life Instruction and Education</title>
-<meta name="description" content="Play a fast, scenario-based challenge game built from Ready for Real Life Instruction and Education. Make tough real-life choices under pressure and see which response is strongest.">
-<meta property="og:type" content="website">
-<meta property="og:site_name" content="Ready for Real Life Instruction and Education">
-<meta property="og:title" content="Ready for Real Life Challenge Arena">
-<meta property="og:description" content="A fast, scenario-based challenge game built from real-life choices, pressure moments, and strong response logic.">
-<meta property="og:url" content="https://readyforreal.life/game.html">
-<meta property="og:image" content="https://readyforreal.life/assets/mmmf-email-avatar.png">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Ready for Real Life Challenge Arena">
-<meta name="twitter:description" content="Play a fast, scenario-based challenge game built from real-life choices, pressure moments, and strong response logic.">
-<meta name="twitter:image" content="https://readyforreal.life/assets/mmmf-email-avatar.png">
-<link rel="icon" type="image/png" href="assets/mmmf-email-avatar.png">
-<link rel="apple-touch-icon" href="assets/icons/apple-touch-icon-rfrl.png">
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="site-search.css">
-<style>
-:root {
-  --ink:#0e1118;
-  --paper:#f6f3ec;
-  --slate:#253044;
-  --slate2:#344159;
-  --gold:#c49540;
-  --gold-lt:#f2e4c0;
-  --gold-dim:#e8d198;
-  --teal:#1b6b6b;
-  --teal-lt:#cce9e9;
-  --rose:#e8d6d1;
-  --blue:#d9e7f8;
-  --white:#fff;
-  --muted:#697080;
-  --rule:#ddd7cc;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; }
-body {
-  background: var(--paper);
-  color: var(--ink);
-  font-family: 'DM Sans', sans-serif;
-  min-height: 100vh;
-}
-nav {
-  position: sticky;
-  top: 0;
-  z-index: 50;
-  background: var(--slate);
-  border-bottom: 3px solid var(--gold);
-  padding: 10px 16px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.brand {
-  color: var(--gold);
-  text-decoration: none;
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  display: inline-flex;
-  align-items: center;
-  gap: 8px;
-}
-.brand img { width: 30px; height: 20px; object-fit: contain; border-radius: 4px; }
-.nav-actions { display: flex; gap: 8px; flex-wrap: wrap; }
-.nav-actions a {
-  text-decoration: none;
-  border: 1px solid rgba(255,255,255,.24);
-  border-radius: 999px;
-  padding: 7px 11px;
-  font-size: 11px;
-  font-family: 'DM Mono', monospace;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.86);
-}
-.nav-actions a.primary {
-  background: var(--gold);
-  color: #1f2a3a;
-  border-color: #efcd88;
-  font-weight: 700;
-}
-.hero {
-  background:
-    radial-gradient(circle at top right, rgba(196,149,64,.18), transparent 28%),
-    linear-gradient(180deg, #1f2a3f 0%, #253044 100%);
-  padding: 56px 28px 24px;
-  color: #fff;
-  border-bottom: 1px solid rgba(196,149,64,.24);
-}
-.hero-wrap {
-  max-width: 1160px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: minmax(0, 1.15fr) minmax(300px, .85fr);
-  gap: 26px;
-  align-items: start;
-}
-.eyebrow {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .18em;
-  text-transform: uppercase;
-  color: var(--gold);
-  margin-bottom: 14px;
-}
-.hero h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(2.2rem, 5vw, 4.6rem);
-  line-height: 1.02;
-  margin-bottom: 12px;
-}
-.hero h1 em { color: var(--gold); font-style: italic; }
-.hero-sub {
-  color: rgba(255,255,255,.9);
-  font-size: 17px;
-  line-height: 1.7;
-  max-width: 760px;
-  text-shadow: 0 1px 0 rgba(0,0,0,.08);
-}
-.hero-cta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  margin-top: 20px;
-}
-.hero-cta a, .hero-cta button {
-  border-radius: 999px;
-  border: 1px solid rgba(255,255,255,.18);
-  background: rgba(255,255,255,.09);
-  color: #fff;
-  text-decoration: none;
-  padding: 10px 14px;
-  font-size: 12px;
-  font-weight: 600;
-  cursor: pointer;
-}
-.hero-cta .primary {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: #1f2a3a;
-}
-.hero-side {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(120px, 1fr));
-  gap: 14px;
-}
-.stat-card {
-  background: rgba(255,255,255,.12);
-  border: 1px solid rgba(255,255,255,.16);
-  border-radius: 18px;
-  padding: 18px 16px;
-  min-height: 132px;
-  box-shadow: 0 16px 32px rgba(10,15,24,.16);
-  backdrop-filter: blur(4px);
-}
-.stat-card .label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.62);
-  margin-bottom: 10px;
-}
-.stat-card .value {
-  font-family: 'Playfair Display', serif;
-  font-size: 2rem;
-  line-height: 1;
-  color: #fff;
-  margin-bottom: 8px;
-}
-.stat-card p {
-  font-size: 12.5px;
-  color: rgba(255,255,255,.78);
-  line-height: 1.6;
-}
-.shell {
-  max-width: 1160px;
-  margin: 0 auto;
-  padding: 26px 28px 60px;
-}
-.game-shell {
-  background: rgba(255,255,255,.88);
-  border: 1px solid var(--rule);
-  border-radius: 26px;
-  padding: 26px;
-  box-shadow: 0 24px 60px rgba(16,24,38,.16);
-  backdrop-filter: blur(10px);
-}
-.top-grid {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr) 320px;
-  gap: 24px;
-  align-items: start;
-}
-.panel {
-  background: var(--white);
-  border: 1px solid var(--rule);
-  border-radius: 20px;
-  padding: 22px;
-}
-.panel-title {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.6rem;
-  color: var(--slate);
-  margin-bottom: 8px;
-}
-.panel-sub {
-  color: var(--muted);
-  font-size: 14px;
-  line-height: 1.7;
-}
-.stack {
-  display: grid;
-  gap: 18px;
-}
-.name-row {
-  display: grid;
-  gap: 8px;
-  margin-top: 20px;
-}
-.setup-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-  margin-top: 18px;
-}
-.field-row {
-  display: grid;
-  gap: 8px;
-}
-.name-row label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.name-row input,
-.field-row select,
-.team-input input {
-  width: 100%;
-  border: 1px solid var(--rule);
-  border-radius: 14px;
-  padding: 14px 16px;
-  font-size: 15px;
-  background: #fff;
-}
-.teacher-block {
-  margin-top: 18px;
-  border: 1px solid var(--rule);
-  border-radius: 18px;
-  background: #fbf8f1;
-  padding: 18px;
-}
-.live-block {
-  margin-top: 14px;
-  border-top: 1px solid var(--rule);
-  padding-top: 16px;
-  display: grid;
-  gap: 14px;
-}
-.live-actions,
-.live-code-row,
-.join-actions {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 10px;
-  align-items: center;
-}
-.live-status {
-  font-size: 13px;
-  line-height: 1.6;
-  color: var(--muted);
-}
-.live-code {
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  min-width: 110px;
-  padding: 10px 14px;
-  border-radius: 14px;
-  background: #18304f;
-  color: #fff;
-  font-family: 'DM Mono', monospace;
-  font-size: 18px;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-}
-.live-qr-panel {
-  display: grid;
-  grid-template-columns: 220px minmax(0, 1fr);
-  gap: 16px;
-  align-items: center;
-  padding: 14px;
-  border-radius: 18px;
-  background: #f4efe4;
-  border: 1px solid var(--rule);
-}
-.live-qr-frame {
-  width: 220px;
-  height: 220px;
-  border-radius: 18px;
-  background: #fff;
-  border: 1px solid rgba(31,42,58,.12);
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  overflow: hidden;
-  box-shadow: 0 10px 24px rgba(17,24,39,.08);
-}
-.live-qr-frame img {
-  width: 100%;
-  height: 100%;
-  object-fit: contain;
-  display: block;
-}
-.live-qr-copy {
-  display: grid;
-  gap: 10px;
-}
-.live-qr-copy h3 {
-  margin: 0;
-  font-family: 'Playfair Display', serif;
-  font-size: 1.45rem;
-  color: var(--slate);
-}
-.live-qr-copy p {
-  margin: 0;
-  color: var(--muted);
-  line-height: 1.7;
-}
-.live-qr-link {
-  display: block;
-  padding: 10px 12px;
-  border-radius: 12px;
-  background: #fff;
-  border: 1px solid rgba(31,42,58,.12);
-  color: var(--slate);
-  font-family: 'DM Mono', monospace;
-  font-size: 11px;
-  line-height: 1.5;
-  word-break: break-all;
-}
-.join-grid {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-}
-.join-note {
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.6;
-}
-.live-guide {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-.live-guide-card {
-  border: 1px solid var(--rule);
-  border-radius: 14px;
-  background: #fff;
-  padding: 14px;
-}
-.live-guide-card .label {
-  display: inline-block;
-  margin-bottom: 8px;
-}
-.live-guide-card p {
-  margin: 0;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.6;
-}
-.live-steps {
-  margin: 0;
-  padding-left: 18px;
-  color: var(--muted);
-  font-size: 12px;
-  line-height: 1.7;
-}
-.live-steps li + li {
-  margin-top: 4px;
-}
-.waiting-card {
-  margin-top: 16px;
-  padding: 16px;
-  border-radius: 16px;
-  background: #eef3fb;
-  border: 1px solid #d4deee;
-}
-.waiting-card strong {
-  display: block;
-  margin-bottom: 6px;
-  color: var(--slate);
-}
-.teacher-label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 10px;
-}
-.teacher-help {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.65;
-  margin-top: 10px;
-}
-.team-fields {
-  margin-top: 14px;
-}
-.team-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 12px;
-}
-.team-input {
-  display: grid;
-  gap: 8px;
-}
-.team-input span {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted);
-}
-.start-actions {
-  display: flex;
-  gap: 10px;
-  flex-wrap: wrap;
-  margin-top: 18px;
-}
-.btn {
-  border: 1px solid var(--rule);
-  border-radius: 14px;
-  padding: 12px 16px;
-  background: #fff;
-  color: var(--slate);
-  font-weight: 700;
-  cursor: pointer;
-}
-.btn.primary {
-  background: var(--slate);
-  color: #fff;
-  border-color: var(--slate);
-}
-.btn.gold {
-  background: var(--gold);
-  border-color: var(--gold);
-  color: #1f2a3a;
-}
-.mini-grid {
-  display: grid;
-  gap: 12px;
-}
-.mini-card {
-  border-radius: 16px;
-  padding: 16px;
-  background: linear-gradient(135deg, #21314b, #2a4566);
-  color: #fff;
-}
-.mini-card:nth-child(2) {
-  background: linear-gradient(135deg, #174f58, #1b6b6b);
-}
-.mini-card:nth-child(3) {
-  background: linear-gradient(135deg, #be9450, #c49540);
-  color: #1f2a3a;
-}
-.mini-card .label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  opacity: .75;
-  margin-bottom: 8px;
-}
-.mini-card strong {
-  display: block;
-  font-family: 'Playfair Display', serif;
-  font-size: 1.55rem;
-  line-height: 1.1;
-}
-.mini-card span {
-  display: block;
-  margin-top: 8px;
-  font-size: 12.5px;
-  line-height: 1.55;
-}
-.hud {
-  display: grid;
-  grid-template-columns: repeat(5, minmax(0, 1fr));
-  gap: 12px;
-  margin-bottom: 16px;
-}
-.hud-card {
-  background: #f8f4ea;
-  border: 1px solid #e5d6b6;
-  border-radius: 14px;
-  padding: 14px 16px;
-}
-.hud-card .label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 6px;
-}
-.hud-card strong {
-  font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
-  color: var(--slate);
-}
-.progress {
-  height: 10px;
-  background: #e9e2d2;
-  border-radius: 999px;
-  overflow: hidden;
-  margin-bottom: 18px;
-}
-.progress-fill {
-  width: 0;
-  height: 100%;
-  background: linear-gradient(90deg, var(--gold), #e8d198);
-  transition: width .25s ease;
-}
-.question-shell {
-  position: relative;
-  overflow: hidden;
-}
-.badge-row {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 8px;
-  margin-bottom: 16px;
-}
-.badge {
-  border-radius: 999px;
-  padding: 7px 12px;
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  background: #edf0f5;
-  color: var(--slate);
-}
-.question-prompt {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(1.5rem, 2.5vw, 2.2rem);
-  line-height: 1.2;
-  color: var(--slate);
-  margin-bottom: 20px;
-}
-.objective-card {
-  margin-bottom: 16px;
-  padding: 14px 16px;
-  border-radius: 16px;
-  background: #f8f4ea;
-  border: 1px solid #e5d6b6;
-}
-.objective-card .label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 8px;
-}
-.objective-card p {
-  color: var(--slate);
-  font-size: 13.5px;
-  line-height: 1.65;
-}
-.answer-grid {
-  display: grid;
-  grid-template-columns: repeat(2, minmax(0, 1fr));
-  gap: 14px;
-}
-.answer-card {
-  border: none;
-  border-radius: 18px;
-  padding: 18px 18px 18px 16px;
-  min-height: 120px;
-  display: flex;
-  align-items: center;
-  gap: 14px;
-  text-align: left;
-  font-size: 16px;
-  font-weight: 700;
-  line-height: 1.45;
-  cursor: pointer;
-  color: #fff;
-  box-shadow: 0 12px 26px rgba(25,36,58,.12);
-  transition: transform .18s ease, box-shadow .18s ease, opacity .18s ease;
-}
-.answer-card:hover:not(:disabled),
-.answer-card:focus-visible {
-  transform: translateY(-2px);
-  box-shadow: 0 16px 30px rgba(25,36,58,.16);
-}
-.answer-card:disabled {
-  cursor: default;
-}
-.answer-symbol {
-  width: 44px;
-  height: 44px;
-  border-radius: 14px;
-  display: inline-flex;
-  align-items: center;
-  justify-content: center;
-  background: rgba(255,255,255,.18);
-  font-size: 20px;
-  flex: 0 0 auto;
-}
-.palette-0 { background: linear-gradient(135deg, #c49540, #d7ab58); }
-.palette-1 { background: linear-gradient(135deg, #1b6b6b, #32888a); }
-.palette-2 { background: linear-gradient(135deg, #31415c, #425779); }
-.palette-3 { background: linear-gradient(135deg, #915242, #b06452); }
-.answer-card.correct {
-  outline: 3px solid #67b67b;
-  box-shadow: 0 0 0 4px rgba(103,182,123,.18);
-}
-.answer-card.selected {
-  outline: 3px solid #f0d38a;
-  box-shadow: 0 0 0 4px rgba(240,211,138,.2);
-}
-.answer-card.incorrect {
-  outline: 3px solid #d36f62;
-  box-shadow: 0 0 0 4px rgba(211,111,98,.18);
-  opacity: .78;
-}
-.explanation {
-  margin-top: 18px;
-  padding: 16px 18px;
-  border-radius: 16px;
-  background: #f7f2e7;
-  border: 1px solid #eadfc9;
-  color: var(--slate);
-  line-height: 1.75;
-  min-height: 72px;
-}
-.feedback-meta {
-  margin-top: 8px;
-  font-size: 13px;
-  color: var(--muted);
-}
-.question-actions {
-  display: flex;
-  justify-content: flex-end;
-  margin-top: 16px;
-}
-.results-grid {
-  display: grid;
-  gap: 16px;
-}
-.leaderboard {
-  list-style: none;
-  display: grid;
-  gap: 10px;
-  max-height: 240px;
-  overflow-y: auto;
-  padding-right: 4px;
-}
-.leaderboard li {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: 12px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: rgba(255,255,255,.96);
-  border: 1px solid rgba(31,42,58,.12);
-  box-shadow: 0 8px 18px rgba(17,24,39,.08);
-  color: #21314b;
-}
-.leaderboard li span {
-  color: #21314b;
-  font-weight: 700;
-  line-height: 1.35;
-}
-.leaderboard li:only-child {
-  justify-content: flex-start;
-  align-items: flex-start;
-  color: #526179;
-  font-weight: 600;
-  line-height: 1.5;
-}
-.leaderboard li small {
-  display: block;
-  margin-top: 4px;
-  color: var(--muted);
-  font-weight: 500;
-  font-size: 12px;
-}
-.leaderboard li strong {
-  color: #0f1726;
-  font-family: 'Playfair Display', serif;
-  font-size: 1.1rem;
-  white-space: nowrap;
-}
-.leaderboard-block {
-  display: grid;
-  gap: 12px;
-}
-.leaderboard-section {
-  background: rgba(255,255,255,.08);
-  border: 1px solid rgba(255,255,255,.14);
-  border-radius: 16px;
-  padding: 12px;
-}
-.leaderboard-head {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  gap: 12px;
-}
-.leaderboard-head strong {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .14em;
-  text-transform: uppercase;
-  color: rgba(255,255,255,.75);
-}
-.leaderboard-clear {
-  border: 1px solid rgba(255,255,255,.28);
-  background: rgba(255,255,255,.12);
-  color: #fff;
-  border-radius: 999px;
-  padding: 7px 10px;
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .08em;
-  text-transform: uppercase;
-  cursor: pointer;
-}
-.leaderboard-subtitle {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: #ffffff;
-  font-weight: 700;
-  margin-bottom: 8px;
-  text-shadow: 0 1px 0 rgba(0,0,0,.18);
-}
-.classroom-board {
-  list-style: none;
-  display: grid;
-  gap: 10px;
-}
-.classroom-board li {
-  display: flex;
-  justify-content: space-between;
-  gap: 12px;
-  padding: 12px 14px;
-  border-radius: 14px;
-  background: #eef3fb;
-  border: 1px solid #d4deee;
-}
-.classroom-board li.active {
-  background: #f7f2e7;
-  border-color: #eadfc9;
-}
-.classroom-board li span {
-  color: var(--slate);
-  font-weight: 700;
-}
-.classroom-board li small {
-  display: block;
-  margin-top: 2px;
-  color: var(--muted);
-}
-.mode-note {
-  margin-top: 12px;
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.65;
-}
-.tips {
-  display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: 12px;
-  margin-top: 18px;
-}
-.tip-card {
-  background: #fff;
-  border: 1px solid var(--rule);
-  border-radius: 16px;
-  padding: 16px;
-}
-.tip-card .label {
-  font-family: 'DM Mono', monospace;
-  font-size: 10px;
-  letter-spacing: .12em;
-  text-transform: uppercase;
-  color: var(--muted);
-  margin-bottom: 8px;
-}
-.tip-card p {
-  color: var(--muted);
-  font-size: 13px;
-  line-height: 1.7;
-}
-.burst-layer {
-  pointer-events: none;
-  position: absolute;
-  inset: 0;
-  overflow: hidden;
-}
-.burst-dot {
-  position: absolute;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  left: 50%;
-  top: 50%;
-  opacity: 0;
-  animation: burst 900ms ease-out forwards;
-}
-@keyframes burst {
-  0% { opacity: 1; transform: translate(-50%, -50%) scale(.6); }
-  100% { opacity: 0; transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy))) scale(1.15); }
-}
-[hidden] { display: none !important; }
-@media (max-width: 980px) {
-  .hero-wrap, .top-grid { grid-template-columns: 1fr; }
-  .hud { grid-template-columns: repeat(2, minmax(0, 1fr)); }
-  .tips { grid-template-columns: 1fr; }
-}
-@media (max-width: 720px) {
-  .shell { padding: 0 18px 40px; }
-  .hero { padding: 42px 18px 18px; }
-  .game-shell { padding: 18px; border-radius: 20px; }
-  .answer-grid { grid-template-columns: 1fr; }
-  .hero-side { grid-template-columns: 1fr; }
-  .nav-actions { justify-content: flex-start; }
-  .setup-grid,
-  .team-grid,
-  .join-grid { grid-template-columns: 1fr; }
-  .live-guide { grid-template-columns: 1fr; }
-  .live-qr-panel { grid-template-columns: 1fr; }
-  .live-qr-frame { width: 100%; max-width: 220px; margin: 0 auto; }
-}
-</style>
-</head>
-<body>
-<nav>
-  <a class="brand" href="index.html"><img src="assets/mmmf-site-mark.svg" alt="Site logo">Ready for Real Life Instruction and Education</a>
-  <div class="nav-actions">
-    <a href="index.html" onclick="if (window.history.length > 1) { event.preventDefault(); window.history.back(); }">Back</a>
-    <a class="primary" href="index.html">Main Homepage</a>
-    <a href="program.html">Program</a>
-  </div>
-</nav>
-<script src="site-search.js" data-search-index="site-search-index.json" defer></script>
-<script src="access-gate.js" defer></script>
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>
+      Ready for Real Life Challenge Arena | Ready for Real Life Instruction and
+      Education
+    </title>
+    <meta
+      name="description"
+      content="Play a fast, scenario-based challenge game built from Ready for Real Life Instruction and Education. Make tough real-life choices under pressure and see which response is strongest."
+    />
+    <meta property="og:type" content="website" />
+    <meta
+      property="og:site_name"
+      content="Ready for Real Life Instruction and Education"
+    />
+    <meta property="og:title" content="Ready for Real Life Challenge Arena" />
+    <meta
+      property="og:description"
+      content="A fast, scenario-based challenge game built from real-life choices, pressure moments, and strong response logic."
+    />
+    <meta property="og:url" content="https://readyforreal.life/game.html" />
+    <meta
+      property="og:image"
+      content="https://readyforreal.life/assets/mmmf-email-avatar.png"
+    />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Ready for Real Life Challenge Arena" />
+    <meta
+      name="twitter:description"
+      content="Play a fast, scenario-based challenge game built from real-life choices, pressure moments, and strong response logic."
+    />
+    <meta
+      name="twitter:image"
+      content="https://readyforreal.life/assets/mmmf-email-avatar.png"
+    />
+    <link rel="icon" type="image/png" href="assets/mmmf-email-avatar.png" />
+    <link
+      rel="apple-touch-icon"
+      href="assets/icons/apple-touch-icon-rfrl.png"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@300;400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" href="site-search.css" />
+    <style>
+      :root {
+        --ink: #0e1118;
+        --paper: #f6f3ec;
+        --slate: #253044;
+        --slate2: #344159;
+        --gold: #c49540;
+        --gold-lt: #f2e4c0;
+        --gold-dim: #e8d198;
+        --teal: #1b6b6b;
+        --teal-lt: #cce9e9;
+        --rose: #e8d6d1;
+        --blue: #d9e7f8;
+        --white: #fff;
+        --muted: #697080;
+        --rule: #ddd7cc;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "DM Sans", sans-serif;
+        min-height: 100vh;
+      }
+      nav {
+        position: sticky;
+        top: 0;
+        z-index: 50;
+        background: var(--slate);
+        border-bottom: 3px solid var(--gold);
+        padding: 10px 16px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .brand {
+        color: var(--gold);
+        text-decoration: none;
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        display: inline-flex;
+        align-items: center;
+        gap: 8px;
+      }
+      .brand img {
+        width: 30px;
+        height: 20px;
+        object-fit: contain;
+        border-radius: 4px;
+      }
+      .nav-actions {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .nav-actions a {
+        text-decoration: none;
+        border: 1px solid rgba(255, 255, 255, 0.24);
+        border-radius: 999px;
+        padding: 7px 11px;
+        font-size: 11px;
+        font-family: "DM Mono", monospace;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.86);
+      }
+      .nav-actions a.primary {
+        background: var(--gold);
+        color: #1f2a3a;
+        border-color: #efcd88;
+        font-weight: 700;
+      }
+      .hero {
+        background:
+          radial-gradient(
+            circle at top right,
+            rgba(196, 149, 64, 0.18),
+            transparent 28%
+          ),
+          linear-gradient(180deg, #1f2a3f 0%, #253044 100%);
+        padding: 56px 28px 24px;
+        color: #fff;
+        border-bottom: 1px solid rgba(196, 149, 64, 0.24);
+      }
+      .hero-wrap {
+        max-width: 1160px;
+        margin: 0 auto;
+        display: grid;
+        grid-template-columns: minmax(0, 1.15fr) minmax(300px, 0.85fr);
+        gap: 26px;
+        align-items: start;
+      }
+      .eyebrow {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 14px;
+      }
+      .hero h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2.2rem, 5vw, 4.6rem);
+        line-height: 1.02;
+        margin-bottom: 12px;
+      }
+      .hero h1 em {
+        color: var(--gold);
+        font-style: italic;
+      }
+      .hero-sub {
+        color: rgba(255, 255, 255, 0.9);
+        font-size: 17px;
+        line-height: 1.7;
+        max-width: 760px;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.08);
+      }
+      .hero-cta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        margin-top: 20px;
+      }
+      .hero-cta a,
+      .hero-cta button {
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+        background: rgba(255, 255, 255, 0.09);
+        color: #fff;
+        text-decoration: none;
+        padding: 10px 14px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+      }
+      .hero-cta .primary {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #1f2a3a;
+      }
+      .hero-side {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(120px, 1fr));
+        gap: 14px;
+      }
+      .stat-card {
+        background: rgba(255, 255, 255, 0.12);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        border-radius: 18px;
+        padding: 18px 16px;
+        min-height: 132px;
+        box-shadow: 0 16px 32px rgba(10, 15, 24, 0.16);
+        backdrop-filter: blur(4px);
+      }
+      .stat-card .label {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.62);
+        margin-bottom: 10px;
+      }
+      .stat-card .value {
+        font-family: "Playfair Display", serif;
+        font-size: 2rem;
+        line-height: 1;
+        color: #fff;
+        margin-bottom: 8px;
+      }
+      .stat-card p {
+        font-size: 12.5px;
+        color: rgba(255, 255, 255, 0.78);
+        line-height: 1.6;
+      }
+      .shell {
+        max-width: 1160px;
+        margin: 0 auto;
+        padding: 26px 28px 60px;
+      }
+      .game-shell {
+        background: rgba(255, 255, 255, 0.88);
+        border: 1px solid var(--rule);
+        border-radius: 26px;
+        padding: 26px;
+        box-shadow: 0 24px 60px rgba(16, 24, 38, 0.16);
+        backdrop-filter: blur(10px);
+      }
+      .top-grid {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) 320px;
+        gap: 24px;
+        align-items: start;
+      }
+      .panel {
+        background: var(--white);
+        border: 1px solid var(--rule);
+        border-radius: 20px;
+        padding: 22px;
+      }
+      .panel-title {
+        font-family: "Playfair Display", serif;
+        font-size: 1.6rem;
+        color: var(--slate);
+        margin-bottom: 8px;
+      }
+      .panel-sub {
+        color: var(--muted);
+        font-size: 14px;
+        line-height: 1.7;
+      }
+      .stack {
+        display: grid;
+        gap: 18px;
+      }
+      .name-row {
+        display: grid;
+        gap: 8px;
+        margin-top: 20px;
+      }
+      .setup-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 18px;
+      }
+      .field-row {
+        display: grid;
+        gap: 8px;
+      }
+      .name-row label {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .name-row input,
+      .field-row select,
+      .team-input input {
+        width: 100%;
+        border: 1px solid var(--rule);
+        border-radius: 14px;
+        padding: 14px 16px;
+        font-size: 15px;
+        background: #fff;
+      }
+      .teacher-block {
+        margin-top: 18px;
+        border: 1px solid var(--rule);
+        border-radius: 18px;
+        background: #fbf8f1;
+        padding: 18px;
+      }
+      .live-block {
+        margin-top: 14px;
+        border-top: 1px solid var(--rule);
+        padding-top: 16px;
+        display: grid;
+        gap: 14px;
+      }
+      .live-actions,
+      .live-code-row,
+      .join-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+      }
+      .live-status {
+        font-size: 13px;
+        line-height: 1.6;
+        color: var(--muted);
+      }
+      .live-code {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-width: 110px;
+        padding: 10px 14px;
+        border-radius: 14px;
+        background: #18304f;
+        color: #fff;
+        font-family: "DM Mono", monospace;
+        font-size: 18px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      .live-qr-panel {
+        display: grid;
+        grid-template-columns: 220px minmax(0, 1fr);
+        gap: 16px;
+        align-items: center;
+        padding: 14px;
+        border-radius: 18px;
+        background: #f4efe4;
+        border: 1px solid var(--rule);
+      }
+      .live-qr-frame {
+        width: 220px;
+        height: 220px;
+        border-radius: 18px;
+        background: #fff;
+        border: 1px solid rgba(31, 42, 58, 0.12);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        overflow: hidden;
+        box-shadow: 0 10px 24px rgba(17, 24, 39, 0.08);
+      }
+      .live-qr-frame img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+        display: block;
+      }
+      .live-qr-copy {
+        display: grid;
+        gap: 10px;
+      }
+      .live-qr-copy h3 {
+        margin: 0;
+        font-family: "Playfair Display", serif;
+        font-size: 1.45rem;
+        color: var(--slate);
+      }
+      .live-qr-copy p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.7;
+      }
+      .live-qr-link {
+        display: block;
+        padding: 10px 12px;
+        border-radius: 12px;
+        background: #fff;
+        border: 1px solid rgba(31, 42, 58, 0.12);
+        color: var(--slate);
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        line-height: 1.5;
+        word-break: break-all;
+      }
+      .join-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .join-note {
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+      .live-guide {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .live-guide-card {
+        border: 1px solid var(--rule);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+      }
+      .live-guide-card .label {
+        display: inline-block;
+        margin-bottom: 8px;
+      }
+      .live-guide-card p {
+        margin: 0;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.6;
+      }
+      .live-steps {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+        font-size: 12px;
+        line-height: 1.7;
+      }
+      .live-steps li + li {
+        margin-top: 4px;
+      }
+      .waiting-card {
+        margin-top: 16px;
+        padding: 16px;
+        border-radius: 16px;
+        background: #eef3fb;
+        border: 1px solid #d4deee;
+      }
+      .waiting-card strong {
+        display: block;
+        margin-bottom: 6px;
+        color: var(--slate);
+      }
+      .teacher-label {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      .teacher-help {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.65;
+        margin-top: 10px;
+      }
+      .team-fields {
+        margin-top: 14px;
+      }
+      .team-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 12px;
+      }
+      .team-input {
+        display: grid;
+        gap: 8px;
+      }
+      .team-input span {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+      }
+      .start-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+      }
+      .btn {
+        border: 1px solid var(--rule);
+        border-radius: 14px;
+        padding: 12px 16px;
+        background: #fff;
+        color: var(--slate);
+        font-weight: 700;
+        cursor: pointer;
+      }
+      .btn.primary {
+        background: var(--slate);
+        color: #fff;
+        border-color: var(--slate);
+      }
+      .btn.gold {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: #1f2a3a;
+      }
+      .mini-grid {
+        display: grid;
+        gap: 12px;
+      }
+      .mini-card {
+        border-radius: 16px;
+        padding: 16px;
+        background: linear-gradient(135deg, #21314b, #2a4566);
+        color: #fff;
+      }
+      .mini-card:nth-child(2) {
+        background: linear-gradient(135deg, #174f58, #1b6b6b);
+      }
+      .mini-card:nth-child(3) {
+        background: linear-gradient(135deg, #be9450, #c49540);
+        color: #1f2a3a;
+      }
+      .mini-card .label {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        opacity: 0.75;
+        margin-bottom: 8px;
+      }
+      .mini-card strong {
+        display: block;
+        font-family: "Playfair Display", serif;
+        font-size: 1.55rem;
+        line-height: 1.1;
+      }
+      .mini-card span {
+        display: block;
+        margin-top: 8px;
+        font-size: 12.5px;
+        line-height: 1.55;
+      }
+      .hud {
+        display: grid;
+        grid-template-columns: repeat(5, minmax(0, 1fr));
+        gap: 12px;
+        margin-bottom: 16px;
+      }
+      .hud-card {
+        background: #f8f4ea;
+        border: 1px solid #e5d6b6;
+        border-radius: 14px;
+        padding: 14px 16px;
+      }
+      .hud-card .label {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 6px;
+      }
+      .hud-card strong {
+        font-family: "Playfair Display", serif;
+        font-size: 1.5rem;
+        color: var(--slate);
+      }
+      .progress {
+        height: 10px;
+        background: #e9e2d2;
+        border-radius: 999px;
+        overflow: hidden;
+        margin-bottom: 18px;
+      }
+      .progress-fill {
+        width: 0;
+        height: 100%;
+        background: linear-gradient(90deg, var(--gold), #e8d198);
+        transition: width 0.25s ease;
+      }
+      .question-shell {
+        position: relative;
+        overflow: hidden;
+      }
+      .badge-row {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-bottom: 16px;
+      }
+      .badge {
+        border-radius: 999px;
+        padding: 7px 12px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        background: #edf0f5;
+        color: var(--slate);
+      }
+      .question-prompt {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.5rem, 2.5vw, 2.2rem);
+        line-height: 1.2;
+        color: var(--slate);
+        margin-bottom: 20px;
+      }
+      .objective-card {
+        margin-bottom: 16px;
+        padding: 14px 16px;
+        border-radius: 16px;
+        background: #f8f4ea;
+        border: 1px solid #e5d6b6;
+      }
+      .objective-card .label {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .objective-card p {
+        color: var(--slate);
+        font-size: 13.5px;
+        line-height: 1.65;
+      }
+      .answer-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+      }
+      .answer-card {
+        border: none;
+        border-radius: 18px;
+        padding: 18px 18px 18px 16px;
+        min-height: 120px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        text-align: left;
+        font-size: 16px;
+        font-weight: 700;
+        line-height: 1.45;
+        cursor: pointer;
+        color: #fff;
+        box-shadow: 0 12px 26px rgba(25, 36, 58, 0.12);
+        transition:
+          transform 0.18s ease,
+          box-shadow 0.18s ease,
+          opacity 0.18s ease;
+      }
+      .answer-card:hover:not(:disabled),
+      .answer-card:focus-visible {
+        transform: translateY(-2px);
+        box-shadow: 0 16px 30px rgba(25, 36, 58, 0.16);
+      }
+      .answer-card:disabled {
+        cursor: default;
+      }
+      .answer-symbol {
+        width: 44px;
+        height: 44px;
+        border-radius: 14px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        background: rgba(255, 255, 255, 0.18);
+        font-size: 20px;
+        flex: 0 0 auto;
+      }
+      .palette-0 {
+        background: linear-gradient(135deg, #c49540, #d7ab58);
+      }
+      .palette-1 {
+        background: linear-gradient(135deg, #1b6b6b, #32888a);
+      }
+      .palette-2 {
+        background: linear-gradient(135deg, #31415c, #425779);
+      }
+      .palette-3 {
+        background: linear-gradient(135deg, #915242, #b06452);
+      }
+      .answer-card.correct {
+        outline: 3px solid #67b67b;
+        box-shadow: 0 0 0 4px rgba(103, 182, 123, 0.18);
+      }
+      .answer-card.selected {
+        outline: 3px solid #f0d38a;
+        box-shadow: 0 0 0 4px rgba(240, 211, 138, 0.2);
+      }
+      .answer-card.incorrect {
+        outline: 3px solid #d36f62;
+        box-shadow: 0 0 0 4px rgba(211, 111, 98, 0.18);
+        opacity: 0.78;
+      }
+      .explanation {
+        margin-top: 18px;
+        padding: 16px 18px;
+        border-radius: 16px;
+        background: #f7f2e7;
+        border: 1px solid #eadfc9;
+        color: var(--slate);
+        line-height: 1.75;
+        min-height: 72px;
+      }
+      .feedback-meta {
+        margin-top: 8px;
+        font-size: 13px;
+        color: var(--muted);
+      }
+      .question-actions {
+        display: flex;
+        justify-content: flex-end;
+        margin-top: 16px;
+      }
+      .results-grid {
+        display: grid;
+        gap: 16px;
+      }
+      .leaderboard {
+        list-style: none;
+        display: grid;
+        gap: 10px;
+        max-height: 240px;
+        overflow-y: auto;
+        padding-right: 4px;
+      }
+      .leaderboard li {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.96);
+        border: 1px solid rgba(31, 42, 58, 0.12);
+        box-shadow: 0 8px 18px rgba(17, 24, 39, 0.08);
+        color: #21314b;
+      }
+      .leaderboard li span {
+        color: #21314b;
+        font-weight: 700;
+        line-height: 1.35;
+      }
+      .leaderboard li:only-child {
+        justify-content: flex-start;
+        align-items: flex-start;
+        color: #526179;
+        font-weight: 600;
+        line-height: 1.5;
+      }
+      .leaderboard li small {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-weight: 500;
+        font-size: 12px;
+      }
+      .leaderboard li strong {
+        color: #0f1726;
+        font-family: "Playfair Display", serif;
+        font-size: 1.1rem;
+        white-space: nowrap;
+      }
+      .leaderboard-block {
+        display: grid;
+        gap: 12px;
+      }
+      .leaderboard-section {
+        background: rgba(255, 255, 255, 0.08);
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        border-radius: 16px;
+        padding: 12px;
+      }
+      .leaderboard-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+      }
+      .leaderboard-head strong {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.75);
+      }
+      .leaderboard-clear {
+        border: 1px solid rgba(255, 255, 255, 0.28);
+        background: rgba(255, 255, 255, 0.12);
+        color: #fff;
+        border-radius: 999px;
+        padding: 7px 10px;
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+      .leaderboard-subtitle {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: #ffffff;
+        font-weight: 700;
+        margin-bottom: 8px;
+        text-shadow: 0 1px 0 rgba(0, 0, 0, 0.18);
+      }
+      .classroom-board {
+        list-style: none;
+        display: grid;
+        gap: 10px;
+      }
+      .classroom-board li {
+        display: flex;
+        justify-content: space-between;
+        gap: 12px;
+        padding: 12px 14px;
+        border-radius: 14px;
+        background: #eef3fb;
+        border: 1px solid #d4deee;
+      }
+      .classroom-board li.active {
+        background: #f7f2e7;
+        border-color: #eadfc9;
+      }
+      .classroom-board li span {
+        color: var(--slate);
+        font-weight: 700;
+      }
+      .classroom-board li small {
+        display: block;
+        margin-top: 2px;
+        color: var(--muted);
+      }
+      .mode-note {
+        margin-top: 12px;
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.65;
+      }
+      .tips {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 18px;
+      }
+      .tip-card {
+        background: #fff;
+        border: 1px solid var(--rule);
+        border-radius: 16px;
+        padding: 16px;
+      }
+      .tip-card .label {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 8px;
+      }
+      .tip-card p {
+        color: var(--muted);
+        font-size: 13px;
+        line-height: 1.7;
+      }
+      .burst-layer {
+        pointer-events: none;
+        position: absolute;
+        inset: 0;
+        overflow: hidden;
+      }
+      .burst-dot {
+        position: absolute;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        left: 50%;
+        top: 50%;
+        opacity: 0;
+        animation: burst 900ms ease-out forwards;
+      }
+      @keyframes burst {
+        0% {
+          opacity: 1;
+          transform: translate(-50%, -50%) scale(0.6);
+        }
+        100% {
+          opacity: 0;
+          transform: translate(calc(-50% + var(--dx)), calc(-50% + var(--dy)))
+            scale(1.15);
+        }
+      }
+      [hidden] {
+        display: none !important;
+      }
+      @media (max-width: 980px) {
+        .hero-wrap,
+        .top-grid {
+          grid-template-columns: 1fr;
+        }
+        .hud {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .tips {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 720px) {
+        .shell {
+          padding: 0 18px 40px;
+        }
+        .hero {
+          padding: 42px 18px 18px;
+        }
+        .game-shell {
+          padding: 18px;
+          border-radius: 20px;
+        }
+        .answer-grid {
+          grid-template-columns: 1fr;
+        }
+        .hero-side {
+          grid-template-columns: 1fr;
+        }
+        .nav-actions {
+          justify-content: flex-start;
+        }
+        .setup-grid,
+        .team-grid,
+        .join-grid {
+          grid-template-columns: 1fr;
+        }
+        .live-guide {
+          grid-template-columns: 1fr;
+        }
+        .live-qr-panel {
+          grid-template-columns: 1fr;
+        }
+        .live-qr-frame {
+          width: 100%;
+          max-width: 220px;
+          margin: 0 auto;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <nav>
+      <a class="brand" href="index.html"
+        ><img src="assets/mmmf-site-mark.svg" alt="Site logo" />Ready for Real
+        Life Instruction and Education</a
+      >
+      <div class="nav-actions">
+        <a
+          href="index.html"
+          onclick="
+            if (window.history.length > 1) {
+              event.preventDefault();
+              window.history.back();
+            }
+          "
+          >Back</a
+        >
+        <a class="primary" href="index.html">Main Homepage</a>
+        <a href="program.html">Program</a>
+      </div>
+    </nav>
+    <script
+      src="site-search.js"
+      data-search-index="site-search-index.json"
+      defer
+    ></script>
+    <script src="access-gate.js" defer></script>
 
-<header class="hero">
-  <div class="hero-wrap">
-    <div>
-      <p class="eyebrow">Interactive Curriculum Game</p>
-      <h1><em>Ready for Real Life</em><br>Challenge Arena</h1>
-      <p class="hero-sub">A fast, playful challenge built from your actual curriculum. Players face messy real-life moments, choose the strongest response, and build score through speed, streaks, and judgment under pressure.</p>
-      <div class="hero-cta">
-        <button class="primary" id="startChallengeBtn" type="button">Start the Challenge</button>
-        <a href="program.html">See the Program Structure</a>
-        <a href="https://readyforreallife.github.io/mmmf-codex/web/index.html">Open MMMF Hub</a>
+    <header class="hero">
+      <div class="hero-wrap">
+        <div>
+          <p class="eyebrow">Interactive Curriculum Game</p>
+          <h1><em>Ready for Real Life</em><br />Challenge Arena</h1>
+          <p class="hero-sub">
+            A fast, playful challenge built from your actual curriculum. Players
+            face messy real-life moments, choose the strongest response, and
+            build score through speed, streaks, and judgment under pressure.
+          </p>
+          <div class="hero-cta">
+            <button class="primary" id="startChallengeBtn" type="button">
+              Start the Challenge
+            </button>
+            <a href="program.html">See the Program Structure</a>
+            <a
+              href="https://readyforreallife.github.io/mmmf-codex/web/index.html"
+              >Open MMMF Hub</a
+            >
+          </div>
+        </div>
+        <div class="hero-side">
+          <div class="stat-card">
+            <div class="label">Question Mix</div>
+            <div class="value">10</div>
+            <p>
+              Each round pulls a fresh set of school, online, friendship,
+              family, and pressure-filled scenarios.
+            </p>
+          </div>
+          <div class="stat-card">
+            <div class="label">Built From</div>
+            <div class="value">PLRR</div>
+            <p>
+              Strong judgment, self-control, repair, and real-world
+              decision-making are built into every round.
+            </p>
+          </div>
+          <div class="stat-card">
+            <div class="label">Play Style</div>
+            <div class="value">Fast</div>
+            <p>
+              Timed rounds, speed-based points, streak bonuses, and instant
+              feedback make it feel lively, not flat.
+            </p>
+          </div>
+          <div class="stat-card">
+            <div class="label">Use It For</div>
+            <div class="value">Teach</div>
+            <p>
+              Use it for warm-ups, reteaching, family nights, review, or
+              one-on-one coaching conversations.
+            </p>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="hero-side">
-      <div class="stat-card">
-        <div class="label">Question Mix</div>
-        <div class="value">10</div>
-          <p>Each round pulls a fresh set of school, online, friendship, family, and pressure-filled scenarios.</p>
-      </div>
-      <div class="stat-card">
-        <div class="label">Built From</div>
-        <div class="value">PLRR</div>
-          <p>Strong judgment, self-control, repair, and real-world decision-making are built into every round.</p>
-      </div>
-      <div class="stat-card">
-        <div class="label">Play Style</div>
-        <div class="value">Fast</div>
-        <p>Timed rounds, speed-based points, streak bonuses, and instant feedback make it feel lively, not flat.</p>
-      </div>
-      <div class="stat-card">
-        <div class="label">Use It For</div>
-        <div class="value">Teach</div>
-        <p>Use it for warm-ups, reteaching, family nights, review, or one-on-one coaching conversations.</p>
-      </div>
-    </div>
-  </div>
-</header>
+    </header>
 
-<main class="shell">
-  <div class="game-shell">
-    <div class="top-grid">
-      <section class="panel" id="startPanel">
-        <h2 class="panel-title">Play like a live classroom challenge.</h2>
-        <p class="panel-sub">This is not generic trivia. Every round is built from the kinds of moments students actually face: public embarrassment, group chats, conflict, peer pressure, digital choices, work habits, and repair after mistakes.</p>
-        <div class="name-row">
-          <label for="playerName">Player name</label>
-          <input id="playerName" type="text" maxlength="22" placeholder="Type a name or team name">
-        </div>
-        <div class="setup-grid">
-          <div class="field-row">
-            <label for="gameMode">Game mode</label>
-            <select id="gameMode">
-              <option value="solo">Solo / individual</option>
-              <option value="classroom">Classroom teams</option>
-            </select>
-          </div>
-          <div class="field-row">
-            <label for="themeSelect">Round theme</label>
-            <select id="themeSelect">
-              <option value="Mixed">Mixed real-life round</option>
-              <option value="Conflict">Conflict</option>
-              <option value="Digital">Digital choices</option>
-              <option value="Peer Pressure">Peer pressure</option>
-              <option value="Work">Work and integrity</option>
-              <option value="Family">Family and home pressure</option>
-              <option value="Relationships">Relationships</option>
-              <option value="School">School and leadership</option>
-            </select>
-          </div>
-          <div class="field-row">
-            <label for="questionCountSelect">Question count</label>
-            <select id="questionCountSelect">
-              <option value="8">8 questions</option>
-              <option value="10" selected>10 questions</option>
-              <option value="12">12 questions</option>
-            </select>
-          </div>
-          <div class="field-row">
-            <label for="timerSelect">Timer per question</label>
-            <select id="timerSelect">
-              <option value="15">15 seconds</option>
-              <option value="20" selected>20 seconds</option>
-              <option value="30">30 seconds</option>
-              <option value="45">45 seconds</option>
-            </select>
-          </div>
-        </div>
-        <div class="teacher-block">
-          <div class="teacher-label">Teacher setup</div>
-          <div class="field-row" style="max-width:220px;">
-            <label for="teamCountSelect">Team count</label>
-            <select id="teamCountSelect">
-              <option value="2">2 teams</option>
-              <option value="3" selected>3 teams</option>
-              <option value="4">4 teams</option>
-            </select>
-          </div>
-          <div class="team-fields" id="teamFields" hidden>
-            <div class="team-grid" id="teamGrid"></div>
-          </div>
-          <p class="teacher-help">Classroom mode rotates turns team by team, keeps a projected scoreboard, and lets you run fast themed rounds without losing the instructional discussion.</p>
-          <div class="live-block">
-            <div class="teacher-label">Live classroom session</div>
-            <p class="teacher-help">Host a shared round, project the teacher screen, and let students or teams join with a code from their own device.</p>
-            <div class="live-actions">
-              <button class="btn" type="button" id="hostLiveBtn">Host Live Session</button>
-              <button class="btn" type="button" id="startLiveSessionBtn" hidden>Start Live Round</button>
+    <main class="shell">
+      <div class="game-shell">
+        <div class="top-grid">
+          <section class="panel" id="startPanel">
+            <h2 class="panel-title">Play like a live classroom challenge.</h2>
+            <p class="panel-sub">
+              This is not generic trivia. Every round is built from the kinds of
+              moments students actually face: public embarrassment, group chats,
+              conflict, peer pressure, digital choices, work habits, and repair
+              after mistakes.
+            </p>
+            <div class="name-row">
+              <label for="playerName">Player name</label>
+              <input
+                id="playerName"
+                type="text"
+                maxlength="22"
+                placeholder="Type a name or team name"
+              />
             </div>
-            <div class="live-code-row" id="liveCodeRow" hidden>
-              <span class="live-code" id="liveSessionCode">------</span>
-              <button class="btn" type="button" id="copyJoinLinkBtn">Copy Join Link</button>
-            </div>
-            <div class="live-qr-panel" id="liveQrPanel" hidden>
-              <div class="live-qr-frame">
-                <img id="liveQrImage" alt="QR code for joining the live challenge session">
-              </div>
-              <div class="live-qr-copy">
-                <div class="label">Quick join</div>
-                <h3>Scan to join this live round.</h3>
-                <p>Project this QR code on the host screen so students can scan it, land on the game page, and have the session code filled in automatically.</p>
-                <a class="live-qr-link" id="liveQrLink" href="#" target="_blank" rel="noopener">Join link will appear here once the host code is created.</a>
-              </div>
-            </div>
-            <p class="live-status" id="liveSessionStatus">Create a host code first if you want students or teams to join from other devices.</p>
-            <div class="join-grid">
+            <div class="setup-grid">
               <div class="field-row">
-                <label for="joinCodeInput">Join code or link</label>
-                <input id="joinCodeInput" type="text" placeholder="ABC123 or paste the full join link">
+                <label for="gameMode">Game mode</label>
+                <select id="gameMode">
+                  <option value="solo">Solo / individual</option>
+                  <option value="classroom">Classroom teams</option>
+                </select>
               </div>
               <div class="field-row">
-                <label for="joinNameInput">Join name</label>
-                <input id="joinNameInput" type="text" maxlength="22" placeholder="Student or team name">
+                <label for="themeSelect">Round theme</label>
+                <select id="themeSelect">
+                  <option value="Mixed">Mixed real-life round</option>
+                  <option value="Conflict">Conflict</option>
+                  <option value="Digital">Digital choices</option>
+                  <option value="Peer Pressure">Peer pressure</option>
+                  <option value="Work">Work and integrity</option>
+                  <option value="Family">Family and home pressure</option>
+                  <option value="Relationships">Relationships</option>
+                  <option value="School">School and leadership</option>
+                </select>
               </div>
               <div class="field-row">
-                <label for="joinTeamSelect">Team</label>
-                <select id="joinTeamSelect">
-                  <option value="">Choose team</option>
+                <label for="questionCountSelect">Question count</label>
+                <select id="questionCountSelect">
+                  <option value="8">8 questions</option>
+                  <option value="10" selected>10 questions</option>
+                  <option value="12">12 questions</option>
+                </select>
+              </div>
+              <div class="field-row">
+                <label for="timerSelect">Timer per question</label>
+                <select id="timerSelect">
+                  <option value="15">15 seconds</option>
+                  <option value="20" selected>20 seconds</option>
+                  <option value="30">30 seconds</option>
+                  <option value="45">45 seconds</option>
                 </select>
               </div>
             </div>
-            <div class="join-actions">
-              <button class="btn" type="button" id="joinLiveBtn">Join Live Session</button>
-            </div>
-            <p class="join-note" id="joinHint">Use a join code from the teacher screen, then choose the team you belong to before class starts.</p>
-            <div class="live-guide">
-              <div class="live-guide-card">
-                <div class="label">Host screen</div>
-                <p>Use one projected teacher screen to host the code, start the round, reveal the strongest answer, and move the class forward question by question.</p>
+            <div class="teacher-block">
+              <div class="teacher-label">Teacher setup</div>
+              <div class="field-row" style="max-width: 220px">
+                <label for="teamCountSelect">Team count</label>
+                <select id="teamCountSelect">
+                  <option value="2">2 teams</option>
+                  <option value="3" selected>3 teams</option>
+                  <option value="4">4 teams</option>
+                </select>
               </div>
-              <div class="live-guide-card">
-                <div class="label">Student devices</div>
-                <p>Students or teams join with the code, choose a team, and submit one vote each round before the countdown reaches zero.</p>
+              <div class="team-fields" id="teamFields" hidden>
+                <div class="team-grid" id="teamGrid"></div>
+              </div>
+              <p class="teacher-help">
+                Classroom mode rotates turns team by team, keeps a projected
+                scoreboard, and lets you run fast themed rounds without losing
+                the instructional discussion.
+              </p>
+              <div class="live-block">
+                <div class="teacher-label">Live classroom session</div>
+                <p class="teacher-help">
+                  Host a shared round, project the teacher screen, and let
+                  students or teams join with a code from their own device.
+                </p>
+                <div class="live-actions">
+                  <button class="btn" type="button" id="hostLiveBtn">
+                    Host Live Session
+                  </button>
+                  <button
+                    class="btn"
+                    type="button"
+                    id="startLiveSessionBtn"
+                    hidden
+                  >
+                    Start Live Round
+                  </button>
+                </div>
+                <div class="live-code-row" id="liveCodeRow" hidden>
+                  <span class="live-code" id="liveSessionCode">------</span>
+                  <button class="btn" type="button" id="copyJoinLinkBtn">
+                    Copy Join Link
+                  </button>
+                </div>
+                <div class="live-qr-panel" id="liveQrPanel" hidden>
+                  <div class="live-qr-frame">
+                    <img
+                      id="liveQrImage"
+                      alt="QR code for joining the live challenge session"
+                    />
+                  </div>
+                  <div class="live-qr-copy">
+                    <div class="label">Quick join</div>
+                    <h3>Scan to join this live round.</h3>
+                    <p>
+                      Project this QR code on the host screen so students can
+                      scan it, land on the game page, and have the session code
+                      filled in automatically.
+                    </p>
+                    <a
+                      class="live-qr-link"
+                      id="liveQrLink"
+                      href="#"
+                      target="_blank"
+                      rel="noopener"
+                      >Join link will appear here once the host code is
+                      created.</a
+                    >
+                  </div>
+                </div>
+                <p class="live-status" id="liveSessionStatus">
+                  Create a host code first if you want students or teams to join
+                  from other devices.
+                </p>
+                <div class="join-grid">
+                  <div class="field-row">
+                    <label for="joinCodeInput">Join code or link</label>
+                    <input
+                      id="joinCodeInput"
+                      type="text"
+                      placeholder="ABC123 or paste the full join link"
+                    />
+                  </div>
+                  <div class="field-row">
+                    <label for="joinNameInput">Join name</label>
+                    <input
+                      id="joinNameInput"
+                      type="text"
+                      maxlength="22"
+                      placeholder="Student or team name"
+                    />
+                  </div>
+                  <div class="field-row">
+                    <label for="joinTeamSelect">Team</label>
+                    <select id="joinTeamSelect">
+                      <option value="">Choose team</option>
+                    </select>
+                  </div>
+                </div>
+                <div class="join-actions">
+                  <button class="btn" type="button" id="joinLiveBtn">
+                    Join Live Session
+                  </button>
+                </div>
+                <p class="join-note" id="joinHint">
+                  Use a join code from the teacher screen, then choose the team
+                  you belong to before class starts.
+                </p>
+                <div class="live-guide">
+                  <div class="live-guide-card">
+                    <div class="label">Host screen</div>
+                    <p>
+                      Use one projected teacher screen to host the code, start
+                      the round, reveal the strongest answer, and move the class
+                      forward question by question.
+                    </p>
+                  </div>
+                  <div class="live-guide-card">
+                    <div class="label">Student devices</div>
+                    <p>
+                      Students or teams join with the code, choose a team, and
+                      submit one vote each round before the countdown reaches
+                      zero.
+                    </p>
+                  </div>
+                </div>
+                <ol class="live-steps">
+                  <li>Teacher clicks <strong>Host Live Session</strong>.</li>
+                  <li>
+                    Project the QR code, or share the 6-character code / join
+                    link.
+                  </li>
+                  <li>Students or teams join on their own device.</li>
+                  <li>Teacher clicks <strong>Start Live Round</strong>.</li>
+                  <li>
+                    Teams vote, teacher reveals the strongest answer, then
+                    advances.
+                  </li>
+                </ol>
               </div>
             </div>
-            <ol class="live-steps">
-              <li>Teacher clicks <strong>Host Live Session</strong>.</li>
-              <li>Project the QR code, or share the 6-character code / join link.</li>
-              <li>Students or teams join on their own device.</li>
-              <li>Teacher clicks <strong>Start Live Round</strong>.</li>
-              <li>Teams vote, teacher reveals the strongest answer, then advances.</li>
-            </ol>
-          </div>
-        </div>
-        <div class="start-actions">
-          <button class="btn gold" type="button" id="startChallengeBtnDuplicate">Start 10-Question Round</button>
-          <a class="btn" href="https://readyforreallife.github.io/mmmf-codex/docs/viewer.html?file=MMMF_Community_OnePager.pdf&title=Community%20One-Pager&type=pdf">View Program Flyer</a>
-        </div>
-        <div class="tips">
-          <div class="tip-card">
-            <div class="label">Classroom use</div>
-            <p>Project it, let teams vote, and talk through why one response is stronger when pressure is real.</p>
-          </div>
-          <div class="tip-card">
-            <div class="label">Family use</div>
-            <p>Use the dilemmas to talk through tone, stress, loyalty, digital choices, and what respect looks like in real life.</p>
-          </div>
-          <div class="tip-card">
-            <div class="label">Teaching value</div>
-            <p>It makes your curriculum feel alive by letting people practice judgment instead of just hearing definitions.</p>
-          </div>
-        </div>
-        <div class="waiting-card" id="waitingCard" hidden>
-          <strong id="waitingTitle">Live session ready.</strong>
-          <p id="waitingText" class="panel-sub">Once the teacher starts the round, the question will appear here and your answer button will become active.</p>
-        </div>
-      </section>
-
-      <aside class="stack">
-        <div class="mini-card">
-          <div class="label">Round Size</div>
-          <strong id="roundCount">10 / 10</strong>
-          <span>Each round uses a shuffled set so the game keeps feeling fresh.</span>
-        </div>
-        <div class="mini-card">
-          <div class="label">Mode Snapshot</div>
-          <strong id="modeSummary">Solo</strong>
-          <span id="themeSummary">Mixed real-life scenarios with one running score.</span>
-        </div>
-        <div class="mini-card">
-          <div class="label">Best Score</div>
-          <strong id="bestScore">0</strong>
-          <span>Your top local score stays saved on this device.</span>
-        </div>
-        <div class="mini-card">
-          <div class="leaderboard-block">
-            <div class="leaderboard-head">
-              <strong>Leaderboard</strong>
-              <button class="leaderboard-clear" id="clearLeaderboardBtn" type="button">Clear</button>
+            <div class="start-actions">
+              <button
+                class="btn gold"
+                type="button"
+                id="startChallengeBtnDuplicate"
+              >
+                Start 10-Question Round
+              </button>
+              <a
+                class="btn"
+                href="https://readyforreallife.github.io/mmmf-codex/docs/viewer.html?file=MMMF_Community_OnePager.pdf&title=Community%20One-Pager&type=pdf"
+                >View Program Flyer</a
+              >
             </div>
-            <div class="leaderboard-section">
-              <div class="leaderboard-subtitle">Solo Top 10</div>
-              <ul class="leaderboard" id="soloLeaderboard"></ul>
+            <div class="tips">
+              <div class="tip-card">
+                <div class="label">Classroom use</div>
+                <p>
+                  Project it, let teams vote, and talk through why one response
+                  is stronger when pressure is real.
+                </p>
+              </div>
+              <div class="tip-card">
+                <div class="label">Family use</div>
+                <p>
+                  Use the dilemmas to talk through tone, stress, loyalty,
+                  digital choices, and what respect looks like in real life.
+                </p>
+              </div>
+              <div class="tip-card">
+                <div class="label">Teaching value</div>
+                <p>
+                  It makes your curriculum feel alive by letting people practice
+                  judgment instead of just hearing definitions.
+                </p>
+              </div>
             </div>
-            <div class="leaderboard-section">
-              <div class="leaderboard-subtitle">Classroom Top 10</div>
-              <ul class="leaderboard" id="classroomLeaderboard"></ul>
+            <div class="waiting-card" id="waitingCard" hidden>
+              <strong id="waitingTitle">Live session ready.</strong>
+              <p id="waitingText" class="panel-sub">
+                Once the teacher starts the round, the question will appear here
+                and your answer button will become active.
+              </p>
+            </div>
+          </section>
+
+          <aside class="stack">
+            <div class="mini-card">
+              <div class="label">Round Size</div>
+              <strong id="roundCount">10 / 10</strong>
+              <span
+                >Each round uses a shuffled set so the game keeps feeling
+                fresh.</span
+              >
+            </div>
+            <div class="mini-card">
+              <div class="label">Mode Snapshot</div>
+              <strong id="modeSummary">Solo</strong>
+              <span id="themeSummary"
+                >Mixed real-life scenarios with one running score.</span
+              >
+            </div>
+            <div class="mini-card">
+              <div class="label">Best Score</div>
+              <strong id="bestScore">0</strong>
+              <span>Your top local score stays saved on this device.</span>
+            </div>
+            <div class="mini-card">
+              <div class="leaderboard-block">
+                <div class="leaderboard-head">
+                  <strong>Leaderboard</strong>
+                  <button
+                    class="leaderboard-clear"
+                    id="clearLeaderboardBtn"
+                    type="button"
+                  >
+                    Clear
+                  </button>
+                </div>
+                <div class="leaderboard-section">
+                  <div class="leaderboard-subtitle">Solo Top 10</div>
+                  <ul class="leaderboard" id="soloLeaderboard"></ul>
+                </div>
+                <div class="leaderboard-section">
+                  <div class="leaderboard-subtitle">Classroom Top 10</div>
+                  <ul class="leaderboard" id="classroomLeaderboard"></ul>
+                </div>
+              </div>
+            </div>
+          </aside>
+        </div>
+
+        <section class="panel question-shell" id="gamePanel" hidden>
+          <div class="burst-layer" id="burstLayer"></div>
+          <div class="hud">
+            <div class="hud-card">
+              <div class="label">Score</div>
+              <strong id="liveScore">0</strong>
+            </div>
+            <div class="hud-card">
+              <div class="label">Streak</div>
+              <strong id="streakCount">0</strong>
+            </div>
+            <div class="hud-card">
+              <div class="label">Timer</div>
+              <strong id="timerCount">20</strong>
+            </div>
+            <div class="hud-card">
+              <div class="label">Question</div>
+              <strong id="roundCountLive">1 / 10</strong>
+            </div>
+            <div class="hud-card">
+              <div class="label">Turn</div>
+              <strong id="currentTurn">Player</strong>
             </div>
           </div>
-        </div>
-      </aside>
-    </div>
+          <div class="progress">
+            <div class="progress-fill" id="progressFill"></div>
+          </div>
+          <div class="badge-row">
+            <span class="badge" id="categoryBadge">Frameworks</span>
+            <span class="badge" id="difficultyBadge">Core</span>
+          </div>
+          <div class="objective-card">
+            <div class="label">Learning Objective</div>
+            <p id="questionObjective"></p>
+          </div>
+          <h2 class="question-prompt" id="questionPrompt"></h2>
+          <div class="answer-grid" id="answerGrid"></div>
+          <div class="explanation" id="answerExplanation"></div>
+          <div class="question-actions">
+            <button
+              class="btn primary"
+              id="nextQuestionBtn"
+              type="button"
+              hidden
+            >
+              Next Question
+            </button>
+          </div>
+          <p class="mode-note" id="modeNote"></p>
+        </section>
 
-    <section class="panel question-shell" id="gamePanel" hidden>
-      <div class="burst-layer" id="burstLayer"></div>
-      <div class="hud">
-        <div class="hud-card">
-          <div class="label">Score</div>
-          <strong id="liveScore">0</strong>
-        </div>
-        <div class="hud-card">
-          <div class="label">Streak</div>
-          <strong id="streakCount">0</strong>
-        </div>
-        <div class="hud-card">
-          <div class="label">Timer</div>
-          <strong id="timerCount">20</strong>
-        </div>
-        <div class="hud-card">
-          <div class="label">Question</div>
-          <strong id="roundCountLive">1 / 10</strong>
-        </div>
-        <div class="hud-card">
-          <div class="label">Turn</div>
-          <strong id="currentTurn">Player</strong>
-        </div>
+        <section class="panel results-grid" id="resultsPanel" hidden>
+          <h2 class="panel-title">Round complete.</h2>
+          <p class="panel-sub" id="resultsSummary"></p>
+          <div class="mini-grid">
+            <div class="mini-card">
+              <div class="label">Final Score</div>
+              <strong id="resultsScore">0</strong>
+              <span
+                >Use this as a replay target or as a team score in live
+                instruction.</span
+              >
+            </div>
+          </div>
+          <div class="panel">
+            <div class="teacher-label">Classroom scoreboard</div>
+            <ul class="classroom-board" id="classroomBoard"></ul>
+          </div>
+          <div class="start-actions">
+            <button class="btn gold" id="playAgainBtn" type="button">
+              Play Another Round
+            </button>
+            <a class="btn" href="program.html">Go to Program Page</a>
+          </div>
+        </section>
       </div>
-      <div class="progress"><div class="progress-fill" id="progressFill"></div></div>
-      <div class="badge-row">
-        <span class="badge" id="categoryBadge">Frameworks</span>
-        <span class="badge" id="difficultyBadge">Core</span>
-      </div>
-      <div class="objective-card">
-        <div class="label">Learning Objective</div>
-        <p id="questionObjective"></p>
-      </div>
-      <h2 class="question-prompt" id="questionPrompt"></h2>
-      <div class="answer-grid" id="answerGrid"></div>
-      <div class="explanation" id="answerExplanation"></div>
-      <div class="question-actions">
-        <button class="btn primary" id="nextQuestionBtn" type="button" hidden>Next Question</button>
-      </div>
-      <p class="mode-note" id="modeNote"></p>
-    </section>
+    </main>
 
-    <section class="panel results-grid" id="resultsPanel" hidden>
-      <h2 class="panel-title">Round complete.</h2>
-      <p class="panel-sub" id="resultsSummary"></p>
-      <div class="mini-grid">
-        <div class="mini-card">
-          <div class="label">Final Score</div>
-          <strong id="resultsScore">0</strong>
-          <span>Use this as a replay target or as a team score in live instruction.</span>
-        </div>
-      </div>
-      <div class="panel">
-        <div class="teacher-label">Classroom scoreboard</div>
-        <ul class="classroom-board" id="classroomBoard"></ul>
-      </div>
-      <div class="start-actions">
-        <button class="btn gold" id="playAgainBtn" type="button">Play Another Round</button>
-        <a class="btn" href="program.html">Go to Program Page</a>
-      </div>
-    </section>
-  </div>
-</main>
-
-<script src="game-data.js"></script>
-<script src="game.js"></script>
-</body>
+    <script src="game-data.js"></script>
+    <script src="game.js"></script>
+  </body>
 </html>

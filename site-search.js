@@ -3,7 +3,11 @@
   const indexPath = script?.dataset.searchIndex || "site-search-index.json";
 
   function normalize(value) {
-    return (value || "").toLowerCase().replace(/[^a-z0-9\s-]/g, " ").replace(/\s+/g, " ").trim();
+    return (value || "")
+      .toLowerCase()
+      .replace(/[^a-z0-9\s-]/g, " ")
+      .replace(/\s+/g, " ")
+      .trim();
   }
 
   function scoreEntry(entry, terms) {
@@ -55,8 +59,7 @@
     } else if (anchor && anchor.parentNode) {
       shell.classList.add("site-search-page");
       anchor.insertAdjacentElement("afterend", shell);
-    }
-    else {
+    } else {
       shell.classList.add("site-search-page");
       document.body.insertAdjacentElement("afterbegin", shell);
     }
@@ -104,7 +107,9 @@
       results.hidden = false;
       results.innerHTML = `
         <ul class="site-search-list">
-          ${items.map((item) => `
+          ${items
+            .map(
+              (item) => `
             <li class="site-search-item">
               <a class="site-search-link" href="${item.url}">
                 <div class="site-search-topline">
@@ -114,7 +119,9 @@
                 <div class="site-search-snippet">${item.snippet}</div>
               </a>
             </li>
-          `).join("")}
+          `,
+            )
+            .join("")}
         </ul>
       `;
     }

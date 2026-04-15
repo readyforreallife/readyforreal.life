@@ -4,16 +4,8 @@
       "id": "after_school_job",
       "title": "After-School Job Dilemma",
       "summary": "You need money for a family bill, but your manager schedules you during a major exam week.",
-      "stakes": [
-        "Employment",
-        "Family finances",
-        "Academic performance"
-      ],
-      "roles": [
-        "Student",
-        "Manager",
-        "Parent"
-      ],
+      "stakes": ["Employment", "Family finances", "Academic performance"],
+      "roles": ["Student", "Manager", "Parent"],
       "startStep": "step1",
       "meters": {
         "budget": 60,
@@ -146,16 +138,8 @@
       "id": "group_project_conflict",
       "title": "Group Project Breakdown",
       "summary": "Your team is behind and one member is disengaged right before the due date.",
-      "stakes": [
-        "Grades",
-        "Team trust",
-        "Time pressure"
-      ],
-      "roles": [
-        "Student",
-        "Teammate",
-        "Teacher"
-      ],
+      "stakes": ["Grades", "Team trust", "Time pressure"],
+      "roles": ["Student", "Teammate", "Teacher"],
       "startStep": "step1",
       "meters": {
         "budget": 45,
@@ -288,16 +272,8 @@
       "id": "online_pressure",
       "title": "Online Pressure and Reputation",
       "summary": "A rumor spreads online and you are asked to respond publicly.",
-      "stakes": [
-        "Reputation",
-        "Safety",
-        "Peer pressure"
-      ],
-      "roles": [
-        "Student",
-        "Peer",
-        "Coach"
-      ],
+      "stakes": ["Reputation", "Safety", "Peer pressure"],
+      "roles": ["Student", "Peer", "Coach"],
       "startStep": "step1",
       "meters": {
         "budget": 50,
@@ -424,11 +400,7 @@
         "Financial responsibility",
         "Long-term planning"
       ],
-      "roles": [
-        "Student",
-        "Parent",
-        "Sibling"
-      ],
+      "roles": ["Student", "Parent", "Sibling"],
       "startStep": "step1",
       "meters": {
         "budget": 35,
@@ -550,16 +522,8 @@
       "id": "sports_injury_pressure",
       "title": "Play Through an Injury?",
       "summary": "A coach wants you to play, but your injury might worsen.",
-      "stakes": [
-        "Health",
-        "Team commitment",
-        "Long-term goals"
-      ],
-      "roles": [
-        "Student",
-        "Coach",
-        "Parent"
-      ],
+      "stakes": ["Health", "Team commitment", "Long-term goals"],
+      "roles": ["Student", "Coach", "Parent"],
       "startStep": "step1",
       "meters": {
         "budget": 50,
@@ -681,16 +645,8 @@
       "id": "late_night_ride",
       "title": "Late-Night Ride",
       "summary": "A friend offers a ride home late at night, but you are unsure about safety.",
-      "stakes": [
-        "Safety",
-        "Peer pressure",
-        "Decision ownership"
-      ],
-      "roles": [
-        "Student",
-        "Friend",
-        "Guardian"
-      ],
+      "stakes": ["Safety", "Peer pressure", "Decision ownership"],
+      "roles": ["Student", "Friend", "Guardian"],
       "startStep": "step1",
       "meters": {
         "budget": 55,

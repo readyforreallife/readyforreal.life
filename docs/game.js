@@ -1,4 +1,5 @@
-const WORKER_URL = "https://flat-flower-4af8mmmf-agreement-admin.mikeyterry44.workers.dev";
+const WORKER_URL =
+  "https://flat-flower-4af8mmmf-agreement-admin.mikeyterry44.workers.dev";
 const GAME_STORAGE_KEY = "rfrl-challenge-best";
 const GAME_HISTORY_KEY = "rfrl-challenge-history";
 const DEFAULT_QUESTION_COUNT = 10;
@@ -87,8 +88,9 @@ const state = {
     pollId: null,
     clockId: null,
     session: null,
-    selectedChoice: -1
-  }
+    lastQuestionIndex: -1,
+    selectedChoice: -1,
+  },
 };
 
 function shuffle(list) {
@@ -111,13 +113,15 @@ async function workerRequest(payload) {
   const response = await fetch(WORKER_URL, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
-    body: JSON.stringify(payload)
+    body: JSON.stringify(payload),
   });
   const data = await response.json().catch(() => ({}));
   if (!response.ok || data.ok === false) {
     const rawError = String(data.error || "").trim();
     if (rawError === "Unknown action.") {
-      throw new Error("The live challenge backend is still on the older Worker version. Redeploy the latest Worker code, then try Host Live Session again.");
+      throw new Error(
+        "The live challenge backend is still on the older Worker version. Redeploy the latest Worker code, then try Host Live Session again.",
+      );
     }
     throw new Error(rawError || "The live challenge request failed.");
   }
@@ -148,10 +152,22 @@ function renderLeaderboardList(target, entries, emptyText) {
 
 function loadLeaderboard() {
   const history = JSON.parse(localStorage.getItem(GAME_HISTORY_KEY) || "[]");
-  const soloHistory = history.filter((entry) => (entry.mode || "solo") === "solo");
-  const classroomHistory = history.filter((entry) => entry.mode === "classroom");
-  renderLeaderboardList(soloLeaderboardEl, soloHistory, "Be the first to set a solo score.");
-  renderLeaderboardList(classroomLeaderboardEl, classroomHistory, "Be the first to set a classroom score.");
+  const soloHistory = history.filter(
+    (entry) => (entry.mode || "solo") === "solo",
+  );
+  const classroomHistory = history.filter(
+    (entry) => entry.mode === "classroom",
+  );
+  renderLeaderboardList(
+    soloLeaderboardEl,
+    soloHistory,
+    "Be the first to set a solo score.",
+  );
+  renderLeaderboardList(
+    classroomLeaderboardEl,
+    classroomHistory,
+    "Be the first to set a classroom score.",
+  );
 }
 
 function saveScore() {
@@ -161,13 +177,16 @@ function saveScore() {
   }
 
   const history = JSON.parse(localStorage.getItem(GAME_HISTORY_KEY) || "[]");
-  const label = state.mode === "classroom" ? `${state.playerName} · ${state.theme}` : state.playerName;
+  const label =
+    state.mode === "classroom"
+      ? `${state.playerName} · ${state.theme}`
+      : state.playerName;
   history.push({
     name: label,
     mode: state.mode,
     theme: state.theme,
     score: state.score,
-    playedAt: new Date().toISOString()
+    playedAt: new Date().toISOString(),
   });
   history.sort((a, b) => b.score - a.score);
   localStorage.setItem(GAME_HISTORY_KEY, JSON.stringify(history.slice(0, 20)));
@@ -201,7 +220,11 @@ function getActiveTeam() {
   return state.teams[state.turnIndex];
 }
 
-function renderClassroomBoardFromTeams(teams, activeTeamName = "", soloLabel = "") {
+function renderClassroomBoardFromTeams(
+  teams,
+  activeTeamName = "",
+  soloLabel = "",
+) {
   classroomBoardEl.innerHTML = "";
 
   if (!teams.length) {
@@ -226,7 +249,11 @@ function renderClassroomBoardFromTeams(teams, activeTeamName = "", soloLabel = "
 
 function renderClassroomBoard() {
   if (state.live.active && state.live.session) {
-    renderClassroomBoardFromTeams(state.live.session.teams || [], state.live.session.activeTeam || "", state.live.participantName || state.playerName);
+    renderClassroomBoardFromTeams(
+      state.live.session.teams || [],
+      state.live.session.activeTeam || "",
+      state.live.participantName || state.playerName,
+    );
     return;
   }
 
@@ -235,7 +262,10 @@ function renderClassroomBoard() {
     return;
   }
 
-  renderClassroomBoardFromTeams(state.teams, getActiveTeam() ? getActiveTeam().name : "");
+  renderClassroomBoardFromTeams(
+    state.teams,
+    getActiveTeam() ? getActiveTeam().name : "",
+  );
 }
 
 function updateHud() {
@@ -263,12 +293,17 @@ function updateHud() {
 
 function buildQuestionSet() {
   const bank = window.RFRL_GAME_QUESTIONS || [];
-  const themed = state.theme === "Mixed" ? bank : bank.filter((question) => question.theme === state.theme);
+  const themed =
+    state.theme === "Mixed"
+      ? bank
+      : bank.filter((question) => question.theme === state.theme);
   const primary = shuffle(themed);
   if (state.theme === "Mixed" || primary.length >= state.questionCount) {
     return primary.slice(0, state.questionCount);
   }
-  const topUp = shuffle(bank.filter((question) => question.theme !== state.theme));
+  const topUp = shuffle(
+    bank.filter((question) => question.theme !== state.theme),
+  );
   return [...primary, ...topUp].slice(0, state.questionCount);
 }
 
@@ -292,13 +327,17 @@ function showQuestion() {
   nextBtn.hidden = true;
   answersEl.innerHTML = "";
 
-  const choiceOrder = shuffle(question.choices.map((choice, index) => ({ choice, index })));
+  const choiceOrder = shuffle(
+    question.choices.map((choice, index) => ({ choice, index })),
+  );
   choiceOrder.forEach(({ choice, index }, buttonIndex) => {
     const button = document.createElement("button");
     button.type = "button";
     button.className = `answer-card palette-${buttonIndex % 4}`;
     button.innerHTML = `<span class="answer-symbol">${["▲", "◆", "●", "■"][buttonIndex % 4]}</span><span>${choice}</span>`;
-    button.addEventListener("click", () => handleAnswer(button, index === question.answer, question));
+    button.addEventListener("click", () =>
+      handleAnswer(button, index === question.answer, question),
+    );
     answersEl.appendChild(button);
   });
 
@@ -348,7 +387,10 @@ function handleAnswer(button, isCorrect, question) {
     state.score += points;
     state.streak += 1;
     button.classList.add("correct");
-    renderAnswerFeedback(`Correct. +${points.toLocaleString()} points.`, question);
+    renderAnswerFeedback(
+      `Correct. +${points.toLocaleString()} points.`,
+      question,
+    );
     if (activeTeam) {
       activeTeam.score += points;
       activeTeam.correct += 1;
@@ -385,7 +427,10 @@ function finishRound() {
     resultsSummaryEl.textContent = `${winner.name} finished on top with ${winner.score.toLocaleString()} points. The round stayed in ${state.theme} mode with ${state.questions.length} scenario questions.`;
   } else {
     const best = Number(localStorage.getItem(GAME_STORAGE_KEY) || 0);
-    const status = state.score >= best ? "New best round." : "Strong work. Run it again and push higher.";
+    const status =
+      state.score >= best
+        ? "New best round."
+        : "Strong work. Run it again and push higher.";
     resultsSummaryEl.textContent = `${state.playerName}, you finished with a ${state.streak}-question streak at peak. ${status}`;
   }
 }
@@ -409,7 +454,9 @@ function nextQuestion() {
 function getTeamNames() {
   const count = Number(teamCountSelectEl.value || 3);
   const inputs = Array.from(teamGridEl.querySelectorAll("input"));
-  return inputs.slice(0, count).map((input, index) => input.value.trim() || `Team ${index + 1}`);
+  return inputs
+    .slice(0, count)
+    .map((input, index) => input.value.trim() || `Team ${index + 1}`);
 }
 
 function renderTeamInputs() {
@@ -432,12 +479,16 @@ function updateModeSummary() {
   const theme = themeSelectEl.value;
   const count = Number(questionCountSelectEl.value || DEFAULT_QUESTION_COUNT);
   const timer = Number(timerSelectEl.value || DEFAULT_QUESTION_TIME);
-  const themeLabel = theme === "Mixed" ? "Mixed real-life scenarios" : `${theme} scenarios`;
+  const themeLabel =
+    theme === "Mixed" ? "Mixed real-life scenarios" : `${theme} scenarios`;
   modeSummaryEl.textContent = mode === "classroom" ? "Classroom teams" : "Solo";
   themeSummaryEl.textContent = `${themeLabel} · ${count} questions · ${timer}s each.`;
   roundCountEl.textContent = `1 / ${count}`;
   roundCountLiveEl.textContent = `1 / ${count}`;
-  startBtnDuplicate.textContent = mode === "classroom" ? "Start Classroom Round" : `Start ${count}-Question Round`;
+  startBtnDuplicate.textContent =
+    mode === "classroom"
+      ? "Start Classroom Round"
+      : `Start ${count}-Question Round`;
 }
 
 function beginGame() {
@@ -451,15 +502,19 @@ function beginGame() {
     participantName: "",
     participantTeam: "",
     pollId: null,
+    clockId: null,
     session: null,
-    selectedChoice: -1
+    lastQuestionIndex: -1,
+    selectedChoice: -1,
   };
   waitingCardEl.hidden = true;
 
   state.playerName = playerNameInput.value.trim() || "Player";
   state.mode = gameModeEl.value;
   state.theme = themeSelectEl.value;
-  state.questionCount = Number(questionCountSelectEl.value || DEFAULT_QUESTION_COUNT);
+  state.questionCount = Number(
+    questionCountSelectEl.value || DEFAULT_QUESTION_COUNT,
+  );
   state.timerSeconds = Number(timerSelectEl.value || DEFAULT_QUESTION_TIME);
   state.questions = buildQuestionSet();
   state.currentIndex = 0;
@@ -467,7 +522,10 @@ function beginGame() {
   state.streak = 0;
   state.turnIndex = 0;
   state.answered = false;
-  state.teams = state.mode === "classroom" ? getTeamNames().map((name) => ({ name, score: 0, correct: 0 })) : [];
+  state.teams =
+    state.mode === "classroom"
+      ? getTeamNames().map((name) => ({ name, score: 0, correct: 0 }))
+      : [];
 
   startPanel.hidden = true;
   resultsPanel.hidden = true;
@@ -477,8 +535,12 @@ function beginGame() {
 }
 
 function populateJoinTeams(teams) {
-  const options = [`<option value="">Choose team</option>`]
-    .concat((teams || []).map((team) => `<option value="${escapeHtml(team.name)}">${escapeHtml(team.name)}</option>`));
+  const options = [`<option value="">Choose team</option>`].concat(
+    (teams || []).map(
+      (team) =>
+        `<option value="${escapeHtml(team.name)}">${escapeHtml(team.name)}</option>`,
+    ),
+  );
   joinTeamSelect.innerHTML = options.join("");
 }
 
@@ -511,7 +573,8 @@ function updateLiveQr(code) {
     liveQrPanelEl.hidden = true;
     liveQrImageEl.removeAttribute("src");
     liveQrLinkEl.href = "#";
-    liveQrLinkEl.textContent = "Join link will appear here once the host code is created.";
+    liveQrLinkEl.textContent =
+      "Join link will appear here once the host code is created.";
     return;
   }
   const joinLink = getJoinLink(code);
@@ -551,7 +614,11 @@ function stopLiveClock() {
 
 function getLiveTimeRemaining(session) {
   if (!session || !session.started || session.completed || session.revealed) {
-    return Number(session && session.timerSeconds ? session.timerSeconds : DEFAULT_QUESTION_TIME);
+    return Number(
+      session && session.timerSeconds
+        ? session.timerSeconds
+        : DEFAULT_QUESTION_TIME,
+    );
   }
   const startedAt = String(session.questionStartedAt || "").trim();
   if (!startedAt) {
@@ -559,7 +626,10 @@ function getLiveTimeRemaining(session) {
   }
   const elapsedMs = Date.now() - new Date(startedAt).getTime();
   const elapsedSeconds = Math.max(0, Math.floor(elapsedMs / 1000));
-  return Math.max(0, Number(session.timerSeconds || DEFAULT_QUESTION_TIME) - elapsedSeconds);
+  return Math.max(
+    0,
+    Number(session.timerSeconds || DEFAULT_QUESTION_TIME) - elapsedSeconds,
+  );
 }
 
 function refreshLiveClock() {
@@ -585,7 +655,7 @@ function startLivePolling() {
         action: "challenge_get",
         code: state.live.code,
         host_key: state.live.host ? state.live.hostKey : "",
-        participant_id: state.live.participantId
+        participant_id: state.live.participantId,
       });
       applyLiveSession(response.session);
     } catch (error) {
@@ -596,29 +666,50 @@ function startLivePolling() {
 
 function updateLiveHud(session) {
   const roundText = `${Math.min(session.currentIndex + 1, session.questionCount)} / ${session.questionCount}`;
-  const myTeam = (session.teams || []).find((team) => team.name === state.live.participantTeam);
-  const winnerScore = (session.teams || []).reduce((max, team) => Math.max(max, Number(team.score || 0)), 0);
-  liveScoreEl.textContent = state.live.host ? winnerScore.toLocaleString() : Number((myTeam && myTeam.score) || 0).toLocaleString();
-  streakEl.textContent = String(session.voteCounts ? Object.keys(session.voteCounts).length : 0);
+  const myTeam = (session.teams || []).find(
+    (team) => team.name === state.live.participantTeam,
+  );
+  const winnerScore = (session.teams || []).reduce(
+    (max, team) => Math.max(max, Number(team.score || 0)),
+    0,
+  );
+  liveScoreEl.textContent = state.live.host
+    ? winnerScore.toLocaleString()
+    : Number((myTeam && myTeam.score) || 0).toLocaleString();
+  streakEl.textContent = String(
+    session.voteCounts ? Object.keys(session.voteCounts).length : 0,
+  );
   timerEl.textContent = String(getLiveTimeRemaining(session));
   roundCountEl.textContent = roundText;
   roundCountLiveEl.textContent = roundText;
   progressFillEl.style.width = `${(session.currentIndex / Math.max(session.questionCount, 1)) * 100}%`;
-  currentTurnEl.textContent = session.activeTeam || (state.live.host ? state.playerName : state.live.participantName || "Participant");
-  modeSummaryEl.textContent = state.live.host ? "Live host screen" : "Live participant";
+  currentTurnEl.textContent =
+    session.activeTeam ||
+    (state.live.host
+      ? state.playerName
+      : state.live.participantName || "Participant");
+  modeSummaryEl.textContent = state.live.host
+    ? "Live host screen"
+    : "Live participant";
   themeSummaryEl.textContent = `${session.theme} · ${session.questionCount} questions · ${session.timerSeconds}s pacing`;
   if (state.live.host) {
     const timeLeft = getLiveTimeRemaining(session);
-    modeNoteEl.textContent = timeLeft > 0
-      ? `${session.activeTeam || "Current team"} is active. Let teams vote before time runs out, then reveal the strongest answer and advance when you are ready.`
-      : `${session.activeTeam || "Current team"} is out of time. Reveal the strongest answer to discuss it, then move to the next question.`;
+    modeNoteEl.textContent =
+      timeLeft > 0
+        ? `${session.activeTeam || "Current team"} is active. Let teams vote before time runs out, then reveal the strongest answer and advance when you are ready.`
+        : `${session.activeTeam || "Current team"} is out of time. Reveal the strongest answer to discuss it, then move to the next question.`;
   } else {
-    const voteText = state.live.selectedChoice >= 0 && !session.revealed
-      ? "Your vote is locked. Wait for the teacher to reveal the strongest response."
-      : "Choose the strongest response before time runs out.";
+    const voteText =
+      state.live.selectedChoice >= 0 && !session.revealed
+        ? "Your vote is locked. Wait for the teacher to reveal the strongest response."
+        : "Choose the strongest response before time runs out.";
     modeNoteEl.textContent = `You are joined as ${state.live.participantName || "participant"} on ${state.live.participantTeam || "your team"}. ${voteText}`;
   }
-  renderClassroomBoardFromTeams(session.teams || [], session.activeTeam || "", state.live.participantName || state.playerName);
+  renderClassroomBoardFromTeams(
+    session.teams || [],
+    session.activeTeam || "",
+    state.live.participantName || state.playerName,
+  );
 }
 
 function renderLiveQuestion(session) {
@@ -652,29 +743,41 @@ function renderLiveQuestion(session) {
         button.classList.add("incorrect");
       }
     }
-    button.addEventListener("click", () => handleLiveAnswer(button, question, index));
+    button.addEventListener("click", () =>
+      handleLiveAnswer(button, question, index),
+    );
     answersEl.appendChild(button);
   });
 
   if (session.revealed) {
     renderAnswerFeedback(
-      session.selectedAnswer === question.answer ? "Strong call." : "Here’s the strongest move.",
+      session.selectedAnswer === question.answer
+        ? "Strong call."
+        : "Here’s the strongest move.",
       {
         explanation: question.explanation,
         correctAnswer: question.correctAnswer,
         bloom: question.bloom,
-        bloomExplanation: question.bloomExplanation
-      }
+        bloomExplanation: question.bloomExplanation,
+      },
     );
     if (state.live.host) {
       nextBtn.hidden = false;
-      nextBtn.textContent = session.completed || session.currentIndex >= session.questionCount - 1 ? "Finish Round" : "Next Question";
+      nextBtn.textContent =
+        session.completed || session.currentIndex >= session.questionCount - 1
+          ? "Finish Round"
+          : "Next Question";
     }
   }
 }
 
 function applyLiveSession(session) {
+  const previousIndex = Number(state.live.lastQuestionIndex);
   state.live.session = session;
+  if (!state.live.host && previousIndex !== Number(session.currentIndex)) {
+    state.live.selectedChoice = -1;
+  }
+  state.live.lastQuestionIndex = Number(session.currentIndex);
   populateJoinTeams(session.teams || []);
   updateLiveHud(session);
   syncLiveClock(session);
@@ -689,11 +792,21 @@ function applyLiveSession(session) {
     gamePanel.hidden = true;
     resultsPanel.hidden = true;
     if (state.live.host) {
-      showWaitingCard("Live session ready.", `Share code ${session.code} or the join link, then start the round when your teams are in.`);
-      setLiveStatus(`Live session ${session.code} is ready. ${session.participants.length} participant(s) have joined.`);
+      showWaitingCard(
+        "Live session ready.",
+        `Share code ${session.code} or the join link, then start the round when your teams are in.`,
+      );
+      setLiveStatus(
+        `Live session ${session.code} is ready. ${session.participants.length} participant(s) have joined.`,
+      );
     } else {
-      showWaitingCard("You joined successfully.", `You are in ${state.live.participantTeam || "your team"}. Wait for the teacher to start the round.`);
-      setLiveStatus(`Joined live session ${session.code}. Waiting for the teacher to start.`);
+      showWaitingCard(
+        "You joined successfully.",
+        `You are in ${state.live.participantTeam || "your team"}. Wait for the teacher to start the round.`,
+      );
+      setLiveStatus(
+        `Joined live session ${session.code}. Waiting for the teacher to start.`,
+      );
     }
     return;
   }
@@ -704,8 +817,12 @@ function applyLiveSession(session) {
   resultsPanel.hidden = !session.completed;
   renderLiveQuestion(session);
 
-  const winningTeam = (session.teams || []).slice().sort((a, b) => b.score - a.score)[0];
-  resultsScoreEl.textContent = winningTeam ? Number(winningTeam.score || 0).toLocaleString() : "0";
+  const winningTeam = (session.teams || [])
+    .slice()
+    .sort((a, b) => b.score - a.score)[0];
+  resultsScoreEl.textContent = winningTeam
+    ? Number(winningTeam.score || 0).toLocaleString()
+    : "0";
   resultsSummaryEl.textContent = session.completed
     ? `${winningTeam ? winningTeam.name : "The class"} finished on top in the ${session.theme} round.`
     : `Live classroom session in progress. ${session.activeTeam || "A team"} is up right now.`;
@@ -715,10 +832,13 @@ async function hostLiveSession() {
   try {
     state.playerName = playerNameInput.value.trim() || "Teacher";
     state.theme = themeSelectEl.value;
-    state.questionCount = Number(questionCountSelectEl.value || DEFAULT_QUESTION_COUNT);
+    state.questionCount = Number(
+      questionCountSelectEl.value || DEFAULT_QUESTION_COUNT,
+    );
     state.timerSeconds = Number(timerSelectEl.value || DEFAULT_QUESTION_TIME);
     state.questions = buildQuestionSet();
-    const teams = gameModeEl.value === "classroom" ? getTeamNames() : [state.playerName];
+    const teams =
+      gameModeEl.value === "classroom" ? getTeamNames() : [state.playerName];
 
     const response = await workerRequest({
       action: "challenge_create",
@@ -727,7 +847,7 @@ async function hostLiveSession() {
       question_count: state.questionCount,
       timer_seconds: state.timerSeconds,
       teams,
-      questions: state.questions
+      questions: state.questions,
     });
 
     state.live.active = true;
@@ -739,7 +859,9 @@ async function hostLiveSession() {
     updateLiveQr(response.session.code);
     startLiveSessionBtn.hidden = false;
     liveSessionCodeEl.textContent = response.session.code;
-    setLiveStatus(`Live session ${response.session.code} is ready. Share the code and start when your teams are in.`);
+    setLiveStatus(
+      `Live session ${response.session.code} is ready. Share the code and start when your teams are in.`,
+    );
     applyLiveSession(response.session);
     startLivePolling();
   } catch (error) {
@@ -752,7 +874,7 @@ async function startHostedLiveSession() {
     const response = await workerRequest({
       action: "challenge_start",
       code: state.live.code,
-      host_key: state.live.hostKey
+      host_key: state.live.hostKey,
     });
     applyLiveSession(response.session);
   } catch (error) {
@@ -766,7 +888,9 @@ async function joinLiveSession() {
     const name = String(joinNameInput.value || "").trim() || "Participant";
     const teamName = String(joinTeamSelect.value || "").trim();
     if (!code) {
-      throw new Error("Enter a 6-character live join code or paste the full join link first.");
+      throw new Error(
+        "Enter a 6-character live join code or paste the full join link first.",
+      );
     }
     joinCodeInput.value = code;
 
@@ -774,15 +898,21 @@ async function joinLiveSession() {
       action: "challenge_join",
       code,
       name,
-      team_name: teamName
+      team_name: teamName,
     });
 
     state.live.active = true;
     state.live.host = false;
     state.live.code = code;
-    state.live.participantId = joinResponse.session.me ? joinResponse.session.me.id : "";
-    state.live.participantName = joinResponse.session.me ? joinResponse.session.me.name : name;
-    state.live.participantTeam = joinResponse.session.me ? joinResponse.session.me.teamName : teamName;
+    state.live.participantId = joinResponse.session.me
+      ? joinResponse.session.me.id
+      : "";
+    state.live.participantName = joinResponse.session.me
+      ? joinResponse.session.me.name
+      : name;
+    state.live.participantTeam = joinResponse.session.me
+      ? joinResponse.session.me.teamName
+      : teamName;
     state.live.selectedChoice = -1;
     applyLiveSession(joinResponse.session);
     startLivePolling();
@@ -804,7 +934,7 @@ async function handleLiveAnswer(button, question, explicitIndex = -1) {
         action: "challenge_host_answer",
         code: state.live.code,
         host_key: state.live.hostKey,
-        selected_answer: choiceIndex
+        selected_answer: choiceIndex,
       });
       if (choiceIndex === state.live.session.currentQuestion.answer) {
         startBurst();
@@ -831,7 +961,7 @@ async function handleLiveAnswer(button, question, explicitIndex = -1) {
       action: "challenge_submit_vote",
       code: state.live.code,
       participant_id: state.live.participantId,
-      choice_index: choiceIndex
+      choice_index: choiceIndex,
     });
     explanationEl.innerHTML = `<div><strong>Vote locked.</strong> Wait for the teacher to reveal the strongest answer for ${response.session.activeTeam || "this turn"}.</div>`;
     applyLiveSession(response.session);
@@ -845,7 +975,7 @@ async function hostNextLiveQuestion() {
     const response = await workerRequest({
       action: "challenge_next",
       code: state.live.code,
-      host_key: state.live.hostKey
+      host_key: state.live.hostKey,
     });
     state.live.selectedChoice = -1;
     applyLiveSession(response.session);
@@ -859,15 +989,20 @@ function hydrateJoinFromQuery() {
   const joinCode = normalizeJoinCode(params.get("join"));
   if (!joinCode) return;
   joinCodeInput.value = joinCode;
-  setLiveStatus(`Join code ${joinCode} loaded from the link. Add your name, choose a team, and join.`);
+  setLiveStatus(
+    `Join code ${joinCode} loaded from the link. Add your name, choose a team, and join.`,
+  );
   workerRequest({
     action: "challenge_get",
-    code: joinCode
-  }).then((response) => {
-    populateJoinTeams(response.session.teams || []);
-  }).catch(() => {
-    joinHintEl.textContent = "That live join code could not be found yet. Double-check the code from the teacher screen.";
-  });
+    code: joinCode,
+  })
+    .then((response) => {
+      populateJoinTeams(response.session.teams || []);
+    })
+    .catch(() => {
+      joinHintEl.textContent =
+        "That live join code could not be found yet. Double-check the code from the teacher screen.";
+    });
 }
 
 function attachEvents() {
@@ -878,7 +1013,10 @@ function attachEvents() {
       startPanel.hidden = false;
       gamePanel.hidden = true;
       resultsPanel.hidden = true;
-      showWaitingCard("Set up another live round.", "Create a fresh code to run another live classroom session.");
+      showWaitingCard(
+        "Set up another live round.",
+        "Create a fresh code to run another live classroom session.",
+      );
       return;
     }
     beginGame();
@@ -910,14 +1048,18 @@ function attachEvents() {
     const link = getJoinLink(state.live.code);
     try {
       await navigator.clipboard.writeText(link);
-      setLiveStatus(`Join link copied. Share ${state.live.code} or paste the direct link for your teams.`);
+      setLiveStatus(
+        `Join link copied. Share ${state.live.code} or paste the direct link for your teams.`,
+      );
     } catch {
       window.prompt("Copy this join link for your class:", link);
     }
   });
   joinLiveBtn?.addEventListener("click", joinLiveSession);
   clearLeaderboardBtn?.addEventListener("click", () => {
-    const code = window.prompt("Enter passcode to clear the saved leaderboard.");
+    const code = window.prompt(
+      "Enter passcode to clear the saved leaderboard.",
+    );
     if (code === null) return;
     if (code.trim() !== "4429") {
       window.alert("That passcode is not correct.");

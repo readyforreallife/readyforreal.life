@@ -111,7 +111,7 @@ const TOOL_OPTIONS = [
   "Set a boundary",
   "Use a checklist",
   "Delay the reaction",
-  "Repair the relationship"
+  "Repair the relationship",
 ];
 
 const CONCEPT_OPTIONS = [
@@ -123,7 +123,7 @@ const CONCEPT_OPTIONS = [
   "Values and priorities",
   "Responsibility",
   "Impact on others",
-  "Boundaries"
+  "Boundaries",
 ];
 
 const WHY_OPTIONS = [
@@ -133,26 +133,26 @@ const WHY_OPTIONS = [
   "The biggest risk is damaging trust or safety.",
   "This protects my boundary by staying honest.",
   "I’m taking responsibility by owning my choice.",
-  "Skip for now (I need more time to explain.)"
+  "Skip for now (I need more time to explain.)",
 ];
 
 const STAKE_VIDEO_MAP = {
-  "Employment": "teen part-time job communication scheduling conflict",
+  Employment: "teen part-time job communication scheduling conflict",
   "Family finances": "teen budgeting priorities family finances",
   "Financial responsibility": "financial responsibility decision making teens",
   "Academic performance": "study skills exam week time management",
-  "Grades": "grades vs work balance decision making",
+  Grades: "grades vs work balance decision making",
   "Peer pressure": "peer pressure safety decision making teens",
-  "Safety": "personal safety decision making teens",
-  "Reputation": "digital reputation and choices for teens",
-  "Health": "health and safety decision making teens",
+  Safety: "personal safety decision making teens",
+  Reputation: "digital reputation and choices for teens",
+  Health: "health and safety decision making teens",
   "Team commitment": "team commitment conflict resolution sports",
   "Team trust": "trust and accountability teamwork students",
   "Time pressure": "decision making under pressure teens",
   "Decision ownership": "taking responsibility for choices teens",
   "Long-term goals": "long-term goals short-term choices teens",
   "Long-term planning": "planning ahead long-term consequences",
-  "Family stability": "family responsibilities and school balance"
+  "Family stability": "family responsibilities and school balance",
 };
 
 const ENCOURAGEMENTS = [
@@ -160,7 +160,7 @@ const ENCOURAGEMENTS = [
   "Great self‑control — that’s how leaders respond.",
   "You owned your choice. That builds trust.",
   "Nice work balancing short‑term and long‑term.",
-  "You’re practicing the long view. Keep going."
+  "You’re practicing the long view. Keep going.",
 ];
 
 const GAMIFY_KEY = "decision-lab-gamify";
@@ -173,20 +173,40 @@ const AVATARS = [
   { id: "owl", label: "Owl", icon: "🦉" },
   { id: "star", label: "Star", icon: "⭐" },
   { id: "shield", label: "Shield", icon: "🛡️" },
-  { id: "spark", label: "Spark", icon: "✨" }
+  { id: "spark", label: "Spark", icon: "✨" },
 ];
 
 const BADGES = [
-  { id: "first_win", title: "First Win", desc: "Complete your first decision." },
-  { id: "three_day", title: "3‑Day Streak", desc: "Complete decisions on 3 different days." },
-  { id: "calm_communicator", title: "Calm Communicator", desc: "Use a pause or breathe tool." },
-  { id: "boundary_boss", title: "Boundary Boss", desc: "Use a boundary tool." }
+  {
+    id: "first_win",
+    title: "First Win",
+    desc: "Complete your first decision.",
+  },
+  {
+    id: "three_day",
+    title: "3‑Day Streak",
+    desc: "Complete decisions on 3 different days.",
+  },
+  {
+    id: "calm_communicator",
+    title: "Calm Communicator",
+    desc: "Use a pause or breathe tool.",
+  },
+  { id: "boundary_boss", title: "Boundary Boss", desc: "Use a boundary tool." },
 ];
 
 const DAILY_CHALLENGES = [
-  { id: "boundary", text: "Use a boundary tool in your response today.", bonus: 10 },
-  { id: "long_view", text: "Reference long‑term consequences in your response.", bonus: 10 },
-  { id: "ask_help", text: "Include “ask for help” as your tool.", bonus: 10 }
+  {
+    id: "boundary",
+    text: "Use a boundary tool in your response today.",
+    bonus: 10,
+  },
+  {
+    id: "long_view",
+    text: "Reference long‑term consequences in your response.",
+    bonus: 10,
+  },
+  { id: "ask_help", text: "Include “ask for help” as your tool.", bonus: 10 },
 ];
 
 const ROTATION_START = "2026-02-02";
@@ -200,16 +220,18 @@ function loadSettings() {
   const saved = localStorage.getItem(settingsKey);
   if (!saved) {
     return {
-      sheetsEndpoint: "https://script.google.com/macros/s/AKfycbzH2--hkA4ezway034VJ6AKK7AQlkiDkGn2rjQ1tP2PhaY25gOKX89cfJZ7fucx6yUH/exec",
-      sheetsSecret: ""
+      sheetsEndpoint:
+        "https://script.google.com/macros/s/AKfycbzH2--hkA4ezway034VJ6AKK7AQlkiDkGn2rjQ1tP2PhaY25gOKX89cfJZ7fucx6yUH/exec",
+      sheetsSecret: "",
     };
   }
   try {
     return JSON.parse(saved);
   } catch {
     return {
-      sheetsEndpoint: "https://script.google.com/macros/s/AKfycbzH2--hkA4ezway034VJ6AKK7AQlkiDkGn2rjQ1tP2PhaY25gOKX89cfJZ7fucx6yUH/exec",
-      sheetsSecret: ""
+      sheetsEndpoint:
+        "https://script.google.com/macros/s/AKfycbzH2--hkA4ezway034VJ6AKK7AQlkiDkGn2rjQ1tP2PhaY25gOKX89cfJZ7fucx6yUH/exec",
+      sheetsSecret: "",
     };
   }
 }
@@ -240,7 +262,7 @@ async function loadData() {
   try {
     const [scenarioRes, rubricRes] = await Promise.all([
       fetch("scenarios.json"),
-      fetch("rubric.json")
+      fetch("rubric.json"),
     ]);
     const scenarioData = await scenarioRes.json();
     const rubricData = await rubricRes.json();
@@ -342,7 +364,9 @@ function renderBuilderOptions() {
     card.type = "button";
     card.className = "option-card";
     card.textContent = label;
-    card.addEventListener("click", () => selectOption(toolOptionsEl, card, toolAnswerEl, label));
+    card.addEventListener("click", () =>
+      selectOption(toolOptionsEl, card, toolAnswerEl, label),
+    );
     toolOptionsEl.appendChild(card);
   });
 
@@ -351,7 +375,9 @@ function renderBuilderOptions() {
     card.type = "button";
     card.className = "option-card";
     card.textContent = label;
-    card.addEventListener("click", () => selectOption(conceptOptionsEl, card, conceptAnswerEl, label));
+    card.addEventListener("click", () =>
+      selectOption(conceptOptionsEl, card, conceptAnswerEl, label),
+    );
     conceptOptionsEl.appendChild(card);
   });
 
@@ -360,14 +386,18 @@ function renderBuilderOptions() {
     card.type = "button";
     card.className = "option-card";
     card.textContent = label;
-    card.addEventListener("click", () => selectOption(whyOptionsEl, card, whyAnswerEl, label));
+    card.addEventListener("click", () =>
+      selectOption(whyOptionsEl, card, whyAnswerEl, label),
+    );
     whyOptionsEl.appendChild(card);
   });
   updateSentencePreview();
 }
 
 function selectOption(container, card, inputEl, value) {
-  container.querySelectorAll(".option-card").forEach((el) => el.classList.remove("active"));
+  container
+    .querySelectorAll(".option-card")
+    .forEach((el) => el.classList.remove("active"));
   card.classList.add("active");
   inputEl.value = value;
   updateSentencePreview();
@@ -378,7 +408,9 @@ function updateSentencePreview() {
   const tool = toolAnswerEl.value || "a tool";
   const concept = conceptAnswerEl.value || "a concept";
   const why = whyAnswerEl.value || "a reason";
-  const prettyWhy = why.toLowerCase().startsWith("skip for now") ? "I need more time to explain." : why;
+  const prettyWhy = why.toLowerCase().startsWith("skip for now")
+    ? "I need more time to explain."
+    : why;
   sentencePreviewEl.textContent = `I will ${tool.toLowerCase()} (tool). The key concept is ${concept.toLowerCase()} (concept). ${prettyWhy} (why).`;
 }
 
@@ -409,7 +441,13 @@ function renderScenarioCards() {
 }
 
 function renderYearPreview() {
-  if (!yearPreviewEl || !monthPreviewEl || !yearPreviewGridEl || !scenarios.length) return;
+  if (
+    !yearPreviewEl ||
+    !monthPreviewEl ||
+    !yearPreviewGridEl ||
+    !scenarios.length
+  )
+    return;
   const now = new Date();
   const startDate = new Date(getScenarioYear().startDate);
   const weeks = [];
@@ -419,7 +457,10 @@ function renderYearPreview() {
     weekStart.setDate(startDate.getDate() + week * 7);
     const weekEnd = new Date(weekStart);
     weekEnd.setDate(weekStart.getDate() + 6);
-    const monthKey = weekStart.toLocaleString(undefined, { month: "long", year: "numeric" });
+    const monthKey = weekStart.toLocaleString(undefined, {
+      month: "long",
+      year: "numeric",
+    });
     weeks.push({ week, weekStart, weekEnd, monthKey });
   }
 
@@ -428,7 +469,10 @@ function renderYearPreview() {
   const monthCursor = new Date(startDate);
   monthCursor.setDate(1);
   for (let i = 0; i < 12; i += 1) {
-    const key = monthCursor.toLocaleString(undefined, { month: "long", year: "numeric" });
+    const key = monthCursor.toLocaleString(undefined, {
+      month: "long",
+      year: "numeric",
+    });
     monthKeys.push(key);
     months.set(key, []);
     monthCursor.setMonth(monthCursor.getMonth() + 1);
@@ -462,7 +506,10 @@ function renderYearPreview() {
 
       const scenarioWrap = document.createElement("div");
       const scenarioStart = weekInfo.week * SCENARIOS_PER_WEEK;
-      const weekScenarios = scenarios.slice(scenarioStart, scenarioStart + SCENARIOS_PER_WEEK);
+      const weekScenarios = scenarios.slice(
+        scenarioStart,
+        scenarioStart + SCENARIOS_PER_WEEK,
+      );
 
       weekScenarios.forEach((scenario, index) => {
         const unlockDate = new Date(weekInfo.weekStart);
@@ -502,8 +549,13 @@ function renderYearPreview() {
     monthGrid.appendChild(card);
   });
 
-  const currentMonthKey = now.toLocaleString(undefined, { month: "long", year: "numeric" });
-  const activeMonthKey = monthKeys.includes(currentMonthKey) ? currentMonthKey : monthKeys[0];
+  const currentMonthKey = now.toLocaleString(undefined, {
+    month: "long",
+    year: "numeric",
+  });
+  const activeMonthKey = monthKeys.includes(currentMonthKey)
+    ? currentMonthKey
+    : monthKeys[0];
 
   renderMonthTabs(monthKeys, activeMonthKey, months, now, startDate);
   renderMonthContent(activeMonthKey, months, now, startDate);
@@ -521,13 +573,15 @@ function renderIntroMeta() {
     currentDateEl.textContent = now.toLocaleDateString(undefined, {
       month: "long",
       day: "numeric",
-      year: "numeric"
+      year: "numeric",
     });
   }
 
   if (currentScenarioLabelEl) {
     const todayScenario = getTodayScenario();
-    currentScenarioLabelEl.textContent = todayScenario ? todayScenario.title : "Boundary Test";
+    currentScenarioLabelEl.textContent = todayScenario
+      ? todayScenario.title
+      : "Boundary Test";
   }
 
   renderTodayMission();
@@ -537,7 +591,8 @@ function renderTodayMission() {
   const scenario = getTodayScenario();
   if (!scenario) return;
   if (todayScenarioTitleEl) todayScenarioTitleEl.textContent = scenario.title;
-  if (todayScenarioSummaryEl) todayScenarioSummaryEl.textContent = scenario.summary;
+  if (todayScenarioSummaryEl)
+    todayScenarioSummaryEl.textContent = scenario.summary;
   if (todayScenarioStakesEl) {
     todayScenarioStakesEl.innerHTML = "";
     scenario.stakes.slice(0, 3).forEach((stake) => {
@@ -557,7 +612,10 @@ function getTodayScenario() {
   const now = new Date();
   const yearData = getScenarioYear();
   const startDate = new Date(yearData.startDate);
-  const weekIndex = Math.max(0, Math.min(WEEKS_PER_YEAR - 1, getWeekIndex(startDate, now)));
+  const weekIndex = Math.max(
+    0,
+    Math.min(WEEKS_PER_YEAR - 1, getWeekIndex(startDate, now)),
+  );
   const dayIndex = now.getDay() === 0 ? 6 : now.getDay() - 1;
   const scenarioIndex = weekIndex * SCENARIOS_PER_WEEK + dayIndex;
   return scenarios[scenarioIndex] || null;
@@ -580,7 +638,10 @@ function buildMonthCard(monthKey, weekList, now, startDate) {
     label.textContent = `Week ${weekInfo.week + 1}`;
     const scenarioWrap = document.createElement("div");
     const scenarioStart = weekInfo.week * SCENARIOS_PER_WEEK;
-    const weekScenarios = scenarios.slice(scenarioStart, scenarioStart + SCENARIOS_PER_WEEK);
+    const weekScenarios = scenarios.slice(
+      scenarioStart,
+      scenarioStart + SCENARIOS_PER_WEEK,
+    );
     weekScenarios.forEach((scenario, index) => {
       const unlockDate = new Date(weekInfo.weekStart);
       unlockDate.setDate(weekInfo.weekStart.getDate() + index);
@@ -625,7 +686,9 @@ function renderMonthTabs(monthKeys, activeKey, months, now, startDate) {
     btn.textContent = key;
     if (key === activeKey) btn.classList.add("active");
     btn.addEventListener("click", () => {
-      monthTabsEl.querySelectorAll(".month-tab").forEach((el) => el.classList.remove("active"));
+      monthTabsEl
+        .querySelectorAll(".month-tab")
+        .forEach((el) => el.classList.remove("active"));
       btn.classList.add("active");
       renderMonthContent(key, months, now, startDate);
     });
@@ -645,7 +708,9 @@ function initMonthToggle() {
 function renderMonthContent(monthKey, months, now, startDate) {
   monthPreviewEl.innerHTML = "";
   const weekList = months.get(monthKey) || [];
-  const currentWeek = weekList.find((week) => isCurrentWeek(week.weekStart, now));
+  const currentWeek = weekList.find((week) =>
+    isCurrentWeek(week.weekStart, now),
+  );
   const currentDayIndex = now.getDay() === 0 ? 6 : now.getDay() - 1;
 
   const card = document.createElement("div");
@@ -662,7 +727,10 @@ function renderMonthContent(monthKey, months, now, startDate) {
   }
 
   const scenarioStart = currentWeek.week * SCENARIOS_PER_WEEK;
-  const weekScenarios = scenarios.slice(scenarioStart, scenarioStart + SCENARIOS_PER_WEEK);
+  const weekScenarios = scenarios.slice(
+    scenarioStart,
+    scenarioStart + SCENARIOS_PER_WEEK,
+  );
   const todayScenario = weekScenarios[currentDayIndex];
   const unlockDate = new Date(currentWeek.weekStart);
   unlockDate.setDate(currentWeek.weekStart.getDate() + currentDayIndex);
@@ -673,13 +741,21 @@ function renderMonthContent(monthKey, months, now, startDate) {
   const row = document.createElement("div");
   row.className = "week-row current-week";
   const label = document.createElement("div");
-  label.textContent = now.toLocaleDateString(undefined, { weekday: "long", month: "short", day: "numeric" });
+  label.textContent = now.toLocaleDateString(undefined, {
+    weekday: "long",
+    month: "short",
+    day: "numeric",
+  });
   const chip = document.createElement("span");
   chip.className = "scenario-chip";
   const title = document.createElement("span");
-  title.textContent = todayScenario ? todayScenario.title : "No scenario available";
+  title.textContent = todayScenario
+    ? todayScenario.title
+    : "No scenario available";
   const categories = document.createElement("span");
-  categories.textContent = todayScenario ? `(${todayScenario.stakes.join(", ")})` : "";
+  categories.textContent = todayScenario
+    ? `(${todayScenario.stakes.join(", ")})`
+    : "";
   chip.appendChild(title);
   chip.appendChild(categories);
   if (now < unlockDate) {
@@ -721,7 +797,8 @@ function startScenario(id) {
     return;
   }
 
-  currentScenario = weeklyScenarios.find((scenario) => scenario.id === id) ||
+  currentScenario =
+    weeklyScenarios.find((scenario) => scenario.id === id) ||
     scenarios.find((scenario) => scenario.id === id);
   currentStepId = currentScenario.startStep;
   meters = { ...currentScenario.meters };
@@ -736,14 +813,16 @@ function startScenario(id) {
 
   scenarioTitle.textContent = currentScenario.title;
   scenarioSummary.textContent = currentScenario.summary;
-  scenarioTags.innerHTML = currentScenario.stakes.map((stake) => `<span class="tag">${stake}</span>`).join("");
+  scenarioTags.innerHTML = currentScenario.stakes
+    .map((stake) => `<span class="tag">${stake}</span>`)
+    .join("");
 
   const profile = {
     studentName,
     studentGrade,
     studentAge,
     scenarioId: id,
-    startTime: new Date().toISOString()
+    startTime: new Date().toISOString(),
   };
   sessionLog.push({ type: "profile", data: profile });
 
@@ -760,11 +839,14 @@ function renderStep() {
   conceptAnswerEl.value = "";
   whyAnswerEl.value = "";
   if (optionalNoteEl) optionalNoteEl.value = "";
-  document.querySelectorAll(".option-card").forEach((el) => el.classList.remove("active"));
+  document
+    .querySelectorAll(".option-card")
+    .forEach((el) => el.classList.remove("active"));
   updateSentencePreview();
 
   if (currentStepId === "end") {
-    stepPrompt.textContent = "Scenario complete. Review your decisions and reflections.";
+    stepPrompt.textContent =
+      "Scenario complete. Review your decisions and reflections.";
     choicesEl.innerHTML = "";
     submitDecision.classList.add("hidden");
     nextStepBtn.textContent = "Restart";
@@ -784,7 +866,9 @@ function renderStep() {
     choiceEl.className = "choice";
     choiceEl.textContent = choice.text;
     choiceEl.addEventListener("click", () => {
-      document.querySelectorAll(".choice").forEach((el) => el.classList.remove("active"));
+      document
+        .querySelectorAll(".choice")
+        .forEach((el) => el.classList.remove("active"));
       choiceEl.classList.add("active");
       selectedChoice = choice;
     });
@@ -795,7 +879,9 @@ function renderStep() {
 function updateProgress() {
   if (!currentScenario || !stepCounterEl || !stepProgressBarEl) return;
   const totalSteps = Math.max(1, Object.keys(currentScenario.steps).length - 1);
-  const completed = sessionLog.filter((entry) => entry.type === "decision").length;
+  const completed = sessionLog.filter(
+    (entry) => entry.type === "decision",
+  ).length;
   const current = Math.min(totalSteps, completed + 1);
   stepCounterEl.textContent = `Step ${current} of ${totalSteps}`;
   stepProgressBarEl.style.width = `${(current / totalSteps) * 100}%`;
@@ -821,9 +907,10 @@ function updateProgress() {
 // Copy this into Apps Script and run once if the tab is missing.
 function createRegistrationsTab() {
   const ss = SpreadsheetApp.getActiveSpreadsheet();
-  const reg = ss.getSheetByName("Registrations") || ss.insertSheet("Registrations");
+  const reg =
+    ss.getSheetByName("Registrations") || ss.insertSheet("Registrations");
   if (reg.getLastRow() === 0) {
-    reg.appendRow(["name","email","phone","group","notes","timestamp"]);
+    reg.appendRow(["name", "email", "phone", "group", "notes", "timestamp"]);
   }
 }
 
@@ -873,7 +960,10 @@ function checkBadges(payload) {
   if (decisions >= 1) unlocked.first_win = true;
   const gamify = loadGamify();
   if (gamify.streak >= 3) unlocked.three_day = true;
-  if ((payload.tool || "").toLowerCase().includes("pause") || (payload.tool || "").toLowerCase().includes("breathe")) {
+  if (
+    (payload.tool || "").toLowerCase().includes("pause") ||
+    (payload.tool || "").toLowerCase().includes("breathe")
+  ) {
     unlocked.calm_communicator = true;
   }
   if ((payload.tool || "").toLowerCase().includes("boundary")) {
@@ -883,15 +973,20 @@ function checkBadges(payload) {
 }
 
 function applyDailyChallenge(payload) {
-  const id = dailyChallengeTextEl ? dailyChallengeTextEl.dataset.challengeId : "";
+  const id = dailyChallengeTextEl
+    ? dailyChallengeTextEl.dataset.challengeId
+    : "";
   if (!id) return;
   const tool = (payload.tool || "").toLowerCase();
   const concept = (payload.concept || "").toLowerCase();
   if (id === "boundary" && tool.includes("boundary")) awardXP(10);
-  if (id === "long_view" && (concept.includes("long-term") || concept.includes("long term"))) awardXP(10);
+  if (
+    id === "long_view" &&
+    (concept.includes("long-term") || concept.includes("long term"))
+  )
+    awardXP(10);
   if (id === "ask_help" && tool.includes("ask for help")) awardXP(10);
 }
-
 
 function updateMeters() {
   budgetBar.style.width = `${clamp(meters.budget)}%`;
@@ -910,7 +1005,12 @@ function scoreJustification(text) {
     criterion.keywords.forEach((word) => {
       if (lower.includes(word.toLowerCase())) matches += 1;
     });
-    const score = Math.min(criterion.max, matches > 0 ? Math.ceil((matches / criterion.keywords.length) * criterion.max * 2) : 0);
+    const score = Math.min(
+      criterion.max,
+      matches > 0
+        ? Math.ceil((matches / criterion.keywords.length) * criterion.max * 2)
+        : 0,
+    );
     return { ...criterion, score };
   });
 
@@ -920,16 +1020,25 @@ function scoreJustification(text) {
   }
 
   const groupMatches = {
-    tools: hasKeyword(lower, rubric.requiredGroups.tools) || hasLabel(lower, "tool"),
-    concepts: hasKeyword(lower, rubric.requiredGroups.concepts) || hasLabel(lower, "concept"),
-    why: hasKeyword(lower, rubric.requiredGroups.why) || hasLabel(lower, "why")
+    tools:
+      hasKeyword(lower, rubric.requiredGroups.tools) || hasLabel(lower, "tool"),
+    concepts:
+      hasKeyword(lower, rubric.requiredGroups.concepts) ||
+      hasLabel(lower, "concept"),
+    why: hasKeyword(lower, rubric.requiredGroups.why) || hasLabel(lower, "why"),
   };
   const matchedGroupCount = Object.values(groupMatches).filter(Boolean).length;
   const missingGroups = Object.entries(groupMatches)
     .filter(([, matched]) => !matched)
     .map(([group]) => group);
 
-  return { scores, lengthBonus, groupMatches, matchedGroupCount, missingGroups };
+  return {
+    scores,
+    lengthBonus,
+    groupMatches,
+    matchedGroupCount,
+    missingGroups,
+  };
 }
 
 submitDecision.addEventListener("click", async () => {
@@ -964,7 +1073,7 @@ submitDecision.addEventListener("click", async () => {
     optionalNote,
     choice: selectedChoice,
     step: currentScenario.steps[currentStepId],
-    scenario: currentScenario
+    scenario: currentScenario,
   });
   feedbackPanel.classList.remove("hidden");
   nextStepBtn.textContent = currentStepId === "end" ? "Restart" : "Next";
@@ -980,7 +1089,7 @@ submitDecision.addEventListener("click", async () => {
     optionalNote,
     justification,
     meters: { ...meters },
-    score: scoreResult
+    score: scoreResult,
   });
 
   const payload = {
@@ -993,7 +1102,7 @@ submitDecision.addEventListener("click", async () => {
     concept: conceptAnswer,
     why: whyAnswer,
     note: optionalNote,
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   };
 
   updateLocalStats(payload);
@@ -1017,7 +1126,8 @@ nextStepBtn.addEventListener("click", () => {
 
   currentStepId = selectedChoice ? selectedChoice.nextStep : currentStepId;
   if (currentStepId === "end") {
-    stepPrompt.textContent = "Scenario complete. Review your decisions and reflections.";
+    stepPrompt.textContent =
+      "Scenario complete. Review your decisions and reflections.";
   }
   renderStep();
   renderChatIntro();
@@ -1028,7 +1138,10 @@ function renderChatIntro() {
   stepChatIndex = 0;
   followUpIndex = 0;
   if (currentStepId === "end") {
-    addChatBubble("ai", "Scenario complete. Reflect on your choices before leaving.");
+    addChatBubble(
+      "ai",
+      "Scenario complete. Reflect on your choices before leaving.",
+    );
     return;
   }
   const step = currentScenario.steps[currentStepId];
@@ -1069,7 +1182,9 @@ async function getAiReply(message) {
 
   if (!settings.endpointUrl) {
     const responses = step.aiPrompts;
-    const prompts = responses.length ? responses : ["I hear you. Tell me more."];
+    const prompts = responses.length
+      ? responses
+      : ["I hear you. Tell me more."];
     const prompt = prompts[stepChatIndex % prompts.length];
     stepChatIndex += 1;
     const followUps = [
@@ -1077,7 +1192,7 @@ async function getAiReply(message) {
       "How would that affect the other person?",
       "What’s a safer or calmer way to say that?",
       "What might happen next if you do that?",
-      "What would you do instead?"
+      "What would you do instead?",
     ];
     const followUp = followUps[followUpIndex % followUps.length];
     followUpIndex += 1;
@@ -1089,11 +1204,11 @@ async function getAiReply(message) {
     messages: [
       {
         role: "system",
-        content: `You are role-playing a stakeholder in a classroom decision scenario. Keep responses short, safe, and realistic. Ask follow-up questions like a real person would in a role-play. Do NOT mention unit language. Scenario: ${currentScenario.title}. Step: ${step.prompt}`
+        content: `You are role-playing a stakeholder in a classroom decision scenario. Keep responses short, safe, and realistic. Ask follow-up questions like a real person would in a role-play. Do NOT mention unit language. Scenario: ${currentScenario.title}. Step: ${step.prompt}`,
       },
-      { role: "user", content: message }
+      { role: "user", content: message },
     ],
-    rubric
+    rubric,
   };
 
   try {
@@ -1101,13 +1216,17 @@ async function getAiReply(message) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(settings.apiKey ? { "Authorization": `Bearer ${settings.apiKey}` } : {})
+        ...(settings.apiKey
+          ? { Authorization: `Bearer ${settings.apiKey}` }
+          : {}),
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     });
 
     const data = await response.json();
-    return data.reply || data.response || "Thanks. What do you want to do next?";
+    return (
+      data.reply || data.response || "Thanks. What do you want to do next?"
+    );
   } catch (error) {
     return "Connection issue. Let’s keep role‑playing—what would you say next?";
   }
@@ -1131,16 +1250,16 @@ async function getAiFeedback(context, settings) {
     scenario: {
       title: context.scenario.title,
       summary: context.scenario.summary,
-      stakes: context.scenario.stakes
+      stakes: context.scenario.stakes,
     },
     decision: {
       choice: context.choice.text,
       consequence: context.choice.consequence,
       tool: context.toolAnswer,
       concept: context.conceptAnswer,
-      why: context.whyAnswer
+      why: context.whyAnswer,
     },
-    rubric
+    rubric,
   };
 
   try {
@@ -1148,17 +1267,22 @@ async function getAiFeedback(context, settings) {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        ...(settings.apiKey ? { "Authorization": `Bearer ${settings.apiKey}` } : {})
+        ...(settings.apiKey
+          ? { Authorization: `Bearer ${settings.apiKey}` }
+          : {}),
       },
-      body: JSON.stringify(payload)
+      body: JSON.stringify(payload),
     });
 
     const data = await response.json();
     return {
-      feedback: data.feedback || data.response || "Thanks for your response. Reflect on your next step.",
+      feedback:
+        data.feedback ||
+        data.response ||
+        "Thanks for your response. Reflect on your next step.",
       options: data.options || data.next_steps || [],
       videoQuery: data.video_query || data.videoQuery || "",
-      videoUrl: data.video_url || data.videoUrl || ""
+      videoUrl: data.video_url || data.videoUrl || "",
     };
   } catch (error) {
     return buildFallbackFeedback(context);
@@ -1167,11 +1291,15 @@ async function getAiFeedback(context, settings) {
 
 function applyAiFeedback(ai, context) {
   if (aiFeedbackEl) {
-    aiFeedbackEl.textContent = ai.feedback || "Thanks for your response. Reflect on your next step.";
+    aiFeedbackEl.textContent =
+      ai.feedback || "Thanks for your response. Reflect on your next step.";
   }
   if (aiOptionsEl) {
     aiOptionsEl.innerHTML = "";
-    const options = ai.options && ai.options.length ? ai.options : buildDefaultOptions(context);
+    const options =
+      ai.options && ai.options.length
+        ? ai.options
+        : buildDefaultOptions(context);
     options.slice(0, 3).forEach((option) => {
       const li = document.createElement("li");
       li.textContent = option;
@@ -1179,7 +1307,8 @@ function applyAiFeedback(ai, context) {
     });
   }
   if (encouragementEl) {
-    encouragementEl.textContent = ENCOURAGEMENTS[Math.floor(Math.random() * ENCOURAGEMENTS.length)];
+    encouragementEl.textContent =
+      ENCOURAGEMENTS[Math.floor(Math.random() * ENCOURAGEMENTS.length)];
   }
 }
 
@@ -1187,7 +1316,7 @@ function buildFallbackFeedback(context) {
   return {
     feedback: `You chose: ${context.choice.text} This protects you in the short term, but consider how it affects trust and long-term goals.`,
     options: buildDefaultOptions(context),
-    videoQuery: buildVideoQuery(context)
+    videoQuery: buildVideoQuery(context),
   };
 }
 
@@ -1195,14 +1324,16 @@ function buildDefaultOptions(context) {
   return [
     "Pause and gather one more fact before deciding.",
     "Ask a trusted adult or peer for a second perspective.",
-    "Set a clear boundary and explain your long-term goal."
+    "Set a clear boundary and explain your long-term goal.",
   ];
 }
 
 function updateLocalStats(payload) {
   const key = "decision-lab-local-stats";
   const stored = localStorage.getItem(key);
-  const stats = stored ? JSON.parse(stored) : { submissions: 0, participants: [] };
+  const stats = stored
+    ? JSON.parse(stored)
+    : { submissions: 0, participants: [] };
   stats.submissions += 1;
   const name = (payload.participant_name || "").trim();
   if (name && !stats.participants.includes(name)) {
@@ -1215,7 +1346,9 @@ function updateLocalStats(payload) {
 function updateTeacherStats() {
   if (!teacherStatsEl) return;
   const stored = localStorage.getItem("decision-lab-local-stats");
-  const stats = stored ? JSON.parse(stored) : { submissions: 0, participants: [] };
+  const stats = stored
+    ? JSON.parse(stored)
+    : { submissions: 0, participants: [] };
   const participantCount = stats.participants.length;
   teacherStatsEl.textContent = `Submissions: ${stats.submissions} · Participants: ${participantCount}`;
 }
@@ -1225,25 +1358,28 @@ async function logToSheets(payload) {
   if (!settings.sheetsEndpoint) return;
   const body = {
     ...payload,
-    ...(settings.sheetsSecret ? { secret: settings.sheetsSecret } : {})
+    ...(settings.sheetsSecret ? { secret: settings.sheetsSecret } : {}),
   };
   try {
     const response = await fetch(settings.sheetsEndpoint, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(body)
+      body: JSON.stringify(body),
     });
     const ok = response.ok;
     if (sheetsStatusEl) {
       sheetsStatusEl.classList.remove("hidden");
-      sheetsStatusEl.textContent = ok ? "Saved to Google Sheets." : "Could not save to Google Sheets yet.";
+      sheetsStatusEl.textContent = ok
+        ? "Saved to Google Sheets."
+        : "Could not save to Google Sheets yet.";
       setTimeout(() => sheetsStatusEl.classList.add("hidden"), 3000);
     }
   } catch (error) {
     // Silent fail to avoid blocking students
     if (sheetsStatusEl) {
       sheetsStatusEl.classList.remove("hidden");
-      sheetsStatusEl.textContent = "Connection issue. Your response will still save locally.";
+      sheetsStatusEl.textContent =
+        "Connection issue. Your response will still save locally.";
       setTimeout(() => sheetsStatusEl.classList.add("hidden"), 3000);
     }
   }
@@ -1252,8 +1388,8 @@ async function logToSheets(payload) {
 function fireConfetti() {
   if (!confettiCanvas) return;
   const ctx = confettiCanvas.getContext("2d");
-  const w = confettiCanvas.width = window.innerWidth;
-  const h = confettiCanvas.height = window.innerHeight;
+  const w = (confettiCanvas.width = window.innerWidth);
+  const h = (confettiCanvas.height = window.innerHeight);
   const colors = ["#0b6b6b", "#2ba79c", "#f0b429", "#f08a4b", "#6b5c49"];
   const pieces = Array.from({ length: 120 }).map(() => ({
     x: Math.random() * w,
@@ -1262,7 +1398,7 @@ function fireConfetti() {
     color: colors[Math.floor(Math.random() * colors.length)],
     speed: 2 + Math.random() * 4,
     drift: -1 + Math.random() * 2,
-    rotation: Math.random() * Math.PI
+    rotation: Math.random() * Math.PI,
   }));
 
   let frame = 0;
@@ -1357,7 +1493,7 @@ async function testSheetsConnection() {
     tool: "Test",
     concept: "Test",
     why: "Test",
-    timestamp: new Date().toISOString()
+    timestamp: new Date().toISOString(),
   };
   if (sheetsStatusEl) {
     sheetsStatusEl.classList.remove("hidden");
@@ -1376,7 +1512,10 @@ chatMessage.addEventListener("keydown", (event) => {
 
 aiToggle.addEventListener("change", () => {
   if (aiToggle.checked) {
-    addChatBubble("ai", "Role-play enabled. Ask a question or explain your thinking.");
+    addChatBubble(
+      "ai",
+      "Role-play enabled. Ask a question or explain your thinking.",
+    );
   }
 });
 
@@ -1385,7 +1524,9 @@ exportSession.addEventListener("click", () => {
     alert("No session data to export yet.");
     return;
   }
-  const blob = new Blob([JSON.stringify(sessionLog, null, 2)], { type: "application/json" });
+  const blob = new Blob([JSON.stringify(sessionLog, null, 2)], {
+    type: "application/json",
+  });
   const url = URL.createObjectURL(blob);
   const link = document.createElement("a");
   link.href = url;
@@ -1407,7 +1548,7 @@ saveSettings.addEventListener("click", () => {
     modelName: modelNameInput.value.trim(),
     sheetsEndpoint: sheetsEndpointInput ? sheetsEndpointInput.value.trim() : "",
     sheetsSecret: sheetsSecretInput ? sheetsSecretInput.value.trim() : "",
-    soundEnabled: soundToggleEl ? soundToggleEl.value !== "off" : true
+    soundEnabled: soundToggleEl ? soundToggleEl.value !== "off" : true,
   };
   saveSettingsToStorage(settings);
 });
@@ -1476,7 +1617,7 @@ exportCsv.addEventListener("click", () => {
     "toolAnswer",
     "conceptAnswer",
     "whyAnswer",
-    "timestamp"
+    "timestamp",
   ];
   rows.push(headers.join(","));
   const profile = sessionLog.find((item) => item.type === "profile");
@@ -1494,7 +1635,7 @@ exportCsv.addEventListener("click", () => {
         sanitizeCsv(item.toolAnswer || ""),
         sanitizeCsv(item.conceptAnswer || ""),
         sanitizeCsv(item.whyAnswer || ""),
-        new Date().toISOString()
+        new Date().toISOString(),
       ];
       rows.push(row.map(csvEscape).join(","));
     });
@@ -1530,7 +1671,9 @@ if (undoSelectionBtn) {
     conceptAnswerEl.value = "";
     whyAnswerEl.value = "";
     if (optionalNoteEl) optionalNoteEl.value = "";
-    document.querySelectorAll(".option-card").forEach((el) => el.classList.remove("active"));
+    document
+      .querySelectorAll(".option-card")
+      .forEach((el) => el.classList.remove("active"));
     updateSentencePreview();
   });
 }
@@ -1540,7 +1683,7 @@ function sanitizeCsv(value) {
 }
 
 function csvEscape(value) {
-  if (value.includes(",") || value.includes("\"")) {
+  if (value.includes(",") || value.includes('"')) {
     return `\"${value.replace(/\"/g, '\"\"')}\"`;
   }
   return value;
@@ -1551,9 +1694,11 @@ function applySettingsToUI() {
   endpointUrlInput.value = settings.endpointUrl || "";
   apiKeyInput.value = settings.apiKey || "";
   modelNameInput.value = settings.modelName || "";
-  if (sheetsEndpointInput) sheetsEndpointInput.value = settings.sheetsEndpoint || "";
+  if (sheetsEndpointInput)
+    sheetsEndpointInput.value = settings.sheetsEndpoint || "";
   if (sheetsSecretInput) sheetsSecretInput.value = settings.sheetsSecret || "";
-  if (soundToggleEl) soundToggleEl.value = settings.soundEnabled === false ? "off" : "on";
+  if (soundToggleEl)
+    soundToggleEl.value = settings.soundEnabled === false ? "off" : "on";
 }
 
 async function submitRegistration(event) {
@@ -1571,7 +1716,8 @@ async function submitRegistration(event) {
 
   const settings = loadSettings();
   if (!settings.sheetsEndpoint) {
-    registerStatus.textContent = "Registration link not set. Ask the teacher to enable it.";
+    registerStatus.textContent =
+      "Registration link not set. Ask the teacher to enable it.";
     return;
   }
 
@@ -1583,13 +1729,16 @@ async function submitRegistration(event) {
     group,
     notes: regNotes.value.trim(),
     timestamp: new Date().toISOString(),
-    ...(settings.sheetsSecret ? { secret: settings.sheetsSecret } : {})
+    ...(settings.sheetsSecret ? { secret: settings.sheetsSecret } : {}),
   };
 
   try {
     const body = JSON.stringify(payload);
     const beaconSent = navigator.sendBeacon
-      ? navigator.sendBeacon(settings.sheetsEndpoint, new Blob([body], { type: "text/plain" }))
+      ? navigator.sendBeacon(
+          settings.sheetsEndpoint,
+          new Blob([body], { type: "text/plain" }),
+        )
       : false;
     if (beaconSent) {
       registerStatus.textContent = "Thanks! You’re on the interest list.";
@@ -1599,7 +1748,7 @@ async function submitRegistration(event) {
     await fetch(settings.sheetsEndpoint, {
       method: "POST",
       mode: "no-cors",
-      body
+      body,
     });
     registerStatus.textContent = "Thanks! You’re on the interest list.";
     registerForm.reset();
@@ -1631,7 +1780,7 @@ function getScenarioYear() {
   const data = {
     id: `year-${seed}`,
     startDate: effectiveStart.toISOString(),
-    scenarios
+    scenarios,
   };
   localStorage.setItem(SCENARIO_YEAR_KEY, JSON.stringify(data));
   return data;
@@ -1640,7 +1789,10 @@ function getScenarioYear() {
 function getWeeklyScenarios(yearData) {
   const now = new Date();
   const startDate = new Date(yearData.startDate);
-  const weekIndex = Math.max(0, Math.min(WEEKS_PER_YEAR - 1, getWeekIndex(startDate, now)));
+  const weekIndex = Math.max(
+    0,
+    Math.min(WEEKS_PER_YEAR - 1, getWeekIndex(startDate, now)),
+  );
   const start = weekIndex * SCENARIOS_PER_WEEK;
   return yearData.scenarios.slice(start, start + SCENARIOS_PER_WEEK);
 }
@@ -1698,7 +1850,7 @@ function buildContexts(rng, count) {
     "volunteer site",
     "tutoring session",
     "workplace shift",
-    "team meeting"
+    "team meeting",
   ];
   const stakeholders = [
     { primary: "Peer", secondary: "Teacher" },
@@ -1708,7 +1860,7 @@ function buildContexts(rng, count) {
     { primary: "Team lead", secondary: "Advisor" },
     { primary: "Group partner", secondary: "Teacher" },
     { primary: "Supervisor", secondary: "Parent" },
-    { primary: "Roommate", secondary: "Mentor" }
+    { primary: "Roommate", secondary: "Mentor" },
   ];
   const stakes = [
     ["Reputation", "Trust", "Long-term goals"],
@@ -1718,7 +1870,7 @@ function buildContexts(rng, count) {
     ["Health", "Team impact", "Future opportunities"],
     ["Digital behavior", "Respect", "Credibility"],
     ["Employment", "Reliability", "School performance"],
-    ["Conflict resolution", "Relationships", "Values"]
+    ["Conflict resolution", "Relationships", "Values"],
   ];
 
   const contexts = [];
@@ -1733,7 +1885,7 @@ function buildContexts(rng, count) {
     contexts.push({
       setting,
       stakeholder,
-      stakes: stakeSet
+      stakes: stakeSet,
     });
   }
   return contexts;
@@ -1746,71 +1898,99 @@ function buildTemplates() {
       title: `Split Decision at the ${capitalize(context.setting)}`,
       summary: `You face a fast decision in the ${context.setting} that affects ${context.stakes[0].toLowerCase()}.`,
       stakes: context.stakes,
-      roles: ["Student", context.stakeholder.primary, context.stakeholder.secondary],
+      roles: [
+        "Student",
+        context.stakeholder.primary,
+        context.stakeholder.secondary,
+      ],
       startStep: "step1",
       meters: { budget: 50, time: 50, trust: 50 },
-      steps: buildThreeStepFlow(context, "pressure")
+      steps: buildThreeStepFlow(context, "pressure"),
     }),
     (context, weekIndex, tIndex) => ({
       id: `week${weekIndex + 1}-scenario${tIndex + 2}`,
       title: `Conflict and Repair`,
       summary: `A conflict in the ${context.setting} requires a decision about accountability and trust.`,
       stakes: context.stakes,
-      roles: ["Student", context.stakeholder.primary, context.stakeholder.secondary],
+      roles: [
+        "Student",
+        context.stakeholder.primary,
+        context.stakeholder.secondary,
+      ],
       startStep: "step1",
       meters: { budget: 45, time: 55, trust: 45 },
-      steps: buildThreeStepFlow(context, "repair")
+      steps: buildThreeStepFlow(context, "repair"),
     }),
     (context, weekIndex, tIndex) => ({
       id: `week${weekIndex + 1}-scenario${tIndex + 3}`,
       title: `Pressure to Respond`,
       summary: `Someone wants an immediate response. You must decide between short-term relief and long-term outcomes.`,
       stakes: context.stakes,
-      roles: ["Student", context.stakeholder.primary, context.stakeholder.secondary],
+      roles: [
+        "Student",
+        context.stakeholder.primary,
+        context.stakeholder.secondary,
+      ],
       startStep: "step1",
       meters: { budget: 55, time: 40, trust: 50 },
-      steps: buildThreeStepFlow(context, "response")
+      steps: buildThreeStepFlow(context, "response"),
     }),
     (context, weekIndex, tIndex) => ({
       id: `week${weekIndex + 1}-scenario${tIndex + 4}`,
       title: `Boundary Test`,
       summary: `Your boundary is challenged in the ${context.setting}.`,
       stakes: context.stakes,
-      roles: ["Student", context.stakeholder.primary, context.stakeholder.secondary],
+      roles: [
+        "Student",
+        context.stakeholder.primary,
+        context.stakeholder.secondary,
+      ],
       startStep: "step1",
       meters: { budget: 50, time: 45, trust: 55 },
-      steps: buildThreeStepFlow(context, "boundary")
+      steps: buildThreeStepFlow(context, "boundary"),
     }),
     (context, weekIndex, tIndex) => ({
       id: `week${weekIndex + 1}-scenario${tIndex + 5}`,
       title: `Risk vs Reward Choice`,
       summary: `You must weigh risk vs reward with limited time and information.`,
       stakes: context.stakes,
-      roles: ["Student", context.stakeholder.primary, context.stakeholder.secondary],
+      roles: [
+        "Student",
+        context.stakeholder.primary,
+        context.stakeholder.secondary,
+      ],
       startStep: "step1",
       meters: { budget: 40, time: 50, trust: 60 },
-      steps: buildThreeStepFlow(context, "risk")
+      steps: buildThreeStepFlow(context, "risk"),
     }),
     (context, weekIndex, tIndex) => ({
       id: `week${weekIndex + 1}-scenario${tIndex + 6}`,
       title: `Support System Decision`,
       summary: `A decision requires asking for help or handling it alone.`,
       stakes: context.stakes,
-      roles: ["Student", context.stakeholder.primary, context.stakeholder.secondary],
+      roles: [
+        "Student",
+        context.stakeholder.primary,
+        context.stakeholder.secondary,
+      ],
       startStep: "step1",
       meters: { budget: 55, time: 45, trust: 50 },
-      steps: buildThreeStepFlow(context, "support")
+      steps: buildThreeStepFlow(context, "support"),
     }),
     (context, weekIndex, tIndex) => ({
       id: `week${weekIndex + 1}-scenario${tIndex + 7}`,
       title: `Long View`,
       summary: `Your choice now will impact long-term reputation and opportunities.`,
       stakes: context.stakes,
-      roles: ["Student", context.stakeholder.primary, context.stakeholder.secondary],
+      roles: [
+        "Student",
+        context.stakeholder.primary,
+        context.stakeholder.secondary,
+      ],
       startStep: "step1",
       meters: { budget: 50, time: 50, trust: 50 },
-      steps: buildThreeStepFlow(context, "longview")
-    })
+      steps: buildThreeStepFlow(context, "longview"),
+    }),
   ];
 }
 
@@ -1824,7 +2004,7 @@ function buildThreeStepFlow(context, type) {
     boundary: `${stakeholder} asks you to do something that crosses a boundary.`,
     risk: `You must choose a risky option or a safer option in the ${context.setting}.`,
     support: `You can ask for help in the ${context.setting}, but it may feel uncomfortable.`,
-    longview: `You have a chance for short-term gain in the ${context.setting}, but it could hurt long-term trust.`
+    longview: `You have a chance for short-term gain in the ${context.setting}, but it could hurt long-term trust.`,
   }[type];
 
   return {
@@ -1833,7 +2013,7 @@ function buildThreeStepFlow(context, type) {
       stakeholder,
       aiPrompts: [
         "I need your answer now. What are you going to do?",
-        "You can decide fast or slow down. What’s your plan?"
+        "You can decide fast or slow down. What’s your plan?",
       ],
       choices: [
         {
@@ -1841,30 +2021,30 @@ function buildThreeStepFlow(context, type) {
           text: "Respond fast to reduce pressure.",
           consequence: "Short-term relief, but risk increases.",
           meterImpact: { budget: 0, time: 6, trust: -6 },
-          nextStep: "step2"
+          nextStep: "step2",
         },
         {
           id: "pause",
           text: "Pause, ask for information, and plan.",
           consequence: "You gain clarity and control, but lose time.",
           meterImpact: { budget: 0, time: -6, trust: 6 },
-          nextStep: "step2"
+          nextStep: "step2",
         },
         {
           id: "boundary",
           text: "Set a boundary and explain your values.",
           consequence: "Trust may rise, but pressure increases.",
           meterImpact: { budget: 0, time: -4, trust: 4 },
-          nextStep: "step2"
-        }
-      ]
+          nextStep: "step2",
+        },
+      ],
     },
     step2: {
       prompt: `${secondary} asks how your decision affects others and the long-term outcome.`,
       stakeholder: secondary,
       aiPrompts: [
         "Think about the long view. What are the consequences?",
-        "What trade-off are you making here?"
+        "What trade-off are you making here?",
       ],
       choices: [
         {
@@ -1872,23 +2052,23 @@ function buildThreeStepFlow(context, type) {
           text: "Explain your trade-offs and long-term plan.",
           consequence: "You build credibility and trust.",
           meterImpact: { budget: 0, time: -2, trust: 8 },
-          nextStep: "step3"
+          nextStep: "step3",
         },
         {
           id: "minimize",
           text: "Minimize the impact to avoid conflict.",
           consequence: "Short-term comfort, but trust drops.",
           meterImpact: { budget: 0, time: 2, trust: -6 },
-          nextStep: "step3"
-        }
-      ]
+          nextStep: "step3",
+        },
+      ],
     },
     step3: {
       prompt: `${stakeholder} follows up and asks what you will do if this happens again.`,
       stakeholder,
       aiPrompts: [
         "What is your Plan A and Plan B?",
-        "How will you follow through?"
+        "How will you follow through?",
       ],
       choices: [
         {
@@ -1896,17 +2076,17 @@ function buildThreeStepFlow(context, type) {
           text: "Describe a plan and how you will follow through.",
           consequence: "You show accountability and growth.",
           meterImpact: { budget: 0, time: 2, trust: 8 },
-          nextStep: "end"
+          nextStep: "end",
         },
         {
           id: "avoid",
           text: "Give a vague answer to move on.",
           consequence: "You miss a chance to show responsibility.",
           meterImpact: { budget: 0, time: 2, trust: -4 },
-          nextStep: "end"
-        }
-      ]
-    }
+          nextStep: "end",
+        },
+      ],
+    },
   };
 }
 
@@ -1943,7 +2123,9 @@ if (qrToggle && qrSection) {
     qrSection.classList.toggle("collapsed");
     const isCollapsed = qrSection.classList.contains("collapsed");
     qrToggle.setAttribute("aria-expanded", isCollapsed ? "false" : "true");
-    qrToggle.textContent = isCollapsed ? "Show QR Resources" : "Hide QR Resources";
+    qrToggle.textContent = isCollapsed
+      ? "Show QR Resources"
+      : "Hide QR Resources";
   });
 }
 
@@ -1983,7 +2165,10 @@ function hideInfoPopover() {
 infoBadges.forEach((badge) => {
   badge.addEventListener("click", (event) => {
     event.stopPropagation();
-    if (!infoPopover.classList.contains("hidden") && infoPopover.textContent === badge.getAttribute("data-tooltip")) {
+    if (
+      !infoPopover.classList.contains("hidden") &&
+      infoPopover.textContent === badge.getAttribute("data-tooltip")
+    ) {
       hideInfoPopover();
       return;
     }

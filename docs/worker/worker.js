@@ -4,7 +4,7 @@ export default {
       "Access-Control-Allow-Origin": env.ALLOWED_ORIGIN || "*",
       "Access-Control-Allow-Methods": "POST, OPTIONS",
       "Access-Control-Allow-Headers": "Content-Type, Authorization",
-      "Access-Control-Max-Age": "86400"
+      "Access-Control-Max-Age": "86400",
     };
 
     if (request.method === "OPTIONS") {
@@ -12,7 +12,10 @@ export default {
     }
 
     if (request.method !== "POST") {
-      return new Response("Method Not Allowed", { status: 405, headers: corsHeaders });
+      return new Response("Method Not Allowed", {
+        status: 405,
+        headers: corsHeaders,
+      });
     }
 
     let payload;
@@ -21,7 +24,7 @@ export default {
     } catch (error) {
       return new Response(JSON.stringify({ error: "Invalid JSON" }), {
         status: 400,
-        headers: { "Content-Type": "application/json", ...corsHeaders }
+        headers: { "Content-Type": "application/json", ...corsHeaders },
       });
     }
 
@@ -32,28 +35,34 @@ Options should be actionable next-step choices.`;
 
     const userPrompt = JSON.stringify(payload);
 
-    const openAiResponse = await fetch("https://api.openai.com/v1/chat/completions", {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        "Authorization": `Bearer ${env.OPENAI_API_KEY}`
+    const openAiResponse = await fetch(
+      "https://api.openai.com/v1/chat/completions",
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${env.OPENAI_API_KEY}`,
+        },
+        body: JSON.stringify({
+          model: env.MODEL || "gpt-4o-mini",
+          messages: [
+            { role: "system", content: systemPrompt },
+            { role: "user", content: userPrompt },
+          ],
+          response_format: { type: "json_object" },
+        }),
       },
-      body: JSON.stringify({
-        model: env.MODEL || "gpt-4o-mini",
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt }
-        ],
-        response_format: { type: "json_object" }
-      })
-    });
+    );
 
     if (!openAiResponse.ok) {
       const errText = await openAiResponse.text();
-      return new Response(JSON.stringify({ error: "OpenAI request failed", details: errText }), {
-        status: 502,
-        headers: { "Content-Type": "application/json", ...corsHeaders }
-      });
+      return new Response(
+        JSON.stringify({ error: "OpenAI request failed", details: errText }),
+        {
+          status: 502,
+          headers: { "Content-Type": "application/json", ...corsHeaders },
+        },
+      );
     }
 
     const data = await openAiResponse.json();
@@ -61,7 +70,7 @@ Options should be actionable next-step choices.`;
 
     return new Response(content, {
       status: 200,
-      headers: { "Content-Type": "application/json", ...corsHeaders }
+      headers: { "Content-Type": "application/json", ...corsHeaders },
     });
-  }
+  },
 };
