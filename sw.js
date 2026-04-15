@@ -10,6 +10,8 @@ const APP_SHELL = [
   "/offline.html",
   "/site-search.css",
   "/site-search.js",
+  "/site-search-index.json",
+  "/access-gate.js",
   "/favicon.ico",
   "/apple-touch-icon-rfrl.png",
   "/assets/mmmf-email-avatar.png",
@@ -17,6 +19,8 @@ const APP_SHELL = [
   "/assets/icons/icon-192-rfrl.png",
   "/assets/icons/icon-512-rfrl.png",
   "/game.html",
+  "/game-data.js",
+  "/game.js",
   "/program.html",
   "/resume.html",
 ];
