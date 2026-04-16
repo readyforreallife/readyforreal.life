@@ -1,10 +1,6 @@
-<svg xmlns="http://www.w3.org/2000/svg" width="512" height="512" viewBox="0 0 512 512" role="img" aria-labelledby="title desc">
-  <title id="title">Modern Manners &amp; Mental Fortitude Email Badge</title>
-  <desc id="desc">A simplified MMMF logo for email display with a navy background, gold border, and large MMMF lettering.</desc>
-  <rect x="4" y="4" width="504" height="504" rx="32" fill="#1f3456" stroke="#d5ab53" stroke-width="8"/>
-  <path d="M84 104 L256 62 L428 104" fill="none" stroke="#d5ab53" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <path d="M84 408 L256 450 L428 408" fill="none" stroke="#d5ab53" stroke-width="8" stroke-linecap="round" stroke-linejoin="round"/>
-  <text x="256" y="238" text-anchor="middle" font-family="Avenir Next, Avenir, Helvetica, Arial, sans-serif" font-size="112" font-weight="800" fill="#ffffff" letter-spacing="3">MMMF</text>
-  <text x="256" y="302" text-anchor="middle" font-family="Avenir Next, Avenir, Helvetica, Arial, sans-serif" font-size="30" font-weight="700" fill="#e7c26c" letter-spacing="1.5">Modern Manners</text>
-  <text x="256" y="342" text-anchor="middle" font-family="Avenir Next, Avenir, Helvetica, Arial, sans-serif" font-size="26" font-weight="600" fill="#f6e2ab">&amp; Mental Fortitude</text>
+<svg xmlns="http://www.w3.org/2000/svg" width="1024" height="1024" viewBox="0 0 1024 1024" role="img" aria-labelledby="title desc">
+  <title id="title">MMMF domain icon</title>
+  <desc id="desc">A navy square icon with a single gold M for Ready for Real Life Instruction and Education.</desc>
+  <rect width="1024" height="1024" rx="170" fill="#23395d"/>
+  <text x="512" y="640" text-anchor="middle" font-family="Georgia, Times New Roman, serif" font-size="560" font-weight="700" fill="#d4aa52">M</text>
 </svg>
