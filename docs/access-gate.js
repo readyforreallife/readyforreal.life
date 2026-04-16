@@ -30,6 +30,7 @@
       }
       .shared-access-copy { font-size: 12.5px; color: #5b4518; max-width: 900px; }
       .shared-access-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+      .shared-access-nav { margin-top: 12px; }
       .shared-access-btn {
         border: 1px solid #253044;
         background: #253044;
@@ -162,6 +163,10 @@
         <div class="shared-access-actions">
           <a class="shared-access-btn" href="${ACCESS_CONTROL.checkoutUrl}">Purchase Full Access</a>
           <button class="shared-access-btn secondary" id="sharedUnlockOverlay" type="button">Enter Access Code</button>
+        </div>
+        <div class="shared-access-actions shared-access-nav">
+          <button class="shared-access-btn secondary" id="sharedBackBtn" type="button">Back</button>
+          <a class="shared-access-btn secondary" id="sharedHomeBtn" href="index.html">Homepage</a>
         </div>
       </div>
     `;
@@ -314,6 +319,14 @@
         setLockedState(!(isUnlocked() || globalAccessState.publicUnlocked));
         closeModal();
       });
+
+    document.getElementById("sharedBackBtn")?.addEventListener("click", () => {
+      if (window.history.length > 1) {
+        window.history.back();
+      } else {
+        window.location.href = "index.html";
+      }
+    });
 
     document
       .getElementById("sharedAccessCodeInput")

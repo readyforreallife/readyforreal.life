@@ -31,6 +31,7 @@
         background: var(--paper);
         color: var(--ink);
         font-family: "DM Sans", sans-serif;
+        min-height: 100vh;
       }
       .header {
         background: linear-gradient(
@@ -40,7 +41,19 @@
         );
         color: #fff;
         border-bottom: 3px solid var(--gold);
-        padding: 24px;
+        padding: calc(env(safe-area-inset-top, 0px) + 20px) 24px 24px;
+      }
+      .header-shell {
+        max-width: 1280px;
+        margin: 0 auto;
+      }
+      .header-bar {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        flex-wrap: wrap;
+        margin-bottom: 14px;
       }
       .header h1 {
         margin: 0;
@@ -62,6 +75,36 @@
         object-fit: contain;
         border-radius: 6px;
         filter: drop-shadow(0 3px 8px rgba(0, 0, 0, 0.28));
+      }
+      .header-actions {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .nav-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 0 14px;
+        border-radius: 999px;
+        text-decoration: none;
+        font-size: 11px;
+        font-family: "DM Mono", monospace;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        border: 1px solid rgba(255, 255, 255, 0.18);
+      }
+      .nav-btn.primary {
+        background: var(--gold);
+        color: #1f2a3a;
+        border-color: #efcd88;
+        font-weight: 700;
+      }
+      .nav-btn.secondary {
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.92);
       }
       .wrap {
         max-width: 1280px;
@@ -187,22 +230,45 @@
         display: block;
       }
       @media (max-width: 980px) {
+        .header {
+          padding-left: 18px;
+          padding-right: 18px;
+          padding-bottom: 18px;
+        }
         .wrap {
           grid-template-columns: 1fr;
+          padding: 18px;
         }
         textarea {
-          min-height: 48vh;
+          min-height: 42vh;
+        }
+        .header-bar {
+          align-items: flex-start;
+        }
+        .header-actions {
+          width: 100%;
+        }
+        .nav-btn {
+          flex: 1 1 140px;
         }
       }
     </style>
   </head>
   <body>
     <header class="header">
-      <div class="header-top">
-        <img src="../assets/mmmf-site-mark.svg" alt="Site logo" />
-        <h1>Website Admin Editor</h1>
+      <div class="header-shell">
+        <div class="header-bar">
+          <div class="header-top">
+            <img src="../assets/mmmf-site-mark.svg" alt="Site logo" />
+            <h1>Website Admin Editor</h1>
+          </div>
+          <div class="header-actions">
+            <a class="nav-btn secondary" href="../index.html">Back</a>
+            <a class="nav-btn primary" href="/index.html">Homepage</a>
+          </div>
+        </div>
+        <p>Edit common content with forms or use raw HTML when needed.</p>
       </div>
-      <p>Edit common content with forms or use raw HTML when needed.</p>
     </header>
 
     <main class="wrap">

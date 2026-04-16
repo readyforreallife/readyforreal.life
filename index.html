@@ -38,11 +38,11 @@
     <meta property="og:url" content="https://readyforreal.life/" />
     <meta
       property="og:image"
-      content="https://readyforreal.life/assets/mmmf-email-avatar.png"
+      content="https://readyforreal.life/assets/icons/icon-512-rfrl.png"
     />
     <meta
       property="og:image:secure_url"
-      content="https://readyforreal.life/assets/mmmf-email-avatar.png"
+      content="https://readyforreal.life/assets/icons/icon-512-rfrl.png"
     />
     <meta property="og:image:type" content="image/png" />
     <meta property="og:image:width" content="512" />
@@ -58,7 +58,7 @@
     />
     <meta
       name="twitter:image"
-      content="https://readyforreal.life/assets/mmmf-email-avatar.png"
+      content="https://readyforreal.life/assets/icons/icon-512-rfrl.png"
     />
     <link rel="icon" href="favicon.ico" />
     <link
@@ -123,6 +123,7 @@
       .page-shell {
         width: 100%;
         height: 100dvh;
+        padding-top: env(safe-area-inset-top, 0px);
         overflow-x: hidden;
         overflow-y: auto;
         -webkit-overflow-scrolling: touch;
@@ -139,6 +140,64 @@
         justify-content: center;
         border-bottom: 3px solid var(--gold);
         overflow-x: clip;
+      }
+      .nav-toggle {
+        display: none;
+        position: sticky;
+        top: 0;
+        z-index: 101;
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        border: 0;
+        border-bottom: 3px solid var(--gold);
+        background: var(--slate);
+        color: #fff;
+        padding: 14px 20px;
+        font: inherit;
+        cursor: pointer;
+      }
+      .nav-toggle-copy {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 2px;
+      }
+      .nav-toggle-label {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: var(--gold);
+      }
+      .nav-toggle-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .nav-toggle-icon {
+        display: inline-flex;
+        flex-direction: column;
+        gap: 4px;
+      }
+      .nav-toggle-icon span {
+        width: 20px;
+        height: 2px;
+        border-radius: 999px;
+        background: #fff;
+        transition:
+          transform 0.2s ease,
+          opacity 0.2s ease;
+      }
+      .page-shell.nav-open .nav-toggle-icon span:nth-child(1) {
+        transform: translateY(6px) rotate(45deg);
+      }
+      .page-shell.nav-open .nav-toggle-icon span:nth-child(2) {
+        opacity: 0;
+      }
+      .page-shell.nav-open .nav-toggle-icon span:nth-child(3) {
+        transform: translateY(-6px) rotate(-45deg);
       }
       nav a {
         color: rgba(255, 255, 255, 0.6);
@@ -280,10 +339,26 @@
         background: var(--gold-lt);
         border-bottom: 3px solid var(--gold-dim);
         padding: 28px 60px;
+      }
+      .mini-title {
+        color: var(--slate);
+        font-weight: 700;
+      }
+      .inst-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr)) auto;
+        gap: 18px;
+        align-items: stretch;
+      }
+      .inst-card {
         display: flex;
         align-items: center;
-        gap: 36px;
-        flex-wrap: wrap;
+        gap: 16px;
+        min-width: 0;
+        background: rgba(255, 255, 255, 0.4);
+        border: 1px solid rgba(37, 48, 68, 0.08);
+        border-radius: 16px;
+        padding: 16px 18px;
       }
       .inst-avatar {
         width: 72px;
@@ -307,14 +382,27 @@
         font-weight: 700;
         color: var(--slate);
       }
+      .inst-role {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 4px;
+      }
       .inst-titles {
         font-size: 13px;
         color: var(--muted);
         margin-top: 3px;
         line-height: 1.5;
       }
+      .inst-actions {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        gap: 10px;
+      }
       .bio-link {
-        margin-left: auto;
         background: var(--slate);
         color: #fff;
         border-radius: 10px;
@@ -343,6 +431,16 @@
         background: #1f293b;
         transform: translateY(-1px);
         box-shadow: 0 6px 18px rgba(0, 0, 0, 0.16);
+      }
+      .teacher-shortcuts {
+        display: flex;
+        align-items: center;
+        justify-content: flex-end;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .teacher-shortcuts .util-btn {
+        text-decoration: none;
       }
 
       .section {
@@ -1630,9 +1728,18 @@
       }
 
       @media (max-width: 900px) {
+        .page-shell {
+          height: 100%;
+        }
+        .nav-toggle {
+          display: flex;
+        }
         nav {
-          display: grid;
+          display: none;
           grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+        .page-shell.nav-open nav {
+          display: grid;
         }
         nav a {
           min-width: 0;
@@ -1645,6 +1752,19 @@
         }
         .inst-strip {
           padding: 24px;
+        }
+        .inst-grid {
+          grid-template-columns: 1fr;
+        }
+        .inst-card {
+          align-items: flex-start;
+        }
+        .inst-actions {
+          flex-direction: row;
+          flex-wrap: wrap;
+        }
+        .teacher-shortcuts {
+          justify-content: flex-start;
         }
         .copyright-warning,
         .access-gate {
@@ -1752,8 +1872,25 @@
     </style>
   </head>
   <body>
-    <div class="page-shell">
-      <nav>
+    <div class="page-shell" id="pageShell">
+      <button
+        class="nav-toggle"
+        id="navToggle"
+        type="button"
+        aria-expanded="false"
+        aria-controls="sectionNav"
+      >
+        <span class="nav-toggle-copy">
+          <span class="nav-toggle-label">Sections</span>
+          <span class="nav-toggle-title">Overview, Modules, Frameworks</span>
+        </span>
+        <span class="nav-toggle-icon" aria-hidden="true">
+          <span></span>
+          <span></span>
+          <span></span>
+        </span>
+      </button>
+      <nav id="sectionNav">
         <a href="#overview">Overview</a>
         <a href="#pillars">Pillars</a>
         <a href="#modules">Modules</a>
@@ -1769,8 +1906,30 @@
         <button class="util-btn primary" id="registerBtn" type="button">
           Register Now
         </button>
+        <a
+          class="util-btn"
+          href="https://readyforreallife.github.io/mmmf-codex/web/index.html"
+          >MMMF Hub</a
+        >
+        <a class="util-btn" href="game.html">Challenge Game</a>
         <button class="util-btn locked" id="teacherToggle" type="button">
           Teacher Mode: Locked
+        </button>
+        <button
+          class="util-btn locked"
+          id="ownerPreviewToggle"
+          type="button"
+          style="display: none"
+        >
+          Owner Preview: Off
+        </button>
+        <button
+          class="util-btn locked"
+          id="publicAccessToggle"
+          type="button"
+          style="display: none"
+        >
+          Public Access: Locked
         </button>
         <button
           class="util-btn"
@@ -1780,6 +1939,70 @@
         >
           Settings
         </button>
+        <button
+          class="util-btn"
+          id="adminBtn"
+          type="button"
+          style="display: none"
+        >
+          Admin
+        </button>
+      </div>
+      <div class="inst-strip" id="teacherResourcesStrip" style="display: none">
+        <div
+          style="
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 16px;
+            flex-wrap: wrap;
+          "
+        >
+          <div>
+            <div class="mini-title">Teacher Resources</div>
+            <div style="color: var(--slate2); margin-top: 6px">
+              Private management shortcuts for registrations, certificates,
+              billing, and site operations.
+            </div>
+          </div>
+          <div class="teacher-shortcuts">
+            <a
+              class="util-btn"
+              id="formalDocsBtn"
+              href="https://readyforreallife.github.io/mmmf-codex/docs/index.html"
+              >Formal Documents Library</a
+            >
+            <a
+              class="util-btn"
+              id="registrationFolderBtn"
+              href="https://readyforreallife.github.io/mmmf-codex/web/registration-folder.html"
+              >Registration Folder</a
+            >
+            <a
+              class="util-btn"
+              id="certificateFolderBtn"
+              href="https://readyforreallife.github.io/mmmf-codex/web/certificate-folder.html"
+              >Certificate Folder</a
+            >
+            <a class="util-btn" id="stripeCenterBtn" href="billing.html"
+              >Billing Center</a
+            >
+            <button
+              class="util-btn"
+              id="stripeDashboardShortcutBtn"
+              type="button"
+            >
+              Stripe Dashboard
+            </button>
+            <button
+              class="util-btn"
+              id="stripeBillingShortcutBtn"
+              type="button"
+            >
+              Billing Portal
+            </button>
+          </div>
+        </div>
       </div>
       <div class="copyright-warning">
         Copyright © Michael R. Terry. This material is protected intellectual
@@ -1851,24 +2074,49 @@
 
       <!-- INSTRUCTOR STRIP -->
       <div class="inst-strip">
-        <div class="inst-avatar">
-          <img
-            src="/michael-terry-headshot.jpg"
-            alt="Portrait of Michael R. Terry"
-          />
-        </div>
-        <div>
-          <div class="inst-name">Michael R. Terry</div>
-          <div class="inst-titles">
-            Founders, Ready for Real Life Instruction and Education | MMMF LLC ·
-            Public Service Leadership · Curriculum Design · Community
-            Presentation
+        <div class="inst-grid">
+          <div class="inst-card">
+            <div class="inst-avatar">
+              <img
+                src="/michael-terry-headshot.jpg"
+                alt="Portrait of Michael R. Terry"
+              />
+            </div>
+            <div>
+              <div class="inst-role">Founder</div>
+              <div class="inst-name">Michael R. Terry</div>
+              <div class="inst-titles">
+                Public Service Leadership · Curriculum Design · Community
+                Presentation
+              </div>
+            </div>
+          </div>
+          <div class="inst-card">
+            <div class="inst-avatar">
+              <img
+                src="/mekenzi-terry-headshot.png"
+                alt="Portrait of Mekenzi G. Terry"
+              />
+            </div>
+            <div>
+              <div class="inst-role">Founder</div>
+              <div class="inst-name">Mekenzi G. Terry</div>
+              <div class="inst-titles">
+                Coach · Director · Mother of Five · Community Builder
+              </div>
+            </div>
+          </div>
+          <div class="inst-actions">
+            <a class="bio-link" href="bio.html">
+              <span>Founders</span>
+              View Bio
+            </a>
+            <a class="bio-link" href="resume.html">
+              <span>Resume</span>
+              View Resume
+            </a>
           </div>
         </div>
-        <a class="bio-link" href="resume.html">
-          <span>Resume</span>
-          View Resume
-        </a>
       </div>
 
       <div class="protected-shell">
@@ -3288,8 +3536,25 @@
         const LEGACY_TEACHER_KEY = "decision-lab-teacher-mode";
 
         const teacherToggle = document.getElementById("teacherToggle");
+        const ownerPreviewToggle =
+          document.getElementById("ownerPreviewToggle");
+        const publicAccessToggle =
+          document.getElementById("publicAccessToggle");
         const settingsBtn = document.getElementById("settingsBtn");
         const registerBtn = document.getElementById("registerBtn");
+        const teacherResourcesStrip = document.getElementById(
+          "teacherResourcesStrip",
+        );
+        const stripeDashboardShortcutBtn = document.getElementById(
+          "stripeDashboardShortcutBtn",
+        );
+        const stripeBillingShortcutBtn = document.getElementById(
+          "stripeBillingShortcutBtn",
+        );
+        const adminBtn = document.getElementById("adminBtn");
+        const pageShell = document.getElementById("pageShell");
+        const navToggle = document.getElementById("navToggle");
+        const sectionNav = document.getElementById("sectionNav");
         const registerModal = document.getElementById("registerModal");
         const settingsModal = document.getElementById("settingsModal");
         const registerForm = document.getElementById("registerForm");
@@ -3304,6 +3569,34 @@
           document.getElementById("registrationSecret");
         const teacherPinInput = document.getElementById("teacherPin");
         let registerSubmitting = false;
+        let globalAccessState = { publicUnlocked: false, updatedAt: "" };
+        const GLOBAL_PUBLIC_ACCESS_KEY = "rrl_global_public_access_state";
+
+        function persistGlobalAccessState() {
+          try {
+            localStorage.setItem(
+              GLOBAL_PUBLIC_ACCESS_KEY,
+              JSON.stringify({
+                publicUnlocked: !!globalAccessState.publicUnlocked,
+                updatedAt: String(globalAccessState.updatedAt || ""),
+              }),
+            );
+          } catch (_err) {}
+        }
+
+        function setMobileNavOpen(open) {
+          if (!pageShell || !navToggle) return;
+          pageShell.classList.toggle("nav-open", open);
+          navToggle.setAttribute("aria-expanded", open ? "true" : "false");
+        }
+
+        navToggle?.addEventListener("click", () => {
+          setMobileNavOpen(!pageShell?.classList.contains("nav-open"));
+        });
+
+        sectionNav?.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", () => setMobileNavOpen(false));
+        });
 
         function getTeacherPin() {
           return localStorage.getItem(LS.teacherPin) || "4429";
@@ -3320,7 +3613,158 @@
             ? "Teacher Mode: Unlocked"
             : "Teacher Mode: Locked";
           teacherToggle.classList.toggle("locked", !v);
+          if (ownerPreviewToggle)
+            ownerPreviewToggle.style.display = v ? "inline-flex" : "none";
+          if (publicAccessToggle)
+            publicAccessToggle.style.display = v ? "inline-flex" : "none";
+          if (teacherResourcesStrip)
+            teacherResourcesStrip.style.display = v ? "block" : "none";
           settingsBtn.style.display = v ? "inline-flex" : "none";
+          if (adminBtn) adminBtn.style.display = v ? "inline-flex" : "none";
+        }
+
+        function isOwnerPreviewOn() {
+          return localStorage.getItem("rrl_owner_preview") === "1";
+        }
+
+        function setOwnerPreviewOn(v) {
+          localStorage.setItem("rrl_owner_preview", v ? "1" : "0");
+        }
+
+        function updateOwnerPreviewToggle() {
+          if (!ownerPreviewToggle) return;
+          const on = isOwnerPreviewOn();
+          ownerPreviewToggle.textContent = on
+            ? "Owner Preview: On"
+            : "Owner Preview: Off";
+          ownerPreviewToggle.classList.toggle("locked", !on);
+        }
+
+        function updatePublicAccessToggle() {
+          if (!publicAccessToggle) return;
+          const isUnlocked = !!globalAccessState.publicUnlocked;
+          publicAccessToggle.textContent = isUnlocked
+            ? "Public Access: Unlocked"
+            : "Public Access: Locked";
+          publicAccessToggle.classList.toggle("locked", !isUnlocked);
+        }
+
+        async function loadGlobalAccessState(preferApi = true) {
+          try {
+            let data = null;
+            const savedRegistrationEndpoint = String(
+              localStorage.getItem(LS.registrationEndpoint) || "",
+            ).trim();
+            const workerEndpoint =
+              (/script\.google\.com/i.test(savedRegistrationEndpoint)
+                ? DEFAULT_REGISTRATION_ENDPOINT
+                : savedRegistrationEndpoint) || DEFAULT_REGISTRATION_ENDPOINT;
+            if (preferApi && workerEndpoint) {
+              try {
+                const workerRes = await fetch(workerEndpoint, {
+                  method: "POST",
+                  headers: { "Content-Type": "application/json" },
+                  body: JSON.stringify({ action: "public_access_get" }),
+                  cache: "no-store",
+                });
+                if (workerRes.ok) {
+                  const workerJson = await workerRes.json();
+                  if (workerJson && workerJson.ok) {
+                    data = {
+                      publicUnlocked: !!workerJson.publicUnlocked,
+                      updatedAt: String(workerJson.updatedAt || ""),
+                    };
+                  }
+                }
+              } catch (_err) {}
+            }
+            if (!data) {
+              const res = await fetch(`site-access.json?t=${Date.now()}`, {
+                cache: "no-store",
+              });
+              if (!res.ok) return;
+              data = await res.json();
+            }
+            globalAccessState = {
+              publicUnlocked: !!data.publicUnlocked,
+              updatedAt: String(data.updatedAt || ""),
+            };
+            persistGlobalAccessState();
+            updatePublicAccessToggle();
+            setLockedState(
+              !(
+                isUnlocked() ||
+                globalAccessState.publicUnlocked ||
+                isOwnerPreviewOn()
+              ),
+            );
+          } catch (_err) {}
+        }
+
+        async function publishGlobalAccessState(nextUnlocked) {
+          const savedRegistrationEndpoint = String(
+            localStorage.getItem(LS.registrationEndpoint) || "",
+          ).trim();
+          const workerEndpoint =
+            (/script\.google\.com/i.test(savedRegistrationEndpoint)
+              ? DEFAULT_REGISTRATION_ENDPOINT
+              : savedRegistrationEndpoint) || DEFAULT_REGISTRATION_ENDPOINT;
+          if (!workerEndpoint) {
+            window.alert(
+              "Add the registration/admin Worker URL in Teacher Settings first, then save.",
+            );
+            openModal(settingsModal);
+            return false;
+          }
+
+          const accessCode = getTeacherPin();
+          if (!accessCode) {
+            window.alert(
+              "Add your teacher PIN in Teacher Settings first, then save.",
+            );
+            openModal(settingsModal);
+            return false;
+          }
+
+          let result = null;
+          try {
+            const res = await fetch(workerEndpoint, {
+              method: "POST",
+              headers: { "Content-Type": "application/json" },
+              body: JSON.stringify({
+                action: "public_access_set",
+                access_code: accessCode,
+                public_unlocked: !!nextUnlocked,
+              }),
+            });
+            result = await res.json().catch(() => null);
+            if (!res.ok || !result || !result.ok) {
+              const message =
+                result && result.error
+                  ? String(result.error)
+                  : "Could not update public access.";
+              window.alert(`${message}\nRetry in a few seconds.`);
+              return false;
+            }
+          } catch (_err) {
+            window.alert(
+              "Could not update public access.\nThe admin backend could not be reached.",
+            );
+            return false;
+          }
+
+          globalAccessState = {
+            publicUnlocked: !!result.publicUnlocked,
+            updatedAt: String(result.updatedAt || ""),
+          };
+          persistGlobalAccessState();
+          updatePublicAccessToggle();
+          window.alert(
+            globalAccessState.publicUnlocked
+              ? "Site is now unlocked for everyone."
+              : "Site is now locked to paid access.",
+          );
+          return true;
         }
 
         function openModal(modalEl) {
@@ -3407,6 +3851,9 @@
         if (localStorage.getItem(LEGACY_TEACHER_KEY) === "true") {
           setTeacherUnlocked(true);
         }
+        updateOwnerPreviewToggle();
+        updatePublicAccessToggle();
+        loadGlobalAccessState();
 
         teacherToggle.addEventListener("click", () => {
           if (isTeacherUnlocked()) {
@@ -3423,6 +3870,54 @@
         });
 
         settingsBtn.addEventListener("click", () => openModal(settingsModal));
+        adminBtn?.addEventListener("click", () => {
+          window.location.href = "admin/index.html";
+        });
+        stripeDashboardShortcutBtn?.addEventListener("click", () => {
+          window.location.href = "https://dashboard.stripe.com";
+        });
+        stripeBillingShortcutBtn?.addEventListener("click", () => {
+          window.location.href =
+            "https://billing.stripe.com/p/login/9B628r30NcCG1qd1s8dIA00";
+        });
+        publicAccessToggle?.addEventListener("click", async () => {
+          if (!isTeacherUnlocked()) {
+            window.alert("Unlock Teacher Mode first.");
+            return;
+          }
+          const next = !globalAccessState.publicUnlocked;
+          publicAccessToggle.disabled = true;
+          try {
+            const ok = await publishGlobalAccessState(next);
+            if (ok) {
+              setLockedState(
+                !(
+                  isUnlocked() ||
+                  globalAccessState.publicUnlocked ||
+                  isOwnerPreviewOn()
+                ),
+              );
+            }
+          } finally {
+            publicAccessToggle.disabled = false;
+          }
+        });
+        ownerPreviewToggle?.addEventListener("click", () => {
+          if (!isTeacherUnlocked()) {
+            window.alert("Unlock Teacher Mode first.");
+            return;
+          }
+          const next = !isOwnerPreviewOn();
+          setOwnerPreviewOn(next);
+          updateOwnerPreviewToggle();
+          setLockedState(
+            !(
+              isUnlocked() ||
+              globalAccessState.publicUnlocked ||
+              isOwnerPreviewOn()
+            ),
+          );
+        });
         document
           .getElementById("settingsCloseBtn")
           .addEventListener("click", () => closeModal(settingsModal));
@@ -3755,7 +4250,13 @@
         if (purchaseLinkTop) purchaseLinkTop.href = ACCESS_CONTROL.checkoutUrl;
         if (purchaseLinkOverlay)
           purchaseLinkOverlay.href = ACCESS_CONTROL.checkoutUrl;
-        setLockedState(!isUnlocked());
+        setLockedState(
+          !(
+            isUnlocked() ||
+            globalAccessState.publicUnlocked ||
+            isOwnerPreviewOn()
+          ),
+        );
 
         unlockBtnTop?.addEventListener("click", openAccessModal);
         unlockBtnOverlay?.addEventListener("click", openAccessModal);
@@ -3773,7 +4274,13 @@
             return;
           }
           localStorage.setItem(ACCESS_CONTROL.storageKey, "1");
-          setLockedState(false);
+          setLockedState(
+            !(
+              isUnlocked() ||
+              globalAccessState.publicUnlocked ||
+              isOwnerPreviewOn()
+            ),
+          );
           closeAccessModal();
         });
 

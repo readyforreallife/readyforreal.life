@@ -1,0 +1,7 @@
+<?xml version='1.0' encoding='utf-8'?>
+<resources>
+    <string name="app_name">Ready for Real Life</string>
+    <string name="title_activity_main">Ready for Real Life</string>
+    <string name="package_name">life.readyforreal.app</string>
+    <string name="custom_url_scheme">life.readyforreal.app</string>
+</resources>
