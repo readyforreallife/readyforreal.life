@@ -92,6 +92,9 @@
         font-size: 15px;
         line-height: 1.6;
       }
+      body.nav-open {
+        overflow: hidden;
+      }
 
       .nav-toggle {
         display: flex;
@@ -153,8 +156,10 @@
       }
 
       nav {
-        position: sticky;
+        position: fixed;
         top: 56px;
+        left: 0;
+        right: 0;
         z-index: 100;
         background: var(--slate);
         display: none;
@@ -162,6 +167,11 @@
         border-bottom: 1px solid var(--gold);
         padding: 12px 16px 18px;
         gap: 8px;
+        max-height: calc(100vh - 56px - env(safe-area-inset-bottom, 0px));
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 18px 32px rgba(7, 12, 20, 0.28);
       }
       nav a {
         color: rgba(255, 255, 255, 0.78);
