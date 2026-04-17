@@ -11,7 +11,6 @@
       name="description"
       content="Founder resume profile for Michael R. Terry, including public service leadership, education, and community engagement background supporting Ready for Real Life Instruction and Education."
     />
-    <link rel="canonical" href="https://readyforreal.life/resume.html" />
     <meta property="og:type" content="website" />
     <meta
       property="og:site_name"
@@ -30,13 +29,6 @@
       property="og:image"
       content="https://readyforreal.life/assets/icons/icon-512-rfrl.png"
     />
-    <meta
-      property="og:image:secure_url"
-      content="https://readyforreal.life/assets/icons/icon-512-rfrl.png"
-    />
-    <meta property="og:image:type" content="image/png" />
-    <meta property="og:image:width" content="512" />
-    <meta property="og:image:height" content="512" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta
       name="twitter:title"
@@ -51,7 +43,10 @@
       content="https://readyforreal.life/assets/icons/icon-512-rfrl.png"
     />
     <link rel="icon" type="image/png" href="assets/icons/favicon-32.png" />
-    <link rel="apple-touch-icon" href="apple-touch-icon-rfrl.png" />
+    <link
+      rel="apple-touch-icon"
+      href="assets/icons/apple-touch-icon-rfrl.png"
+    />
     <link
       href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap"
       rel="stylesheet"
@@ -98,7 +93,7 @@
         align-items: center;
         justify-content: space-between;
         gap: 16px;
-        padding: calc(env(safe-area-inset-top, 0px) + 10px) 16px 10px;
+        padding: 10px 16px;
       }
       .brand {
         color: var(--gold);
@@ -394,7 +389,6 @@
         font-size: 13px;
         color: var(--muted);
         margin-top: 4px;
-        overflow-wrap: anywhere;
       }
       .roles a {
         color: var(--slate);
@@ -421,6 +415,17 @@
         font-size: 12px;
         font-weight: 700;
         border: 1px solid rgba(255, 255, 255, 0.1);
+      }
+      .btn.secondary {
+        background: var(--white);
+        color: var(--slate);
+        border-color: var(--rule);
+      }
+      .profile-actions {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+        gap: 10px;
       }
 
       .section {
@@ -729,28 +734,6 @@
       }
 
       @media (max-width: 980px) {
-        nav {
-          align-items: flex-start;
-          flex-direction: column;
-          gap: 12px;
-          padding: calc(env(safe-area-inset-top, 0px) + 12px) 14px 12px;
-        }
-        .brand {
-          white-space: normal;
-          max-width: 100%;
-        }
-        .nav-links {
-          width: 100%;
-          display: grid;
-          grid-template-columns: 1fr 1fr;
-          gap: 8px;
-        }
-        .nav-links a.section-link {
-          display: none;
-        }
-        .nav-links a.back-link {
-          text-align: center;
-        }
         .hero-wrap {
           grid-template-columns: 1fr;
         }
@@ -765,10 +748,13 @@
         .profile-wrap {
           grid-template-columns: auto 1fr;
         }
+        .profile-actions {
+          grid-column: 1 / -1;
+          justify-content: flex-start;
+        }
         .profile-wrap .btn {
           grid-column: 1 / -1;
-          width: 100%;
-          text-align: center;
+          width: fit-content;
         }
         .summary-grid {
           grid-template-columns: 1fr;
@@ -781,7 +767,7 @@
         }
         .copyright-warning,
         .access-gate {
-          padding: 12px 16px;
+          padding: 12px 24px;
         }
         .locked-overlay {
           top: 80px;
@@ -796,13 +782,7 @@
         Life Instruction and Education</a
       >
       <div class="nav-links">
-        <a class="section-link" href="#summary">Summary</a>
-        <a class="section-link" href="#experience">Experience</a>
-        <a class="section-link" href="#education">Education</a>
-        <a class="section-link" href="#awards">Awards</a>
-        <a class="section-link" href="#skills">Skills</a>
         <a
-          class="back-link"
           href="index.html"
           onclick="
             if (window.history.length > 1) {
@@ -813,13 +793,13 @@
           >Back</a
         >
         <a class="back-link" href="index.html">Main Homepage</a>
+        <a href="#summary">Summary</a>
+        <a href="#experience">Experience</a>
+        <a href="#education">Education</a>
+        <a href="#awards">Awards</a>
+        <a href="#skills">Skills</a>
       </div>
     </nav>
-    <div class="copyright-warning">
-      Copyright © Michael R. Terry. Protected intellectual property.
-      Unauthorized copying, sharing, screenshots, redistribution, and derivative
-      reuse are prohibited.
-    </div>
     <div class="access-gate" id="accessGate">
       <div class="access-gate-copy">
         Preview mode is active. Purchase licensed access to unlock full resume
@@ -832,7 +812,6 @@
         <button class="access-btn secondary" id="unlockBtnTop" type="button">
           I Have Access
         </button>
-        <a class="access-btn secondary" href="index.html">Homepage</a>
       </div>
     </div>
     <script
@@ -844,25 +823,26 @@
     <header class="hero">
       <div class="hero-wrap">
         <div>
-          <p class="eyebrow">
-            Professional Profile · Career & Service Overview
-          </p>
-          <h1><em>Michael R. Terry</em><br />Resume Profile</h1>
+          <p class="eyebrow">Founder Background · Career & Service Overview</p>
+          <h1><em>Michael R. Terry</em><br />Founder Resume Profile</h1>
           <p class="hero-sub">
-            Founder · Curriculum Designer · Published Author · Amazon Listings
+            Mission-driven public safety leader, MAT candidate, curriculum
+            designer, and published author bringing 18+ years of law
+            enforcement, crisis response, outreach, and youth mentorship into
+            education and consulting leadership.
           </p>
           <div class="chips">
             <div class="chip">
-              <strong>18+ Years</strong> Public Service Leadership
+              <strong>18+ Years</strong> Public Safety Service
             </div>
             <div class="chip">
-              <strong>Degree</strong> Master of Arts in Teaching
+              <strong>Current Role</strong> Sergeant + MAT Candidate
             </div>
             <div class="chip">
-              <strong>Focus</strong> Education + Community Engagement
+              <strong>Focus</strong> Curriculum + Community Engagement
             </div>
             <div class="chip">
-              <strong>Language</strong> Spanish (Professional)
+              <strong>Language</strong> Spanish (Working Proficiency)
             </div>
           </div>
         </div>
@@ -886,15 +866,19 @@
         <div>
           <div class="name">Michael R. Terry</div>
           <div class="roles">
-            Salt Lake City Metropolitan Area ·
+            Tooele, Utah ·
             <span class="sensitive-contact">(435) 840-1896</span> ·
-            <span class="sensitive-contact">readyforreal.life44@gmail.com</span>
+            <span class="sensitive-contact">mikeyterry44@gmail.com</span>
+            ·
+            <a class="social-external" href="https://readyforreal.life"
+              >readyforreal.life</a
+            >
           </div>
           <div class="roles">
             <a
               class="social-external"
               href="https://www.linkedin.com/in/mike-terry-46618318b/"
-              >linkedin.com/in/mike-terry-46618318b</a
+              >www.linkedin.com/in/mike-terry-46618318b</a
             >
             ·
             <a
@@ -910,13 +894,21 @@
             >
           </div>
         </div>
-        <a class="btn" href="#experience">Jump to Experience</a>
+        <div class="profile-actions">
+          <a class="btn" href="#experience">Jump to Experience</a>
+          <a
+            class="btn secondary"
+            href="Michael-R-Terry-Resume-2026.docx"
+            download
+            >Download Resume</a
+          >
+        </div>
       </div>
     </div>
 
     <div class="protected-shell">
       <div class="locked-overlay" id="lockedOverlay">
-        <h3>Full Resume Profile Is Locked</h3>
+        <h3>Full Founder Resume Profile Is Locked</h3>
         <p>
           This page is currently in preview mode. Purchase a license to unlock
           complete details and sections.
@@ -932,10 +924,6 @@
           >
             Enter Access Code
           </button>
-          <a class="access-btn secondary" href="index.html">Homepage</a>
-          <button class="access-btn secondary" type="button" id="resumeBackBtn">
-            Back
-          </button>
         </div>
       </div>
       <section class="section dark protected-content" id="summary">
@@ -947,23 +935,33 @@
           <div class="summary-grid">
             <div class="summary-main">
               <p>
-                Public service leader and educator with deep experience in K9
-                operations, criminal interdiction, community outreach, explosive
-                detection, and youth mentorship. Graduate training in teaching
-                is actively applied to service with refugee families, immigrant
-                communities, and individuals in crisis.
+                Mission-driven public safety leader with 18+ years in law
+                enforcement, K9 operations, crisis response, and statewide
+                community outreach. He is currently pursuing a Master of Arts
+                in Teaching at Columbia College of Missouri, applying
+                graduate-level instructional research to curriculum design,
+                mentorship, and implementation planning.
+              </p>
+              <p style="margin-top: 12px">
+                As co-founder of Ready for Real Life Instruction and Education
+                (MMMF LLC), Michael is building a research-backed life skills
+                curriculum aligned to Utah CASEL and CCA Core Standards. His
+                background includes running Tooele Youth Court in Tooele,
+                designing statewide outreach strategies, and publishing
+                community-facing training materials that strengthen the
+                legitimacy of both his educational and public-service work.
               </p>
             </div>
             <div class="metric">
               <div class="k">Years of Service</div>
               <div class="v">18+</div>
-              <div class="d">Public safety and community leadership.</div>
+              <div class="d">Law enforcement, outreach, and leadership.</div>
             </div>
             <div class="metric">
               <div class="k">Current Role</div>
-              <div class="v">M.A.T.</div>
+              <div class="v">MAT</div>
               <div class="d">
-                Master of Arts in Teaching and curriculum design.
+                Sergeant, graduate student, and curriculum designer.
               </div>
             </div>
           </div>
@@ -978,20 +976,25 @@
           </h2>
           <div class="cards3">
             <article class="card">
-              <h3>Explosive Detection K9 Field Supervisor</h3>
+              <h3>Explosive Detection K9 Field Supervisor / Capitol Security Sergeant</h3>
               <div class="meta">
-                Public Safety Leadership · Salt Lake City, UT
+                Utah Highway Patrol — Utah Department of Public Safety · Salt
+                Lake City, UT
               </div>
-              <div class="date">Nov 2023 - Present</div>
+              <div class="date">May 2023 - Present</div>
               <ul>
                 <li>
-                  Utah State Capitol Dignitary Protection/Explosive Detection K9
-                  Sergeant assignment.
+                  Lead Capitol dignitary protection and explosive detection K9
+                  operations at the Utah State Capitol.
                 </li>
                 <li>
-                  Oversee explosive detection K9 team at the Utah State Capitol.
+                  Supervise handler training schedules, deployment protocols,
+                  and operational readiness.
                 </li>
-                <li>Manage handler training, deployments, and readiness.</li>
+                <li>
+                  Coordinate security support for the Legislature and dignitary
+                  assignments under high-stakes operational conditions.
+                </li>
               </ul>
             </article>
             <article class="card">
@@ -999,23 +1002,37 @@
               <div class="meta">
                 Utah Department of Public Safety · Statewide, UT
               </div>
-              <div class="date">Aug 2019 - Present</div>
+              <div class="date">Aug 2019 - 2023</div>
               <ul>
-                <li>Lead statewide outreach serving diverse communities.</li>
                 <li>
-                  Coordinate crisis response, refugee support, and youth
-                  mentorship.
+                  Led a statewide community engagement program serving refugee
+                  families, immigrant communities, and individuals in crisis.
                 </li>
-                <li>Apply graduate educational research in field strategy.</li>
+                <li>
+                  Designed outreach initiatives that bridged law enforcement and
+                  community trust.
+                </li>
+                <li>
+                  Spearheaded youth mentorship efforts and collaboration with
+                  schools, faith communities, and civic partners.
+                </li>
+                <li>
+                  Co-authored the UHP Community Engagement Team Strategic Plan
+                  and DPS Community Engagement Strategy Proposal.
+                </li>
               </ul>
             </article>
             <article class="card">
               <h3>K9 Handler - Narcotics Detection</h3>
-              <div class="meta">Utah Department of Public Safety</div>
+              <div class="meta">Utah Department of Public Safety · Utah</div>
               <div class="date">Jan 2016 - Jan 2020</div>
               <ul>
                 <li>First single-purpose K9 handler selected in UHP.</li>
-                <li>Deployed during Operation Rio Grande in downtown SLC.</li>
+                <li>Deployed during Operation Rio Grande in downtown Salt Lake City.</li>
+                <li>
+                  Conducted narcotics detection and operational support across
+                  statewide assignments.
+                </li>
               </ul>
             </article>
             <article class="card">
@@ -1029,7 +1046,8 @@
                   Conducted interdiction and narcotics enforcement operations.
                 </li>
                 <li>
-                  Recognized for excellence in criminal interdiction (2015).
+                  Recognized with the Excellence in Criminal Interdiction award
+                  (2015).
                 </li>
               </ul>
             </article>
@@ -1038,7 +1056,10 @@
               <div class="meta">Saratoga Springs Police Department</div>
               <div class="date">Feb 2012 - Jan 2014</div>
               <ul>
-                <li>Municipal patrol and community policing service.</li>
+                <li>
+                  Provided municipal patrol, community policing, and emergency
+                  response services.
+                </li>
               </ul>
             </article>
             <article class="card">
@@ -1047,9 +1068,118 @@
               <div class="date">Jan 2008 - Feb 2012</div>
               <ul>
                 <li>
-                  Served in SRO, COP Division, and Graffiti Investigations.
+                  Served in School Resource Officer, COP Division, and Graffiti
+                  Investigations roles.
                 </li>
+                <li>Taught Lions Quest life skills curriculum to every 6th grade class in Tooele City.</li>
+                <li>Ran Tooele Youth Court in Tooele.</li>
                 <li>Named Officer of the Year (2010).</li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section protected-content" id="curriculum">
+        <div class="container">
+          <p class="section-label">Curriculum Design & Entrepreneurship</p>
+          <h2 class="section-title">
+            Program + <span class="accent">Curriculum Leadership</span>
+          </h2>
+          <div class="cards2">
+            <article class="card">
+              <h3>Co-Founder & Lead Curriculum Designer</h3>
+              <div class="meta">
+                Ready for Real Life Instruction and Education — MMMF LLC · Tooele, UT
+              </div>
+              <div class="date">2024 - Present</div>
+              <ul>
+                <li>
+                  Co-founded MMMF LLC with Mekenzi G. Terry and built a
+                  research-backed life skills program for grades 9–12 and adult
+                  audiences.
+                </li>
+                <li>
+                  Designed a 16-week, 5-module curriculum grounded in Bruner,
+                  Dewey, Tyler, Stern et al., and CASEL-aligned practice.
+                </li>
+                <li>
+                  Developed the PLRR and POCC frameworks for emotional
+                  regulation and decision-making under pressure.
+                </li>
+                <li>
+                  Created facilitator guides, workbooks, CASEL alignment
+                  materials, scenario cards, manners cards, and interactive
+                  decision-lab tools.
+                </li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>Program Design Highlights</h3>
+              <ul>
+                <li>
+                  Built pricing, educator licensing, and workshop structures
+                  for individuals, families, schools, and district partners.
+                </li>
+                <li>
+                  Designed the Decision Lab interactive game for scenario-based
+                  decision-making practice.
+                </li>
+                <li>
+                  Aligned the program to Utah CASEL and College & Career
+                  Awareness Core Standards.
+                </li>
+                <li>
+                  Applied graduate research directly to curriculum design and
+                  district proposal work.
+                </li>
+              </ul>
+            </article>
+          </div>
+        </div>
+      </section>
+
+      <section class="section alt protected-content" id="presence">
+        <div class="container">
+          <p class="section-label">Writing, Media & Public Presence</p>
+          <h2 class="section-title">
+            Public Voice + <span class="accent">Credibility</span>
+          </h2>
+          <div class="cards3">
+            <article class="card">
+              <h3>Published Author</h3>
+              <div class="meta">Still. Small. Daily · Amazon / Kindle</div>
+              <div class="date">2024</div>
+              <ul>
+                <li>
+                  Published a faith-centered devotional connecting law
+                  enforcement, fatherhood, and everyday discipleship.
+                </li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>Faith-Based Content Creator</h3>
+              <div class="meta">@hearhim.daily · Instagram / Threads</div>
+              <div class="date">62,000+ Followers</div>
+              <ul>
+                <li>
+                  Produce daily spiritual reflections for a large engaged
+                  audience around Gospel-centered themes and faith in practice.
+                </li>
+              </ul>
+            </article>
+            <article class="card">
+              <h3>Speaker & Media Feature</h3>
+              <div class="meta">GPSS 2021 · KSL-TV Utah</div>
+              <ul>
+                <li>
+                  Selected speaker at the Government & Public Safety Summit on
+                  community engagement and outreach strategy.
+                </li>
+                <li>
+                  Featured by KSL-TV in a mental health and community support
+                  segment.
+                </li>
               </ul>
             </article>
           </div>
@@ -1066,7 +1196,13 @@
             <article class="card">
               <h3>Master of Arts in Teaching (MAT)</h3>
               <div class="meta">Columbia College of Missouri</div>
-              <div class="date">Jan 2025 - Dec 2026</div>
+              <div class="date">Jan 2025 - Dec 2026 (Expected)</div>
+              <ul>
+                <li>
+                  Coursework in instructional design, classroom assessment,
+                  curriculum development, and educational research methods.
+                </li>
+              </ul>
             </article>
             <article class="card">
               <h3>
@@ -1094,22 +1230,19 @@
           <div class="cards2">
             <article class="card">
               <ul>
-                <li>
-                  Kappa Delta Pi International Honor Society (KDP), Feb 2026
-                </li>
-                <li>
-                  Dr. Martin Luther King Jr. Community Service Award, Jan 2026
-                </li>
+                <li>Kappa Delta Pi International Honor Society (KDP) — Feb 2026</li>
+                <li>Louise M. Berman Fellows Award Applicant — 2026</li>
+                <li>Dr. Martin Luther King Jr. Community Service Award — Jan 2026</li>
                 <li>CCAA Scholar, Oct 2025</li>
-                <li>Dean's List, Fall 2024 and 2021</li>
+                <li>Dean's List — Fall 2024 and Fall 2021</li>
               </ul>
             </article>
             <article class="card">
               <ul>
-                <li>SLC District Attorney - Power of Hope Recipient</li>
-                <li>NAACP First Responders Award, Jan 2021</li>
-                <li>Excellence in Criminal Interdiction, Dec 2015</li>
-                <li>Officer of the Year, Dec 2010</li>
+                <li>SLC District Attorney Power of Hope Recipient — Mar 2021</li>
+                <li>NAACP Dr. Martin Luther King Jr. First Responders Award — Jan 2021</li>
+                <li>Excellence in Criminal Interdiction — Dec 2015</li>
+                <li>Officer of the Year — Dec 2010</li>
               </ul>
             </article>
           </div>
@@ -1122,16 +1255,40 @@
           <h2 class="section-title">Skills + Publication</h2>
           <div class="cards2">
             <article class="card">
-              <h3>Skills & Languages</h3>
+              <h3>Skills & Competencies</h3>
               <div class="tags">
                 <span class="tag">Curriculum Development</span>
+                <span class="tag">Backward Design</span>
+                <span class="tag">Spiral Curriculum</span>
+                <span class="tag">SEL / CASEL Alignment</span>
+                <span class="tag">Performance Assessment</span>
+                <span class="tag">Rubric Development</span>
+                <span class="tag">Instructional Theory</span>
                 <span class="tag">Educational Leadership</span>
-                <span class="tag">Training & Instruction</span>
-                <span class="tag">Community Outreach & Crisis Response</span>
-                <span class="tag">K9 Operations</span>
+                <span class="tag">Team Training</span>
+                <span class="tag">Community Outreach</span>
+                <span class="tag">Crisis Intervention</span>
+                <span class="tag">Youth Mentorship</span>
+                <span class="tag">Faith Community Engagement</span>
+                <span class="tag">Writing & Media</span>
+                <span class="tag">HTML / CSS / JS</span>
+                <span class="tag">Google Workspace</span>
+                <span class="tag">GitHub</span>
                 <span class="tag">Criminal Interdiction</span>
-                <span class="tag">Spanish (Professional Working)</span>
+                <span class="tag">POST-Certified</span>
+                <span class="tag">Lions Quest Facilitator</span>
+                <span class="tag">K9 Handler</span>
+                <span class="tag">Spanish (Professional Working Proficiency)</span>
               </div>
+            </article>
+            <article class="card">
+              <h3>Professional Affiliations</h3>
+              <ul>
+                <li>Kappa Delta Pi International Honor Society in Education (KDP)</li>
+                <li>Utah Highway Patrol / Utah Department of Public Safety</li>
+                <li>Ready for Real Life Instruction and Education — MMMF LLC</li>
+                <li>Columbia College Alumni Association Scholar</li>
+              </ul>
             </article>
             <article class="pub">
               <strong>Still. Small. Daily</strong>
@@ -1178,6 +1335,12 @@
       </section>
     </div>
 
+    <div class="copyright-warning">
+      Copyright © Michael R. Terry and Mekenzi G. Terry. Protected intellectual
+      property. Unauthorized copying, sharing, screenshots, redistribution, and
+      derivative reuse are prohibited.
+    </div>
+
     <div class="copyright-floating" aria-hidden="true">
       <img src="assets/copyright-mark.svg" alt="" />
     </div>
@@ -1217,7 +1380,6 @@
         "https://flat-flower-4af8mmmf-agreement-admin.mikeyterry44.workers.dev";
       const LS = {
         registrationEndpoint: "dl_registration_endpoint",
-        globalPublicAccessState: "rrl_global_public_access_state",
       };
       const accessGate = document.getElementById("accessGate");
       const accessModal = document.getElementById("accessModal");
@@ -1229,36 +1391,9 @@
       );
       const unlockBtnTop = document.getElementById("unlockBtnTop");
       const unlockBtnOverlay = document.getElementById("unlockBtnOverlay");
-      const resumeBackBtn = document.getElementById("resumeBackBtn");
       const accessCloseBtn = document.getElementById("accessCloseBtn");
       const accessUnlockBtn = document.getElementById("accessUnlockBtn");
-      let globalAccessState = (() => {
-        try {
-          const cached = JSON.parse(
-            String(
-              localStorage.getItem(LS.globalPublicAccessState) ||
-                '{"publicUnlocked":false,"updatedAt":""}',
-            ),
-          );
-          return {
-            publicUnlocked: !!cached.publicUnlocked,
-            updatedAt: String(cached.updatedAt || ""),
-          };
-        } catch (_err) {
-          return { publicUnlocked: false, updatedAt: "" };
-        }
-      })();
-      function persistGlobalAccessState() {
-        try {
-          localStorage.setItem(
-            LS.globalPublicAccessState,
-            JSON.stringify({
-              publicUnlocked: !!globalAccessState.publicUnlocked,
-              updatedAt: String(globalAccessState.updatedAt || ""),
-            }),
-          );
-        } catch (_err) {}
-      }
+      let globalAccessState = { publicUnlocked: false, updatedAt: "" };
       function showAccessStatus(msg, isError) {
         if (!accessStatus) return;
         accessStatus.textContent = msg;
@@ -1324,7 +1459,6 @@
           if (!res.ok || !data || !data.ok) return;
           globalAccessState.publicUnlocked = !!data.publicUnlocked;
           globalAccessState.updatedAt = String(data.updatedAt || "");
-          persistGlobalAccessState();
         } catch (_err) {}
       }
       async function syncGlobalAccessState() {
@@ -1339,13 +1473,6 @@
       window.addEventListener("focus", syncGlobalAccessState);
       unlockBtnTop?.addEventListener("click", openAccessModal);
       unlockBtnOverlay?.addEventListener("click", openAccessModal);
-      resumeBackBtn?.addEventListener("click", () => {
-        if (window.history.length > 1) {
-          window.history.back();
-        } else {
-          window.location.href = "index.html";
-        }
-      });
       accessCloseBtn?.addEventListener("click", closeAccessModal);
       document
         .querySelectorAll("[data-close-access]")
@@ -1400,3 +1527,5 @@
     </script>
   </body>
 </html>
+
+<!-- deploy-refresh: 2026-03-05T17:24Z -->
