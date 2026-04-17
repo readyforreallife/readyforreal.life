@@ -1047,9 +1047,10 @@
         gap: 12px;
       }
       .t-row {
-        display: flex;
-        align-items: flex-start;
-        gap: 18px;
+        display: grid;
+        grid-template-columns: 40px minmax(0, 1fr) auto;
+        align-items: start;
+        gap: 14px 18px;
         background: var(--white);
         padding: 18px 22px;
         border-radius: 10px;
@@ -1065,18 +1066,17 @@
         font-weight: 900;
         color: var(--gold);
         line-height: 1;
-        min-width: 36px;
+        min-width: 40px;
+        text-align: center;
         padding-top: 2px;
       }
       .t-text {
         font-size: 14px;
         color: var(--ink);
         line-height: 1.65;
-        flex: 1;
+        min-width: 0;
       }
       .t-tag {
-        margin-left: auto;
-        flex-shrink: 0;
         font-family: "DM Mono", monospace;
         font-size: 10.5px;
         padding: 4px 10px;
@@ -1084,7 +1084,7 @@
         background: var(--gold-lt);
         color: var(--gold);
         font-weight: 500;
-        align-self: center;
+        align-self: start;
         white-space: nowrap;
       }
 
@@ -1919,6 +1919,27 @@
         .impl-grid,
         .spiral-wrapper {
           grid-template-columns: 1fr;
+        }
+        .t-row {
+          grid-template-columns: 36px minmax(0, 1fr);
+          gap: 10px 14px;
+          padding: 16px 16px 18px;
+        }
+        .t-num {
+          min-width: 36px;
+          font-size: 1.9rem;
+        }
+        .t-text {
+          font-size: 13.5px;
+          line-height: 1.6;
+        }
+        .t-tag {
+          grid-column: 1 / -1;
+          justify-self: start;
+          white-space: normal;
+          line-height: 1.45;
+          padding: 6px 10px;
+          font-size: 10px;
         }
         .assess-row {
           grid-template-columns: 1fr 1fr;
