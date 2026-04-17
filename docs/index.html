@@ -94,6 +94,9 @@
       }
       body.nav-open {
         overflow: hidden;
+        position: fixed;
+        inset: 0;
+        width: 100%;
       }
 
       .nav-toggle {
@@ -4231,9 +4234,20 @@
       let registerSubmitting = false;
       let globalAccessState = { publicUnlocked: false, updatedAt: "" };
 
+      let navScrollLockY = 0;
+
       function setMobileNavOpen(open) {
+        if (open) {
+          navScrollLockY = window.scrollY || window.pageYOffset || 0;
+          document.body.style.top = `-${navScrollLockY}px`;
+        } else {
+          document.body.style.top = "";
+        }
         document.body.classList.toggle("nav-open", !!open);
         navToggle?.setAttribute("aria-expanded", open ? "true" : "false");
+        if (!open) {
+          window.scrollTo(0, navScrollLockY);
+        }
       }
 
       function closeMobileNav() {
