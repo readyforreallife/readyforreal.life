@@ -94,7 +94,7 @@
       }
 
       .nav-toggle {
-        display: none;
+        display: flex;
         position: sticky;
         top: 0;
         z-index: 101;
@@ -154,25 +154,34 @@
 
       nav {
         position: sticky;
-        top: 0;
+        top: 56px;
         z-index: 100;
         background: var(--slate);
-        display: flex;
-        flex-wrap: wrap;
-        border-bottom: 3px solid var(--gold);
+        display: none;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        border-bottom: 1px solid var(--gold);
+        padding: 10px 12px 16px;
+        gap: 10px;
       }
       nav a {
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.78);
         text-decoration: none;
         font-family: "DM Mono", monospace;
         font-size: 10px;
         letter-spacing: 0.12em;
         text-transform: uppercase;
-        padding: 12px 16px;
+        padding: 12px 10px;
         transition:
           color 0.2s,
           background 0.2s;
-        white-space: nowrap;
+        white-space: normal;
+        text-align: center;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.04);
+      }
+      body.nav-open nav {
+        display: grid;
       }
       nav a:hover {
         color: var(--gold);
@@ -182,7 +191,7 @@
       .nav-menu-divider,
       .nav-menu-copy,
       .nav-legal-links {
-        display: none;
+        display: block;
       }
       .nav-action {
         border: 1px solid rgba(255, 255, 255, 0.14);
@@ -218,10 +227,20 @@
         font-size: 12px;
         line-height: 1.55;
         color: rgba(255, 255, 255, 0.72);
+        grid-column: 1 / -1;
+        padding: 0 2px;
       }
       .nav-menu-divider {
         height: 1px;
         background: rgba(255, 255, 255, 0.12);
+        grid-column: 1 / -1;
+        margin: 2px 0;
+      }
+      .nav-legal-links {
+        grid-column: 1 / -1;
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 10px;
       }
       .nav-legal-links a {
         color: rgba(255, 255, 255, 0.72);
@@ -234,7 +253,7 @@
       }
       .nav-logo {
         padding: 8px 12px;
-        display: inline-flex;
+        display: none;
         align-items: center;
       }
       .nav-logo img {
@@ -1819,7 +1838,7 @@
 
       .utility-bar {
         position: sticky;
-        top: 48px;
+        top: 56px;
         z-index: 95;
         background: rgba(246, 243, 236, 0.92);
         backdrop-filter: blur(6px);
@@ -1849,6 +1868,14 @@
       .util-btn.locked {
         background: var(--gold-lt);
         border-color: var(--gold);
+      }
+      #teacherToggle,
+      #ownerPreviewToggle,
+      #publicAccessToggle,
+      #settingsBtn,
+      #adminBtn,
+      #teacherResourcesStrip {
+        display: none !important;
       }
 
       .card-link {
@@ -2045,51 +2072,8 @@
       }
 
       @media (max-width: 900px) {
-        .nav-toggle {
-          display: flex;
-        }
         nav {
-          display: none;
-          top: 56px;
           grid-template-columns: repeat(2, minmax(0, 1fr));
-          padding: 10px 12px 16px;
-          gap: 10px;
-          border-bottom-width: 1px;
-        }
-        body.nav-open nav {
-          display: grid;
-        }
-        nav a {
-          min-width: 0;
-          white-space: normal;
-          text-align: center;
-          border: 1px solid rgba(255, 255, 255, 0.1);
-          border-radius: 14px;
-          padding: 12px 10px;
-          background: rgba(255, 255, 255, 0.04);
-          color: rgba(255, 255, 255, 0.78);
-        }
-        .nav-logo {
-          display: none;
-        }
-        .nav-mobile-only {
-          display: block;
-        }
-        .nav-menu-divider {
-          display: block;
-          grid-column: 1 / -1;
-          margin: 2px 0;
-        }
-        .nav-menu-copy {
-          display: block;
-          grid-column: 1 / -1;
-          padding: 0 2px;
-        }
-        .nav-legal-links {
-          display: grid;
-          grid-column: 1 / -1;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-          gap: 10px;
         }
         .section,
         .hero {
@@ -2208,16 +2192,6 @@
           top: 56px;
           justify-content: center;
           flex-wrap: wrap;
-        }
-        #teacherToggle,
-        #ownerPreviewToggle,
-        #publicAccessToggle,
-        #settingsBtn,
-        #adminBtn {
-          display: none !important;
-        }
-        #teacherResourcesStrip {
-          display: none !important;
         }
         .copyright-floating {
           display: none;
