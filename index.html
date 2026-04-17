@@ -118,6 +118,9 @@
         overflow-y: auto;
         overscroll-behavior-x: none;
       }
+      body.nav-open {
+        overflow: hidden;
+      }
       .page-shell {
         width: 100%;
         min-height: 100vh;
@@ -127,19 +130,8 @@
         overscroll-behavior-x: none;
       }
 
-      nav {
-        position: sticky;
-        top: 0;
-        z-index: 100;
-        background: var(--slate);
-        display: flex;
-        flex-wrap: wrap;
-        justify-content: center;
-        border-bottom: 3px solid var(--gold);
-        overflow-x: clip;
-      }
       .nav-toggle {
-        display: none;
+        display: flex;
         position: sticky;
         top: 0;
         z-index: 101;
@@ -196,22 +188,110 @@
       .page-shell.nav-open .nav-toggle-icon span:nth-child(3) {
         transform: translateY(-6px) rotate(-45deg);
       }
+      nav {
+        position: fixed;
+        top: calc(56px + env(safe-area-inset-top, 0px));
+        left: 0;
+        right: 0;
+        z-index: 100;
+        background: var(--slate);
+        display: none;
+        grid-template-columns: minmax(0, 1fr);
+        border-bottom: 1px solid var(--gold);
+        padding: 12px 16px 18px;
+        gap: 8px;
+        max-height: calc(100vh - 56px - env(safe-area-inset-top, 0px) - env(safe-area-inset-bottom, 0px));
+        overflow-y: auto;
+        overscroll-behavior: contain;
+        -webkit-overflow-scrolling: touch;
+        box-shadow: 0 18px 32px rgba(7, 12, 20, 0.28);
+      }
+      .page-shell.nav-open nav {
+        display: grid;
+        align-content: start;
+      }
       nav a {
-        color: rgba(255, 255, 255, 0.6);
+        color: rgba(255, 255, 255, 0.78);
         text-decoration: none;
-        font-family: "DM Mono", monospace;
-        font-size: 10px;
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        padding: 12px 16px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        letter-spacing: 0.01em;
+        font-weight: 600;
+        padding: 10px 14px;
         transition:
           color 0.2s,
           background 0.2s;
-        white-space: nowrap;
+        white-space: normal;
+        text-align: left;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.04);
       }
       nav a:hover {
         color: var(--gold);
         background: rgba(255, 255, 255, 0.05);
+      }
+      .nav-mobile-only,
+      .nav-menu-divider,
+      .nav-menu-copy,
+      .nav-legal-links {
+        display: block;
+      }
+      .nav-action {
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: rgba(255, 255, 255, 0.05);
+        color: rgba(255, 255, 255, 0.82);
+        border-radius: 14px;
+        padding: 10px 14px;
+        font-family: "DM Sans", sans-serif;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.35;
+        text-align: left;
+        cursor: pointer;
+      }
+      .nav-action:hover {
+        color: #fff;
+        border-color: rgba(196, 149, 64, 0.7);
+      }
+      .nav-action.nav-linkish {
+        text-decoration: none;
+        display: block;
+      }
+      .nav-action.locked {
+        background: rgba(242, 228, 192, 0.14);
+        border-color: rgba(196, 149, 64, 0.45);
+      }
+      .nav-menu-copy {
+        font-size: 12px;
+        line-height: 1.55;
+        color: rgba(255, 255, 255, 0.72);
+        padding: 0 2px;
+        margin-top: 4px;
+      }
+      .nav-menu-divider {
+        height: 1px;
+        background: rgba(255, 255, 255, 0.12);
+        margin: 4px 0;
+      }
+      .nav-legal-links {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr);
+        gap: 8px;
+      }
+      .nav-legal-links a {
+        color: rgba(255, 255, 255, 0.72);
+        text-decoration: none;
+        font-size: 14px;
+        font-weight: 600;
+        line-height: 1.5;
+        border: 1px solid rgba(255, 255, 255, 0.1);
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.04);
+        padding: 10px 14px;
+      }
+      .nav-legal-links a:hover {
+        color: var(--gold);
       }
 
       .hero {
@@ -1538,6 +1618,14 @@
         background: var(--gold-lt);
         border-color: var(--gold);
       }
+      #teacherToggle,
+      #ownerPreviewToggle,
+      #publicAccessToggle,
+      #settingsBtn,
+      #adminBtn,
+      #teacherResourcesStrip {
+        display: none !important;
+      }
 
       .card-link {
         cursor: pointer;
@@ -1725,24 +1813,6 @@
       }
 
       @media (max-width: 900px) {
-        .page-shell {
-          height: 100%;
-        }
-        .nav-toggle {
-          display: flex;
-        }
-        nav {
-          display: none;
-          grid-template-columns: repeat(2, minmax(0, 1fr));
-        }
-        .page-shell.nav-open nav {
-          display: grid;
-        }
-        nav a {
-          min-width: 0;
-          white-space: normal;
-          text-align: center;
-        }
         .section,
         .hero {
           padding: 40px 24px;
@@ -1861,7 +1931,7 @@
           text-align: left;
         }
         .utility-bar {
-          top: 44px;
+          top: 56px;
           justify-content: center;
           flex-wrap: wrap;
         }
@@ -1879,7 +1949,9 @@
       >
         <span class="nav-toggle-copy">
           <span class="nav-toggle-label">Sections</span>
-          <span class="nav-toggle-title">Overview, Modules, Frameworks</span>
+          <span class="nav-toggle-title"
+            >Sections, Search, Resources, Access</span
+          >
         </span>
         <span class="nav-toggle-icon" aria-hidden="true">
           <span></span>
@@ -1888,6 +1960,13 @@
         </span>
       </button>
       <nav id="sectionNav">
+        <button
+          class="nav-action nav-mobile-only locked"
+          id="menuTeacherToggle"
+          type="button"
+        >
+          Teacher Mode: Locked
+        </button>
         <a href="#overview">Overview</a>
         <a href="#pillars">Pillars</a>
         <a href="#modules">Modules</a>
@@ -1898,6 +1977,100 @@
         <a href="#assessment">Assessment</a>
         <a href="#theory">Theory</a>
         <a href="#implementation">Implementation</a>
+        <button
+          class="nav-action nav-mobile-only locked"
+          id="menuOwnerPreviewToggle"
+          type="button"
+          style="display: none"
+        >
+          Owner Preview: Off
+        </button>
+        <button
+          class="nav-action nav-mobile-only locked"
+          id="menuPublicAccessToggle"
+          type="button"
+          style="display: none"
+        >
+          Public Access: Locked
+        </button>
+        <button
+          class="nav-action nav-mobile-only"
+          id="menuSettingsBtn"
+          type="button"
+          style="display: none"
+        >
+          Settings
+        </button>
+        <button
+          class="nav-action nav-mobile-only"
+          id="menuAdminBtn"
+          type="button"
+          style="display: none"
+        >
+          Admin
+        </button>
+        <div class="nav-legal-links nav-mobile-only">
+          <a href="privacy-policy.html">Privacy Policy</a>
+          <a href="terms-of-service.html">Terms of Service</a>
+        </div>
+        <div
+          class="nav-menu-copy nav-mobile-only"
+          id="menuTeacherResourcesCopy"
+          style="display: none"
+        >
+          <strong>Teacher Resources</strong><br />
+          Private management shortcuts for registrations, certificates, billing,
+          and site operations.
+        </div>
+        <a
+          class="nav-action nav-linkish nav-mobile-only"
+          id="menuFormalDocsBtn"
+          href="https://readyforreallife.github.io/mmmf-codex/docs/index.html"
+          style="display: none"
+        >
+          Formal Documents Library
+        </a>
+        <a
+          class="nav-action nav-linkish nav-mobile-only"
+          id="menuRegistrationFolderBtn"
+          href="https://readyforreallife.github.io/mmmf-codex/web/registration-folder.html"
+          style="display: none"
+        >
+          Registration Folder
+        </a>
+        <a
+          class="nav-action nav-linkish nav-mobile-only"
+          id="menuCertificateFolderBtn"
+          href="https://readyforreallife.github.io/mmmf-codex/web/certificate-folder.html"
+          style="display: none"
+        >
+          Certificate Folder
+        </a>
+        <a
+          class="nav-action nav-linkish nav-mobile-only"
+          id="menuStripeCenterBtn"
+          href="docs/billing.html"
+          style="display: none"
+        >
+          Billing Center
+        </a>
+        <button
+          class="nav-action nav-mobile-only"
+          id="menuStripeDashboardShortcutBtn"
+          type="button"
+          style="display: none"
+        >
+          Stripe Dashboard
+        </button>
+        <button
+          class="nav-action nav-mobile-only"
+          id="menuStripeBillingShortcutBtn"
+          type="button"
+          style="display: none"
+        >
+          Billing Portal
+        </button>
+        <div class="nav-menu-divider nav-mobile-only"></div>
       </nav>
       <div class="utility-bar">
         <button class="util-btn primary" id="registerBtn" type="button">
@@ -3553,6 +3726,32 @@
         const pageShell = document.getElementById("pageShell");
         const navToggle = document.getElementById("navToggle");
         const sectionNav = document.getElementById("sectionNav");
+        const menuTeacherToggle = document.getElementById("menuTeacherToggle");
+        const menuOwnerPreviewToggle = document.getElementById(
+          "menuOwnerPreviewToggle",
+        );
+        const menuPublicAccessToggle = document.getElementById(
+          "menuPublicAccessToggle",
+        );
+        const menuSettingsBtn = document.getElementById("menuSettingsBtn");
+        const menuAdminBtn = document.getElementById("menuAdminBtn");
+        const menuTeacherResourcesCopy = document.getElementById(
+          "menuTeacherResourcesCopy",
+        );
+        const menuFormalDocsBtn = document.getElementById("menuFormalDocsBtn");
+        const menuRegistrationFolderBtn = document.getElementById(
+          "menuRegistrationFolderBtn",
+        );
+        const menuCertificateFolderBtn = document.getElementById(
+          "menuCertificateFolderBtn",
+        );
+        const menuStripeCenterBtn = document.getElementById("menuStripeCenterBtn");
+        const menuStripeDashboardShortcutBtn = document.getElementById(
+          "menuStripeDashboardShortcutBtn",
+        );
+        const menuStripeBillingShortcutBtn = document.getElementById(
+          "menuStripeBillingShortcutBtn",
+        );
         const registerModal = document.getElementById("registerModal");
         const settingsModal = document.getElementById("settingsModal");
         const registerForm = document.getElementById("registerForm");
@@ -3585,16 +3784,21 @@
         function setMobileNavOpen(open) {
           if (!pageShell || !navToggle) return;
           pageShell.classList.toggle("nav-open", open);
+          document.body.classList.toggle("nav-open", !!open);
           navToggle.setAttribute("aria-expanded", open ? "true" : "false");
         }
 
-        navToggle?.addEventListener("click", () => {
-          setMobileNavOpen(!pageShell?.classList.contains("nav-open"));
-        });
+        function closeMobileNav() {
+          setMobileNavOpen(false);
+        }
 
-        sectionNav?.querySelectorAll("a").forEach((link) => {
-          link.addEventListener("click", () => setMobileNavOpen(false));
-        });
+        function toggleMenuButton(sourceEl, targetEl, displayWhenVisible = "block") {
+          if (!sourceEl || !targetEl) return;
+          targetEl.textContent = sourceEl.textContent;
+          targetEl.classList.toggle("locked", sourceEl.classList.contains("locked"));
+          targetEl.style.display =
+            sourceEl.style.display === "none" ? "none" : displayWhenVisible;
+        }
 
         function getTeacherPin() {
           return localStorage.getItem(LS.teacherPin) || "4429";
@@ -3619,6 +3823,23 @@
             teacherResourcesStrip.style.display = v ? "block" : "none";
           settingsBtn.style.display = v ? "inline-flex" : "none";
           if (adminBtn) adminBtn.style.display = v ? "inline-flex" : "none";
+          toggleMenuButton(teacherToggle, menuTeacherToggle);
+          toggleMenuButton(ownerPreviewToggle, menuOwnerPreviewToggle);
+          toggleMenuButton(publicAccessToggle, menuPublicAccessToggle);
+          toggleMenuButton(settingsBtn, menuSettingsBtn);
+          toggleMenuButton(adminBtn, menuAdminBtn);
+          if (menuTeacherResourcesCopy)
+            menuTeacherResourcesCopy.style.display = v ? "block" : "none";
+          [
+            menuFormalDocsBtn,
+            menuRegistrationFolderBtn,
+            menuCertificateFolderBtn,
+            menuStripeCenterBtn,
+            menuStripeDashboardShortcutBtn,
+            menuStripeBillingShortcutBtn,
+          ].forEach((el) => {
+            if (el) el.style.display = v ? "block" : "none";
+          });
         }
 
         function isOwnerPreviewOn() {
@@ -3636,6 +3857,7 @@
             ? "Owner Preview: On"
             : "Owner Preview: Off";
           ownerPreviewToggle.classList.toggle("locked", !on);
+          toggleMenuButton(ownerPreviewToggle, menuOwnerPreviewToggle);
         }
 
         function updatePublicAccessToggle() {
@@ -3645,6 +3867,7 @@
             ? "Public Access: Unlocked"
             : "Public Access: Locked";
           publicAccessToggle.classList.toggle("locked", !isUnlocked);
+          toggleMenuButton(publicAccessToggle, menuPublicAccessToggle);
         }
 
         async function loadGlobalAccessState(preferApi = true) {
@@ -3852,7 +4075,12 @@
         updateOwnerPreviewToggle();
         updatePublicAccessToggle();
         loadGlobalAccessState();
-
+        navToggle?.addEventListener("click", () => {
+          setMobileNavOpen(!document.body.classList.contains("nav-open"));
+        });
+        sectionNav?.querySelectorAll("a").forEach((link) => {
+          link.addEventListener("click", closeMobileNav);
+        });
         teacherToggle.addEventListener("click", () => {
           if (isTeacherUnlocked()) {
             setTeacherUnlocked(false);
@@ -3866,18 +4094,41 @@
             window.alert("Incorrect PIN.");
           }
         });
+        menuTeacherToggle?.addEventListener("click", () => teacherToggle.click());
 
         settingsBtn.addEventListener("click", () => openModal(settingsModal));
+        menuSettingsBtn?.addEventListener("click", () => {
+          closeMobileNav();
+          settingsBtn.click();
+        });
         adminBtn?.addEventListener("click", () => {
           window.location.href = "admin/index.html";
         });
+        menuAdminBtn?.addEventListener("click", () => {
+          closeMobileNav();
+          adminBtn.click();
+        });
         stripeDashboardShortcutBtn?.addEventListener("click", () => {
           window.location.href = "https://dashboard.stripe.com";
+        });
+        menuStripeDashboardShortcutBtn?.addEventListener("click", () => {
+          closeMobileNav();
+          stripeDashboardShortcutBtn.click();
         });
         stripeBillingShortcutBtn?.addEventListener("click", () => {
           window.location.href =
             "https://billing.stripe.com/p/login/9B628r30NcCG1qd1s8dIA00";
         });
+        menuStripeBillingShortcutBtn?.addEventListener("click", () => {
+          closeMobileNav();
+          stripeBillingShortcutBtn.click();
+        });
+        [
+          menuFormalDocsBtn,
+          menuRegistrationFolderBtn,
+          menuCertificateFolderBtn,
+          menuStripeCenterBtn,
+        ].forEach((link) => link?.addEventListener("click", closeMobileNav));
         publicAccessToggle?.addEventListener("click", async () => {
           if (!isTeacherUnlocked()) {
             window.alert("Unlock Teacher Mode first.");
@@ -3900,6 +4151,10 @@
             publicAccessToggle.disabled = false;
           }
         });
+        menuPublicAccessToggle?.addEventListener("click", () => {
+          closeMobileNav();
+          publicAccessToggle.click();
+        });
         ownerPreviewToggle?.addEventListener("click", () => {
           if (!isTeacherUnlocked()) {
             window.alert("Unlock Teacher Mode first.");
@@ -3915,6 +4170,10 @@
               isOwnerPreviewOn()
             ),
           );
+        });
+        menuOwnerPreviewToggle?.addEventListener("click", () => {
+          closeMobileNav();
+          ownerPreviewToggle.click();
         });
         document
           .getElementById("settingsCloseBtn")
