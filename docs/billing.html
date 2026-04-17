@@ -263,5 +263,36 @@
         </aside>
       </div>
     </main>
+    <script>
+      (() => {
+        const isCapacitorApp =
+          window.location.protocol === "capacitor:" ||
+          (window.location.hostname === "localhost" &&
+            !window.location.port &&
+            navigator.userAgent.includes("AppleWebKit"));
+        if (!isCapacitorApp) return;
+
+        const replacements = [
+          [
+            'a[href="https://readyforreallife.github.io/mmmf-codex/web/agreement-tracker.html"]',
+            "../mmmf-hub/web/agreement-tracker.html",
+          ],
+          [
+            'a[href="https://readyforreallife.github.io/mmmf-codex/web/registration-folder.html"]',
+            "../mmmf-hub/web/registration-folder.html",
+          ],
+          [
+            'a[href="https://readyforreallife.github.io/mmmf-codex/web/certificate-folder.html"]',
+            "../mmmf-hub/web/certificate-folder.html",
+          ],
+        ];
+
+        replacements.forEach(([selector, href]) => {
+          document.querySelectorAll(selector).forEach((link) => {
+            link.setAttribute("href", href);
+          });
+        });
+      })();
+    </script>
   </body>
 </html>

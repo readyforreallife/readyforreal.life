@@ -2104,6 +2104,7 @@
         </button>
         <a
           class="util-btn"
+          id="hubHomeBtn"
           href="https://readyforreallife.github.io/mmmf-codex/web/index.html"
           >MMMF Hub</a
         >
@@ -3679,6 +3680,44 @@
       </div>
 
       <script>
+        function isCapacitorApp() {
+          return (
+            window.location.protocol === "capacitor:" ||
+            (window.location.hostname === "localhost" &&
+              !window.location.port &&
+              navigator.userAgent.includes("AppleWebKit"))
+          );
+        }
+
+        function configureHubLinksForEnvironment() {
+          if (!isCapacitorApp()) return;
+
+          const hubTargets = {
+            formalDocs:
+              "mmmf-hub/docs/index.html",
+            registrationFolder:
+              "mmmf-hub/web/registration-folder.html",
+            certificateFolder:
+              "mmmf-hub/web/certificate-folder.html",
+            hubHome: "mmmf-hub/web/index.html",
+          };
+
+          const setHref = (id, href) => {
+            const el = document.getElementById(id);
+            if (el) el.setAttribute("href", href);
+          };
+
+          setHref("menuFormalDocsBtn", hubTargets.formalDocs);
+          setHref("menuRegistrationFolderBtn", hubTargets.registrationFolder);
+          setHref("menuCertificateFolderBtn", hubTargets.certificateFolder);
+          setHref("formalDocsBtn", hubTargets.formalDocs);
+          setHref("registrationFolderBtn", hubTargets.registrationFolder);
+          setHref("certificateFolderBtn", hubTargets.certificateFolder);
+          setHref("hubHomeBtn", hubTargets.hubHome);
+        }
+
+        configureHubLinksForEnvironment();
+
         const observer = new IntersectionObserver(
           (entries) => {
             entries.forEach((entry) => {
