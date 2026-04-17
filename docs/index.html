@@ -2235,6 +2235,13 @@
       <a class="nav-logo" href="index.html" aria-label="Home">
         <img src="assets/mmmf-site-mark.svg" alt="Site logo" />
       </a>
+      <button
+        class="nav-action nav-mobile-only locked"
+        id="menuTeacherToggle"
+        type="button"
+      >
+        Teacher Mode: Locked
+      </button>
       <a href="#overview">Overview</a>
       <a href="#pillars">Pillars</a>
       <a href="#modules">Modules</a>
@@ -2245,16 +2252,6 @@
       <a href="#assessment">Assessment</a>
       <a href="#theory">Theory</a>
       <a href="#implementation">Implementation</a>
-      <button class="nav-action nav-mobile-only" id="menuSearchBtn" type="button">
-        Search
-      </button>
-      <button
-        class="nav-action nav-mobile-only locked"
-        id="menuTeacherToggle"
-        type="button"
-      >
-        Teacher Mode: Locked
-      </button>
       <button
         class="nav-action nav-mobile-only locked"
         id="menuOwnerPreviewToggle"
@@ -4183,7 +4180,6 @@
       const adminBtn = document.getElementById("adminBtn");
       const navToggle = document.getElementById("navToggle");
       const sectionNav = document.getElementById("sectionNav");
-      const menuSearchBtn = document.getElementById("menuSearchBtn");
       const menuTeacherToggle = document.getElementById("menuTeacherToggle");
       const menuOwnerPreviewToggle = document.getElementById(
         "menuOwnerPreviewToggle",
@@ -4530,18 +4526,6 @@
       });
       sectionNav?.querySelectorAll("a").forEach((link) => {
         link.addEventListener("click", closeMobileNav);
-      });
-      menuSearchBtn?.addEventListener("click", () => {
-        closeMobileNav();
-        const searchInput = document.querySelector(
-          '.site-search-host input, .site-search-shell input, input[type="search"]',
-        );
-        if (searchInput instanceof HTMLElement) {
-          searchInput.scrollIntoView({ behavior: "smooth", block: "center" });
-          setTimeout(() => searchInput.focus(), 250);
-        } else {
-          window.scrollTo({ top: 0, behavior: "smooth" });
-        }
       });
       const legacySettingsRaw = localStorage.getItem(LEGACY_SETTINGS_KEY);
       let legacySettings = null;
