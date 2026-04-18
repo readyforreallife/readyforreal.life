@@ -322,9 +322,9 @@
       }
       .hero-layout {
         display: grid;
-        grid-template-columns: minmax(0, 1.15fr) auto;
-        gap: 28px;
-        align-items: end;
+        grid-template-columns: minmax(0, 1fr) minmax(280px, 360px);
+        gap: 40px;
+        align-items: center;
         position: relative;
         z-index: 1;
       }
@@ -352,8 +352,7 @@
         font-size: 18px;
         color: rgba(255, 255, 255, 0.6);
         font-weight: 300;
-        margin-bottom: 24px;
-        max-width: 860px;
+        margin-bottom: 36px;
       }
       .hero-chips {
         display: flex;
@@ -377,26 +376,6 @@
         grid-template-columns: repeat(2, minmax(0, 1fr));
         gap: 12px;
         align-self: stretch;
-      }
-      .chip-link {
-        text-decoration: none;
-        transition:
-          transform 0.18s ease,
-          background 0.18s ease,
-          border-color 0.18s ease,
-          color 0.18s ease;
-      }
-      .chip-link:hover,
-      .chip-link:focus-visible {
-        background: rgba(255, 255, 255, 0.16);
-        border-color: rgba(255, 255, 255, 0.28);
-        color: #fff;
-        transform: translateY(-1px);
-      }
-      .chip-link::after {
-        content: " ↗";
-        color: var(--gold);
-        opacity: 0.9;
       }
       .hero-badge {
         position: relative;
@@ -447,26 +426,31 @@
         display: block;
         margin-bottom: 4px;
       }
-      .badge-icon {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: 52px;
-        height: 52px;
-        margin: 0 auto 8px;
-      }
-      .badge-icon svg {
-        width: 44px;
-        height: 44px;
-        display: block;
-        fill: currentColor;
-      }
       .badge-label {
         font-size: 11px;
         font-weight: 600;
         text-transform: uppercase;
         letter-spacing: 0.1em;
         opacity: 0.75;
+      }
+      .badge-sub {
+        font-size: 12px;
+        font-weight: 600;
+        margin-top: 6px;
+        opacity: 0.85;
+      }
+      .badge-icon {
+        font-size: 2rem;
+        line-height: 1;
+        margin-bottom: 12px;
+      }
+      .badge-linkline {
+        font-size: 12px;
+        font-weight: 700;
+        margin-top: 10px;
+        opacity: 0.92;
+        text-decoration: underline;
+        text-underline-offset: 0.18em;
       }
       .badge-sub {
         font-size: 12px;
