@@ -731,7 +731,7 @@
         </div>
         <div class="top-actions">
           <a class="btn secondary" href="index.html">Main Website</a>
-          <a class="btn secondary" href="index.html">Curriculum Home</a>
+          <a class="btn secondary" href="app.html">App Home</a>
           <a class="btn primary" href="game.html">Challenge Game</a>
         </div>
       </div>
@@ -762,7 +762,7 @@
           </div>
           <div class="link-chip-row" style="margin-top: 22px">
             <a class="link-chip" href="program.html">Program Guide</a>
-            <a class="link-chip" href="full-curriculum.html">Curriculum Library</a>
+            <a class="link-chip" href="curriculum-library.html">Curriculum Library</a>
             <a class="link-chip" href="one-pager.html">One-Pager</a>
           </div>
         </section>
@@ -774,6 +774,11 @@
             Every student gets an individual access code and a personalized
             dashboard. This first version includes seeded student logins so we
             can shape the experience before wiring it to a live backend.
+          </p>
+          <p class="subcopy" style="margin-top: 10px">
+            Use the exact student ID and access code shown in the starter cards
+            below. Example: student ID <strong>ava-james</strong> with access
+            code <strong>RFRL-701</strong>.
           </p>
 
           <form class="login-form" id="studentLoginForm">
@@ -810,8 +815,13 @@
               Teachers can open the review workspace to read student bios, score
               submissions, and leave encouragement or coaching notes.
             </p>
+            <p class="subcopy" style="margin-top: 10px">
+              Students do not need any of the setup fields below. They are only
+              for the teacher or admin when connecting this portal to the live
+              backend.
+            </p>
             <label>
-              Portal API base URL
+              Portal API base URL (teacher/admin only)
               <input
                 id="portalApiUrlInput"
                 type="url"
@@ -819,8 +829,12 @@
                 placeholder="https://your-worker.example.workers.dev"
               />
             </label>
+            <p class="subcopy" style="margin-top: 6px">
+              This is the web address for the live portal backend that stores
+              logins, bios, submissions, and teacher feedback.
+            </p>
             <label>
-              Bootstrap secret
+              Bootstrap secret (one-time teacher/admin setup)
               <input
                 id="portalBootstrapSecretInput"
                 type="password"
@@ -828,6 +842,10 @@
                 placeholder="Used one time to seed student accounts"
               />
             </label>
+            <p class="subcopy" style="margin-top: 6px">
+              This is only used one time to create the starter student accounts
+              in the backend.
+            </p>
             <div class="assignment-actions">
               <button class="btn secondary" id="savePortalApiBtn" type="button">
                 Save Backend URL

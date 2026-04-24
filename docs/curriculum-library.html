@@ -1,0 +1,202 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
+    <title>Curriculum Library</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #0f1623;
+        --paper: #f6f2e8;
+        --slate: #24324b;
+        --gold: #c89844;
+        --rule: #ddd5c6;
+        --muted: #667286;
+        --white: #ffffff;
+      }
+      * {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      body {
+        font-family: "DM Sans", sans-serif;
+        color: var(--ink);
+        background:
+          radial-gradient(circle at top left, rgba(200, 152, 68, 0.16), transparent 28%),
+          linear-gradient(180deg, #f8f4eb 0%, #f3ede2 100%);
+      }
+      .page {
+        max-width: 920px;
+        margin: 0 auto;
+        padding: calc(env(safe-area-inset-top, 0px) + 18px) 16px
+          calc(env(safe-area-inset-bottom, 0px) + 28px);
+      }
+      .topbar,
+      .grid {
+        display: grid;
+        gap: 12px;
+      }
+      .topbar {
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        margin-bottom: 16px;
+      }
+      .btn,
+      .card {
+        border-radius: 22px;
+        border: 1px solid var(--rule);
+        background: rgba(255, 255, 255, 0.92);
+        text-decoration: none;
+        color: inherit;
+      }
+      .btn {
+        min-height: 44px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 0 16px;
+        font-weight: 700;
+        color: var(--slate);
+      }
+      .hero {
+        border-radius: 28px;
+        border: 1px solid rgba(36, 50, 75, 0.12);
+        background: linear-gradient(135deg, #24324b 0%, #314868 100%);
+        color: #fff;
+        padding: 24px 20px;
+        box-shadow: 0 18px 42px rgba(25, 35, 54, 0.14);
+        margin-bottom: 18px;
+      }
+      .eyebrow {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+        color: rgba(255, 255, 255, 0.72);
+        margin-bottom: 8px;
+      }
+      h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2rem, 8vw, 3rem);
+        line-height: 1.04;
+        margin-bottom: 10px;
+      }
+      .hero p {
+        color: rgba(255, 255, 255, 0.88);
+        line-height: 1.7;
+      }
+      .grid {
+        grid-template-columns: 1fr;
+      }
+      .card {
+        display: block;
+        padding: 18px;
+        box-shadow: 0 14px 30px rgba(36, 50, 75, 0.08);
+      }
+      .label {
+        display: inline-flex;
+        align-items: center;
+        min-height: 26px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: rgba(200, 152, 68, 0.16);
+        color: var(--slate);
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .card h2 {
+        margin-top: 12px;
+        font-family: "Playfair Display", serif;
+        color: var(--slate);
+        font-size: 1.5rem;
+      }
+      .card p {
+        margin-top: 8px;
+        line-height: 1.65;
+        color: var(--muted);
+      }
+      .meta {
+        margin-top: 12px;
+        color: var(--gold);
+        font-weight: 700;
+        font-size: 13px;
+      }
+      @media (min-width: 720px) {
+        .grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 640px) {
+        .topbar {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <main class="page">
+      <div class="topbar">
+        <a class="btn" href="student-portal.html">Back to Portal</a>
+        <a class="btn" href="index.html">Curriculum Home</a>
+        <a class="btn" href="game.html">Challenge Game</a>
+      </div>
+
+      <section class="hero">
+        <div class="eyebrow">Website Library</div>
+        <h1>Curriculum Library</h1>
+        <p>
+          Open the main curriculum pieces from one place without hunting through
+          the homepage.
+        </p>
+      </section>
+
+      <section class="grid">
+        <a class="card" href="program.html">
+          <span class="label">Guide</span>
+          <h2>Program Guide</h2>
+          <p>See the structure, purpose, audience, and teaching model.</p>
+          <div class="meta">Open Guide</div>
+        </a>
+        <a class="card" href="details.html">
+          <span class="label">Details</span>
+          <h2>Program Details</h2>
+          <p>Go deeper into implementation, learning design, and support material.</p>
+          <div class="meta">Open Details</div>
+        </a>
+        <a class="card" href="index.html">
+          <span class="label">Curriculum</span>
+          <h2>Full Curriculum Site</h2>
+          <p>Open the larger curriculum homepage and its section-based content.</p>
+          <div class="meta">Open Full Site</div>
+        </a>
+        <a class="card" href="one-pager.html">
+          <span class="label">Quick View</span>
+          <h2>One-Pager</h2>
+          <p>Read the mobile-ready one-pager with a visible way back.</p>
+          <div class="meta">Open One-Pager</div>
+        </a>
+        <a class="card" href="bio.html">
+          <span class="label">Founders</span>
+          <h2>Founders Bio</h2>
+          <p>Read the story behind the program and the people leading it.</p>
+          <div class="meta">Meet the Founders</div>
+        </a>
+        <a class="card" href="resume.html">
+          <span class="label">Profile</span>
+          <h2>Founder Resume</h2>
+          <p>Open the professional background and experience profile.</p>
+          <div class="meta">View Resume</div>
+        </a>
+      </section>
+    </main>
+  </body>
+</html>

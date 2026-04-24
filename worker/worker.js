@@ -12,7 +12,7 @@ const RESOURCE_LIBRARY = [
     title: "Curriculum Library",
     description:
       "Browse the larger curriculum library, theory, pacing ideas, and support materials.",
-    href: "full-curriculum.html",
+    href: "curriculum-library.html",
     label: "Open Library",
     meta: ["Assignments", "Pacing", "Support materials"],
   },

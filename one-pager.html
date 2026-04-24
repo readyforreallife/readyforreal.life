@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta
       name="viewport"
-      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=yes, viewport-fit=cover"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
     />
     <title>MMMF One-Pager</title>
     <link
@@ -38,16 +38,9 @@
           calc(env(safe-area-inset-bottom, 0px) + 28px);
       }
       .topbar {
-        position: sticky;
-        top: 0;
-        z-index: 20;
-        display: flex;
-        flex-wrap: wrap;
+        display: grid;
         gap: 10px;
-        align-items: center;
         margin-bottom: 14px;
-        padding-bottom: 10px;
-        backdrop-filter: blur(10px);
       }
       .btn {
         display: inline-flex;
@@ -61,11 +54,6 @@
         color: var(--slate);
         text-decoration: none;
         font-weight: 700;
-      }
-      .btn.primary {
-        background: var(--slate);
-        border-color: var(--slate);
-        color: #fff;
       }
       .hero {
         border: 1px solid var(--rule);
@@ -93,15 +81,27 @@
         color: rgba(255, 255, 255, 0.86);
         line-height: 1.7;
       }
-      .preview-card {
+      .section-stack {
+        display: grid;
+        gap: 14px;
         margin-top: 18px;
+      }
+      .section-card {
         border-radius: 24px;
         border: 1px solid var(--rule);
-        background: rgba(255, 255, 255, 0.88);
+        background: rgba(255, 255, 255, 0.9);
         padding: 14px;
         box-shadow: 0 14px 30px rgba(36, 50, 75, 0.08);
       }
-      .preview-card img {
+      .section-label {
+        font-family: "DM Mono", monospace;
+        font-size: 10px;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--muted);
+        margin-bottom: 10px;
+      }
+      .section-card img {
         display: block;
         width: 100%;
         height: auto;
@@ -113,41 +113,54 @@
         line-height: 1.65;
         font-size: 14px;
       }
-      @media (max-width: 640px) {
-        .topbar {
-          position: static;
-        }
-      }
     </style>
   </head>
   <body>
     <main class="page">
       <div class="topbar">
-        <a class="btn" href="student-portal.html" id="backBtn">Back</a>
+        <a class="btn" href="student-portal.html" id="backBtn">Back to Portal</a>
         <a class="btn" href="app.html">App Home</a>
-        <a class="btn primary" href="MMMF_OnePager.pdf">Open Original PDF</a>
+        <a class="btn" href="curriculum-library.html">Curriculum Library</a>
       </div>
 
       <section class="hero">
         <div class="eyebrow">Mobile One-Pager</div>
         <h1>Ready for Real Life One-Pager</h1>
         <p>
-          This version keeps the one-pager inside the app with a visible way
-          back. The image below is easier to scroll and zoom on a phone, and
-          the original PDF is still available if you need it.
+          This version is broken into readable sections so it works naturally in
+          the app without pinch zooming or opening a dead-end PDF screen.
         </p>
       </section>
 
-      <section class="preview-card">
-        <img
-          src="assets/previews/MMMF_OnePager.png"
-          alt="Ready for Real Life one-pager preview"
-        />
-        <p class="note">
-          Tip: pinch to zoom on the image if you want a closer look, or use
-          "Open Original PDF" for the full file.
-        </p>
+      <section class="section-stack">
+        <article class="section-card">
+          <div class="section-label">Section 1</div>
+          <img
+            src="assets/previews/MMMF_OnePager_top.png"
+            alt="Top section of the Ready for Real Life one-pager"
+          />
+        </article>
+        <article class="section-card">
+          <div class="section-label">Section 2</div>
+          <img
+            src="assets/previews/MMMF_OnePager_middle.png"
+            alt="Middle section of the Ready for Real Life one-pager"
+          />
+        </article>
+        <article class="section-card">
+          <div class="section-label">Section 3</div>
+          <img
+            src="assets/previews/MMMF_OnePager_bottom.png"
+            alt="Bottom section of the Ready for Real Life one-pager"
+          />
+        </article>
       </section>
+
+      <p class="note">
+        If you still want the original file, you can open the PDF from the main
+        website later. Inside the app, this view is meant to be the easier
+        reading version.
+      </p>
     </main>
 
     <script>

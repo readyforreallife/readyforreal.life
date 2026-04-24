@@ -34,6 +34,7 @@ const entries = [
   "styles.css",
   "student-portal.html",
   "student-portal.js",
+  "curriculum-library.html",
   "one-pager.html",
   "sw.js",
   "apple-touch-icon-rfrl.png",
