@@ -7,10 +7,10 @@ const SAMPLE_STUDENTS = [
     id: "ava-james",
     accessCode: "RFRL-701",
     name: "Ava James",
-    cohort: "Spring 2026 Vanguard Cohort",
-    track: "Foundations Track",
+    cohort: "Spring 2026 Student Group",
+    track: "Core Skills Focus",
     avatar: "🚀",
-    welcomeTitle: "Welcome to the Vanguard, Ava.",
+    welcomeTitle: "Welcome, Ava.",
     welcomeCopy:
       "You are not just taking a class. You are building the kind of judgment, character, and real-world readiness people remember.",
     bio: {
@@ -54,10 +54,10 @@ const SAMPLE_STUDENTS = [
     id: "jaden-ortega",
     accessCode: "RFRL-884",
     name: "Jaden Ortega",
-    cohort: "Spring 2026 Vanguard Cohort",
-    track: "Leadership Track",
+    cohort: "Spring 2026 Student Group",
+    track: "Leadership Focus",
     avatar: "🛡️",
-    welcomeTitle: "Your leadership lane is opening up, Jaden.",
+    welcomeTitle: "Welcome, Jaden.",
     welcomeCopy:
       "This portal is your personal operations room. The more seriously you take the reflections, assignments, and coaching here, the more prepared you become for the moments where other people will count on you.",
     bio: {
@@ -101,8 +101,8 @@ const SAMPLE_STUDENTS = [
     id: "mia-thomas",
     accessCode: "RFRL-552",
     name: "Mia Thomas",
-    cohort: "Spring 2026 Trailblazer Cohort",
-    track: "Confidence & Communication Track",
+    cohort: "Spring 2026 Student Group",
+    track: "Communication Focus",
     avatar: "✨",
     welcomeTitle: "You belong here, Mia.",
     welcomeCopy:
