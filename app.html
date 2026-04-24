@@ -89,18 +89,25 @@
         margin-bottom: 18px;
       }
       .hero-logo {
-        width: 54px;
-        height: 54px;
-        border-radius: 16px;
-        background: rgba(255, 255, 255, 0.08);
+        width: 68px;
+        height: 68px;
+        border-radius: 22px;
+        background:
+          radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12), transparent 46%),
+          linear-gradient(180deg, rgba(24, 48, 79, 0.98), rgba(30, 57, 90, 0.98));
+        border: 1px solid rgba(200, 152, 68, 0.28);
         display: grid;
         place-items: center;
         flex-shrink: 0;
+        box-shadow:
+          0 12px 28px rgba(10, 18, 32, 0.2),
+          inset 0 1px 0 rgba(255, 255, 255, 0.14);
       }
       .hero-logo img {
-        width: 36px;
-        height: 36px;
+        width: 54px;
+        height: 54px;
         object-fit: contain;
+        filter: drop-shadow(0 4px 10px rgba(8, 14, 24, 0.24));
       }
       .eyebrow {
         margin: 0 0 6px;
