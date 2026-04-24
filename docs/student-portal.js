@@ -2,6 +2,7 @@ const PORTAL_SETTINGS_KEY = "rfrl-student-portal-settings-v2";
 const DEMO_STORE_KEY = "rfrl-student-portal-demo-v1";
 const DEMO_TEACHER_PIN = "RFRL-TEACHER";
 const PAGE_ENTRY_MODE = new URLSearchParams(window.location.search).get("entry") || "";
+const PAGE_HASH = window.location.hash || "";
 
 const SAMPLE_STUDENTS = [
   {
@@ -543,14 +544,22 @@ function syncSettingsInputs() {
 }
 
 function resetPortalScrollForEntry() {
-  if (!PAGE_ENTRY_MODE) return;
+  if (!PAGE_ENTRY_MODE && PAGE_HASH !== "#teacher-access") return;
 
   if ("scrollRestoration" in window.history) {
     window.history.scrollRestoration = "manual";
   }
 
-  window.scrollTo(0, 0);
-  requestAnimationFrame(() => window.scrollTo(0, 0));
+  if (PAGE_HASH === "#teacher-access") {
+    window.history.replaceState({}, "", `${window.location.pathname}${window.location.search}`);
+  }
+
+  const scrollTop = () => window.scrollTo(0, 0);
+  scrollTop();
+  requestAnimationFrame(scrollTop);
+  window.addEventListener("load", scrollTop, { once: true });
+  window.addEventListener("pageshow", scrollTop, { once: true });
+  setTimeout(scrollTop, 120);
 }
 
 function badgeClass(status) {
