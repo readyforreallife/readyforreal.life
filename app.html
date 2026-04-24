@@ -54,10 +54,6 @@
         touch-action: pan-y pinch-zoom;
       }
       body {
-        position: fixed;
-        inset: 0;
-        width: 100%;
-        height: 100dvh;
         min-height: 100vh;
         background:
           radial-gradient(
@@ -66,17 +62,17 @@
             transparent 34%
           ),
           linear-gradient(180deg, #f8f4ec 0%, #f3ede1 100%);
-        overflow: hidden;
+        overflow-x: hidden;
+        overflow-y: auto;
       }
       .app-shell {
-        height: 100dvh;
+        min-height: 100vh;
         width: min(100%, 760px);
         margin: 0 auto;
         padding: calc(env(safe-area-inset-top, 0px) + 20px) 20px
           calc(env(safe-area-inset-bottom, 0px) + 28px);
         overflow-x: hidden;
-        overflow-y: auto;
-        -webkit-overflow-scrolling: touch;
+        overflow-y: visible;
       }
       .hero {
         background: linear-gradient(180deg, #1f2a3f 0%, #253044 100%);
@@ -236,7 +232,7 @@
         <div class="hero-top">
           <div class="hero-logo">
             <img
-              src="assets/mmmf-site-mark.svg"
+              src="assets/logo-square.png"
               alt="Ready for Real Life logo"
             />
           </div>
@@ -253,6 +249,24 @@
 
       <div class="section-title">Start Here</div>
       <div class="quick-grid">
+        <a class="card primary" href="/student-portal.html">
+          <span class="card-label">Student Portal</span>
+          <h2>Student Login</h2>
+          <p>
+            Open the student welcome page, personal assignments, workbook
+            prompts, teacher feedback, and success resources.
+          </p>
+          <div class="meta">Enter Portal</div>
+        </a>
+        <a class="card primary" href="/student-portal.html">
+          <span class="card-label">Instructor Portal</span>
+          <h2>Instructor Login</h2>
+          <p>
+            Open the portal and use the instructor access section to unlock
+            review tools, student bios, scoring, and feedback.
+          </p>
+          <div class="meta">Open Teacher Access</div>
+        </a>
         <a class="card primary" href="/game.html">
           <span class="card-label">Interactive</span>
           <h2>Challenge Game</h2>
@@ -338,11 +352,11 @@
           <p>Open the full details page and supporting content.</p>
           <div class="meta">View Details</div>
         </a>
-        <a class="card" href="/MMMF_OnePager.pdf">
+        <a class="card" href="/one-pager.html">
           <span class="card-label">PDF</span>
           <h3>One Pager</h3>
           <p>Keep the MMMF one-pager available directly inside the app.</p>
-          <div class="meta">Open PDF</div>
+          <div class="meta">Open One-Pager</div>
         </a>
         <a class="card" href="/ModernManners%20Community%20Revenue.pdf">
           <span class="card-label">PDF</span>
@@ -359,6 +373,8 @@
       </div>
 
       <div class="footer-actions">
+        <a class="primary" href="/student-portal.html">Student Login</a>
+        <a class="primary" href="/student-portal.html">Instructor Login</a>
         <a class="primary" href="/full-curriculum.html">Full Curriculum</a>
         <a class="secondary" href="/website-home.html">Main Website</a>
       </div>
