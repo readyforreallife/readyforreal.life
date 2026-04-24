@@ -86,25 +86,17 @@
       }
 
       .brand-mark {
-        width: 68px;
-        height: 68px;
-        border-radius: 22px;
+        width: 60px;
+        height: 60px;
         display: grid;
         place-items: center;
-        background:
-          radial-gradient(circle at 30% 30%, rgba(255, 255, 255, 0.12), transparent 46%),
-          linear-gradient(180deg, rgba(24, 48, 79, 0.98), rgba(30, 57, 90, 0.98));
-        border: 1px solid rgba(200, 152, 68, 0.28);
-        box-shadow:
-          0 12px 28px rgba(19, 33, 55, 0.16),
-          inset 0 1px 0 rgba(255, 255, 255, 0.14);
+        flex: 0 0 auto;
       }
 
       .brand-mark img {
-        width: 54px;
-        height: 54px;
+        width: 60px;
+        height: 60px;
         object-fit: contain;
-        filter: drop-shadow(0 4px 10px rgba(8, 14, 24, 0.24));
       }
 
       .eyebrow,
@@ -825,6 +817,10 @@
               Students do not need any of the setup fields below. They are only
               for the teacher or admin when connecting this portal to the live
               backend.
+            </p>
+            <p class="subcopy" style="margin-top: 10px">
+              If you are just previewing in the app without the live backend,
+              use demo teacher PIN <strong>RFRL-TEACHER</strong>.
             </p>
             <label>
               Portal API base URL (teacher/admin only)

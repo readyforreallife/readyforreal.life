@@ -16,8 +16,10 @@
         --ink: #0f1623;
         --paper: #f6f2e8;
         --slate: #24324b;
+        --gold: #c89844;
         --rule: #ddd5c6;
         --muted: #667286;
+        --white: #ffffff;
       }
       * {
         box-sizing: border-box;
@@ -37,10 +39,18 @@
         padding: calc(env(safe-area-inset-top, 0px) + 18px) 16px
           calc(env(safe-area-inset-bottom, 0px) + 28px);
       }
-      .topbar {
+      .topbar,
+      .pill-row,
+      .modules,
+      .frameworks,
+      .audience,
+      .measures,
+      .outcomes {
         display: grid;
-        gap: 10px;
-        margin-bottom: 14px;
+        gap: 12px;
+      }
+      .topbar {
+        margin-bottom: 16px;
       }
       .btn {
         display: inline-flex;
@@ -56,62 +66,111 @@
         font-weight: 700;
       }
       .hero {
-        border: 1px solid var(--rule);
         border-radius: 24px;
         background: linear-gradient(135deg, #24324b 0%, #314868 100%);
         color: #fff;
         padding: 24px 20px;
         box-shadow: 0 18px 42px rgba(25, 35, 54, 0.14);
       }
-      .eyebrow {
+      .eyebrow,
+      .section-label,
+      .pill {
         font-family: "DM Mono", monospace;
         font-size: 10px;
         letter-spacing: 0.16em;
         text-transform: uppercase;
+      }
+      .eyebrow {
         color: rgba(255, 255, 255, 0.72);
         margin-bottom: 8px;
       }
-      h1 {
+      h1, h2 {
         font-family: "Playfair Display", serif;
+        color: var(--slate);
+      }
+      .hero h1 {
+        color: #fff;
         font-size: clamp(2rem, 8vw, 3.2rem);
         line-height: 1.04;
         margin-bottom: 10px;
       }
       .hero p {
-        color: rgba(255, 255, 255, 0.86);
+        color: rgba(255, 255, 255, 0.88);
         line-height: 1.7;
       }
-      .section-stack {
-        display: grid;
-        gap: 14px;
-        margin-top: 18px;
-      }
-      .section-card {
-        border-radius: 24px;
+      .section {
+        margin-top: 16px;
+        border-radius: 22px;
         border: 1px solid var(--rule);
-        background: rgba(255, 255, 255, 0.9);
-        padding: 14px;
+        background: rgba(255, 255, 255, 0.92);
+        padding: 18px;
         box-shadow: 0 14px 30px rgba(36, 50, 75, 0.08);
       }
       .section-label {
-        font-family: "DM Mono", monospace;
-        font-size: 10px;
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--muted);
+        color: var(--gold);
         margin-bottom: 10px;
       }
-      .section-card img {
-        display: block;
-        width: 100%;
-        height: auto;
-        border-radius: 18px;
+      .section h2 {
+        font-size: 1.45rem;
+        margin-bottom: 10px;
       }
-      .note {
-        margin-top: 14px;
+      .section p {
+        line-height: 1.7;
+        color: var(--muted);
+      }
+      .pill-row {
+        margin-top: 16px;
+        grid-template-columns: 1fr 1fr;
+      }
+      .pill {
+        border-radius: 16px;
+        background: rgba(255, 255, 255, 0.1);
+        border: 1px solid rgba(255, 255, 255, 0.16);
+        padding: 12px;
+        color: rgba(255, 255, 255, 0.92);
+      }
+      .pill strong {
+        display: block;
+        font-family: "DM Sans", sans-serif;
+        font-size: 1.15rem;
+        letter-spacing: normal;
+        text-transform: none;
+        margin-top: 4px;
+      }
+      .card {
+        border-radius: 18px;
+        border: 1px solid var(--rule);
+        background: var(--white);
+        padding: 16px;
+      }
+      .card h3 {
+        margin-bottom: 8px;
+        color: var(--slate);
+      }
+      .card p,
+      .card li {
         color: var(--muted);
         line-height: 1.65;
-        font-size: 14px;
+      }
+      .card ul {
+        padding-left: 18px;
+      }
+      .card ul li + li {
+        margin-top: 6px;
+      }
+      @media (min-width: 720px) {
+        .modules,
+        .frameworks,
+        .audience,
+        .measures,
+        .outcomes {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+      @media (max-width: 640px) {
+        .pill-row {
+          grid-template-columns: 1fr;
+        }
       }
     </style>
   </head>
@@ -124,43 +183,108 @@
       </div>
 
       <section class="hero">
-        <div class="eyebrow">Mobile One-Pager</div>
-        <h1>Ready for Real Life One-Pager</h1>
+        <div class="eyebrow">Real-World Skills Curriculum</div>
+        <h1>Modern Manners &amp; Mental Fortitude</h1>
         <p>
-          This version is broken into readable sections so it works naturally in
-          the app without pinch zooming or opening a dead-end PDF screen.
+          The life-skills course your students actually need. This mobile
+          version turns the one-pager into readable sections instead of a tiny
+          poster image.
+        </p>
+        <div class="pill-row">
+          <div class="pill">Grades<strong>7-12</strong></div>
+          <div class="pill">Duration<strong>16 Weeks</strong></div>
+          <div class="pill">Format<strong>2x / Week</strong></div>
+          <div class="pill">Class Size<strong>20-25</strong></div>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">Overview</div>
+        <h2>What this course is for</h2>
+        <p>
+          Academic achievement dominates most curricula while students navigate
+          complex social, digital, and emotional landscapes with too few real
+          tools. This course makes those tools explicit, measurable, and
+          transferable for school, family, workplace, and community life.
         </p>
       </section>
 
-      <section class="section-stack">
-        <article class="section-card">
-          <div class="section-label">Section 1</div>
-          <img
-            src="assets/previews/MMMF_OnePager_top.png"
-            alt="Top section of the Ready for Real Life one-pager"
-          />
-        </article>
-        <article class="section-card">
-          <div class="section-label">Section 2</div>
-          <img
-            src="assets/previews/MMMF_OnePager_middle.png"
-            alt="Middle section of the Ready for Real Life one-pager"
-          />
-        </article>
-        <article class="section-card">
-          <div class="section-label">Section 3</div>
-          <img
-            src="assets/previews/MMMF_OnePager_bottom.png"
-            alt="Bottom section of the Ready for Real Life one-pager"
-          />
-        </article>
+      <section class="section">
+        <div class="section-label">Four Core Pillars</div>
+        <div class="modules">
+          <article class="card"><h3>01 Respectful Communication</h3><p>Build steady, clear, respectful communication across real pressure moments.</p></article>
+          <article class="card"><h3>02 Emotional Regulation</h3><p>Practice calming, labeling, reframing, and responding on purpose.</p></article>
+          <article class="card"><h3>03 Decision-Making</h3><p>Make stronger choices under pressure by thinking through options and consequences.</p></article>
+          <article class="card"><h3>04 Accountability &amp; Repair</h3><p>Learn how to own mistakes, restore trust, and repair damage well.</p></article>
+        </div>
       </section>
 
-      <p class="note">
-        If you still want the original file, you can open the PDF from the main
-        website later. Inside the app, this view is meant to be the easier
-        reading version.
-      </p>
+      <section class="section">
+        <div class="section-label">Five Course Modules</div>
+        <div class="modules">
+          <article class="card"><h3>Module 01 Modern Manners</h3><p>Daily respect, presence, and social awareness in real settings.</p></article>
+          <article class="card"><h3>Module 02 Emotional Intelligence</h3><p>Recognize emotion, regulate it, and keep judgment intact.</p></article>
+          <article class="card"><h3>Module 03 Conflict Navigation</h3><p>Handle tension, peer pressure, and misunderstandings with control.</p></article>
+          <article class="card"><h3>Module 04 Digital Citizenship</h3><p>Protect reputation, privacy, and long-term opportunity online.</p></article>
+          <article class="card"><h3>Module 05 Personal Growth</h3><p>Build responsibility, maturity, and identity that transfers beyond class.</p></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">Two Student Frameworks</div>
+        <div class="frameworks">
+          <article class="card">
+            <h3>Regulation Routine</h3>
+            <p><strong>Pause • Label • Reframe • Respond</strong></p>
+            <p>Introduced in Module 02 and reinforced across all modules. It teaches self-regulation as a performance skill, not a therapy tool.</p>
+          </article>
+          <article class="card">
+            <h3>Decision Framework</h3>
+            <p><strong>Pause • Options • Consequences • Choose</strong></p>
+            <p>Introduced in Module 03 and reinforced across all modules. Students apply it to real and simulated high-stakes scenarios.</p>
+          </article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">Who This Course Serves</div>
+        <div class="audience">
+          <article class="card"><h3>Grades 7-8</h3><p>Foundational, one-term introduction to all five modules and both frameworks.</p></article>
+          <article class="card"><h3>Grades 9-12</h3><p>Depth increases each year. Students build on prior knowledge through applied scenarios.</p></article>
+          <article class="card"><h3>Community Youth</h3><p>After-school programs and faith organizations. Adaptable for non-school settings.</p></article>
+          <article class="card"><h3>Community Adults</h3><p>Workplace teams and family development contexts. Skills transfer directly to adult life.</p></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">How Learning Is Measured</div>
+        <div class="measures">
+          <article class="card"><h3>Weekly Journals</h3><p>Capture reflection, application, and personal growth over time.</p></article>
+          <article class="card"><h3>Role-Play Rubrics</h3><p>Assess live use of communication, regulation, and accountability skills.</p></article>
+          <article class="card"><h3>Pre &amp; Post Surveys</h3><p>Show growth in self-awareness, confidence, and real-life transfer.</p></article>
+          <article class="card"><h3>Capstone &amp; Novel Scenario Task</h3><p>Demonstrate skills in new situations where there is no rehearsed script.</p></article>
+        </div>
+      </section>
+
+      <section class="section">
+        <div class="section-label">What Students Will Be Able To Do</div>
+        <div class="outcomes">
+          <article class="card">
+            <ul>
+              <li>Apply respectful communication across school, workplace, and digital contexts.</li>
+              <li>Make structured decisions under pressure using the Decision Framework.</li>
+              <li>Own mistakes, repair relationships, and follow through on commitments.</li>
+            </ul>
+          </article>
+          <article class="card">
+            <ul>
+              <li>Self-regulate using the Regulation Routine as a performance skill.</li>
+              <li>Navigate digital life with permanence, privacy, and reputation in mind.</li>
+              <li>Transfer skills independently to unfamiliar, high-stakes real-world situations.</li>
+            </ul>
+          </article>
+        </div>
+      </section>
     </main>
 
     <script>
