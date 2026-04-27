@@ -4,6 +4,7 @@ const PAGE_HASH = window.location.hash || "";
 const DEFAULT_STORAGE_BUCKET = "portal-files";
 const ADVANCED_SETTINGS_ACCESS_KEY = "4429";
 const ADVANCED_SETTINGS_SESSION_KEY = "rfrl-advanced-settings-unlocked";
+const DEFAULT_CONFIRMATION_REDIRECT_URL = "https://readyforreal.life/student-portal.html";
 const EMBEDDED_SUPABASE_URL = normalizeUrl(
   document.documentElement.dataset.supabaseUrl || "",
 );
@@ -275,6 +276,20 @@ function saveSettings() {
 
 function normalizeUrl(url) {
   return String(url || "").trim().replace(/\/+$/, "");
+}
+
+function getEmailConfirmationRedirectUrl() {
+  const { protocol, hostname, origin, pathname } = window.location;
+  const isLocalHost =
+    hostname === "localhost" ||
+    hostname === "127.0.0.1" ||
+    hostname === "0.0.0.0";
+
+  if ((protocol === "https:" || protocol === "http:") && !isLocalHost) {
+    return `${origin}${pathname}`;
+  }
+
+  return DEFAULT_CONFIRMATION_REDIRECT_URL;
 }
 
 function hasSupabaseConfig() {
@@ -1018,6 +1033,7 @@ async function signUpUser() {
     email,
     password,
     options: {
+      emailRedirectTo: getEmailConfirmationRedirectUrl(),
       data: {
         full_name: name,
         role,
