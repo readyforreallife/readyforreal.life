@@ -961,11 +961,15 @@ function openIdentityModal(profile, options = {}) {
   if (imageUrl) {
     identityModalImage.src = imageUrl;
     identityModalImage.hidden = false;
+    identityModalImage.style.display = "";
     identityModalFallback.hidden = true;
+    identityModalFallback.style.display = "none";
   } else {
     identityModalImage.hidden = true;
     identityModalImage.removeAttribute("src");
+    identityModalImage.style.display = "none";
     identityModalFallback.hidden = false;
+    identityModalFallback.style.display = "";
     identityModalFallback.textContent = fallbackAvatar;
   }
 
