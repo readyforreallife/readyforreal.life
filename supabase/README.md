@@ -4,6 +4,7 @@ This portal now supports a Supabase-backed account system with:
 
 - Email/password authentication
 - Per-user profiles
+- Shared community profiles for enrolled students and instructors
 - Per-user assignments and workbook storage
 - Private file storage
 - Row Level Security on every user-owned table
@@ -27,11 +28,17 @@ Open the Supabase SQL editor and run:
 That will create:
 
 - `profiles`
+- `community_profiles`
 - `user_assignments`
 - `user_workbook_entries`
 - `user_files`
 - the private `portal-files` storage bucket
+- the authenticated-read `community-profiles` image bucket
 - RLS policies so users can only access their own records and files
+
+Run the updated SQL again if your project was already set up before the
+community profile feature was added. It is idempotent and will add the missing
+shared-profile table, policies, and storage bucket.
 
 ## 3. Auth settings
 
@@ -53,14 +60,16 @@ On the portal page, save:
 
 The default bucket name in the SQL is `portal-files`.
 
-## 5. Important note about instructor access
+## 5. Shared identity visibility
 
-This setup is intentionally strict:
+This setup now has two visibility layers:
 
 - students can only access their own information
 - instructors can only access their own information
+- enrolled users can view the shared `community_profiles` identity cards for
+  other enrolled users
 
-That matches the current RLS requirement for private per-user ownership.
-
-If you later want instructors to review selected student data, that will need a
-separate teacher-to-student relationship model and additional RLS policies.
+Private assignments, workbook entries, uploads, emails, and account-specific
+records remain owner-only. The shared community layer is limited to the
+displayed name, role, cohort, track, shared bio fields, and current profile
+image.

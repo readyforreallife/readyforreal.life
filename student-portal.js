@@ -2,6 +2,7 @@ const PORTAL_SETTINGS_KEY = "rfrl-student-portal-supabase-v1";
 const PAGE_ENTRY_MODE = new URLSearchParams(window.location.search).get("entry") || "";
 const PAGE_HASH = window.location.hash || "";
 const DEFAULT_STORAGE_BUCKET = "portal-files";
+const COMMUNITY_PROFILE_BUCKET = "community-profiles";
 const ADVANCED_SETTINGS_ACCESS_KEY = "4429";
 const DEFAULT_CONFIRMATION_REDIRECT_URL = "https://readyforreal.life/student-portal.html";
 const EMBEDDED_SUPABASE_URL = normalizeUrl(
@@ -523,6 +524,13 @@ const ROLE_PORTAL_COPY = {
     feedbackTitle: "Saved feedback and review history",
     feedbackCopy:
       "Any feedback stored on your account lives here. This keeps your own review history private to your login.",
+    communityLabel: "Learning Community",
+    communityTitle: "The students and instructors in your program",
+    communityCopy:
+      "See who is enrolled, the photo they chose to share, and the short introduction that helps the community know them.",
+    imageNote:
+      "Add a current photo so your page feels personal and other enrolled users can recognize you.",
+    imageStatusSuccess: "Profile image saved and shared with the enrolled community.",
   },
   instructor: {
     roadmapLabel: "16-Week Instructor Guide",
@@ -553,6 +561,13 @@ const ROLE_PORTAL_COPY = {
     feedbackTitle: "Saved review history and coaching notes",
     feedbackCopy:
       "Anything saved on this account stays here as part of your private implementation and review record.",
+    communityLabel: "Program Community",
+    communityTitle: "Students and instructors enrolled in this program",
+    communityCopy:
+      "Use this shared community view to recognize the people in the program, see their identity card, and get to know who they are.",
+    imageNote:
+      "Add a current photo so students and instructors can recognize you as part of the enrolled program community.",
+    imageStatusSuccess: "Profile image saved and shared with the program community.",
   },
 };
 
@@ -646,6 +661,12 @@ const bioStrengthsInput = document.getElementById("bioStrengthsInput");
 const bioSupportInput = document.getElementById("bioSupportInput");
 const bioStatus = document.getElementById("bioStatus");
 const bioPreview = document.getElementById("bioPreview");
+const profileImagePreview = document.getElementById("profileImagePreview");
+const profileImageFallback = document.getElementById("profileImageFallback");
+const profileImageNote = document.getElementById("profileImageNote");
+const profileImageInput = document.getElementById("profileImageInput");
+const uploadProfileImageBtn = document.getElementById("uploadProfileImageBtn");
+const profileImageStatus = document.getElementById("profileImageStatus");
 const assignmentList = document.getElementById("assignmentList");
 const workbookList = document.getElementById("workbookList");
 const resourceList = document.getElementById("resourceList");
@@ -654,6 +675,10 @@ const fileUploadInput = document.getElementById("fileUploadInput");
 const uploadFileBtn = document.getElementById("uploadFileBtn");
 const fileUploadStatus = document.getElementById("fileUploadStatus");
 const fileList = document.getElementById("fileList");
+const communitySectionLabel = document.getElementById("communitySectionLabel");
+const communitySectionTitle = document.getElementById("communitySectionTitle");
+const communitySectionCopy = document.getElementById("communitySectionCopy");
+const communityDirectoryList = document.getElementById("communityDirectoryList");
 const courseRoadmapLabel = document.getElementById("courseRoadmapLabel");
 const courseRoadmapTitle = document.getElementById("courseRoadmapTitle");
 const courseRoadmapCopy = document.getElementById("courseRoadmapCopy");
@@ -684,6 +709,8 @@ let state = {
   session: null,
   user: null,
   profile: null,
+  communityProfile: null,
+  communityProfiles: [],
   assignments: [],
   workbookEntries: [],
   files: [],
@@ -845,6 +872,43 @@ function defaultAvatarForRole(role) {
 
 function portalCopyForRole(role) {
   return ROLE_PORTAL_COPY[role] || ROLE_PORTAL_COPY.student;
+}
+
+function createCommunitySummary(profile) {
+  const parts = [
+    profile.bio_proud,
+    profile.bio_goal,
+    profile.bio_strengths,
+    profile.bio_support,
+  ]
+    .map((item) => String(item || "").trim())
+    .filter(Boolean);
+
+  if (!parts.length) {
+    return "This enrolled user has not added a shared introduction yet.";
+  }
+
+  return parts.join(" ");
+}
+
+function renderProfileImage(profile) {
+  const imageUrl = profile?.profile_image_url || "";
+  const fallbackAvatar = profile?.avatar || defaultAvatarForRole(profile?.role);
+
+  if (profileImagePreview) {
+    if (imageUrl) {
+      profileImagePreview.src = imageUrl;
+      profileImagePreview.hidden = false;
+    } else {
+      profileImagePreview.hidden = true;
+      profileImagePreview.removeAttribute("src");
+    }
+  }
+
+  if (profileImageFallback) {
+    profileImageFallback.textContent = fallbackAvatar;
+    profileImageFallback.hidden = Boolean(imageUrl);
+  }
 }
 
 function renderCourseRoadmap(role) {
@@ -1041,6 +1105,86 @@ async function ensureProfile(user, defaults = {}) {
   return inserted;
 }
 
+async function ensureCommunityProfile(user, profile) {
+  const supabase = getSupabase();
+  const { data: existing, error: existingError } = await supabase
+    .from("community_profiles")
+    .select("*")
+    .eq("user_id", user.id)
+    .maybeSingle();
+
+  if (existingError) throw existingError;
+
+  const payload = {
+    user_id: user.id,
+    display_name: profile.display_name,
+    role: profile.role,
+    cohort: profile.cohort,
+    track: profile.track,
+    avatar: profile.avatar,
+    bio_proud: profile.bio_proud || "",
+    bio_goal: profile.bio_goal || "",
+    bio_strengths: profile.bio_strengths || "",
+    bio_support: profile.bio_support || "",
+  };
+
+  if (existing) {
+    const { data, error } = await supabase
+      .from("community_profiles")
+      .update(payload)
+      .eq("user_id", user.id)
+      .select("*")
+      .single();
+
+    if (error) throw error;
+    return data;
+  }
+
+  const { data, error } = await supabase
+    .from("community_profiles")
+    .insert(payload)
+    .select("*")
+    .single();
+
+  if (error) throw error;
+  return data;
+}
+
+async function resolveCommunityImageUrls(communityProfiles) {
+  if (!communityProfiles?.length) return [];
+  const supabase = getSupabase();
+
+  return Promise.all(
+    communityProfiles.map(async (profile) => {
+      if (!profile.profile_image_path) {
+        return { ...profile, profile_image_url: "" };
+      }
+
+      const { data, error } = await supabase.storage
+        .from(COMMUNITY_PROFILE_BUCKET)
+        .createSignedUrl(profile.profile_image_path, 3600);
+
+      if (error) {
+        return { ...profile, profile_image_url: "" };
+      }
+
+      return { ...profile, profile_image_url: data?.signedUrl || "" };
+    }),
+  );
+}
+
+async function loadCommunityProfiles() {
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from("community_profiles")
+    .select("*")
+    .order("role", { ascending: false })
+    .order("display_name", { ascending: true });
+
+  if (error) throw error;
+  return resolveCommunityImageUrls(data || []);
+}
+
 async function ensureAssignments(userId, role) {
   const supabase = getSupabase();
   const { data: existing, error } = await supabase
@@ -1126,6 +1270,18 @@ async function loadPortalData(defaults = null, options = {}) {
   const { scrollToWelcome = false } = options;
 
   const profile = await ensureProfile(user, defaults || {});
+  let communityProfile = null;
+  let communityProfiles = [];
+
+  try {
+    communityProfile = await ensureCommunityProfile(user, profile);
+    communityProfiles = await loadCommunityProfiles();
+    communityProfile =
+      communityProfiles.find((item) => item.user_id === user.id) || communityProfile;
+  } catch (error) {
+    console.warn("Community profile features are not ready yet.", error);
+  }
+
   const [assignments, workbookEntries, files] = await Promise.all([
     ensureAssignments(user.id, profile.role),
     ensureWorkbookEntries(user.id, profile.role),
@@ -1133,6 +1289,8 @@ async function loadPortalData(defaults = null, options = {}) {
   ]);
 
   state.profile = profile;
+  state.communityProfile = communityProfile;
+  state.communityProfiles = communityProfiles;
   state.assignments = assignments;
   state.workbookEntries = workbookEntries;
   state.files = files;
@@ -1143,6 +1301,8 @@ function renderLoggedOutState() {
   state.session = null;
   state.user = null;
   state.profile = null;
+  state.communityProfile = null;
+  state.communityProfiles = [];
   state.assignments = [];
   state.workbookEntries = [];
   state.files = [];
@@ -1222,7 +1382,14 @@ function renderPortal(options = {}) {
   feedbackSectionLabel.textContent = roleCopy.feedbackLabel;
   feedbackSectionTitle.textContent = roleCopy.feedbackTitle;
   feedbackSectionCopy.textContent = roleCopy.feedbackCopy;
+  communitySectionLabel.textContent = roleCopy.communityLabel;
+  communitySectionTitle.textContent = roleCopy.communityTitle;
+  communitySectionCopy.textContent = roleCopy.communityCopy;
+  if (profileImageNote) {
+    profileImageNote.textContent = roleCopy.imageNote;
+  }
   renderCourseRoadmap(profile.role);
+  renderProfileImage(state.communityProfile || profile);
 
   bioProudInput.value = profile.bio_proud || "";
   bioGoalInput.value = profile.bio_goal || "";
@@ -1361,6 +1528,30 @@ function renderPortal(options = {}) {
         )
         .join("")
     : `<div class="empty">No private files have been uploaded yet.</div>`;
+
+  communityDirectoryList.innerHTML = state.communityProfiles.length
+    ? state.communityProfiles
+        .map((communityProfile) => {
+          const image = communityProfile.profile_image_url
+            ? `<img class="community-avatar" src="${escapeHtml(communityProfile.profile_image_url)}" alt="${escapeHtml(communityProfile.display_name)} profile photo" />`
+            : `<div class="community-avatar community-fallback" aria-label="${escapeHtml(communityProfile.display_name)} profile placeholder">${escapeHtml(communityProfile.avatar || defaultAvatarForRole(communityProfile.role))}</div>`;
+
+          return `
+            <article class="community-card">
+              <div class="community-card-top">
+                ${image}
+                <div>
+                  <div class="mini-label">${escapeHtml(communityProfile.cohort || "")}</div>
+                  <h4>${escapeHtml(communityProfile.display_name)}</h4>
+                  <div class="community-role">${escapeHtml(communityProfile.role)} · ${escapeHtml(communityProfile.track || "")}</div>
+                </div>
+              </div>
+              <div class="community-bio">${escapeHtml(createCommunitySummary(communityProfile))}</div>
+            </article>
+          `;
+        })
+        .join("")
+    : `<div class="empty">Community introductions will appear here after enrolled users add a photo and shared bio.</div>`;
 
   bindPortalActions();
   if (scrollToWelcome) {
@@ -1547,6 +1738,57 @@ async function uploadSelectedFile() {
   showStatus(fileUploadStatus, "File uploaded to your private storage.", "success");
 }
 
+async function uploadProfileImage() {
+  if (!state.user) {
+    showStatus(profileImageStatus, "Sign in before saving a profile image.");
+    return;
+  }
+
+  const file = profileImageInput.files?.[0];
+  if (!file) {
+    showStatus(profileImageStatus, "Choose an image first.");
+    return;
+  }
+
+  if (!String(file.type || "").startsWith("image/")) {
+    showStatus(profileImageStatus, "Please choose an image file.");
+    return;
+  }
+
+  const supabase = getSupabase();
+  const previousPath = state.communityProfile?.profile_image_path || "";
+  const storagePath = `${state.user.id}/profile-${Date.now()}-${safeFileName(file.name)}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from(COMMUNITY_PROFILE_BUCKET)
+    .upload(storagePath, file, {
+      cacheControl: "3600",
+      upsert: false,
+    });
+
+  if (uploadError) throw uploadError;
+
+  if (previousPath) {
+    await supabase.storage.from(COMMUNITY_PROFILE_BUCKET).remove([previousPath]);
+  }
+
+  const { data, error } = await supabase
+    .from("community_profiles")
+    .update({ profile_image_path: storagePath })
+    .eq("user_id", state.user.id)
+    .select("*")
+    .single();
+
+  if (error) throw error;
+
+  state.communityProfiles = await loadCommunityProfiles();
+  state.communityProfile =
+    state.communityProfiles.find((item) => item.user_id === state.user.id) || data;
+  renderPortal();
+  profileImageInput.value = "";
+  showStatus(profileImageStatus, portalCopyForRole(state.profile?.role).imageStatusSuccess, "success");
+}
+
 async function signInUser(email, password) {
   if (!hasSupabaseConfig()) {
     showStatus(studentLoginStatus, "Save your Supabase settings first.");
@@ -1653,22 +1895,46 @@ async function saveBio() {
   }
 
   const supabase = getSupabase();
+  const bioPayload = {
+    bio_proud: bioProudInput.value.trim(),
+    bio_goal: bioGoalInput.value.trim(),
+    bio_strengths: bioStrengthsInput.value.trim(),
+    bio_support: bioSupportInput.value.trim(),
+  };
+
   const { data, error } = await supabase
     .from("profiles")
-    .update({
-      bio_proud: bioProudInput.value.trim(),
-      bio_goal: bioGoalInput.value.trim(),
-      bio_strengths: bioStrengthsInput.value.trim(),
-      bio_support: bioSupportInput.value.trim(),
-    })
+    .update(bioPayload)
     .eq("id", state.user.id)
     .select("*")
     .single();
 
   if (error) throw error;
   state.profile = data;
+  try {
+    const { data: communityData, error: communityError } = await supabase
+      .from("community_profiles")
+      .update(bioPayload)
+      .eq("user_id", state.user.id)
+      .select("*")
+      .single();
+
+    if (communityError) throw communityError;
+    state.communityProfiles = await loadCommunityProfiles();
+    state.communityProfile =
+      state.communityProfiles.find((item) => item.user_id === state.user.id) || {
+        ...communityData,
+        profile_image_url: state.communityProfile?.profile_image_url || "",
+      };
+  } catch (communityError) {
+    console.warn("Community bio save skipped.", communityError);
+  }
   renderPortal();
-  showStatus(bioStatus, "Your profile was saved to your private account.", "success");
+  showStatus(
+    bioStatus,
+    "Your bio was saved and shared with the enrolled program community.",
+    "success",
+  );
 }
 
 async function logoutUser() {
@@ -1783,6 +2049,14 @@ uploadFileBtn.addEventListener("click", async () => {
     await uploadSelectedFile();
   } catch (error) {
     showStatus(fileUploadStatus, error.message);
+  }
+});
+
+uploadProfileImageBtn.addEventListener("click", async () => {
+  try {
+    await uploadProfileImage();
+  } catch (error) {
+    showStatus(profileImageStatus, error.message);
   }
 });
 

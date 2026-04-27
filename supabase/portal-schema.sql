@@ -72,10 +72,27 @@ create table if not exists public.user_files (
   updated_at timestamptz not null default timezone('utc', now())
 );
 
+create table if not exists public.community_profiles (
+  user_id uuid primary key references auth.users(id) on delete cascade,
+  display_name text not null,
+  role text not null default 'student' check (role in ('student', 'instructor')),
+  cohort text not null default 'Ready for Real Life Cohort',
+  track text not null default 'Core Skills Focus',
+  avatar text not null default '🚀',
+  profile_image_path text not null default '',
+  bio_proud text not null default '',
+  bio_goal text not null default '',
+  bio_strengths text not null default '',
+  bio_support text not null default '',
+  created_at timestamptz not null default timezone('utc', now()),
+  updated_at timestamptz not null default timezone('utc', now())
+);
+
 create index if not exists idx_profiles_role on public.profiles(role);
 create index if not exists idx_user_assignments_user_sort on public.user_assignments(user_id, sort_order);
 create index if not exists idx_user_workbook_entries_user_sort on public.user_workbook_entries(user_id, sort_order);
 create index if not exists idx_user_files_user_created on public.user_files(user_id, created_at desc);
+create index if not exists idx_community_profiles_role_name on public.community_profiles(role, display_name);
 
 drop trigger if exists set_profiles_updated_at on public.profiles;
 create trigger set_profiles_updated_at
@@ -101,10 +118,17 @@ before update on public.user_files
 for each row
 execute function public.set_updated_at();
 
+drop trigger if exists set_community_profiles_updated_at on public.community_profiles;
+create trigger set_community_profiles_updated_at
+before update on public.community_profiles
+for each row
+execute function public.set_updated_at();
+
 alter table public.profiles enable row level security;
 alter table public.user_assignments enable row level security;
 alter table public.user_workbook_entries enable row level security;
 alter table public.user_files enable row level security;
+alter table public.community_profiles enable row level security;
 
 drop policy if exists "Profiles are private to their owner" on public.profiles;
 create policy "Profiles are private to their owner"
@@ -222,8 +246,41 @@ for delete
 to authenticated
 using (auth.uid() = user_id);
 
+drop policy if exists "Community profiles are visible to enrolled users" on public.community_profiles;
+create policy "Community profiles are visible to enrolled users"
+on public.community_profiles
+for select
+to authenticated
+using (true);
+
+drop policy if exists "Community profiles can be inserted by their owner" on public.community_profiles;
+create policy "Community profiles can be inserted by their owner"
+on public.community_profiles
+for insert
+to authenticated
+with check (auth.uid() = user_id);
+
+drop policy if exists "Community profiles can be updated by their owner" on public.community_profiles;
+create policy "Community profiles can be updated by their owner"
+on public.community_profiles
+for update
+to authenticated
+using (auth.uid() = user_id)
+with check (auth.uid() = user_id);
+
+drop policy if exists "Community profiles can be deleted by their owner" on public.community_profiles;
+create policy "Community profiles can be deleted by their owner"
+on public.community_profiles
+for delete
+to authenticated
+using (auth.uid() = user_id);
+
 insert into storage.buckets (id, name, public)
 values ('portal-files', 'portal-files', false)
+on conflict (id) do nothing;
+
+insert into storage.buckets (id, name, public)
+values ('community-profiles', 'community-profiles', false)
 on conflict (id) do nothing;
 
 drop policy if exists "Users can view their own portal files" on storage.objects;
@@ -267,5 +324,46 @@ for delete
 to authenticated
 using (
   bucket_id = 'portal-files'
+  and (storage.foldername(name))[1] = auth.uid()::text
+);
+
+drop policy if exists "Authenticated users can view community profile images" on storage.objects;
+create policy "Authenticated users can view community profile images"
+on storage.objects
+for select
+to authenticated
+using (bucket_id = 'community-profiles');
+
+drop policy if exists "Users can upload their own community profile image" on storage.objects;
+create policy "Users can upload their own community profile image"
+on storage.objects
+for insert
+to authenticated
+with check (
+  bucket_id = 'community-profiles'
+  and (storage.foldername(name))[1] = auth.uid()::text
+);
+
+drop policy if exists "Users can update their own community profile image" on storage.objects;
+create policy "Users can update their own community profile image"
+on storage.objects
+for update
+to authenticated
+using (
+  bucket_id = 'community-profiles'
+  and (storage.foldername(name))[1] = auth.uid()::text
+)
+with check (
+  bucket_id = 'community-profiles'
+  and (storage.foldername(name))[1] = auth.uid()::text
+);
+
+drop policy if exists "Users can delete their own community profile image" on storage.objects;
+create policy "Users can delete their own community profile image"
+on storage.objects
+for delete
+to authenticated
+using (
+  bucket_id = 'community-profiles'
   and (storage.foldername(name))[1] = auth.uid()::text
 );
