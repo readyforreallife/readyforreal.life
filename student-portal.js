@@ -904,35 +904,42 @@ function createCommunitySummary(profile) {
 function renderProfileImage(profile) {
   const imageUrl = profile?.profile_image_url || "";
   const fallbackAvatar = profile?.avatar || defaultAvatarForRole(profile?.role);
+  const hasImage = Boolean(imageUrl);
 
   if (profileImagePreview) {
-    if (imageUrl) {
+    if (hasImage) {
       profileImagePreview.src = imageUrl;
       profileImagePreview.hidden = false;
+      profileImagePreview.style.display = "";
     } else {
       profileImagePreview.hidden = true;
       profileImagePreview.removeAttribute("src");
+      profileImagePreview.style.display = "none";
     }
   }
 
   if (profileImageFallback) {
     profileImageFallback.textContent = fallbackAvatar;
-    profileImageFallback.hidden = Boolean(imageUrl);
+    profileImageFallback.hidden = hasImage;
+    profileImageFallback.style.display = hasImage ? "none" : "";
   }
 
   if (welcomeProfileImage) {
-    if (imageUrl) {
+    if (hasImage) {
       welcomeProfileImage.src = imageUrl;
       welcomeProfileImage.hidden = false;
+      welcomeProfileImage.style.display = "";
     } else {
       welcomeProfileImage.hidden = true;
       welcomeProfileImage.removeAttribute("src");
+      welcomeProfileImage.style.display = "none";
     }
   }
 
   if (welcomeProfileFallback) {
     welcomeProfileFallback.textContent = fallbackAvatar;
-    welcomeProfileFallback.hidden = Boolean(imageUrl);
+    welcomeProfileFallback.hidden = hasImage;
+    welcomeProfileFallback.style.display = hasImage ? "none" : "";
   }
 }
 
