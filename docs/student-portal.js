@@ -178,6 +178,7 @@ const studentIdInput = document.getElementById("studentIdInput");
 const studentCodeInput = document.getElementById("studentCodeInput");
 const restoreLastStudentBtn = document.getElementById("restoreLastStudentBtn");
 const studentLoginStatus = document.getElementById("studentLoginStatus");
+const loginGate = document.getElementById("loginGate");
 const signupForm = document.getElementById("signupForm");
 const signupNameInput = document.getElementById("signupNameInput");
 const signupEmailInput = document.getElementById("signupEmailInput");
@@ -333,6 +334,26 @@ function resetPortalScrollForEntry() {
   window.addEventListener("load", scrollTop, { once: true });
   window.addEventListener("pageshow", scrollTop, { once: true });
   setTimeout(scrollTop, 120);
+}
+
+function scrollPortalWelcomeIntoView() {
+  const scrollToPortal = () =>
+    studentPortal?.scrollIntoView({ behavior: "smooth", block: "start" });
+
+  scrollToPortal();
+  requestAnimationFrame(scrollToPortal);
+  setTimeout(scrollToPortal, 120);
+}
+
+function updateAuthenticatedView(isAuthenticated) {
+  if (loginGate) {
+    loginGate.hidden = isAuthenticated;
+  }
+
+  if (!isAuthenticated) {
+    clearStatus(studentLoginStatus);
+    clearStatus(signupStatus);
+  }
 }
 
 function getSupabase() {
@@ -589,6 +610,7 @@ function renderLoggedOutState() {
   state.assignments = [];
   state.workbookEntries = [];
   state.files = [];
+  updateAuthenticatedView(false);
   studentPortal.classList.remove("visible");
   clearStatus(bioStatus);
   clearStatus(fileUploadStatus);
@@ -610,10 +632,12 @@ async function handleSessionChange(session) {
 
 function renderPortal() {
   if (!state.profile) {
+    updateAuthenticatedView(false);
     studentPortal.classList.remove("visible");
     return;
   }
 
+  updateAuthenticatedView(true);
   studentPortal.classList.add("visible");
 
   const profile = state.profile;
@@ -775,6 +799,7 @@ function renderPortal() {
     : `<div class="empty">No private files have been uploaded yet.</div>`;
 
   bindPortalActions();
+  scrollPortalWelcomeIntoView();
 }
 
 function badgeClass(status) {
