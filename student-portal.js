@@ -817,10 +817,6 @@ function updatePortalSetupVisibility(forceOpen = false) {
 function resetPortalScrollForEntry() {
   if (!PAGE_ENTRY_MODE && PAGE_HASH !== "#teacher-access") return;
 
-  if ("scrollRestoration" in window.history) {
-    window.history.scrollRestoration = "manual";
-  }
-
   const params = new URLSearchParams(window.location.search);
   params.delete("entry");
 
