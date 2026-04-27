@@ -1117,7 +1117,7 @@ function initializeSupabaseClient() {
   );
 
   authSubscription = supabaseClient.auth.onAuthStateChange((_event, session) => {
-    handleSessionChange(session).catch((error) => {
+    handleSessionChange(session, { scrollToWelcome: false }).catch((error) => {
       showStatus(studentLoginStatus, error.message);
     });
   }).data.subscription;
@@ -1380,7 +1380,8 @@ function renderLoggedOutState() {
   clearStatus(fileUploadStatus);
 }
 
-async function handleSessionChange(session) {
+async function handleSessionChange(session, options = {}) {
+  const { scrollToWelcome = false } = options;
   state.session = session || null;
   state.user = session?.user || null;
 
@@ -1391,7 +1392,7 @@ async function handleSessionChange(session) {
 
   settings.lastAuthEmail = state.user.email || settings.lastAuthEmail;
   saveSettings();
-  await loadPortalData(null, { scrollToWelcome: true });
+  await loadPortalData(null, { scrollToWelcome });
 }
 
 function renderPortal(options = {}) {
@@ -1885,7 +1886,7 @@ async function signInUser(email, password) {
   }
 
   const supabase = getSupabase();
-  const { error } = await supabase.auth.signInWithPassword({
+  const { data, error } = await supabase.auth.signInWithPassword({
     email: String(email || "").trim(),
     password: String(password || "").trim(),
   });
@@ -1893,6 +1894,9 @@ async function signInUser(email, password) {
   if (error) throw error;
   settings.lastAuthEmail = String(email || "").trim();
   saveSettings();
+  if (data?.session) {
+    await handleSessionChange(data.session, { scrollToWelcome: true });
+  }
   showStatus(studentLoginStatus, "Signed in successfully.", "success");
 }
 
@@ -1908,7 +1912,7 @@ async function resumeSession() {
     showStatus(studentLoginStatus, "No saved session was found on this device.");
     return;
   }
-  await handleSessionChange(data.session);
+  await handleSessionChange(data.session, { scrollToWelcome: true });
   showStatus(studentLoginStatus, "Saved session restored.", "success");
 }
 
@@ -2049,7 +2053,7 @@ savePortalApiBtn.addEventListener("click", async () => {
   try {
     const { data, error } = await supabaseClient.auth.getSession();
     if (error) throw error;
-    await handleSessionChange(data.session);
+    await handleSessionChange(data.session, { scrollToWelcome: false });
     showStatus(portalSetupStatus, "Supabase connection saved on this device.", "success");
     updatePortalSetupVisibility(false);
   } catch (error) {
@@ -2190,7 +2194,7 @@ if (initializeSupabaseClient()) {
     .getSession()
     .then(({ data, error }) => {
       if (error) throw error;
-      return handleSessionChange(data.session);
+      return handleSessionChange(data.session, { scrollToWelcome: false });
     })
     .catch((error) => {
       showStatus(studentLoginStatus, error.message);
