@@ -182,6 +182,7 @@ const signupForm = document.getElementById("signupForm");
 const signupNameInput = document.getElementById("signupNameInput");
 const signupEmailInput = document.getElementById("signupEmailInput");
 const signupPasswordInput = document.getElementById("signupPasswordInput");
+const signupConfirmPasswordInput = document.getElementById("signupConfirmPasswordInput");
 const signupRoleInput = document.getElementById("signupRoleInput");
 const signupStatus = document.getElementById("teacherStatus");
 const portalApiUrlInput = document.getElementById("portalApiUrlInput");
@@ -997,12 +998,18 @@ async function signUpUser() {
   const name = signupNameInput.value.trim();
   const email = signupEmailInput.value.trim();
   const password = signupPasswordInput.value.trim();
+  const confirmPassword = signupConfirmPasswordInput.value.trim();
   const role = signupRoleInput.value;
   const cohort = defaultCohortForRole(role);
   const track = defaultTrackForRole(role);
 
-  if (!name || !email || !password) {
-    showStatus(signupStatus, "Add your name, email, and password first.");
+  if (!name || !email || !password || !confirmPassword) {
+    showStatus(signupStatus, "Add your name, email, password, and password confirmation first.");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    showStatus(signupStatus, "Your password and confirmation need to match.");
     return;
   }
 
