@@ -649,6 +649,9 @@ const welcomeCohort = document.getElementById("welcomeCohort");
 const welcomeTitle = document.getElementById("welcomeTitle");
 const welcomeCopy = document.getElementById("welcomeCopy");
 const welcomeMeta = document.getElementById("welcomeMeta");
+const welcomeProfileImage = document.getElementById("welcomeProfileImage");
+const welcomeProfileFallback = document.getElementById("welcomeProfileFallback");
+const editWelcomeProfileBtn = document.getElementById("editWelcomeProfileBtn");
 const identityCardName = document.getElementById("identityCardName");
 const identityCardTrack = document.getElementById("identityCardTrack");
 const progressSummary = document.getElementById("progressSummary");
@@ -701,6 +704,16 @@ const fileSectionCopy = document.getElementById("fileSectionCopy");
 const feedbackSectionLabel = document.getElementById("feedbackSectionLabel");
 const feedbackSectionTitle = document.getElementById("feedbackSectionTitle");
 const feedbackSectionCopy = document.getElementById("feedbackSectionCopy");
+const identityModal = document.getElementById("identityModal");
+const identityModalCloseBtn = document.getElementById("identityModalCloseBtn");
+const identityModalRole = document.getElementById("identityModalRole");
+const identityModalTitle = document.getElementById("identityModalTitle");
+const identityModalImage = document.getElementById("identityModalImage");
+const identityModalFallback = document.getElementById("identityModalFallback");
+const identityModalCohort = document.getElementById("identityModalCohort");
+const identityModalName = document.getElementById("identityModalName");
+const identityModalTrack = document.getElementById("identityModalTrack");
+const identityModalSummary = document.getElementById("identityModalSummary");
 
 let settings = loadSettings();
 let supabaseClient = null;
@@ -910,6 +923,57 @@ function renderProfileImage(profile) {
     profileImageFallback.textContent = fallbackAvatar;
     profileImageFallback.hidden = Boolean(imageUrl);
   }
+
+  if (welcomeProfileImage) {
+    if (imageUrl) {
+      welcomeProfileImage.src = imageUrl;
+      welcomeProfileImage.hidden = false;
+    } else {
+      welcomeProfileImage.hidden = true;
+      welcomeProfileImage.removeAttribute("src");
+    }
+  }
+
+  if (welcomeProfileFallback) {
+    welcomeProfileFallback.textContent = fallbackAvatar;
+    welcomeProfileFallback.hidden = Boolean(imageUrl);
+  }
+}
+
+function openIdentityModal(profile, options = {}) {
+  if (!identityModal || !profile) return;
+
+  const heading = options.heading || "Learn About Me";
+  const imageUrl = profile.profile_image_url || "";
+  const fallbackAvatar = profile.avatar || defaultAvatarForRole(profile.role);
+  const summary = createCommunitySummary(profile);
+
+  identityModalRole.textContent = String(profile.role || "program member");
+  identityModalTitle.textContent = heading;
+  identityModalCohort.textContent = profile.cohort || "Ready for Real Life";
+  identityModalName.textContent = profile.display_name || "Program Member";
+  identityModalTrack.textContent = `${profile.role || "member"} · ${profile.track || ""}`;
+  identityModalSummary.textContent = summary;
+
+  if (imageUrl) {
+    identityModalImage.src = imageUrl;
+    identityModalImage.hidden = false;
+    identityModalFallback.hidden = true;
+  } else {
+    identityModalImage.hidden = true;
+    identityModalImage.removeAttribute("src");
+    identityModalFallback.hidden = false;
+    identityModalFallback.textContent = fallbackAvatar;
+  }
+
+  identityModal.hidden = false;
+  document.body.style.overflow = "hidden";
+}
+
+function closeIdentityModal() {
+  if (!identityModal) return;
+  identityModal.hidden = true;
+  document.body.style.overflow = "";
 }
 
 function renderCourseRoadmap(role) {
@@ -1533,9 +1597,14 @@ function renderPortal(options = {}) {
   communityDirectoryList.innerHTML = state.communityProfiles.length
     ? state.communityProfiles
         .map((communityProfile) => {
+          const summary = createCommunitySummary(communityProfile);
           const image = communityProfile.profile_image_url
-            ? `<img class="community-avatar" src="${escapeHtml(communityProfile.profile_image_url)}" alt="${escapeHtml(communityProfile.display_name)} profile photo" />`
-            : `<div class="community-avatar community-fallback" aria-label="${escapeHtml(communityProfile.display_name)} profile placeholder">${escapeHtml(communityProfile.avatar || defaultAvatarForRole(communityProfile.role))}</div>`;
+            ? `<button class="inline-link-btn" type="button" data-open-community="${escapeHtml(communityProfile.user_id)}" aria-label="Open ${escapeHtml(communityProfile.display_name)} profile image" style="padding:0;border:none;background:none">
+                 <img class="community-avatar" src="${escapeHtml(communityProfile.profile_image_url)}" alt="${escapeHtml(communityProfile.display_name)} profile photo" />
+               </button>`
+            : `<button class="inline-link-btn" type="button" data-open-community="${escapeHtml(communityProfile.user_id)}" aria-label="Open ${escapeHtml(communityProfile.display_name)} profile image" style="padding:0;border:none;background:none">
+                 <div class="community-avatar community-fallback">${escapeHtml(communityProfile.avatar || defaultAvatarForRole(communityProfile.role))}</div>
+               </button>`;
 
           return `
             <article class="community-card">
@@ -1547,7 +1616,12 @@ function renderPortal(options = {}) {
                   <div class="community-role">${escapeHtml(communityProfile.role)} · ${escapeHtml(communityProfile.track || "")}</div>
                 </div>
               </div>
-              <div class="community-bio">${escapeHtml(createCommunitySummary(communityProfile))}</div>
+              <div class="community-bio">${escapeHtml(summary)}</div>
+              <div class="community-actions">
+                <button class="inline-link-btn" type="button" data-learn-community="${escapeHtml(communityProfile.user_id)}">
+                  Learn About Me
+                </button>
+              </div>
             </article>
           `;
         })
@@ -1698,6 +1772,17 @@ function bindPortalActions() {
       } catch (error) {
         showStatus(fileUploadStatus, error.message);
       }
+    });
+  });
+
+  communityDirectoryList.querySelectorAll("[data-open-community], [data-learn-community]").forEach((button) => {
+    button.addEventListener("click", () => {
+      const userId =
+        button.getAttribute("data-open-community") ||
+        button.getAttribute("data-learn-community");
+      const profile = state.communityProfiles.find((item) => item.user_id === userId);
+      if (!profile) return;
+      openIdentityModal(profile, { heading: "Learn About Me" });
     });
   });
 }
@@ -2058,6 +2143,38 @@ uploadProfileImageBtn.addEventListener("click", async () => {
     await uploadProfileImage();
   } catch (error) {
     showStatus(profileImageStatus, error.message);
+  }
+});
+
+editWelcomeProfileBtn.addEventListener("click", () => {
+  profileImageInput?.click();
+});
+
+welcomeProfileImage?.addEventListener("click", () => {
+  const profile = state.communityProfile || state.profile;
+  if (!profile) return;
+  openIdentityModal(profile, { heading: "Your Profile Image" });
+});
+
+welcomeProfileFallback?.addEventListener("click", () => {
+  const profile = state.communityProfile || state.profile;
+  if (!profile) return;
+  openIdentityModal(profile, { heading: "Your Profile Image" });
+});
+
+identityModalCloseBtn?.addEventListener("click", () => {
+  closeIdentityModal();
+});
+
+identityModal?.addEventListener("click", (event) => {
+  if (event.target === identityModal) {
+    closeIdentityModal();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && identityModal && !identityModal.hidden) {
+    closeIdentityModal();
   }
 });
 

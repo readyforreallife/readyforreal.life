@@ -515,6 +515,43 @@
         color: #ffffff;
       }
 
+      .welcome-identity {
+        display: grid;
+        justify-items: center;
+        gap: 12px;
+        margin-bottom: 14px;
+      }
+
+      .welcome-profile-photo {
+        width: 124px;
+        height: 124px;
+        border-radius: 999px;
+        object-fit: cover;
+        cursor: zoom-in;
+        background: linear-gradient(135deg, rgba(255, 255, 255, 0.22), rgba(200, 155, 60, 0.12));
+        border: 3px solid rgba(255, 255, 255, 0.92);
+        box-shadow: 0 18px 34px rgba(15, 22, 35, 0.18);
+      }
+
+      .welcome-profile-fallback {
+        display: grid;
+        place-items: center;
+        font-size: 2.8rem;
+        color: #fff;
+      }
+
+      .welcome-profile-edit {
+        min-height: 36px;
+        padding: 0 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(255, 255, 255, 0.26);
+        background: rgba(255, 255, 255, 0.14);
+        color: #fff;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
       .welcome-side,
       .welcome-side p,
       .welcome-side span,
@@ -989,6 +1026,110 @@
         line-height: 1.7;
       }
 
+      .community-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .inline-link-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: 0 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(24, 48, 79, 0.12);
+        background: rgba(24, 48, 79, 0.06);
+        color: var(--navy);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
+      .identity-modal[hidden] {
+        display: none;
+      }
+
+      .identity-modal {
+        position: fixed;
+        inset: 0;
+        z-index: 1000;
+        display: grid;
+        place-items: center;
+        padding: 24px;
+        background: rgba(10, 18, 28, 0.68);
+        backdrop-filter: blur(8px);
+      }
+
+      .identity-modal-dialog {
+        width: min(760px, 100%);
+        max-height: min(90vh, 920px);
+        overflow: auto;
+        border-radius: 30px;
+        border: 1px solid rgba(255, 255, 255, 0.14);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(247, 242, 232, 0.98));
+        box-shadow: 0 30px 80px rgba(15, 22, 35, 0.28);
+        padding: 24px;
+      }
+
+      .identity-modal-top {
+        display: flex;
+        justify-content: space-between;
+        gap: 16px;
+        align-items: flex-start;
+      }
+
+      .identity-modal-close {
+        min-height: 40px;
+        min-width: 40px;
+        border-radius: 999px;
+        border: 1px solid rgba(24, 48, 79, 0.12);
+        background: rgba(24, 48, 79, 0.06);
+        color: var(--navy);
+        font: inherit;
+        font-weight: 800;
+        cursor: pointer;
+      }
+
+      .identity-modal-grid {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: minmax(220px, 280px) minmax(0, 1fr);
+        margin-top: 18px;
+      }
+
+      .identity-modal-photo,
+      .identity-modal-fallback {
+        width: 100%;
+        aspect-ratio: 1 / 1;
+        border-radius: 28px;
+        object-fit: cover;
+        background: linear-gradient(135deg, rgba(24, 48, 79, 0.14), rgba(36, 82, 110, 0.1));
+      }
+
+      .identity-modal-fallback {
+        display: grid;
+        place-items: center;
+        font-size: 4rem;
+        color: var(--navy);
+      }
+
+      .identity-modal-copy p {
+        margin: 12px 0 0;
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
+      .identity-modal-summary {
+        margin-top: 14px;
+        padding: 16px;
+        border-radius: 22px;
+        background: rgba(24, 48, 79, 0.05);
+        color: var(--muted);
+        line-height: 1.75;
+      }
+
       @media (max-width: 960px) {
         .hero-grid,
         .portal-grid,
@@ -997,7 +1138,8 @@
         .sample-grid,
         .resource-grid,
         .week-list,
-        .community-grid {
+        .community-grid,
+        .identity-modal-grid {
           grid-template-columns: 1fr;
         }
       }
@@ -1234,6 +1376,24 @@
               </div>
             </div>
             <div class="welcome-side">
+              <div class="welcome-identity">
+                <img
+                  id="welcomeProfileImage"
+                  class="welcome-profile-photo"
+                  alt="Your profile photo"
+                  hidden
+                />
+                <div
+                  id="welcomeProfileFallback"
+                  class="welcome-profile-photo welcome-profile-fallback"
+                  aria-label="Profile image placeholder"
+                >
+                  🚀
+                </div>
+                <button class="welcome-profile-edit" id="editWelcomeProfileBtn" type="button">
+                  Edit My Image
+                </button>
+              </div>
               <strong id="identityCardName">Student Name</strong>
               <p id="identityCardTrack" class="subtle"></p>
               <div class="progress-card">
@@ -1394,6 +1554,34 @@
           <div class="section-grid" id="feedbackList"></div>
         </section>
       </section>
+
+      <div class="identity-modal" id="identityModal" hidden>
+        <div class="identity-modal-dialog" role="dialog" aria-modal="true" aria-labelledby="identityModalTitle">
+          <div class="identity-modal-top">
+            <div>
+              <div class="mini-label" id="identityModalRole">Program Community</div>
+              <h3 id="identityModalTitle">Learn About Me</h3>
+            </div>
+            <button class="identity-modal-close" id="identityModalCloseBtn" type="button" aria-label="Close identity viewer">
+              ×
+            </button>
+          </div>
+          <div class="identity-modal-grid">
+            <div>
+              <img id="identityModalImage" class="identity-modal-photo" alt="Expanded profile photo" hidden />
+              <div id="identityModalFallback" class="identity-modal-fallback">🚀</div>
+            </div>
+            <div class="identity-modal-copy">
+              <div class="mini-label" id="identityModalCohort">Ready for Real Life</div>
+              <h3 id="identityModalName">Program Member</h3>
+              <p id="identityModalTrack">Role and focus</p>
+              <div class="identity-modal-summary" id="identityModalSummary">
+                Shared introduction will appear here.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
     </main>
     <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="student-portal.js"></script>
