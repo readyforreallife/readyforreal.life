@@ -196,6 +196,14 @@
         align-items: stretch;
       }
 
+      .hero-grid.authenticated {
+        grid-template-columns: minmax(0, 1fr);
+      }
+
+      .hero-grid.authenticated .hero-panel {
+        min-height: 0;
+      }
+
       .panel {
         border-radius: var(--radius-xl);
         border: 1px solid var(--rule);

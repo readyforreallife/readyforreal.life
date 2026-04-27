@@ -179,6 +179,7 @@ const studentCodeInput = document.getElementById("studentCodeInput");
 const restoreLastStudentBtn = document.getElementById("restoreLastStudentBtn");
 const studentLoginStatus = document.getElementById("studentLoginStatus");
 const loginGate = document.getElementById("loginGate");
+const heroGrid = document.querySelector(".hero-grid");
 const signupForm = document.getElementById("signupForm");
 const signupNameInput = document.getElementById("signupNameInput");
 const signupEmailInput = document.getElementById("signupEmailInput");
@@ -348,6 +349,10 @@ function scrollPortalWelcomeIntoView() {
 function updateAuthenticatedView(isAuthenticated) {
   if (loginGate) {
     loginGate.hidden = isAuthenticated;
+  }
+
+  if (heroGrid) {
+    heroGrid.classList.toggle("authenticated", isAuthenticated);
   }
 
   if (!isAuthenticated) {
