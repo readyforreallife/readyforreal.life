@@ -441,6 +441,21 @@
         display: block;
       }
 
+      .portal-shell.instructor-view .welcome-banner {
+        background:
+          radial-gradient(circle at 8% 16%, rgba(255, 255, 255, 0.18), transparent 20%),
+          radial-gradient(circle at 84% 20%, rgba(124, 198, 196, 0.22), transparent 28%),
+          linear-gradient(135deg, #18314c 0%, #24546f 54%, #2d7770 100%);
+      }
+
+      .portal-shell.instructor-view .section-card,
+      .portal-shell.instructor-view .progress-card,
+      .portal-shell.instructor-view .resource-card,
+      .portal-shell.instructor-view .assignment-card,
+      .portal-shell.instructor-view .workbook-card {
+        border-color: rgba(34, 111, 112, 0.16);
+      }
+
       .welcome-banner {
         position: relative;
         overflow: hidden;
@@ -766,13 +781,121 @@
         color: var(--muted);
       }
 
+      .roadmap-card {
+        padding: 24px;
+      }
+
+      .roadmap-grid {
+        display: grid;
+        gap: 16px;
+        margin-top: 18px;
+      }
+
+      .week-card {
+        border-radius: 24px;
+        border: 1px solid rgba(24, 48, 79, 0.1);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(249, 246, 240, 0.96));
+        padding: 18px;
+        box-shadow: 0 14px 30px rgba(24, 48, 79, 0.08);
+      }
+
+      .portal-shell.instructor-view .week-card {
+        background: linear-gradient(180deg, rgba(243, 250, 250, 0.98), rgba(255, 255, 255, 0.98));
+        border-color: rgba(34, 111, 112, 0.16);
+      }
+
+      .week-head,
+      .week-body,
+      .week-list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .week-head {
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: start;
+      }
+
+      .week-number {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 30px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: rgba(24, 48, 79, 0.08);
+        color: var(--navy);
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .week-module {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: var(--gold-soft);
+        color: var(--navy);
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+      }
+
+      .week-card h4 {
+        margin: 0;
+        font-family: "Playfair Display", serif;
+        color: var(--navy);
+        font-size: 1.35rem;
+      }
+
+      .week-focus {
+        color: var(--muted);
+        line-height: 1.7;
+      }
+
+      .week-list {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+
+      .week-list-block {
+        border-radius: 18px;
+        background: rgba(24, 48, 79, 0.05);
+        padding: 14px;
+      }
+
+      .portal-shell.instructor-view .week-list-block {
+        background: rgba(34, 111, 112, 0.07);
+      }
+
+      .week-list-block strong {
+        display: block;
+        color: var(--navy);
+        margin-bottom: 6px;
+      }
+
+      .week-list-block ul {
+        margin: 0;
+        padding-left: 18px;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .week-list-block li + li {
+        margin-top: 6px;
+      }
+
       @media (max-width: 960px) {
         .hero-grid,
         .portal-grid,
         .teacher-grid,
         .welcome-grid,
         .sample-grid,
-        .resource-grid {
+        .resource-grid,
+        .week-list {
           grid-template-columns: 1fr;
         }
       }
@@ -1022,11 +1145,21 @@
           </div>
         </section>
 
+        <section class="section-card panel roadmap-card">
+          <div class="mini-label" id="courseRoadmapLabel">16-Week Roadmap</div>
+          <h3 id="courseRoadmapTitle">Your full semester path</h3>
+          <p id="courseRoadmapCopy">
+            See the full 16-week flow, what this role is responsible for each
+            week, and how the course builds from module to module.
+          </p>
+          <div class="roadmap-grid" id="courseRoadmapList"></div>
+        </section>
+
         <div class="portal-grid">
           <section class="section-card panel">
-            <div class="mini-label">Personal Bio</div>
-            <h3>Your story matters here</h3>
-            <p>
+            <div class="mini-label" id="bioSectionLabel">Personal Bio</div>
+            <h3 id="bioSectionTitle">Your story matters here</h3>
+            <p id="bioSectionCopy">
               This is the profile your teacher can see while reviewing your work.
               Use it to share what drives you, where you want to grow, and what
               support helps you do your best.
@@ -1061,9 +1194,9 @@
           </section>
 
           <section class="section-card panel">
-            <div class="mini-label">Mission Hub</div>
-            <h3>Your assignments and growth path</h3>
-            <p>
+            <div class="mini-label" id="assignmentSectionLabel">Mission Hub</div>
+            <h3 id="assignmentSectionTitle">Your assignments and growth path</h3>
+            <p id="assignmentSectionCopy">
               Complete work here, mark it ready for review, and come back to see
               teacher scoring, encouragement, and next-step coaching.
             </p>
@@ -1073,9 +1206,9 @@
 
         <div class="portal-grid" style="margin-top: 18px">
           <section class="section-card panel">
-            <div class="mini-label">Workbook Studio</div>
-            <h3>Reflection and workbook prompts</h3>
-            <p>
+            <div class="mini-label" id="workbookSectionLabel">Workbook Studio</div>
+            <h3 id="workbookSectionTitle">Reflection and workbook prompts</h3>
+            <p id="workbookSectionCopy">
               Students should be able to open the workbook right where they log
               in. This version keeps those reflections in one place so they can
               write, revise, and build evidence of growth over time.
@@ -1084,9 +1217,9 @@
           </section>
 
           <section class="section-card panel">
-            <div class="mini-label">Success Resources</div>
-            <h3>Guides, manuals, and tools</h3>
-            <p>
+            <div class="mini-label" id="resourceSectionLabel">Success Resources</div>
+            <h3 id="resourceSectionTitle">Guides, manuals, and tools</h3>
+            <p id="resourceSectionCopy">
               Everything students need to succeed should feel close, not hidden.
               These links can later point to protected files, lesson manuals, and
               licensed workbook downloads.
@@ -1096,9 +1229,9 @@
         </div>
 
         <section class="section-card panel" style="margin-top: 18px">
-          <div class="mini-label">Private File Vault</div>
-          <h3>Your files and uploads</h3>
-          <p>
+          <div class="mini-label" id="fileSectionLabel">Private File Vault</div>
+          <h3 id="fileSectionTitle">Your files and uploads</h3>
+          <p id="fileSectionCopy">
             Upload private files to your own storage space. Only your logged-in
             account should be able to view, save, or delete these files.
           </p>
@@ -1114,9 +1247,9 @@
         </section>
 
         <section class="section-card panel" style="margin-top: 18px">
-          <div class="mini-label">Teacher Feedback</div>
-          <h3>Saved feedback and review history</h3>
-          <p>
+          <div class="mini-label" id="feedbackSectionLabel">Teacher Feedback</div>
+          <h3 id="feedbackSectionTitle">Saved feedback and review history</h3>
+          <p id="feedbackSectionCopy">
             Any feedback stored on your account lives here. This keeps your own
             review history private to your login.
           </p>

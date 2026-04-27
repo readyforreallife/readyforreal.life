@@ -122,6 +122,440 @@ const DEFAULT_WORKBOOK_PROMPTS = {
   ],
 };
 
+const COURSE_WEEKS = [
+  {
+    week: 1,
+    module: "Module 1 · Modern Manners",
+    title: "Set the tone and build belonging",
+    focus:
+      "Launch the culture of the course with presence, greetings, listening, and the expectation that respect is visible.",
+    studentActions: [
+      "Practice greetings, introductions, and active-listening sentence stems.",
+      "Notice how tone, posture, and presence affect trust in real situations.",
+    ],
+    studentEvidence: [
+      "Short reflection on first impressions and respect habits.",
+      "Participation in modeled greetings and listening drills.",
+    ],
+    instructorMoves: [
+      "Model the expected tone from the first five minutes of class.",
+      "Teach and rehearse greeting, entry, and discussion norms explicitly.",
+    ],
+    instructorPrep: [
+      "Prepare quick role-play prompts and room routines.",
+      "Decide what respectful participation looks like in this group.",
+    ],
+  },
+  {
+    week: 2,
+    module: "Module 1 · Modern Manners",
+    title: "Strengthen conversation habits",
+    focus:
+      "Build consistency with eye contact, turn-taking, attention, and how to carry yourself in classrooms, homes, and community spaces.",
+    studentActions: [
+      "Use conversation stems in structured partner and small-group practice.",
+      "Track one real-life setting where manners change the outcome.",
+    ],
+    studentEvidence: [
+      "Scenario-based etiquette reflection.",
+      "Weekly practice notes connected to daily interactions.",
+    ],
+    instructorMoves: [
+      "Give fast feedback on tone, interruption, and listening quality.",
+      "Use low-stakes scenarios before moving into higher-pressure conversations.",
+    ],
+    instructorPrep: [
+      "Choose two or three everyday situations students recognize immediately.",
+      "Plan visible anchors for conversation stems and expectations.",
+    ],
+  },
+  {
+    week: 3,
+    module: "Module 1 · Modern Manners",
+    title: "Transfer respect into real settings",
+    focus:
+      "Move from practice drills to public-facing situations like school interactions, family communication, and workplace readiness.",
+    studentActions: [
+      "Apply manners and presence to one real conversation outside class.",
+      "Reflect on what changed when you communicated more intentionally.",
+    ],
+    studentEvidence: [
+      "Real-world transfer reflection.",
+      "Short performance task using a school, home, or job scenario.",
+    ],
+    instructorMoves: [
+      "Push students to name where this skill shows up outside the classroom.",
+      "Use examples that connect respect to opportunity and credibility.",
+    ],
+    instructorPrep: [
+      "Bring examples tied to interviews, meetings, family conflict, or teamwork.",
+      "Prepare a simple rubric for respectful communication habits.",
+    ],
+  },
+  {
+    week: 4,
+    module: "Module 2 · Emotional Intelligence",
+    title: "Name emotions before they run the moment",
+    focus:
+      "Help students notice triggers, feelings, and escalation patterns instead of reacting on autopilot.",
+    studentActions: [
+      "Map triggers and identify what pressure feels like in the body.",
+      "Practice naming emotions with more precision and honesty.",
+    ],
+    studentEvidence: [
+      "Trigger map or self-awareness check-in.",
+      "Workbook reflection on emotional patterns under pressure.",
+    ],
+    instructorMoves: [
+      "Keep this practical and performance-based, not therapeutic.",
+      "Normalize that noticing escalation early is a strength, not weakness.",
+    ],
+    instructorPrep: [
+      "Prepare language supports for emotion labeling.",
+      "Select scenarios where emotion clearly shapes judgment.",
+    ],
+  },
+  {
+    week: 5,
+    module: "Module 2 · Emotional Intelligence",
+    title: "Teach the PLRR regulation routine",
+    focus:
+      "Introduce Pause, Label, Reframe, Respond as a repeatable regulation routine students can use in class and beyond.",
+    studentActions: [
+      "Use PLRR in guided scenarios and explain each step out loud.",
+      "Practice slowing down before speaking or deciding.",
+    ],
+    studentEvidence: [
+      "PLRR scenario response.",
+      "Teacher-observed regulation routine practice.",
+    ],
+    instructorMoves: [
+      "Model the routine step by step with think-aloud language.",
+      "Compare impulsive reactions with regulated responses using the same scenario.",
+    ],
+    instructorPrep: [
+      "Prepare one scenario that predictably escalates and one that can be repaired.",
+      "Post the routine visually for reference during practice.",
+    ],
+  },
+  {
+    week: 6,
+    module: "Module 2 · Emotional Intelligence",
+    title: "Make regulation transferable",
+    focus:
+      "Reinforce that emotional regulation is for arguments, online choices, deadlines, embarrassment, and pressure across contexts.",
+    studentActions: [
+      "Apply PLRR to one academic, social, or family challenge.",
+      "Explain how a regulated response protects long-term goals.",
+    ],
+    studentEvidence: [
+      "Transfer reflection using a personal or realistic scenario.",
+      "Short check for independent use of regulation language.",
+    ],
+    instructorMoves: [
+      "Press for transfer: where else does this show up this week?",
+      "Celebrate control, not just compliance.",
+    ],
+    instructorPrep: [
+      "Collect examples from digital, peer, school, and family contexts.",
+      "Prepare debrief questions about consequence and self-respect.",
+    ],
+  },
+  {
+    week: 7,
+    module: "Module 3 · Conflict Navigation",
+    title: "Slow conflict down before it spreads",
+    focus:
+      "Teach students to recognize conflict patterns, pressure points, and the difference between reaction and strategy.",
+    studentActions: [
+      "Identify where conflict escalates fastest for you or the scenario.",
+      "Practice response options that keep dignity intact.",
+    ],
+    studentEvidence: [
+      "Conflict pattern reflection.",
+      "Role-play notes on de-escalation choices.",
+    ],
+    instructorMoves: [
+      "Use conflict examples students find believable, not overly polished ones.",
+      "Reinforce that strength includes self-control and timing.",
+    ],
+    instructorPrep: [
+      "Choose common peer, classroom, and family tension scenarios.",
+      "Prepare escalation-versus-de-escalation comparison examples.",
+    ],
+  },
+  {
+    week: 8,
+    module: "Module 3 · Conflict Navigation",
+    title: "Use strong language under pressure",
+    focus:
+      "Develop boundary language, disagreement language, and calmer ways to respond when emotions rise.",
+    studentActions: [
+      "Rehearse assertive but respectful language in conflict situations.",
+      "Practice timing, brevity, and boundaries in role-play.",
+    ],
+    studentEvidence: [
+      "Conflict language script or voice response.",
+      "Observed use of calm, direct, accountable wording.",
+    ],
+    instructorMoves: [
+      "Coach students away from passive or explosive responses.",
+      "Pause role-plays often enough to refine language, not just complete the scene.",
+    ],
+    instructorPrep: [
+      "Prepare sentence stems for boundaries, disagreement, and pause requests.",
+      "Decide what effective response quality looks like for scoring.",
+    ],
+  },
+  {
+    week: 9,
+    module: "Module 3 · Conflict Navigation",
+    title: "Practice accountability and repair",
+    focus:
+      "Teach students how to own harm, repair trust, and follow through instead of offering shallow apologies.",
+    studentActions: [
+      "Write or rehearse an accountable repair response.",
+      "Explain what follow-through makes an apology believable.",
+    ],
+    studentEvidence: [
+      "Accountability or repair plan.",
+      "Reflection on trust rebuilding and personal responsibility.",
+    ],
+    instructorMoves: [
+      "Make the distinction between apology language and actual repair explicit.",
+      "Use examples where trust is rebuilt through action, not words alone.",
+    ],
+    instructorPrep: [
+      "Bring scenarios involving mistakes, gossip, disrespect, or digital harm.",
+      "Prepare a repair checklist that includes ownership and follow-through.",
+    ],
+  },
+  {
+    week: 10,
+    module: "Module 4 · Digital Citizenship",
+    title: "See the long life of digital choices",
+    focus:
+      "Connect online behavior to reputation, opportunity, privacy, and self-respect.",
+    studentActions: [
+      "Audit one type of digital choice for audience, permanence, and consequence.",
+      "Discuss how online habits affect credibility offline.",
+    ],
+    studentEvidence: [
+      "Digital footprint reflection.",
+      "Scenario analysis tied to reputation and consequence.",
+    ],
+    instructorMoves: [
+      "Keep the conversation grounded in future opportunity, not fear only.",
+      "Use current examples that feel relevant without glamorizing bad choices.",
+    ],
+    instructorPrep: [
+      "Gather realistic cases involving posts, screenshots, privacy, or online conflict.",
+      "Prepare prompts about audience, permanence, and trust.",
+    ],
+  },
+  {
+    week: 11,
+    module: "Module 4 · Digital Citizenship",
+    title: "Use POCC for better online decisions",
+    focus:
+      "Apply the decision framework to digital pressure, fast choices, and competing priorities.",
+    studentActions: [
+      "Use Pause, Options, Consequences, Choose in online or social scenarios.",
+      "Explain how stronger decision steps protect future opportunity.",
+    ],
+    studentEvidence: [
+      "POCC scenario response.",
+      "Written explanation of options and consequences before the final choice.",
+    ],
+    instructorMoves: [
+      "Model the thinking path, not just the correct answer.",
+      "Require students to compare weak, average, and strong decision quality.",
+    ],
+    instructorPrep: [
+      "Prepare scenarios with social pressure, digital permanence, and short-term temptation.",
+      "Plan how students will show each POCC step visibly.",
+    ],
+  },
+  {
+    week: 12,
+    module: "Module 4 · Digital Citizenship",
+    title: "Repair and reset online behavior",
+    focus:
+      "Move beyond warning language into practical steps for owning digital mistakes and changing habits.",
+    studentActions: [
+      "Create a reset plan for a digital habit or mistake pattern.",
+      "Identify boundaries and accountability supports that protect reputation.",
+    ],
+    studentEvidence: [
+      "Digital repair or reset plan.",
+      "Workbook reflection on identity, responsibility, and restraint.",
+    ],
+    instructorMoves: [
+      "Keep the emphasis on agency and habit change.",
+      "Coach students toward concrete next steps, not vague promises.",
+    ],
+    instructorPrep: [
+      "Prepare examples involving oversharing, reactions, rumors, or impulsive posting.",
+      "Decide what a credible reset plan includes.",
+    ],
+  },
+  {
+    week: 13,
+    module: "Module 5 · Personal Growth",
+    title: "Clarify identity and standards",
+    focus:
+      "Help students define the kind of person they are becoming and what standards they want to be known for.",
+    studentActions: [
+      "Name the values, habits, and identity markers you want to strengthen.",
+      "Connect course skills to who you are becoming.",
+    ],
+    studentEvidence: [
+      "Identity builder reflection.",
+      "Short goal-setting or standards statement.",
+    ],
+    instructorMoves: [
+      "Keep this concrete and behavioral, not abstract only.",
+      "Tie identity to repeatable habits students can practice this week.",
+    ],
+    instructorPrep: [
+      "Prepare prompts about character, maturity, trust, and reputation.",
+      "Choose examples that connect standards to daily behavior.",
+    ],
+  },
+  {
+    week: 14,
+    module: "Module 5 · Personal Growth",
+    title: "Build responsibility and follow-through",
+    focus:
+      "Shift from insight into disciplined action through routines, goals, and self-management.",
+    studentActions: [
+      "Set a specific behavior goal with visible follow-through.",
+      "Track one habit that supports maturity and reliability.",
+    ],
+    studentEvidence: [
+      "Personal growth plan.",
+      "Habit or follow-through checkpoint.",
+    ],
+    instructorMoves: [
+      "Coach toward realistic commitments students can actually maintain.",
+      "Reinforce that maturity is proven through consistency.",
+    ],
+    instructorPrep: [
+      "Prepare examples of goal-setting with accountability supports.",
+      "Plan how to check progress without overloading students.",
+    ],
+  },
+  {
+    week: 15,
+    module: "Module 5 · Personal Growth",
+    title: "Practice leadership and transfer",
+    focus:
+      "Show students how the course skills transfer into leadership, service, teamwork, and future-facing readiness.",
+    studentActions: [
+      "Use course language to support or guide others in a scenario.",
+      "Reflect on how these skills travel into next semester, work, family, or community life.",
+    ],
+    studentEvidence: [
+      "Transfer reflection or leadership mini-task.",
+      "Self-assessment on growth across the semester.",
+    ],
+    instructorMoves: [
+      "Surface examples of leadership that look like steadiness and reliability, not just charisma.",
+      "Ask students to show how multiple skills connect in one real situation.",
+    ],
+    instructorPrep: [
+      "Prepare synthesis prompts spanning communication, regulation, decision-making, and repair.",
+      "Plan for students to articulate growth in their own language.",
+    ],
+  },
+  {
+    week: 16,
+    module: "Milestone Week · Capstone",
+    title: "Synthesize, celebrate, and launch forward",
+    focus:
+      "Close the course by looking back at growth, demonstrating transfer, and setting the next standard for life beyond the class.",
+    studentActions: [
+      "Complete a capstone reflection or performance task using course frameworks.",
+      "Name the habits and decisions you will carry forward after the semester.",
+    ],
+    studentEvidence: [
+      "Capstone response or presentation.",
+      "Final reflection on growth, transfer, and next steps.",
+    ],
+    instructorMoves: [
+      "Celebrate earned growth while still naming the next level of responsibility.",
+      "Use synthesis tasks that require students to connect modules, not recall isolated facts.",
+    ],
+    instructorPrep: [
+      "Prepare a capstone prompt that blends multiple modules and both frameworks.",
+      "Plan a closing routine that reinforces pride, identity, and continuation.",
+    ],
+  },
+];
+
+const ROLE_PORTAL_COPY = {
+  student: {
+    roadmapLabel: "16-Week Student Path",
+    roadmapTitle: "What you will do each week of the course",
+    roadmapCopy:
+      "This is your full semester path. Each week shows the course focus, what you will practice, and what work or reflection proves your growth.",
+    bioLabel: "Personal Bio",
+    bioTitle: "Your story matters here",
+    bioCopy:
+      "This is the profile your teacher can see while reviewing your work. Use it to share what drives you, where you want to grow, and what support helps you do your best.",
+    assignmentLabel: "Mission Hub",
+    assignmentTitle: "Your assignments and growth path",
+    assignmentCopy:
+      "Complete work here, mark it ready for review, and come back to see teacher scoring, encouragement, and next-step coaching.",
+    workbookLabel: "Workbook Studio",
+    workbookTitle: "Reflection and workbook prompts",
+    workbookCopy:
+      "Your workbook lives right here so you can write, revise, and build evidence of growth over the full 16 weeks.",
+    resourceLabel: "Success Resources",
+    resourceTitle: "Guides, manuals, and tools",
+    resourceCopy:
+      "Everything you need to succeed should feel close, not hidden. These are the tools and references that support your work each week.",
+    fileLabel: "Private File Vault",
+    fileTitle: "Your files and uploads",
+    fileCopy:
+      "Upload private files to your own storage space. Only your logged-in account should be able to view, save, or delete these files.",
+    feedbackLabel: "Teacher Feedback",
+    feedbackTitle: "Saved feedback and review history",
+    feedbackCopy:
+      "Any feedback stored on your account lives here. This keeps your own review history private to your login.",
+  },
+  instructor: {
+    roadmapLabel: "16-Week Instructor Guide",
+    roadmapTitle: "How to facilitate each week of the course",
+    roadmapCopy:
+      "This version is built for delivery. Each week shows the student focus, the facilitation moves to teach it well, and what to prepare or look for.",
+    bioLabel: "Instructor Profile",
+    bioTitle: "Your delivery identity and notes",
+    bioCopy:
+      "Use this profile as your private teaching snapshot. It helps you track your purpose, your facilitation strengths, and what support helps you deliver the course well.",
+    assignmentLabel: "Delivery Hub",
+    assignmentTitle: "Weekly facilitation tasks and implementation work",
+    assignmentCopy:
+      "Use this space to plan, upload, reflect, and keep your facilitation work organized across the full 16-week sequence.",
+    workbookLabel: "Facilitation Journal",
+    workbookTitle: "Weekly instructor reflections",
+    workbookCopy:
+      "Keep weekly delivery notes, what students responded to, and what you want to adjust before the next class.",
+    resourceLabel: "Facilitation Resources",
+    resourceTitle: "Guides, manuals, pacing, and teaching tools",
+    resourceCopy:
+      "These resources are here to help you deliver the curriculum week by week with clarity, consistency, and strong transfer.",
+    fileLabel: "Instructor File Vault",
+    fileTitle: "Lesson files, notes, and private uploads",
+    fileCopy:
+      "Upload lesson notes, handouts, pacing tools, or any private files you want close at hand while facilitating the course.",
+    feedbackLabel: "Review Archive",
+    feedbackTitle: "Saved review history and coaching notes",
+    feedbackCopy:
+      "Anything saved on this account stays here as part of your private implementation and review record.",
+  },
+};
+
 const DEFAULT_RESOURCES = [
   {
     title: "Program Guide",
@@ -220,6 +654,28 @@ const fileUploadInput = document.getElementById("fileUploadInput");
 const uploadFileBtn = document.getElementById("uploadFileBtn");
 const fileUploadStatus = document.getElementById("fileUploadStatus");
 const fileList = document.getElementById("fileList");
+const courseRoadmapLabel = document.getElementById("courseRoadmapLabel");
+const courseRoadmapTitle = document.getElementById("courseRoadmapTitle");
+const courseRoadmapCopy = document.getElementById("courseRoadmapCopy");
+const courseRoadmapList = document.getElementById("courseRoadmapList");
+const bioSectionLabel = document.getElementById("bioSectionLabel");
+const bioSectionTitle = document.getElementById("bioSectionTitle");
+const bioSectionCopy = document.getElementById("bioSectionCopy");
+const assignmentSectionLabel = document.getElementById("assignmentSectionLabel");
+const assignmentSectionTitle = document.getElementById("assignmentSectionTitle");
+const assignmentSectionCopy = document.getElementById("assignmentSectionCopy");
+const workbookSectionLabel = document.getElementById("workbookSectionLabel");
+const workbookSectionTitle = document.getElementById("workbookSectionTitle");
+const workbookSectionCopy = document.getElementById("workbookSectionCopy");
+const resourceSectionLabel = document.getElementById("resourceSectionLabel");
+const resourceSectionTitle = document.getElementById("resourceSectionTitle");
+const resourceSectionCopy = document.getElementById("resourceSectionCopy");
+const fileSectionLabel = document.getElementById("fileSectionLabel");
+const fileSectionTitle = document.getElementById("fileSectionTitle");
+const fileSectionCopy = document.getElementById("fileSectionCopy");
+const feedbackSectionLabel = document.getElementById("feedbackSectionLabel");
+const feedbackSectionTitle = document.getElementById("feedbackSectionTitle");
+const feedbackSectionCopy = document.getElementById("feedbackSectionCopy");
 
 let settings = loadSettings();
 let supabaseClient = null;
@@ -370,9 +826,9 @@ function getSupabase() {
 
 function createWelcomeCopy(role, name) {
   if (role === "instructor") {
-    return `${name} has a secure home base for notes, files, planning, and reflection. Everything here should stay private to this instructor account.`;
+    return `${name} has a secure instructor home base for pacing, lesson delivery, facilitation notes, and implementation reflection across the full 16-week course.`;
   }
-  return `${name} has a secure home base for assignments, workbook reflections, personal files, and saved feedback. Everything here should stay private to this student account.`;
+  return `${name} has a secure student home base for weekly assignments, workbook reflections, personal files, and saved feedback across the full 16-week course.`;
 }
 
 function defaultTrackForRole(role) {
@@ -385,6 +841,79 @@ function defaultCohortForRole(role) {
 
 function defaultAvatarForRole(role) {
   return role === "instructor" ? "🧭" : "🚀";
+}
+
+function portalCopyForRole(role) {
+  return ROLE_PORTAL_COPY[role] || ROLE_PORTAL_COPY.student;
+}
+
+function renderCourseRoadmap(role) {
+  if (!courseRoadmapList) return;
+
+  const isInstructor = role === "instructor";
+  courseRoadmapList.innerHTML = COURSE_WEEKS.map(
+    (week) => `
+      <article class="week-card">
+        <div class="week-head">
+          <div>
+            <div class="mini-label">${escapeHtml(week.module)}</div>
+            <h4>${escapeHtml(week.title)}</h4>
+          </div>
+          <span class="week-number">Week ${week.week}</span>
+        </div>
+        <p class="week-focus">${escapeHtml(week.focus)}</p>
+        <div class="week-list">
+          <section class="week-list-block">
+            <strong>${isInstructor ? "Student experience this week" : "What you will do"}</strong>
+            <ul>
+              ${(isInstructor ? week.studentActions : week.studentActions)
+                .map((item) => `<li>${escapeHtml(item)}</li>`)
+                .join("")}
+            </ul>
+          </section>
+          <section class="week-list-block">
+            <strong>${isInstructor ? "What to look for" : "What shows your growth"}</strong>
+            <ul>
+              ${(isInstructor ? week.studentEvidence : week.studentEvidence)
+                .map((item) => `<li>${escapeHtml(item)}</li>`)
+                .join("")}
+            </ul>
+          </section>
+          ${
+            isInstructor
+              ? `
+                <section class="week-list-block">
+                  <strong>How to facilitate it</strong>
+                  <ul>
+                    ${week.instructorMoves.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                  </ul>
+                </section>
+                <section class="week-list-block">
+                  <strong>Prep before you teach</strong>
+                  <ul>
+                    ${week.instructorPrep.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                  </ul>
+                </section>
+              `
+              : `
+                <section class="week-list-block">
+                  <strong>Why it matters</strong>
+                  <ul>
+                    ${week.instructorMoves.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                  </ul>
+                </section>
+                <section class="week-list-block">
+                  <strong>How to prepare yourself</strong>
+                  <ul>
+                    ${week.instructorPrep.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                  </ul>
+                </section>
+              `
+          }
+        </div>
+      </article>
+    `,
+  ).join("");
 }
 
 function assignmentTemplatesForRole(role) {
@@ -648,8 +1177,11 @@ function renderPortal(options = {}) {
 
   updateAuthenticatedView(true);
   studentPortal.classList.add("visible");
+  studentPortal.classList.toggle("instructor-view", state.profile.role === "instructor");
+  studentPortal.classList.toggle("student-view", state.profile.role !== "instructor");
 
   const profile = state.profile;
+  const roleCopy = portalCopyForRole(profile.role);
   const firstName = profile.display_name.split(/\s+/)[0] || profile.display_name;
   const progress = computeProgress(state.assignments, state.workbookEntries);
 
@@ -668,6 +1200,29 @@ function renderPortal(options = {}) {
   identityCardTrack.textContent = `${profile.track || defaultTrackForRole(profile.role)} · ${profile.email}`;
   progressSummary.textContent = `${progress.completed} of ${progress.total} milestones complete`;
   progressFill.style.width = `${progress.percent}%`;
+
+  courseRoadmapLabel.textContent = roleCopy.roadmapLabel;
+  courseRoadmapTitle.textContent = roleCopy.roadmapTitle;
+  courseRoadmapCopy.textContent = roleCopy.roadmapCopy;
+  bioSectionLabel.textContent = roleCopy.bioLabel;
+  bioSectionTitle.textContent = roleCopy.bioTitle;
+  bioSectionCopy.textContent = roleCopy.bioCopy;
+  assignmentSectionLabel.textContent = roleCopy.assignmentLabel;
+  assignmentSectionTitle.textContent = roleCopy.assignmentTitle;
+  assignmentSectionCopy.textContent = roleCopy.assignmentCopy;
+  workbookSectionLabel.textContent = roleCopy.workbookLabel;
+  workbookSectionTitle.textContent = roleCopy.workbookTitle;
+  workbookSectionCopy.textContent = roleCopy.workbookCopy;
+  resourceSectionLabel.textContent = roleCopy.resourceLabel;
+  resourceSectionTitle.textContent = roleCopy.resourceTitle;
+  resourceSectionCopy.textContent = roleCopy.resourceCopy;
+  fileSectionLabel.textContent = roleCopy.fileLabel;
+  fileSectionTitle.textContent = roleCopy.fileTitle;
+  fileSectionCopy.textContent = roleCopy.fileCopy;
+  feedbackSectionLabel.textContent = roleCopy.feedbackLabel;
+  feedbackSectionTitle.textContent = roleCopy.feedbackTitle;
+  feedbackSectionCopy.textContent = roleCopy.feedbackCopy;
+  renderCourseRoadmap(profile.role);
 
   bioProudInput.value = profile.bio_proud || "";
   bioGoalInput.value = profile.bio_goal || "";
