@@ -2,6 +2,13 @@ const PORTAL_SETTINGS_KEY = "rfrl-student-portal-supabase-v1";
 const PAGE_ENTRY_MODE = new URLSearchParams(window.location.search).get("entry") || "";
 const PAGE_HASH = window.location.hash || "";
 const DEFAULT_STORAGE_BUCKET = "portal-files";
+const EMBEDDED_SUPABASE_URL = normalizeUrl(
+  document.documentElement.dataset.supabaseUrl || "",
+);
+const EMBEDDED_SUPABASE_ANON_KEY =
+  document.documentElement.dataset.supabaseAnonKey || "";
+const EMBEDDED_STORAGE_BUCKET =
+  document.documentElement.dataset.storageBucket || DEFAULT_STORAGE_BUCKET;
 
 const DEFAULT_ASSIGNMENTS = {
   student: [
@@ -245,9 +252,9 @@ function clearStatus(el) {
 
 function loadSettings() {
   const defaults = {
-    supabaseUrl: "",
-    supabaseAnonKey: "",
-    storageBucket: DEFAULT_STORAGE_BUCKET,
+    supabaseUrl: EMBEDDED_SUPABASE_URL,
+    supabaseAnonKey: EMBEDDED_SUPABASE_ANON_KEY,
+    storageBucket: EMBEDDED_STORAGE_BUCKET,
     lastAuthEmail: "",
   };
   const raw = localStorage.getItem(PORTAL_SETTINGS_KEY);
@@ -1067,9 +1074,9 @@ savePortalApiBtn.addEventListener("click", async () => {
 
 clearSupabaseConfigBtn.addEventListener("click", () => {
   settings = {
-    supabaseUrl: "",
-    supabaseAnonKey: "",
-    storageBucket: DEFAULT_STORAGE_BUCKET,
+    supabaseUrl: EMBEDDED_SUPABASE_URL,
+    supabaseAnonKey: EMBEDDED_SUPABASE_ANON_KEY,
+    storageBucket: EMBEDDED_STORAGE_BUCKET,
     lastAuthEmail: settings.lastAuthEmail || "",
   };
   saveSettings();
