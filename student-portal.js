@@ -2,6 +2,8 @@ const PORTAL_SETTINGS_KEY = "rfrl-student-portal-supabase-v1";
 const PAGE_ENTRY_MODE = new URLSearchParams(window.location.search).get("entry") || "";
 const PAGE_HASH = window.location.hash || "";
 const DEFAULT_STORAGE_BUCKET = "portal-files";
+const ADVANCED_SETTINGS_ACCESS_KEY = "4429";
+const ADVANCED_SETTINGS_SESSION_KEY = "rfrl-advanced-settings-unlocked";
 const EMBEDDED_SUPABASE_URL = normalizeUrl(
   document.documentElement.dataset.supabaseUrl || "",
 );
@@ -278,9 +280,21 @@ function hasSupabaseConfig() {
   return Boolean(settings.supabaseUrl && settings.supabaseAnonKey);
 }
 
+function isAdvancedSettingsUnlocked() {
+  return sessionStorage.getItem(ADVANCED_SETTINGS_SESSION_KEY) === "1";
+}
+
+function setAdvancedSettingsUnlocked(value) {
+  if (value) {
+    sessionStorage.setItem(ADVANCED_SETTINGS_SESSION_KEY, "1");
+    return;
+  }
+  sessionStorage.removeItem(ADVANCED_SETTINGS_SESSION_KEY);
+}
+
 function shouldShowPortalSetupByDefault() {
   const params = new URLSearchParams(window.location.search);
-  return !hasSupabaseConfig() || params.get("setup") === "1";
+  return isAdvancedSettingsUnlocked() || params.get("setup") === "1";
 }
 
 function syncSettingsInputs() {
@@ -1104,6 +1118,16 @@ clearSupabaseConfigBtn.addEventListener("click", () => {
 });
 
 portalSetupToggleBtn?.addEventListener("click", () => {
+  if (teacherAccess.hidden && !isAdvancedSettingsUnlocked()) {
+    const entered = window.prompt("Enter the security access key to open advanced settings:");
+    if (String(entered || "").trim() !== ADVANCED_SETTINGS_ACCESS_KEY) {
+      showStatus(portalSetupStatus, "Security access key not accepted.");
+      updatePortalSetupVisibility(false);
+      return;
+    }
+    setAdvancedSettingsUnlocked(true);
+  }
+
   const willShow = teacherAccess.hidden;
   teacherAccess.hidden = !willShow;
   portalSetupToggleBtn.textContent = willShow
