@@ -817,115 +817,141 @@
         </section>
 
         <section class="login-panel panel" id="loginGate">
-          <p class="section-kicker">Student Login</p>
-          <h3>Sign into your personal page</h3>
+          <p class="section-kicker">Secure Access</p>
+          <h3>Sign in with your private account</h3>
           <p class="subcopy">
-            Every student gets an individual access code and a personalized
-            dashboard. This first version includes seeded student logins so we
-            can shape the experience before wiring it to a live backend.
+            Students and instructors now use Supabase authentication with their
+            own email and password. Every account gets a private profile,
+            private data storage, and private file storage.
           </p>
           <p class="subcopy" style="margin-top: 10px">
-            Use the exact student ID and access code shown in the starter cards
-            below. Example: student ID <strong>ava-james</strong> with access
-            code <strong>RFRL-701</strong>.
+            Save the Supabase project connection first on this device, then sign
+            in or create an account below.
           </p>
 
           <form class="login-form" id="studentLoginForm">
             <label>
-              Student ID
+              Email address
               <input
                 id="studentIdInput"
-                type="text"
+                type="email"
                 autocomplete="username"
-                placeholder="example: ava-james"
+                placeholder="name@example.com"
               />
             </label>
             <label>
-              Access code
+              Password
               <input
                 id="studentCodeInput"
                 type="password"
                 autocomplete="current-password"
-                placeholder="Enter your code"
+                placeholder="Enter your password"
               />
             </label>
             <div class="assignment-actions">
-              <button class="btn primary" type="submit">Enter Your Portal</button>
+              <button class="btn primary" type="submit">Sign In</button>
               <button class="btn secondary" id="restoreLastStudentBtn" type="button">
-                Resume Last Portal
+                Resume Session
               </button>
             </div>
             <div class="status-line" id="studentLoginStatus"></div>
           </form>
 
           <div class="teacher-entry stack" id="teacher-access">
-            <p class="section-kicker" style="margin-top: 10px">Instructor Access</p>
+            <p class="section-kicker" style="margin-top: 10px">Portal Setup</p>
             <p class="subcopy">
-              Teachers can open the review workspace to read student bios, score
-              submissions, and leave encouragement or coaching notes.
-            </p>
-            <p class="subcopy" style="margin-top: 10px">
-              Students do not need any of the setup fields below. They are only
-              for the teacher or admin when connecting this portal to the live
-              backend.
-            </p>
-            <p class="subcopy" style="margin-top: 10px">
-              If you are just previewing in the app without the live backend,
-              use demo teacher PIN <strong>RFRL-TEACHER</strong>.
+              These connection settings are for the app or browser on this
+              device. Use your Supabase project URL, anon key, and the storage
+              bucket you want this portal to use.
             </p>
             <label>
-              Portal API base URL (teacher/admin only)
+              Supabase project URL
               <input
                 id="portalApiUrlInput"
                 type="url"
                 autocomplete="off"
-                placeholder="https://your-worker.example.workers.dev"
+                placeholder="https://your-project.supabase.co"
               />
             </label>
             <p class="subcopy" style="margin-top: 6px">
-              This is the web address for the live portal backend that stores
-              logins, bios, submissions, and teacher feedback.
+              This is your Supabase project URL.
             </p>
             <label>
-              Bootstrap secret (one-time teacher/admin setup)
+              Supabase anon key
               <input
                 id="portalBootstrapSecretInput"
                 type="password"
                 autocomplete="off"
-                placeholder="Used one time to seed student accounts"
+                placeholder="Paste your public anon key"
               />
             </label>
             <p class="subcopy" style="margin-top: 6px">
-              This is only used one time to create the starter student accounts
-              in the backend.
+              This public key lets the portal connect to Supabase from the app
+              or website.
+            </p>
+            <label>
+              Storage bucket name
+              <input
+                id="storageBucketInput"
+                type="text"
+                autocomplete="off"
+                placeholder="portal-files"
+              />
+            </label>
+            <p class="subcopy" style="margin-top: 6px">
+              Use the private bucket created for portal uploads.
             </p>
             <div class="assignment-actions">
               <button class="btn secondary" id="savePortalApiBtn" type="button">
-                Save Backend URL
+                Save Supabase Settings
               </button>
-              <button class="btn secondary" id="bootstrapPortalBtn" type="button">
-                Seed Starter Cohort
+              <button class="btn secondary" id="clearSupabaseConfigBtn" type="button">
+                Clear Saved Settings
               </button>
             </div>
             <div class="status-line" id="portalSetupStatus"></div>
+          </div>
+
+          <form class="teacher-entry stack" id="signupForm">
+            <p class="section-kicker" style="margin-top: 10px">Create Account</p>
+            <p class="subcopy">
+              Create either a student or instructor account. Each user will only
+              be able to view, edit, save, and delete their own information.
+            </p>
             <label>
-              Teacher PIN
-              <input
-                id="teacherPinInput"
-                type="password"
-                autocomplete="off"
-                placeholder="Enter teacher PIN"
-              />
+              Full name
+              <input id="signupNameInput" type="text" autocomplete="name" placeholder="Your full name" />
+            </label>
+            <label>
+              Email address
+              <input id="signupEmailInput" type="email" autocomplete="email" placeholder="name@example.com" />
+            </label>
+            <label>
+              Password
+              <input id="signupPasswordInput" type="password" autocomplete="new-password" placeholder="Create a password" />
+            </label>
+            <label>
+              Role
+              <select id="signupRoleInput">
+                <option value="student">Student</option>
+                <option value="instructor">Instructor</option>
+              </select>
+            </label>
+            <label>
+              Cohort, class, or team name
+              <input id="signupCohortInput" type="text" autocomplete="organization" placeholder="Spring 2026 Student Group" />
+            </label>
+            <label>
+              Track or focus area
+              <input id="signupTrackInput" type="text" autocomplete="off" placeholder="Core Skills Focus" />
             </label>
             <div class="assignment-actions">
-              <button class="btn secondary" id="teacherUnlockBtn" type="button">
-                Open Teacher Review
+              <button class="btn primary" id="signupSubmitBtn" type="submit">
+                Create My Account
               </button>
             </div>
             <div class="status-line" id="teacherStatus"></div>
-          </div>
-
-          <div class="sample-grid" id="sampleAccounts"></div>
+          </form>
         </section>
       </section>
 
@@ -938,9 +964,6 @@
               <p id="welcomeCopy"></p>
               <div class="welcome-meta" id="welcomeMeta"></div>
               <div class="assignment-actions" style="margin-top: 18px">
-                <button class="btn ghost" id="teacherWorkspaceToggle" type="button">
-                  Teacher Review
-                </button>
                 <button class="btn ghost" id="studentLogoutBtn" type="button">
                   Log Out
                 </button>
@@ -1034,55 +1057,35 @@
         </div>
 
         <section class="section-card panel" style="margin-top: 18px">
-          <div class="mini-label">Teacher Feedback</div>
-          <h3>What your teacher has shared with you</h3>
+          <div class="mini-label">Private File Vault</div>
+          <h3>Your files and uploads</h3>
           <p>
-            This section turns feedback into something students can look forward
-            to reading. Celebration and coaching live together so students feel
-            challenged and supported.
+            Upload private files to your own storage space. Only your logged-in
+            account should be able to view, save, or delete these files.
+          </p>
+          <label>
+            Choose file
+            <input id="fileUploadInput" type="file" />
+          </label>
+          <div class="assignment-actions">
+            <button class="btn primary" id="uploadFileBtn" type="button">Upload File</button>
+          </div>
+          <div class="status-line" id="fileUploadStatus"></div>
+          <div class="section-grid" id="fileList"></div>
+        </section>
+
+        <section class="section-card panel" style="margin-top: 18px">
+          <div class="mini-label">Teacher Feedback</div>
+          <h3>Saved feedback and review history</h3>
+          <p>
+            Any feedback stored on your account lives here. This keeps your own
+            review history private to your login.
           </p>
           <div class="section-grid" id="feedbackList"></div>
         </section>
       </section>
-
-      <section class="teacher-workspace panel" id="teacherWorkspace">
-        <div class="teacher-head">
-          <div>
-            <div class="mini-label">Teacher Review Workspace</div>
-            <h3>Student bios, scoring, and coaching</h3>
-            <p>
-              Review each student in one place. Read their bio, score assignments,
-              record encouragement, and guide their next move.
-            </p>
-          </div>
-          <div class="teacher-actions">
-            <button class="btn ghost" id="teacherLockBtn" type="button">
-              Lock Teacher View
-            </button>
-          </div>
-        </div>
-
-        <div class="teacher-grid">
-          <div class="teacher-overview">
-            <label>
-              Choose student
-              <select id="teacherStudentSelect"></select>
-            </label>
-            <div class="progress-card" style="margin-top: 16px">
-              <div class="mini-label">Bio Snapshot</div>
-              <div id="teacherBioPreview" class="subtle"></div>
-            </div>
-            <div class="progress-card">
-              <div class="mini-label">Quick Notes</div>
-              <div id="teacherQuickStats" class="subtle"></div>
-            </div>
-          </div>
-
-          <div class="stack" id="teacherAssignmentReviews"></div>
-        </div>
-      </section>
     </main>
-
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script src="student-portal.js"></script>
   </body>
 </html>

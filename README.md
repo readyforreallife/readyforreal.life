@@ -48,3 +48,18 @@ Example response:
 ## Data export
 
 Use **Export** to download a JSON file of student decisions and scores.
+
+## Supabase portal backend
+
+The student portal can now run against Supabase for:
+
+- authentication
+- profiles
+- per-user database storage
+- private file storage
+- Row Level Security
+
+Setup files:
+
+- [supabase/portal-schema.sql](/Users/mikey/Desktop/Desktop%20Stuff/decision-lab/supabase/portal-schema.sql)
+- [supabase/README.md](/Users/mikey/Desktop/Desktop%20Stuff/decision-lab/supabase/README.md)

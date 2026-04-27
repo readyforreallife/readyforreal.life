@@ -5,7 +5,7 @@
     "dev": "serve .",
     "format": "prettier --write \"**/*.{html,css,js,json,md}\"",
     "format:check": "prettier --check \"**/*.{html,css,js,json,md}\"",
-    "check:js": "node --check docs/game.js && node --check app.js && node --check docs/app.js",
+    "check:js": "node --check docs/game.js && node --check app.js && node --check docs/app.js && node --check student-portal.js",
     "cap:prepare": "node scripts/prepare-capacitor-web.mjs",
     "cap:sync": "npm run cap:prepare && cap sync",
     "cap:add:ios": "npm run cap:prepare && cap add ios",

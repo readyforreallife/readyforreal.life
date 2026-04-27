@@ -1,179 +1,123 @@
-const PORTAL_SETTINGS_KEY = "rfrl-student-portal-settings-v2";
-const DEMO_STORE_KEY = "rfrl-student-portal-demo-v1";
-const DEMO_TEACHER_PIN = "RFRL-TEACHER";
+const PORTAL_SETTINGS_KEY = "rfrl-student-portal-supabase-v1";
 const PAGE_ENTRY_MODE = new URLSearchParams(window.location.search).get("entry") || "";
 const PAGE_HASH = window.location.hash || "";
+const DEFAULT_STORAGE_BUCKET = "portal-files";
 
-const SAMPLE_STUDENTS = [
-  {
-    id: "ava-james",
-    accessCode: "RFRL-701",
-    name: "Ava James",
-    cohort: "Spring 2026 Student Group",
-    track: "Core Skills Focus",
-    avatar: "🚀",
-    welcomeTitle: "Welcome, Ava.",
-    welcomeCopy:
-      "You are not just taking a class. You are building the kind of judgment, character, and real-world readiness people remember.",
-    bio: {
-      proud:
-        "I want to become the kind of person younger students can trust and copy for the right reasons.",
-      goal:
-        "My long-term goal is to graduate strong, work in health care, and be known for being dependable under pressure.",
-      strengths:
-        "I stay calm when other people panic, I care about doing the right thing, and I do well when expectations are clear.",
-      support:
-        "Direct feedback helps me most. I also do better when I can break a big assignment into smaller steps.",
+const DEFAULT_ASSIGNMENTS = {
+  student: [
+    {
+      id: "pocc-scenario",
+      title: "POCC Scenario Response",
+      objective:
+        "Use the POCC sequence to make a stronger call under pressure and explain why it protects trust and long-term outcomes.",
+      due_label: "Due this week",
+      rubric_focus: "Decision quality, consequence awareness, accountability",
+      sort_order: 10,
     },
-    assignments: [
-      {
-        id: "pocc-scenario",
-        title: "POCC Scenario Response",
-        objective:
-          "Use the POCC sequence to make a stronger call under pressure and explain why it protects trust and long-term outcomes.",
-        dueLabel: "Due this week",
-        rubricFocus: "Decision quality, consequence awareness, accountability",
-      },
-      {
-        id: "digital-reputation",
-        title: "Digital Reputation Reflection",
-        objective:
-          "Analyze one online choice and show how it affects credibility, opportunity, and self-respect.",
-        dueLabel: "Due Friday",
-        rubricFocus: "Self-awareness, judgment, real-life transfer",
-      },
-      {
-        id: "repair-move",
-        title: "Repair Move Practice",
-        objective:
-          "Write and rehearse an accountable repair response after a mistake or conflict.",
-        dueLabel: "Due next Monday",
-        rubricFocus: "Ownership, communication, follow-through",
-      },
-    ],
-  },
-  {
-    id: "jaden-ortega",
-    accessCode: "RFRL-884",
-    name: "Jaden Ortega",
-    cohort: "Spring 2026 Student Group",
-    track: "Leadership Focus",
-    avatar: "🛡️",
-    welcomeTitle: "Welcome, Jaden.",
-    welcomeCopy:
-      "This portal is your personal operations room. The more seriously you take the reflections, assignments, and coaching here, the more prepared you become for the moments where other people will count on you.",
-    bio: {
-      proud:
-        "I want to be someone my team can count on when stress is high and emotions are loud.",
-      goal:
-        "I want to lead in athletics now and eventually in law enforcement or emergency response.",
-      strengths:
-        "I care about team trust, I recover quickly after pressure, and I like measurable progress.",
-      support:
-        "I do best with honest coaching, clear standards, and examples that connect to real life.",
+    {
+      id: "digital-reputation",
+      title: "Digital Reputation Reflection",
+      objective:
+        "Analyze one online choice and show how it affects credibility, opportunity, and self-respect.",
+      due_label: "Due Friday",
+      rubric_focus: "Self-awareness, judgment, real-life transfer",
+      sort_order: 20,
     },
-    assignments: [
-      {
-        id: "team-pressure",
-        title: "Team Pressure Decision Lab",
-        objective:
-          "Respond to a peer-pressure scenario in a way that protects reputation, team trust, and long-term goals.",
-        dueLabel: "Due this week",
-        rubricFocus: "Integrity, courage, leadership under pressure",
-      },
-      {
-        id: "authority-feedback",
-        title: "Authority & Feedback Response",
-        objective:
-          "Show how to respond well when corrected by a teacher, coach, or supervisor.",
-        dueLabel: "Due Friday",
-        rubricFocus: "Coachability, professionalism, self-control",
-      },
-      {
-        id: "family-duty",
-        title: "Family Responsibility Planning",
-        objective:
-          "Map a decision that balances school, family responsibility, and future opportunity.",
-        dueLabel: "Due next Monday",
-        rubricFocus: "Trade-offs, planning, maturity",
-      },
-    ],
-  },
-  {
-    id: "mia-thomas",
-    accessCode: "RFRL-552",
-    name: "Mia Thomas",
-    cohort: "Spring 2026 Student Group",
-    track: "Communication Focus",
-    avatar: "✨",
-    welcomeTitle: "You belong here, Mia.",
-    welcomeCopy:
-      "This is your place to grow your voice, sharpen your choices, and finish with something to be deeply proud of.",
-    bio: {
-      proud:
-        "I want to become more confident speaking up with respect and staying steady when emotions get big.",
-      goal:
-        "I want to build enough confidence to lead small groups, present clearly, and help younger students feel seen.",
-      strengths:
-        "I care deeply about people, I notice things others miss, and I want feedback that helps me improve quickly.",
-      support:
-        "I do best with examples, calm coaching, and clear reminders of what success looks like.",
+    {
+      id: "repair-move",
+      title: "Repair Move Practice",
+      objective:
+        "Write and rehearse an accountable repair response after a mistake or conflict.",
+      due_label: "Due next Monday",
+      rubric_focus: "Ownership, communication, follow-through",
+      sort_order: 30,
     },
-    assignments: [
-      {
-        id: "respectful-voice",
-        title: "Respectful Voice Roleplay",
-        objective:
-          "Practice responding with calm clarity during a tense interaction with a peer or adult.",
-        dueLabel: "Due this week",
-        rubricFocus: "Respect, tone, controlled response",
-      },
-      {
-        id: "pause-label-reframe",
-        title: "Pause-Label-Reframe Journal",
-        objective:
-          "Use the regulation model to process a real moment of frustration and write a wiser response.",
-        dueLabel: "Due Friday",
-        rubricFocus: "Self-regulation, reflection, honesty",
-      },
-      {
-        id: "future-self-letter",
-        title: "Future Self Letter",
-        objective:
-          "Write to your future self about the kind of reputation and character you are building now.",
-        dueLabel: "Due next Monday",
-        rubricFocus: "Identity, long-view thinking, pride",
-      },
-    ],
-  },
-];
+  ],
+  instructor: [
+    {
+      id: "launch-plan",
+      title: "Launch Plan",
+      objective:
+        "Map how you want to use the program, which students you are serving, and what success should look like.",
+      due_label: "Start here",
+      rubric_focus: "Planning, program fit, readiness",
+      sort_order: 10,
+    },
+    {
+      id: "resource-organization",
+      title: "Resource Organization",
+      objective:
+        "Upload and organize the guides, notes, and files you want close at hand during delivery.",
+      due_label: "This week",
+      rubric_focus: "Organization, clarity, implementation",
+      sort_order: 20,
+    },
+    {
+      id: "reflection-loop",
+      title: "Reflection Loop",
+      objective:
+        "Capture what is working, what students need, and what you want to adjust next.",
+      due_label: "Ongoing",
+      rubric_focus: "Reflection, coaching, iteration",
+      sort_order: 30,
+    },
+  ],
+};
 
-const DEMO_WORKBOOK_PROMPTS = [
-  {
-    id: "weekly-reset",
-    title: "Weekly Reset",
-    prompt:
-      "What real-life moment challenged you most this week, and what would your strongest self do next time?",
-  },
-  {
-    id: "identity-build",
-    title: "Identity Builder",
-    prompt:
-      "What kind of person are you becoming through this program, and what proof do you already have?",
-  },
-  {
-    id: "coaching-bridge",
-    title: "Coaching Bridge",
-    prompt:
-      "What teacher feedback are you going to act on immediately, and what will it look like in action?",
-  },
-];
+const DEFAULT_WORKBOOK_PROMPTS = {
+  student: [
+    {
+      id: "weekly-reset",
+      title: "Weekly Reset",
+      prompt:
+        "What real-life moment challenged you most this week, and what would your strongest self do next time?",
+      sort_order: 10,
+    },
+    {
+      id: "identity-build",
+      title: "Identity Builder",
+      prompt:
+        "What kind of person are you becoming through this program, and what proof do you already have?",
+      sort_order: 20,
+    },
+    {
+      id: "coaching-bridge",
+      title: "Coaching Bridge",
+      prompt:
+        "What feedback are you going to act on immediately, and what will it look like in action?",
+      sort_order: 30,
+    },
+  ],
+  instructor: [
+    {
+      id: "delivery-notes",
+      title: "Delivery Notes",
+      prompt:
+        "What did you notice about student engagement, transfer, and clarity during delivery?",
+      sort_order: 10,
+    },
+    {
+      id: "coaching-priority",
+      title: "Coaching Priority",
+      prompt:
+        "What is the next most important coaching move for your group or class?",
+      sort_order: 20,
+    },
+    {
+      id: "implementation-proof",
+      title: "Implementation Proof",
+      prompt:
+        "What evidence do you want to save that shows progress, momentum, or impact?",
+      sort_order: 30,
+    },
+  ],
+};
 
-const DEMO_RESOURCES = [
+const DEFAULT_RESOURCES = [
   {
     title: "Program Guide",
     description:
-      "See the full structure, goals, and instructional framework behind the course.",
+      "See the structure, goals, and instructional framework behind the course.",
     href: "program.html",
     label: "Open Guide",
     meta: ["Program structure", "Student-facing context"],
@@ -213,7 +157,7 @@ const DEMO_RESOURCES = [
   {
     title: "Founders & Mission",
     description:
-      "Read the program story and the people behind it so students know what they joined.",
+      "Read the program story and the people behind it so users know what they joined.",
     href: "bio.html",
     label: "Meet the Founders",
     meta: ["Mission", "Origin story"],
@@ -225,17 +169,21 @@ const studentIdInput = document.getElementById("studentIdInput");
 const studentCodeInput = document.getElementById("studentCodeInput");
 const restoreLastStudentBtn = document.getElementById("restoreLastStudentBtn");
 const studentLoginStatus = document.getElementById("studentLoginStatus");
-const sampleAccounts = document.getElementById("sampleAccounts");
+const signupForm = document.getElementById("signupForm");
+const signupNameInput = document.getElementById("signupNameInput");
+const signupEmailInput = document.getElementById("signupEmailInput");
+const signupPasswordInput = document.getElementById("signupPasswordInput");
+const signupRoleInput = document.getElementById("signupRoleInput");
+const signupCohortInput = document.getElementById("signupCohortInput");
+const signupTrackInput = document.getElementById("signupTrackInput");
+const signupStatus = document.getElementById("teacherStatus");
 const portalApiUrlInput = document.getElementById("portalApiUrlInput");
 const portalBootstrapSecretInput = document.getElementById("portalBootstrapSecretInput");
+const storageBucketInput = document.getElementById("storageBucketInput");
 const savePortalApiBtn = document.getElementById("savePortalApiBtn");
-const bootstrapPortalBtn = document.getElementById("bootstrapPortalBtn");
+const clearSupabaseConfigBtn = document.getElementById("clearSupabaseConfigBtn");
 const portalSetupStatus = document.getElementById("portalSetupStatus");
-const teacherPinInput = document.getElementById("teacherPinInput");
-const teacherUnlockBtn = document.getElementById("teacherUnlockBtn");
-const teacherStatus = document.getElementById("teacherStatus");
 const studentPortal = document.getElementById("studentPortal");
-const teacherWorkspace = document.getElementById("teacherWorkspace");
 const welcomeCohort = document.getElementById("welcomeCohort");
 const welcomeTitle = document.getElementById("welcomeTitle");
 const welcomeCopy = document.getElementById("welcomeCopy");
@@ -244,7 +192,6 @@ const identityCardName = document.getElementById("identityCardName");
 const identityCardTrack = document.getElementById("identityCardTrack");
 const progressSummary = document.getElementById("progressSummary");
 const progressFill = document.getElementById("progressFill");
-const teacherWorkspaceToggle = document.getElementById("teacherWorkspaceToggle");
 const studentLogoutBtn = document.getElementById("studentLogoutBtn");
 const bioForm = document.getElementById("bioForm");
 const bioProudInput = document.getElementById("bioProudInput");
@@ -257,11 +204,22 @@ const assignmentList = document.getElementById("assignmentList");
 const workbookList = document.getElementById("workbookList");
 const resourceList = document.getElementById("resourceList");
 const feedbackList = document.getElementById("feedbackList");
-const teacherLockBtn = document.getElementById("teacherLockBtn");
-const teacherStudentSelect = document.getElementById("teacherStudentSelect");
-const teacherBioPreview = document.getElementById("teacherBioPreview");
-const teacherQuickStats = document.getElementById("teacherQuickStats");
-const teacherAssignmentReviews = document.getElementById("teacherAssignmentReviews");
+const fileUploadInput = document.getElementById("fileUploadInput");
+const uploadFileBtn = document.getElementById("uploadFileBtn");
+const fileUploadStatus = document.getElementById("fileUploadStatus");
+const fileList = document.getElementById("fileList");
+
+let settings = loadSettings();
+let supabaseClient = null;
+let authSubscription = null;
+let state = {
+  session: null,
+  user: null,
+  profile: null,
+  assignments: [],
+  workbookEntries: [],
+  files: [],
+};
 
 function escapeHtml(value) {
   return String(value || "")
@@ -273,274 +231,51 @@ function escapeHtml(value) {
 }
 
 function showStatus(el, message, type = "") {
+  if (!el) return;
   el.textContent = message;
   el.className = "status-line";
   if (type) el.classList.add(type);
 }
 
 function clearStatus(el) {
+  if (!el) return;
   el.textContent = "";
   el.className = "status-line";
 }
 
-function deepClone(value) {
-  return JSON.parse(JSON.stringify(value));
-}
-
-function buildDefaultSettings() {
-  return {
-    apiBaseUrl: "",
-    bootstrapSecret: "",
-    studentToken: "",
-    teacherToken: "",
-    lastStudentId: "",
-    teacherSelectedStudentId: "",
-  };
-}
-
 function loadSettings() {
-  const base = buildDefaultSettings();
-  const raw = localStorage.getItem(PORTAL_SETTINGS_KEY);
-  if (!raw) return base;
-  try {
-    return { ...base, ...JSON.parse(raw) };
-  } catch {
-    return base;
-  }
-}
-
-function buildDemoStore() {
-  return {
-    students: SAMPLE_STUDENTS.map((student, index) => ({
-      ...deepClone(student),
-      assignments: student.assignments.map((assignment, assignmentIndex) => ({
-        ...assignment,
-        sortOrder: (assignmentIndex + 1) * 10,
-        submission: "",
-        readyForReview: false,
-        review: {
-          status: "Not reviewed",
-          score: "",
-          celebration: "",
-          coaching: "",
-          reviewedAt: "",
-        },
-      })),
-      workbookPrompts: DEMO_WORKBOOK_PROMPTS.map((prompt, promptIndex) => ({
-        ...prompt,
-        sortOrder: (promptIndex + 1) * 10,
-        response: "",
-      })),
-      sortOrder: index,
-    })),
+  const defaults = {
+    supabaseUrl: "",
+    supabaseAnonKey: "",
+    storageBucket: DEFAULT_STORAGE_BUCKET,
+    lastAuthEmail: "",
   };
-}
-
-function loadDemoStore() {
-  const raw = localStorage.getItem(DEMO_STORE_KEY);
-  if (!raw) return buildDemoStore();
+  const raw = localStorage.getItem(PORTAL_SETTINGS_KEY);
+  if (!raw) return defaults;
   try {
-    const parsed = JSON.parse(raw);
-    return parsed?.students?.length ? parsed : buildDemoStore();
+    return { ...defaults, ...JSON.parse(raw) };
   } catch {
-    return buildDemoStore();
+    return defaults;
   }
 }
-
-let settings = loadSettings();
-let demoStore = loadDemoStore();
-let state = {
-  studentPortal: null,
-  teacherStudents: [],
-  teacherStudentDetail: null,
-};
 
 function saveSettings() {
   localStorage.setItem(PORTAL_SETTINGS_KEY, JSON.stringify(settings));
 }
 
-function saveDemoStore() {
-  localStorage.setItem(DEMO_STORE_KEY, JSON.stringify(demoStore));
-}
-
-function normalizeBaseUrl(url) {
+function normalizeUrl(url) {
   return String(url || "").trim().replace(/\/+$/, "");
 }
 
-function getApiBaseUrl() {
-  return normalizeBaseUrl(
-    settings.apiBaseUrl ||
-      window.__RFRL_PORTAL_API_BASE__ ||
-      document.documentElement.dataset.portalApiBase ||
-      "",
-  );
-}
-
-function buildApiUrl(path) {
-  const base = getApiBaseUrl();
-  if (!base) throw new Error("Portal API base URL is not set yet.");
-  return `${base}${path}`;
-}
-
-function hasLiveApi() {
-  return Boolean(getApiBaseUrl());
-}
-
-function isDemoStudentToken() {
-  return String(settings.studentToken || "").startsWith("demo:");
-}
-
-function isDemoTeacherToken() {
-  return settings.teacherToken === "demo-teacher";
-}
-
-async function apiRequest(path, options = {}) {
-  const headers = new Headers(options.headers || {});
-  headers.set("Content-Type", "application/json");
-
-  const response = await fetch(buildApiUrl(path), {
-    method: options.method || "GET",
-    headers,
-    body: options.body === undefined ? undefined : JSON.stringify(options.body),
-  });
-
-  let payload = null;
-  try {
-    payload = await response.json();
-  } catch {
-    payload = null;
-  }
-
-  if (!response.ok) {
-    throw new Error(
-      payload?.error ||
-        payload?.details ||
-        `Request failed with status ${response.status}.`,
-    );
-  }
-
-  return payload;
-}
-
-function studentAuthHeaders() {
-  return settings.studentToken
-    ? { Authorization: `Bearer ${settings.studentToken}` }
-    : {};
-}
-
-function teacherAuthHeaders() {
-  return settings.teacherToken
-    ? { Authorization: `Bearer ${settings.teacherToken}` }
-    : {};
-}
-
-function findDemoStudent(studentId) {
-  return demoStore.students.find((student) => student.id === studentId) || null;
-}
-
-function computeProgress(assignments, workbookPrompts) {
-  const completedAssignments = assignments.filter((assignment) =>
-    ["Approved", "Exceeds expectations"].includes(assignment.review.status),
-  ).length;
-  const completedWorkbook = workbookPrompts.filter((prompt) =>
-    String(prompt.response || "").trim(),
-  ).length;
-  const total = assignments.length + workbookPrompts.length || 1;
-  const completed = completedAssignments + completedWorkbook;
-  return {
-    completed,
-    total,
-    percent: Math.round((completed / total) * 100),
-  };
-}
-
-function buildFeedback(assignments) {
-  return assignments
-    .filter((assignment) => assignment.review.status !== "Not reviewed")
-    .map((assignment) => ({
-      assignmentId: assignment.id,
-      assignmentTitle: assignment.title,
-      review: assignment.review,
-    }));
-}
-
-function buildDemoPortal(studentId) {
-  const student = findDemoStudent(studentId);
-  if (!student) return null;
-  const assignments = deepClone(student.assignments);
-  const workbookPrompts = deepClone(student.workbookPrompts);
-  const progress = computeProgress(assignments, workbookPrompts);
-
-  return {
-    student: {
-      id: student.id,
-      name: student.name,
-      cohort: student.cohort,
-      track: student.track,
-      avatar: student.avatar,
-      welcomeTitle: student.welcomeTitle,
-      welcomeCopy: student.welcomeCopy,
-      bio: deepClone(student.bio),
-    },
-    assignments,
-    workbookPrompts,
-    resources: deepClone(DEMO_RESOURCES),
-    feedback: buildFeedback(assignments),
-    progress,
-  };
-}
-
-function buildDemoTeacherStudents() {
-  return demoStore.students
-    .map((student) => {
-      const portal = buildDemoPortal(student.id);
-      return {
-        id: student.id,
-        name: student.name,
-        cohort: student.cohort,
-        track: student.track,
-        avatar: student.avatar,
-        progress: portal.progress,
-      };
-    })
-    .sort((a, b) => a.name.localeCompare(b.name));
-}
-
-function updateDemoStudent(studentId, updater) {
-  const student = findDemoStudent(studentId);
-  if (!student) return null;
-  updater(student);
-  saveDemoStore();
-  return buildDemoPortal(studentId);
-}
-
-function renderSampleAccounts() {
-  sampleAccounts.innerHTML = SAMPLE_STUDENTS.map(
-    (student) => `
-      <button class="sample-card" type="button" data-student-fill="${escapeHtml(student.id)}">
-        <strong>${escapeHtml(student.avatar)} ${escapeHtml(student.name)}</strong>
-        <p>${escapeHtml(student.cohort)} · ${escapeHtml(student.track)}</p>
-        <div class="sample-pill">ID ${escapeHtml(student.id)}</div>
-        <div class="sample-pill">Code ${escapeHtml(student.accessCode)}</div>
-      </button>
-    `,
-  ).join("");
-
-  sampleAccounts.querySelectorAll("[data-student-fill]").forEach((card) => {
-    card.addEventListener("click", () => {
-      const studentId = card.getAttribute("data-student-fill");
-      const student = SAMPLE_STUDENTS.find((item) => item.id === studentId);
-      if (!student) return;
-      studentIdInput.value = student.id;
-      studentCodeInput.value = student.accessCode;
-      clearStatus(studentLoginStatus);
-    });
-  });
+function hasSupabaseConfig() {
+  return Boolean(settings.supabaseUrl && settings.supabaseAnonKey);
 }
 
 function syncSettingsInputs() {
-  portalApiUrlInput.value = settings.apiBaseUrl || "";
-  portalBootstrapSecretInput.value = settings.bootstrapSecret || "";
+  portalApiUrlInput.value = settings.supabaseUrl || "";
+  portalBootstrapSecretInput.value = settings.supabaseAnonKey || "";
+  storageBucketInput.value = settings.storageBucket || DEFAULT_STORAGE_BUCKET;
+  studentIdInput.value = settings.lastAuthEmail || "";
 }
 
 function resetPortalScrollForEntry() {
@@ -562,6 +297,448 @@ function resetPortalScrollForEntry() {
   setTimeout(scrollTop, 120);
 }
 
+function getSupabase() {
+  if (!supabaseClient) {
+    throw new Error("Save your Supabase settings first.");
+  }
+  return supabaseClient;
+}
+
+function createWelcomeCopy(role, name) {
+  if (role === "instructor") {
+    return `${name} has a secure home base for notes, files, planning, and reflection. Everything here should stay private to this instructor account.`;
+  }
+  return `${name} has a secure home base for assignments, workbook reflections, personal files, and saved feedback. Everything here should stay private to this student account.`;
+}
+
+function defaultTrackForRole(role) {
+  return role === "instructor" ? "Instructor Workspace" : "Core Skills Focus";
+}
+
+function defaultCohortForRole(role) {
+  return role === "instructor" ? "Instruction Team" : "Ready for Real Life Cohort";
+}
+
+function defaultAvatarForRole(role) {
+  return role === "instructor" ? "🧭" : "🚀";
+}
+
+function assignmentTemplatesForRole(role) {
+  return DEFAULT_ASSIGNMENTS[role] || DEFAULT_ASSIGNMENTS.student;
+}
+
+function workbookTemplatesForRole(role) {
+  return DEFAULT_WORKBOOK_PROMPTS[role] || DEFAULT_WORKBOOK_PROMPTS.student;
+}
+
+function safeFileName(name) {
+  return String(name || "file")
+    .replace(/[^a-zA-Z0-9._-]+/g, "-")
+    .replace(/-+/g, "-")
+    .replace(/^-|-$/g, "");
+}
+
+function formatBytes(bytes) {
+  const value = Number(bytes || 0);
+  if (!value) return "0 B";
+  if (value < 1024) return `${value} B`;
+  if (value < 1024 * 1024) return `${(value / 1024).toFixed(1)} KB`;
+  return `${(value / (1024 * 1024)).toFixed(1)} MB`;
+}
+
+function computeProgress(assignments, workbookEntries) {
+  const completedAssignments = assignments.filter((assignment) =>
+    ["Approved", "Exceeds expectations"].includes(assignment.review_status),
+  ).length;
+  const completedWorkbook = workbookEntries.filter((entry) =>
+    String(entry.response || "").trim(),
+  ).length;
+  const total = assignments.length + workbookEntries.length || 1;
+  const completed = completedAssignments + completedWorkbook;
+  return {
+    completed,
+    total,
+    percent: Math.round((completed / total) * 100),
+  };
+}
+
+function initializeSupabaseClient() {
+  if (!hasSupabaseConfig()) {
+    supabaseClient = null;
+    authSubscription?.unsubscribe?.();
+    authSubscription = null;
+    return false;
+  }
+
+  if (!window.supabase?.createClient) {
+    showStatus(
+      portalSetupStatus,
+      "Supabase client library did not load. Check your internet connection and reload.",
+    );
+    return false;
+  }
+
+  authSubscription?.unsubscribe?.();
+  supabaseClient = window.supabase.createClient(
+    settings.supabaseUrl,
+    settings.supabaseAnonKey,
+    {
+      auth: {
+        persistSession: true,
+        autoRefreshToken: true,
+        detectSessionInUrl: true,
+      },
+    },
+  );
+
+  authSubscription = supabaseClient.auth.onAuthStateChange((_event, session) => {
+    handleSessionChange(session).catch((error) => {
+      showStatus(studentLoginStatus, error.message);
+    });
+  }).data.subscription;
+
+  return true;
+}
+
+async function ensureProfile(user, defaults = {}) {
+  const supabase = getSupabase();
+  const { data: existing, error: existingError } = await supabase
+    .from("profiles")
+    .select("*")
+    .eq("id", user.id)
+    .maybeSingle();
+
+  if (existingError) throw existingError;
+  if (existing) return existing;
+
+  const role = defaults.role || user.user_metadata?.role || "student";
+  const displayName =
+    defaults.displayName ||
+    user.user_metadata?.full_name ||
+    user.email?.split("@")[0] ||
+    "Portal User";
+  const cohort = defaults.cohort || user.user_metadata?.cohort || defaultCohortForRole(role);
+  const track = defaults.track || user.user_metadata?.track || defaultTrackForRole(role);
+  const avatar = defaults.avatar || defaultAvatarForRole(role);
+  const firstName = displayName.split(/\s+/)[0] || displayName;
+
+  const insertPayload = {
+    id: user.id,
+    email: user.email,
+    role,
+    display_name: displayName,
+    cohort,
+    track,
+    avatar,
+    welcome_title: role === "instructor" ? `Welcome, ${firstName}.` : `Welcome, ${firstName}.`,
+    welcome_copy: createWelcomeCopy(role, firstName),
+    bio_proud: "",
+    bio_goal: "",
+    bio_strengths: "",
+    bio_support: "",
+  };
+
+  const { data: inserted, error: insertError } = await supabase
+    .from("profiles")
+    .insert(insertPayload)
+    .select("*")
+    .single();
+
+  if (insertError) throw insertError;
+  return inserted;
+}
+
+async function ensureAssignments(userId, role) {
+  const supabase = getSupabase();
+  const { data: existing, error } = await supabase
+    .from("user_assignments")
+    .select("*")
+    .eq("user_id", userId)
+    .order("sort_order", { ascending: true });
+
+  if (error) throw error;
+  if (existing?.length) return existing;
+
+  const payload = assignmentTemplatesForRole(role).map((assignment) => ({
+    user_id: userId,
+    assignment_key: assignment.id,
+    title: assignment.title,
+    objective: assignment.objective,
+    due_label: assignment.due_label,
+    rubric_focus: assignment.rubric_focus,
+    sort_order: assignment.sort_order,
+    submission: "",
+    ready_for_review: false,
+    review_status: "Not reviewed",
+    review_score: "",
+    review_celebration: "",
+    review_coaching: "",
+  }));
+
+  const { data: inserted, error: insertError } = await supabase
+    .from("user_assignments")
+    .insert(payload)
+    .select("*")
+    .order("sort_order", { ascending: true });
+
+  if (insertError) throw insertError;
+  return inserted || [];
+}
+
+async function ensureWorkbookEntries(userId, role) {
+  const supabase = getSupabase();
+  const { data: existing, error } = await supabase
+    .from("user_workbook_entries")
+    .select("*")
+    .eq("user_id", userId)
+    .order("sort_order", { ascending: true });
+
+  if (error) throw error;
+  if (existing?.length) return existing;
+
+  const payload = workbookTemplatesForRole(role).map((prompt) => ({
+    user_id: userId,
+    prompt_key: prompt.id,
+    title: prompt.title,
+    prompt: prompt.prompt,
+    response: "",
+    sort_order: prompt.sort_order,
+  }));
+
+  const { data: inserted, error: insertError } = await supabase
+    .from("user_workbook_entries")
+    .insert(payload)
+    .select("*")
+    .order("sort_order", { ascending: true });
+
+  if (insertError) throw insertError;
+  return inserted || [];
+}
+
+async function loadFiles(userId) {
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from("user_files")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data || [];
+}
+
+async function loadPortalData(defaults = null) {
+  const user = state.user;
+  if (!user) return;
+
+  const profile = await ensureProfile(user, defaults || {});
+  const [assignments, workbookEntries, files] = await Promise.all([
+    ensureAssignments(user.id, profile.role),
+    ensureWorkbookEntries(user.id, profile.role),
+    loadFiles(user.id),
+  ]);
+
+  state.profile = profile;
+  state.assignments = assignments;
+  state.workbookEntries = workbookEntries;
+  state.files = files;
+  renderPortal();
+}
+
+function renderLoggedOutState() {
+  state.session = null;
+  state.user = null;
+  state.profile = null;
+  state.assignments = [];
+  state.workbookEntries = [];
+  state.files = [];
+  studentPortal.classList.remove("visible");
+  clearStatus(bioStatus);
+  clearStatus(fileUploadStatus);
+}
+
+async function handleSessionChange(session) {
+  state.session = session || null;
+  state.user = session?.user || null;
+
+  if (!state.user) {
+    renderLoggedOutState();
+    return;
+  }
+
+  settings.lastAuthEmail = state.user.email || settings.lastAuthEmail;
+  saveSettings();
+  await loadPortalData();
+}
+
+function renderPortal() {
+  if (!state.profile) {
+    studentPortal.classList.remove("visible");
+    return;
+  }
+
+  studentPortal.classList.add("visible");
+
+  const profile = state.profile;
+  const firstName = profile.display_name.split(/\s+/)[0] || profile.display_name;
+  const progress = computeProgress(state.assignments, state.workbookEntries);
+
+  welcomeCohort.textContent = profile.cohort || defaultCohortForRole(profile.role);
+  welcomeTitle.textContent = profile.welcome_title || `Welcome, ${firstName}.`;
+  welcomeCopy.textContent =
+    profile.welcome_copy || createWelcomeCopy(profile.role, firstName);
+  welcomeMeta.innerHTML = `
+    <span class="chip">${escapeHtml(profile.avatar || defaultAvatarForRole(profile.role))} ${escapeHtml(profile.display_name)}</span>
+    <span class="chip">${escapeHtml(profile.role)}</span>
+    <span class="chip">${escapeHtml(profile.track || defaultTrackForRole(profile.role))}</span>
+    <span class="chip">${progress.completed}/${progress.total} milestones complete</span>
+  `;
+
+  identityCardName.textContent = `${profile.avatar || defaultAvatarForRole(profile.role)} ${profile.display_name}`;
+  identityCardTrack.textContent = `${profile.track || defaultTrackForRole(profile.role)} · ${profile.email}`;
+  progressSummary.textContent = `${progress.completed} of ${progress.total} milestones complete`;
+  progressFill.style.width = `${progress.percent}%`;
+
+  bioProudInput.value = profile.bio_proud || "";
+  bioGoalInput.value = profile.bio_goal || "";
+  bioStrengthsInput.value = profile.bio_strengths || "";
+  bioSupportInput.value = profile.bio_support || "";
+  bioPreview.innerHTML = `
+    <div><strong>What they are building:</strong><br>${escapeHtml(profile.bio_proud || "Nothing saved yet.")}</div>
+    <div style="margin-top:12px"><strong>Future goal:</strong><br>${escapeHtml(profile.bio_goal || "Nothing saved yet.")}</div>
+    <div style="margin-top:12px"><strong>Strengths:</strong><br>${escapeHtml(profile.bio_strengths || "Nothing saved yet.")}</div>
+    <div style="margin-top:12px"><strong>Support that helps:</strong><br>${escapeHtml(profile.bio_support || "Nothing saved yet.")}</div>
+  `;
+
+  assignmentList.innerHTML = state.assignments
+    .map((assignment) => {
+      const statusText = assignment.ready_for_review
+        ? assignment.review_status === "Not reviewed"
+          ? "Ready for review"
+          : assignment.review_status
+        : "In progress";
+
+      return `
+        <article class="assignment-card">
+          <div class="assignment-head">
+            <div>
+              <div class="mini-label">${escapeHtml(assignment.due_label)}</div>
+              <h4>${escapeHtml(assignment.title)}</h4>
+            </div>
+            <span class="status-badge ${badgeClass(statusText)}">${escapeHtml(statusText)}</span>
+          </div>
+          <p>${escapeHtml(assignment.objective)}</p>
+          <div class="assignment-meta">
+            <span class="chip">${escapeHtml(assignment.rubric_focus)}</span>
+          </div>
+          <label style="margin-top:14px">
+            Your response / reflection
+            <textarea id="submission-${assignment.id}" placeholder="Write your response here.">${escapeHtml(assignment.submission || "")}</textarea>
+          </label>
+          <div class="assignment-actions">
+            <button class="btn primary" type="button" data-save-assignment="${assignment.id}">Save Work</button>
+            <button class="btn secondary" type="button" data-ready-assignment="${assignment.id}">Mark Ready for Review</button>
+          </div>
+          ${
+            assignment.review_status !== "Not reviewed"
+              ? `<div class="feedback-box">
+                  <strong>Saved review:</strong> ${escapeHtml(assignment.review_status)}${
+                    assignment.review_score ? ` · Score ${escapeHtml(assignment.review_score)}` : ""
+                  }
+                  <div style="margin-top:10px"><strong>Celebration:</strong><br>${escapeHtml(assignment.review_celebration || "Not added yet.")}</div>
+                  <div style="margin-top:10px"><strong>Coaching:</strong><br>${escapeHtml(assignment.review_coaching || "Not added yet.")}</div>
+                </div>`
+              : ""
+          }
+        </article>
+      `;
+    })
+    .join("");
+
+  workbookList.innerHTML = state.workbookEntries
+    .map(
+      (entry) => `
+        <article class="workbook-card">
+          <div class="mini-label">Workbook prompt</div>
+          <h4>${escapeHtml(entry.title)}</h4>
+          <p>${escapeHtml(entry.prompt)}</p>
+          <label style="margin-top:14px">
+            Your reflection
+            <textarea id="workbook-${entry.id}" placeholder="Write your reflection here.">${escapeHtml(entry.response || "")}</textarea>
+          </label>
+          <div class="assignment-actions">
+            <button class="btn primary" type="button" data-save-workbook="${entry.id}">Save Reflection</button>
+          </div>
+        </article>
+      `,
+    )
+    .join("");
+
+  resourceList.innerHTML = DEFAULT_RESOURCES.map(
+    (resource) => `
+      <article class="resource-card">
+        <div class="mini-label">Success resource</div>
+        <h4>${escapeHtml(resource.title)}</h4>
+        <p>${escapeHtml(resource.description)}</p>
+        <div class="resource-meta">
+          ${resource.meta.map((item) => `<span class="chip">${escapeHtml(item)}</span>`).join("")}
+        </div>
+        <a class="resource-link" href="${escapeHtml(resource.href)}">${escapeHtml(resource.label)}</a>
+      </article>
+    `,
+  ).join("");
+
+  const feedbackItems = state.assignments.filter(
+    (assignment) => assignment.review_status !== "Not reviewed",
+  );
+
+  feedbackList.innerHTML = feedbackItems.length
+    ? feedbackItems
+        .map(
+          (assignment) => `
+            <article class="assignment-card">
+              <div class="assignment-head">
+                <div>
+                  <div class="mini-label">Saved review</div>
+                  <h4>${escapeHtml(assignment.title)}</h4>
+                </div>
+                <span class="status-badge ${badgeClass(assignment.review_status)}">${escapeHtml(assignment.review_status)}</span>
+              </div>
+              <p><strong>Score:</strong> ${escapeHtml(assignment.review_score || "Pending")}</p>
+              <div class="feedback-box">
+                <strong>Celebration</strong>
+                <div style="margin-top:8px">${escapeHtml(assignment.review_celebration || "No celebration note yet.")}</div>
+              </div>
+              <div class="feedback-box">
+                <strong>Coaching</strong>
+                <div style="margin-top:8px">${escapeHtml(assignment.review_coaching || "No coaching note yet.")}</div>
+              </div>
+            </article>
+          `,
+        )
+        .join("")
+    : `<div class="empty">No feedback has been saved on this account yet.</div>`;
+
+  fileList.innerHTML = state.files.length
+    ? state.files
+        .map(
+          (file) => `
+            <article class="resource-card">
+              <div class="mini-label">Private upload</div>
+              <h4>${escapeHtml(file.file_name)}</h4>
+              <p>${escapeHtml(file.mime_type || "Stored file")} · ${escapeHtml(formatBytes(file.file_size_bytes))}</p>
+              <div class="assignment-actions">
+                <button class="btn secondary" type="button" data-open-file="${file.id}">Open File</button>
+                <button class="btn secondary" type="button" data-delete-file="${file.id}">Delete File</button>
+              </div>
+            </article>
+          `,
+        )
+        .join("")
+    : `<div class="empty">No private files have been uploaded yet.</div>`;
+
+  bindPortalActions();
+}
+
 function badgeClass(status) {
   switch (status) {
     case "Approved":
@@ -577,191 +754,83 @@ function badgeClass(status) {
   }
 }
 
-function renderPortal() {
-  const portal = state.studentPortal;
-  if (!portal?.student) {
-    studentPortal.classList.remove("visible");
-    return;
+async function saveAssignment(assignmentId, readyForReview) {
+  const textarea = document.getElementById(`submission-${assignmentId}`);
+  const submission = textarea?.value.trim() || "";
+  const supabase = getSupabase();
+  const updatePayload = {
+    submission,
+    ready_for_review: readyForReview,
+  };
+
+  if (readyForReview) {
+    updatePayload.review_status = "In review";
   }
 
-  studentPortal.classList.add("visible");
-  const { student, progress, assignments, workbookPrompts, feedback, resources } = portal;
+  const { error } = await supabase
+    .from("user_assignments")
+    .update(updatePayload)
+    .eq("id", assignmentId)
+    .eq("user_id", state.user.id);
 
-  welcomeCohort.textContent = student.cohort;
-  welcomeTitle.textContent = student.welcomeTitle;
-  welcomeCopy.textContent = student.welcomeCopy;
-  welcomeMeta.innerHTML = `
-    <span class="chip">${escapeHtml(student.avatar)} ${escapeHtml(student.name)}</span>
-    <span class="chip">${escapeHtml(student.track)}</span>
-    <span class="chip">${progress.completed}/${progress.total} milestones complete</span>
-  `;
-  identityCardName.textContent = `${student.avatar} ${student.name}`;
-  identityCardTrack.textContent = `${student.track} · Student ID ${student.id}`;
-  progressSummary.textContent = `${progress.completed} of ${progress.total} milestones complete`;
-  progressFill.style.width = `${progress.percent}%`;
-
-  bioProudInput.value = student.bio.proud || "";
-  bioGoalInput.value = student.bio.goal || "";
-  bioStrengthsInput.value = student.bio.strengths || "";
-  bioSupportInput.value = student.bio.support || "";
-  bioPreview.innerHTML = `
-    <div><strong>What they are building:</strong><br>${escapeHtml(student.bio.proud)}</div>
-    <div style="margin-top:12px"><strong>Future goal:</strong><br>${escapeHtml(student.bio.goal)}</div>
-    <div style="margin-top:12px"><strong>Strengths:</strong><br>${escapeHtml(student.bio.strengths)}</div>
-    <div style="margin-top:12px"><strong>Support that helps:</strong><br>${escapeHtml(student.bio.support)}</div>
-  `;
-
-  assignmentList.innerHTML = assignments
-    .map((assignment) => {
-      const statusText = assignment.readyForReview
-        ? assignment.review.status === "Not reviewed"
-          ? "Ready for review"
-          : assignment.review.status
-        : "In progress";
-      return `
-        <article class="assignment-card">
-          <div class="assignment-head">
-            <div>
-              <div class="mini-label">${escapeHtml(assignment.dueLabel)}</div>
-              <h4>${escapeHtml(assignment.title)}</h4>
-            </div>
-            <span class="status-badge ${badgeClass(statusText)}">${escapeHtml(statusText)}</span>
-          </div>
-          <p>${escapeHtml(assignment.objective)}</p>
-          <div class="assignment-meta">
-            <span class="chip">${escapeHtml(assignment.rubricFocus)}</span>
-          </div>
-          <label style="margin-top:14px">
-            Student response / reflection
-            <textarea id="submission-${assignment.id}" placeholder="Write your response, plan, or workbook reflection here.">${escapeHtml(assignment.submission)}</textarea>
-          </label>
-          <div class="assignment-actions">
-            <button class="btn primary" type="button" data-save-assignment="${assignment.id}">Save Work</button>
-            <button class="btn secondary" type="button" data-ready-assignment="${assignment.id}">Mark Ready for Review</button>
-          </div>
-          ${
-            assignment.review.status !== "Not reviewed"
-              ? `<div class="feedback-box">
-                  <strong>Teacher result:</strong> ${escapeHtml(assignment.review.status)}${
-                    assignment.review.score ? ` · Score ${escapeHtml(assignment.review.score)}` : ""
-                  }
-                  <div style="margin-top:10px"><strong>Celebration:</strong><br>${escapeHtml(assignment.review.celebration || "Not added yet.")}</div>
-                  <div style="margin-top:10px"><strong>Coaching:</strong><br>${escapeHtml(assignment.review.coaching || "Not added yet.")}</div>
-                </div>`
-              : ""
-          }
-        </article>
-      `;
-    })
-    .join("");
-
-  workbookList.innerHTML = workbookPrompts
-    .map(
-      (prompt) => `
-        <article class="workbook-card">
-          <div class="mini-label">Workbook prompt</div>
-          <h4>${escapeHtml(prompt.title)}</h4>
-          <p>${escapeHtml(prompt.prompt)}</p>
-          <label style="margin-top:14px">
-            Your reflection
-            <textarea id="workbook-${prompt.id}" placeholder="Write your workbook response here.">${escapeHtml(prompt.response || "")}</textarea>
-          </label>
-          <div class="assignment-actions">
-            <button class="btn primary" type="button" data-save-workbook="${prompt.id}">Save Reflection</button>
-          </div>
-        </article>
-      `,
-    )
-    .join("");
-
-  resourceList.innerHTML = resources
-    .map(
-      (resource) => `
-        <article class="resource-card">
-          <div class="mini-label">Success resource</div>
-          <h4>${escapeHtml(resource.title)}</h4>
-          <p>${escapeHtml(resource.description)}</p>
-          <div class="resource-meta">
-            ${resource.meta.map((item) => `<span class="chip">${escapeHtml(item)}</span>`).join("")}
-          </div>
-          <a class="resource-link" href="${escapeHtml(resource.href)}">${escapeHtml(resource.label)}</a>
-        </article>
-      `,
-    )
-    .join("");
-
-  feedbackList.innerHTML = !feedback.length
-    ? `<div class="empty">
-         No teacher feedback has been added yet. Once your teacher reviews your work,
-         celebration, scores, and coaching notes will show up here.
-       </div>`
-    : feedback
-        .map(
-          (item) => `
-            <article class="assignment-card">
-              <div class="assignment-head">
-                <div>
-                  <div class="mini-label">Reviewed assignment</div>
-                  <h4>${escapeHtml(item.assignmentTitle)}</h4>
-                </div>
-                <span class="status-badge ${badgeClass(item.review.status)}">${escapeHtml(item.review.status)}</span>
-              </div>
-              <p><strong>Score:</strong> ${escapeHtml(item.review.score || "Pending")}</p>
-              <div class="feedback-box">
-                <strong>Celebration</strong>
-                <div style="margin-top:8px">${escapeHtml(item.review.celebration || "No celebration note yet.")}</div>
-              </div>
-              <div class="feedback-box">
-                <strong>Coaching</strong>
-                <div style="margin-top:8px">${escapeHtml(item.review.coaching || "No coaching note yet.")}</div>
-              </div>
-            </article>
-          `,
-        )
-        .join("");
-
-  bindStudentActions();
+  if (error) throw error;
+  await loadPortalData();
 }
 
-function saveDemoAssignment(assignmentId, submission, readyForReview) {
-  state.studentPortal = updateDemoStudent(state.studentPortal.student.id, (student) => {
-    const assignment = student.assignments.find((item) => item.id === assignmentId);
-    if (!assignment) return;
-    assignment.submission = submission;
-    assignment.readyForReview = readyForReview;
-    if (readyForReview && assignment.review.status === "Not reviewed") {
-      assignment.review.status = "In review";
-    }
-  });
-  renderPortal();
+async function saveWorkbookEntry(entryId) {
+  const textarea = document.getElementById(`workbook-${entryId}`);
+  const response = textarea?.value.trim() || "";
+  const supabase = getSupabase();
+  const { error } = await supabase
+    .from("user_workbook_entries")
+    .update({ response })
+    .eq("id", entryId)
+    .eq("user_id", state.user.id);
+
+  if (error) throw error;
+  await loadPortalData();
 }
 
-function saveDemoWorkbook(promptId, response) {
-  state.studentPortal = updateDemoStudent(state.studentPortal.student.id, (student) => {
-    const prompt = student.workbookPrompts.find((item) => item.id === promptId);
-    if (!prompt) return;
-    prompt.response = response;
-  });
-  renderPortal();
+async function openFile(fileId) {
+  const fileRecord = state.files.find((item) => item.id === fileId);
+  if (!fileRecord) return;
+  const supabase = getSupabase();
+  const { data, error } = await supabase.storage
+    .from(settings.storageBucket)
+    .createSignedUrl(fileRecord.storage_path, 60);
+
+  if (error) throw error;
+  if (data?.signedUrl) {
+    window.open(data.signedUrl, "_blank", "noopener");
+  }
 }
 
-function bindStudentActions() {
+async function deleteFile(fileId) {
+  const fileRecord = state.files.find((item) => item.id === fileId);
+  if (!fileRecord) return;
+  const supabase = getSupabase();
+
+  const { error: storageError } = await supabase.storage
+    .from(settings.storageBucket)
+    .remove([fileRecord.storage_path]);
+  if (storageError) throw storageError;
+
+  const { error: rowError } = await supabase
+    .from("user_files")
+    .delete()
+    .eq("id", fileRecord.id)
+    .eq("user_id", state.user.id);
+  if (rowError) throw rowError;
+
+  await loadPortalData();
+}
+
+function bindPortalActions() {
   assignmentList.querySelectorAll("[data-save-assignment]").forEach((button) => {
     button.addEventListener("click", async () => {
-      const assignmentId = button.getAttribute("data-save-assignment");
-      const textarea = document.getElementById(`submission-${assignmentId}`);
-      if (isDemoStudentToken()) {
-        saveDemoAssignment(assignmentId, textarea.value.trim(), false);
-        if (isDemoTeacherToken()) await loadTeacherStudentIfOpen();
-        return;
-      }
       try {
-        state.studentPortal = await apiRequest(`/portal/student/assignments/${encodeURIComponent(assignmentId)}`, {
-          method: "PUT",
-          headers: studentAuthHeaders(),
-          body: { submission: textarea.value.trim(), readyForReview: false },
-        });
-        renderPortal();
+        await saveAssignment(button.getAttribute("data-save-assignment"), false);
+        showStatus(bioStatus, "Assignment draft saved.", "success");
       } catch (error) {
         showStatus(studentLoginStatus, error.message);
       }
@@ -770,20 +839,9 @@ function bindStudentActions() {
 
   assignmentList.querySelectorAll("[data-ready-assignment]").forEach((button) => {
     button.addEventListener("click", async () => {
-      const assignmentId = button.getAttribute("data-ready-assignment");
-      const textarea = document.getElementById(`submission-${assignmentId}`);
-      if (isDemoStudentToken()) {
-        saveDemoAssignment(assignmentId, textarea.value.trim(), true);
-        if (isDemoTeacherToken()) await loadTeacherStudentIfOpen();
-        return;
-      }
       try {
-        state.studentPortal = await apiRequest(`/portal/student/assignments/${encodeURIComponent(assignmentId)}`, {
-          method: "PUT",
-          headers: studentAuthHeaders(),
-          body: { submission: textarea.value.trim(), readyForReview: true },
-        });
-        renderPortal();
+        await saveAssignment(button.getAttribute("data-ready-assignment"), true);
+        showStatus(bioStatus, "Assignment marked ready for review.", "success");
       } catch (error) {
         showStatus(studentLoginStatus, error.message);
       }
@@ -792,479 +850,297 @@ function bindStudentActions() {
 
   workbookList.querySelectorAll("[data-save-workbook]").forEach((button) => {
     button.addEventListener("click", async () => {
-      const promptId = button.getAttribute("data-save-workbook");
-      const textarea = document.getElementById(`workbook-${promptId}`);
-      if (isDemoStudentToken()) {
-        saveDemoWorkbook(promptId, textarea.value.trim());
-        if (isDemoTeacherToken()) await loadTeacherStudentIfOpen();
-        return;
-      }
       try {
-        state.studentPortal = await apiRequest(`/portal/student/workbook/${encodeURIComponent(promptId)}`, {
-          method: "PUT",
-          headers: studentAuthHeaders(),
-          body: { response: textarea.value.trim() },
-        });
-        renderPortal();
+        await saveWorkbookEntry(button.getAttribute("data-save-workbook"));
+        showStatus(bioStatus, "Workbook reflection saved.", "success");
       } catch (error) {
         showStatus(studentLoginStatus, error.message);
       }
     });
   });
-}
 
-async function loadStudentPortal() {
-  if (!settings.studentToken) {
-    studentPortal.classList.remove("visible");
-    return;
-  }
-
-  if (isDemoStudentToken()) {
-    const studentId = settings.studentToken.replace(/^demo:/, "");
-    state.studentPortal = buildDemoPortal(studentId);
-    if (!state.studentPortal) {
-      settings.studentToken = "";
-      saveSettings();
-      studentPortal.classList.remove("visible");
-      return;
-    }
-    settings.lastStudentId = studentId;
-    saveSettings();
-    renderPortal();
-    return;
-  }
-
-  try {
-    state.studentPortal = await apiRequest("/portal/student/me", {
-      headers: studentAuthHeaders(),
-    });
-    settings.lastStudentId = state.studentPortal.student.id;
-    saveSettings();
-    renderPortal();
-  } catch (error) {
-    settings.studentToken = "";
-    saveSettings();
-    state.studentPortal = null;
-    studentPortal.classList.remove("visible");
-    showStatus(studentLoginStatus, error.message);
-  }
-}
-
-async function loginStudent(studentId, accessCode) {
-  const normalizedId = String(studentId || "").trim().toLowerCase();
-  const normalizedCode = String(accessCode || "").trim();
-
-  if (!hasLiveApi()) {
-    const student = demoStore.students.find(
-      (item) => item.id === normalizedId && item.accessCode === normalizedCode,
-    );
-    if (!student) {
-      showStatus(studentLoginStatus, "Student ID or access code did not match.");
-      return;
-    }
-    settings.studentToken = `demo:${student.id}`;
-    settings.lastStudentId = student.id;
-    saveSettings();
-    state.studentPortal = buildDemoPortal(student.id);
-    showStatus(studentLoginStatus, `${student.name} is signed in in demo mode.`, "success");
-    renderPortal();
-    window.scrollTo({
-      top: document.getElementById("studentPortal").offsetTop - 14,
-      behavior: "smooth",
-    });
-    return;
-  }
-
-  try {
-    const payload = await apiRequest("/portal/auth/login", {
-      method: "POST",
-      body: { studentId: normalizedId, accessCode: normalizedCode },
-    });
-    settings.studentToken = payload.token;
-    settings.lastStudentId = payload.portal.student.id;
-    saveSettings();
-    state.studentPortal = payload.portal;
-    showStatus(studentLoginStatus, `${payload.portal.student.name} is signed in.`, "success");
-    renderPortal();
-    window.scrollTo({
-      top: document.getElementById("studentPortal").offsetTop - 14,
-      behavior: "smooth",
-    });
-  } catch (error) {
-    showStatus(studentLoginStatus, error.message);
-  }
-}
-
-async function saveBio() {
-  if (isDemoStudentToken()) {
-    state.studentPortal = updateDemoStudent(state.studentPortal.student.id, (student) => {
-      student.bio.proud = bioProudInput.value.trim();
-      student.bio.goal = bioGoalInput.value.trim();
-      student.bio.strengths = bioStrengthsInput.value.trim();
-      student.bio.support = bioSupportInput.value.trim();
-    });
-    showStatus(bioStatus, "Your bio was saved in demo mode.", "success");
-    renderPortal();
-    await loadTeacherStudentIfOpen();
-    return;
-  }
-
-  try {
-    state.studentPortal = await apiRequest("/portal/student/bio", {
-      method: "PUT",
-      headers: studentAuthHeaders(),
-      body: {
-        proud: bioProudInput.value.trim(),
-        goal: bioGoalInput.value.trim(),
-        strengths: bioStrengthsInput.value.trim(),
-        support: bioSupportInput.value.trim(),
-      },
-    });
-    showStatus(bioStatus, "Your bio was saved for you and your teacher.", "success");
-    renderPortal();
-    await loadTeacherStudentIfOpen();
-  } catch (error) {
-    showStatus(bioStatus, error.message);
-  }
-}
-
-function updateTeacherVisibility() {
-  teacherWorkspace.classList.toggle("visible", Boolean(settings.teacherToken));
-  teacherWorkspaceToggle.style.display = settings.teacherToken ? "inline-flex" : "none";
-}
-
-async function teacherLogin(pin) {
-  const normalizedPin = String(pin || "").trim();
-
-  if (!hasLiveApi()) {
-    if (normalizedPin !== DEMO_TEACHER_PIN) {
-      showStatus(teacherStatus, `Use demo teacher PIN ${DEMO_TEACHER_PIN}.`);
-      return;
-    }
-    settings.teacherToken = "demo-teacher";
-    saveSettings();
-    showStatus(teacherStatus, "Teacher review unlocked in demo mode.", "success");
-    updateTeacherVisibility();
-    await loadTeacherStudents();
-    window.scrollTo({ top: teacherWorkspace.offsetTop - 14, behavior: "smooth" });
-    return;
-  }
-
-  try {
-    const payload = await apiRequest("/portal/teacher/login", {
-      method: "POST",
-      body: { pin: normalizedPin },
-    });
-    settings.teacherToken = payload.token;
-    saveSettings();
-    showStatus(teacherStatus, "Teacher review unlocked.", "success");
-    updateTeacherVisibility();
-    await loadTeacherStudents();
-    window.scrollTo({ top: teacherWorkspace.offsetTop - 14, behavior: "smooth" });
-  } catch (error) {
-    showStatus(teacherStatus, error.message);
-  }
-}
-
-async function loadTeacherStudents() {
-  if (!settings.teacherToken) return;
-
-  if (isDemoTeacherToken()) {
-    state.teacherStudents = buildDemoTeacherStudents();
-    if (!settings.teacherSelectedStudentId && state.teacherStudents[0]) {
-      settings.teacherSelectedStudentId = state.teacherStudents[0].id;
-      saveSettings();
-    }
-    renderTeacherWorkspace();
-    await loadTeacherStudentIfOpen();
-    return;
-  }
-
-  try {
-    const payload = await apiRequest("/portal/teacher/students", {
-      headers: teacherAuthHeaders(),
-    });
-    state.teacherStudents = payload.students || [];
-    if (!settings.teacherSelectedStudentId && state.teacherStudents[0]) {
-      settings.teacherSelectedStudentId = state.teacherStudents[0].id;
-      saveSettings();
-    }
-    renderTeacherWorkspace();
-    await loadTeacherStudentIfOpen();
-  } catch (error) {
-    settings.teacherToken = "";
-    saveSettings();
-    state.teacherStudents = [];
-    state.teacherStudentDetail = null;
-    updateTeacherVisibility();
-    showStatus(teacherStatus, error.message);
-  }
-}
-
-async function loadTeacherStudentIfOpen() {
-  if (!settings.teacherToken || !settings.teacherSelectedStudentId) return;
-
-  if (isDemoTeacherToken()) {
-    state.teacherStudentDetail = buildDemoPortal(settings.teacherSelectedStudentId);
-    renderTeacherWorkspace();
-    return;
-  }
-
-  try {
-    state.teacherStudentDetail = await apiRequest(
-      `/portal/teacher/students/${encodeURIComponent(settings.teacherSelectedStudentId)}`,
-      { headers: teacherAuthHeaders() },
-    );
-    renderTeacherWorkspace();
-  } catch (error) {
-    showStatus(teacherStatus, error.message);
-  }
-}
-
-function renderTeacherWorkspace() {
-  teacherStudentSelect.innerHTML = state.teacherStudents
-    .map(
-      (student) => `
-        <option value="${escapeHtml(student.id)}"${
-          student.id === settings.teacherSelectedStudentId ? " selected" : ""
-        }>${escapeHtml(student.name)} · ${escapeHtml(student.track)}</option>
-      `,
-    )
-    .join("");
-
-  const detail = state.teacherStudentDetail;
-  if (!detail?.student) {
-    teacherBioPreview.innerHTML = "Open teacher review to load a student profile.";
-    teacherQuickStats.innerHTML = "";
-    teacherAssignmentReviews.innerHTML = "";
-    return;
-  }
-
-  teacherBioPreview.innerHTML = `
-    <strong>${escapeHtml(detail.student.name)}</strong><br>
-    ${escapeHtml(detail.student.bio.proud)}<br><br>
-    <strong>Future goal:</strong> ${escapeHtml(detail.student.bio.goal)}<br>
-    <strong>Strengths:</strong> ${escapeHtml(detail.student.bio.strengths)}<br>
-    <strong>Support:</strong> ${escapeHtml(detail.student.bio.support)}
-  `;
-
-  teacherQuickStats.innerHTML = `
-    ${escapeHtml(detail.student.cohort)}<br>
-    ${escapeHtml(detail.student.track)}<br>
-    ${detail.progress.completed}/${detail.progress.total} milestones complete
-  `;
-
-  teacherAssignmentReviews.innerHTML = detail.assignments
-    .map(
-      (assignment) => `
-        <article class="teacher-review-card">
-          <div class="teacher-head">
-            <div>
-              <div class="mini-label">${escapeHtml(assignment.dueLabel)}</div>
-              <h4>${escapeHtml(assignment.title)}</h4>
-            </div>
-            <span class="status-badge ${badgeClass(assignment.review.status)}">${escapeHtml(assignment.review.status)}</span>
-          </div>
-          <p>${escapeHtml(assignment.objective)}</p>
-          <div class="feedback-box" style="margin-top:14px">
-            <strong>Student submission</strong>
-            <div style="margin-top:8px">${escapeHtml(assignment.submission || "No submission added yet.")}</div>
-          </div>
-          <div class="teacher-actions">
-            <label style="flex:1 1 120px">
-              Score
-              <input id="review-score-${assignment.id}" type="text" value="${escapeHtml(assignment.review.score)}" placeholder="3.8 / 4" />
-            </label>
-            <label style="flex:1 1 220px">
-              Review status
-              <select id="review-status-${assignment.id}">
-                ${["Not reviewed", "In review", "Needs revision", "Approved", "Exceeds expectations"]
-                  .map(
-                    (status) =>
-                      `<option value="${escapeHtml(status)}"${
-                        status === assignment.review.status ? " selected" : ""
-                      }>${escapeHtml(status)}</option>`,
-                  )
-                  .join("")}
-              </select>
-            </label>
-          </div>
-          <label style="margin-top:14px">
-            Celebration note
-            <textarea id="review-celebration-${assignment.id}" placeholder="What did the student do especially well?">${escapeHtml(assignment.review.celebration)}</textarea>
-          </label>
-          <label>
-            Coaching note / next step
-            <textarea id="review-coaching-${assignment.id}" placeholder="What should the student work on next?">${escapeHtml(assignment.review.coaching)}</textarea>
-          </label>
-          <div class="teacher-actions">
-            <button class="btn secondary" type="button" data-save-review="${assignment.id}">Save Review</button>
-          </div>
-        </article>
-      `,
-    )
-    .join("");
-
-  teacherAssignmentReviews.querySelectorAll("[data-save-review]").forEach((button) => {
+  fileList.querySelectorAll("[data-open-file]").forEach((button) => {
     button.addEventListener("click", async () => {
-      const assignmentId = button.getAttribute("data-save-review");
-
-      if (isDemoTeacherToken()) {
-        state.teacherStudentDetail = updateDemoStudent(settings.teacherSelectedStudentId, (student) => {
-          const assignment = student.assignments.find((item) => item.id === assignmentId);
-          if (!assignment) return;
-          assignment.review.score = document.getElementById(`review-score-${assignmentId}`).value.trim();
-          assignment.review.status = document.getElementById(`review-status-${assignmentId}`).value;
-          assignment.review.celebration = document.getElementById(`review-celebration-${assignmentId}`).value.trim();
-          assignment.review.coaching = document.getElementById(`review-coaching-${assignmentId}`).value.trim();
-          assignment.review.reviewedAt = new Date().toISOString();
-          assignment.readyForReview = true;
-        });
-        renderTeacherWorkspace();
-        if (state.studentPortal?.student?.id === settings.teacherSelectedStudentId) {
-          await loadStudentPortal();
-        }
-        return;
-      }
-
       try {
-        state.teacherStudentDetail = await apiRequest(
-          `/portal/teacher/students/${encodeURIComponent(
-            settings.teacherSelectedStudentId,
-          )}/assignments/${encodeURIComponent(assignmentId)}/review`,
-          {
-            method: "PUT",
-            headers: teacherAuthHeaders(),
-            body: {
-              score: document.getElementById(`review-score-${assignmentId}`).value.trim(),
-              status: document.getElementById(`review-status-${assignmentId}`).value,
-              celebration: document.getElementById(`review-celebration-${assignmentId}`).value.trim(),
-              coaching: document.getElementById(`review-coaching-${assignmentId}`).value.trim(),
-            },
-          },
-        );
-        renderTeacherWorkspace();
-        if (state.studentPortal?.student?.id === settings.teacherSelectedStudentId) {
-          await loadStudentPortal();
-        }
+        await openFile(button.getAttribute("data-open-file"));
       } catch (error) {
-        showStatus(teacherStatus, error.message);
+        showStatus(fileUploadStatus, error.message);
+      }
+    });
+  });
+
+  fileList.querySelectorAll("[data-delete-file]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      try {
+        await deleteFile(button.getAttribute("data-delete-file"));
+        showStatus(fileUploadStatus, "File deleted from your private storage.", "success");
+      } catch (error) {
+        showStatus(fileUploadStatus, error.message);
       }
     });
   });
 }
 
-async function logoutStudent() {
-  if (!isDemoStudentToken() && settings.studentToken) {
-    try {
-      await apiRequest("/portal/auth/logout", {
-        method: "POST",
-        headers: studentAuthHeaders(),
-      });
-    } catch {
-      // best effort only
-    }
-  }
-
-  settings.studentToken = "";
-  saveSettings();
-  state.studentPortal = null;
-  studentPortal.classList.remove("visible");
-  showStatus(studentLoginStatus, "Student portal signed out.", "success");
-}
-
-async function bootstrapStarterCohort() {
-  if (!hasLiveApi()) {
-    demoStore = buildDemoStore();
-    saveDemoStore();
-    showStatus(portalSetupStatus, "Demo starter cohort reset on this device.", "success");
+async function uploadSelectedFile() {
+  if (!state.user) {
+    showStatus(fileUploadStatus, "Sign in before uploading files.");
     return;
   }
 
-  if (!portalBootstrapSecretInput.value.trim()) {
-    showStatus(portalSetupStatus, "Enter the bootstrap secret first.");
+  const file = fileUploadInput.files?.[0];
+  if (!file) {
+    showStatus(fileUploadStatus, "Choose a file first.");
+    return;
+  }
+
+  const supabase = getSupabase();
+  const storagePath = `${state.user.id}/${Date.now()}-${safeFileName(file.name)}`;
+
+  const { error: uploadError } = await supabase.storage
+    .from(settings.storageBucket)
+    .upload(storagePath, file, {
+      cacheControl: "3600",
+      upsert: false,
+    });
+  if (uploadError) throw uploadError;
+
+  const { error: rowError } = await supabase.from("user_files").insert({
+    user_id: state.user.id,
+    file_name: file.name,
+    storage_path: storagePath,
+    mime_type: file.type || "application/octet-stream",
+    file_size_bytes: file.size || 0,
+  });
+  if (rowError) throw rowError;
+
+  fileUploadInput.value = "";
+  await loadPortalData();
+  showStatus(fileUploadStatus, "File uploaded to your private storage.", "success");
+}
+
+async function signInUser(email, password) {
+  if (!hasSupabaseConfig()) {
+    showStatus(studentLoginStatus, "Save your Supabase settings first.");
+    return;
+  }
+
+  const supabase = getSupabase();
+  const { error } = await supabase.auth.signInWithPassword({
+    email: String(email || "").trim(),
+    password: String(password || "").trim(),
+  });
+
+  if (error) throw error;
+  settings.lastAuthEmail = String(email || "").trim();
+  saveSettings();
+  showStatus(studentLoginStatus, "Signed in successfully.", "success");
+}
+
+async function resumeSession() {
+  if (!hasSupabaseConfig()) {
+    showStatus(studentLoginStatus, "Save your Supabase settings first.");
+    return;
+  }
+  const supabase = getSupabase();
+  const { data, error } = await supabase.auth.getSession();
+  if (error) throw error;
+  if (!data.session) {
+    showStatus(studentLoginStatus, "No saved session was found on this device.");
+    return;
+  }
+  await handleSessionChange(data.session);
+  showStatus(studentLoginStatus, "Saved session restored.", "success");
+}
+
+async function signUpUser() {
+  if (!hasSupabaseConfig()) {
+    showStatus(signupStatus, "Save your Supabase settings first.");
+    return;
+  }
+
+  const name = signupNameInput.value.trim();
+  const email = signupEmailInput.value.trim();
+  const password = signupPasswordInput.value.trim();
+  const role = signupRoleInput.value;
+  const cohort = signupCohortInput.value.trim() || defaultCohortForRole(role);
+  const track = signupTrackInput.value.trim() || defaultTrackForRole(role);
+
+  if (!name || !email || !password) {
+    showStatus(signupStatus, "Add your name, email, and password first.");
+    return;
+  }
+
+  const supabase = getSupabase();
+  const { data, error } = await supabase.auth.signUp({
+    email,
+    password,
+    options: {
+      data: {
+        full_name: name,
+        role,
+        cohort,
+        track,
+      },
+    },
+  });
+
+  if (error) throw error;
+
+  settings.lastAuthEmail = email;
+  saveSettings();
+
+  if (data.session?.user) {
+    await ensureProfile(data.session.user, {
+      displayName: name,
+      role,
+      cohort,
+      track,
+    });
+    await handleSessionChange(data.session);
+    showStatus(signupStatus, "Account created and signed in.", "success");
+    signupForm.reset();
+    return;
+  }
+
+  showStatus(
+    signupStatus,
+    "Account created. Check your email to confirm the account before signing in.",
+    "success",
+  );
+  signupForm.reset();
+}
+
+async function saveBio() {
+  if (!state.user) {
+    showStatus(bioStatus, "Sign in before saving your bio.");
+    return;
+  }
+
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from("profiles")
+    .update({
+      bio_proud: bioProudInput.value.trim(),
+      bio_goal: bioGoalInput.value.trim(),
+      bio_strengths: bioStrengthsInput.value.trim(),
+      bio_support: bioSupportInput.value.trim(),
+    })
+    .eq("id", state.user.id)
+    .select("*")
+    .single();
+
+  if (error) throw error;
+  state.profile = data;
+  renderPortal();
+  showStatus(bioStatus, "Your profile was saved to your private account.", "success");
+}
+
+async function logoutUser() {
+  if (!supabaseClient) return;
+  const { error } = await supabaseClient.auth.signOut({ scope: "local" });
+  if (error) throw error;
+  renderLoggedOutState();
+  showStatus(studentLoginStatus, "Signed out.", "success");
+}
+
+savePortalApiBtn.addEventListener("click", async () => {
+  settings.supabaseUrl = normalizeUrl(portalApiUrlInput.value);
+  settings.supabaseAnonKey = portalBootstrapSecretInput.value.trim();
+  settings.storageBucket = storageBucketInput.value.trim() || DEFAULT_STORAGE_BUCKET;
+  saveSettings();
+  syncSettingsInputs();
+
+  if (!initializeSupabaseClient()) {
+    showStatus(portalSetupStatus, "Add a valid Supabase URL and anon key first.");
     return;
   }
 
   try {
-    const payload = await apiRequest("/portal/admin/bootstrap", {
-      method: "POST",
-      body: { secret: portalBootstrapSecretInput.value.trim() },
-    });
-    settings.bootstrapSecret = portalBootstrapSecretInput.value.trim();
-    saveSettings();
-    showStatus(
-      portalSetupStatus,
-      `Seeded ${payload.studentsSeeded} students and ${payload.workbookPromptsSeeded} workbook prompts.`,
-      "success",
-    );
+    const { data, error } = await supabaseClient.auth.getSession();
+    if (error) throw error;
+    await handleSessionChange(data.session);
+    showStatus(portalSetupStatus, "Supabase connection saved on this device.", "success");
   } catch (error) {
     showStatus(portalSetupStatus, error.message);
   }
-}
+});
+
+clearSupabaseConfigBtn.addEventListener("click", () => {
+  settings = {
+    supabaseUrl: "",
+    supabaseAnonKey: "",
+    storageBucket: DEFAULT_STORAGE_BUCKET,
+    lastAuthEmail: settings.lastAuthEmail || "",
+  };
+  saveSettings();
+  syncSettingsInputs();
+  initializeSupabaseClient();
+  renderLoggedOutState();
+  showStatus(portalSetupStatus, "Saved Supabase settings cleared from this device.", "success");
+});
 
 loginForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  await loginStudent(studentIdInput.value, studentCodeInput.value);
+  try {
+    await signInUser(studentIdInput.value, studentCodeInput.value);
+  } catch (error) {
+    showStatus(studentLoginStatus, error.message);
+  }
 });
 
 restoreLastStudentBtn.addEventListener("click", async () => {
-  if (!settings.studentToken) {
-    showStatus(studentLoginStatus, "No saved student session was found on this device.");
-    return;
+  try {
+    await resumeSession();
+  } catch (error) {
+    showStatus(studentLoginStatus, error.message);
   }
-  await loadStudentPortal();
 });
 
-savePortalApiBtn.addEventListener("click", () => {
-  settings.apiBaseUrl = normalizeBaseUrl(portalApiUrlInput.value);
-  settings.bootstrapSecret = portalBootstrapSecretInput.value.trim();
-  saveSettings();
-  showStatus(portalSetupStatus, "Backend settings saved on this device.", "success");
+signupForm.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  try {
+    await signUpUser();
+  } catch (error) {
+    showStatus(signupStatus, error.message);
+  }
 });
-
-bootstrapPortalBtn.addEventListener("click", bootstrapStarterCohort);
-
-teacherUnlockBtn.addEventListener("click", async () => {
-  await teacherLogin(teacherPinInput.value);
-});
-
-teacherWorkspaceToggle.addEventListener("click", () => {
-  if (!settings.teacherToken) return;
-  window.scrollTo({ top: teacherWorkspace.offsetTop - 14, behavior: "smooth" });
-});
-
-teacherLockBtn.addEventListener("click", () => {
-  settings.teacherToken = "";
-  saveSettings();
-  state.teacherStudents = [];
-  state.teacherStudentDetail = null;
-  updateTeacherVisibility();
-  clearStatus(teacherStatus);
-});
-
-studentLogoutBtn.addEventListener("click", logoutStudent);
 
 bioForm.addEventListener("submit", async (event) => {
   event.preventDefault();
-  await saveBio();
+  try {
+    await saveBio();
+  } catch (error) {
+    showStatus(bioStatus, error.message);
+  }
 });
 
-teacherStudentSelect.addEventListener("change", async () => {
-  settings.teacherSelectedStudentId = teacherStudentSelect.value;
-  saveSettings();
-  await loadTeacherStudentIfOpen();
+studentLogoutBtn.addEventListener("click", async () => {
+  try {
+    await logoutUser();
+  } catch (error) {
+    showStatus(studentLoginStatus, error.message);
+  }
 });
 
-renderSampleAccounts();
+uploadFileBtn.addEventListener("click", async () => {
+  try {
+    await uploadSelectedFile();
+  } catch (error) {
+    showStatus(fileUploadStatus, error.message);
+  }
+});
+
 syncSettingsInputs();
-updateTeacherVisibility();
 resetPortalScrollForEntry();
 
-if (settings.studentToken) {
-  loadStudentPortal();
-}
-
-if (settings.teacherToken) {
-  loadTeacherStudents();
+if (initializeSupabaseClient()) {
+  supabaseClient.auth
+    .getSession()
+    .then(({ data, error }) => {
+      if (error) throw error;
+      return handleSessionChange(data.session);
+    })
+    .catch((error) => {
+      showStatus(studentLoginStatus, error.message);
+    });
 }
