@@ -590,9 +590,11 @@ async function loadFiles(userId) {
   return data || [];
 }
 
-async function loadPortalData(defaults = null) {
+async function loadPortalData(defaults = null, options = {}) {
   const user = state.user;
   if (!user) return;
+
+  const { scrollToWelcome = false } = options;
 
   const profile = await ensureProfile(user, defaults || {});
   const [assignments, workbookEntries, files] = await Promise.all([
@@ -605,7 +607,7 @@ async function loadPortalData(defaults = null) {
   state.assignments = assignments;
   state.workbookEntries = workbookEntries;
   state.files = files;
-  renderPortal();
+  renderPortal({ scrollToWelcome });
 }
 
 function renderLoggedOutState() {
@@ -632,10 +634,12 @@ async function handleSessionChange(session) {
 
   settings.lastAuthEmail = state.user.email || settings.lastAuthEmail;
   saveSettings();
-  await loadPortalData();
+  await loadPortalData(null, { scrollToWelcome: true });
 }
 
-function renderPortal() {
+function renderPortal(options = {}) {
+  const { scrollToWelcome = false } = options;
+
   if (!state.profile) {
     updateAuthenticatedView(false);
     studentPortal.classList.remove("visible");
@@ -804,7 +808,9 @@ function renderPortal() {
     : `<div class="empty">No private files have been uploaded yet.</div>`;
 
   bindPortalActions();
-  scrollPortalWelcomeIntoView();
+  if (scrollToWelcome) {
+    scrollPortalWelcomeIntoView();
+  }
 }
 
 function badgeClass(status) {
