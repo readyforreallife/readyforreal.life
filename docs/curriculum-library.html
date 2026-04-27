@@ -45,7 +45,7 @@
         gap: 12px;
       }
       .topbar {
-        grid-template-columns: repeat(3, minmax(0, 1fr));
+        grid-template-columns: repeat(4, minmax(0, 1fr));
         margin-bottom: 16px;
       }
       .btn,
@@ -130,6 +130,22 @@
         font-weight: 700;
         font-size: 13px;
       }
+      .page-end-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 22px;
+      }
+      .scroll-top-btn {
+        min-height: 44px;
+        padding: 0 18px;
+        border-radius: 999px;
+        border: 1px solid var(--rule);
+        background: rgba(255, 255, 255, 0.94);
+        color: var(--slate);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
       @media (min-width: 720px) {
         .grid {
           grid-template-columns: 1fr 1fr;
@@ -146,16 +162,17 @@
     <main class="page">
       <div class="topbar">
         <a class="btn" href="student-portal.html">Back to Portal</a>
-        <a class="btn" href="index.html">Curriculum Home</a>
+        <a class="btn" href="app.html">App Home</a>
+        <a class="btn" href="website-home.html">Main Website</a>
         <a class="btn" href="game.html">Challenge Game</a>
       </div>
 
       <section class="hero">
-        <div class="eyebrow">Website Library</div>
+        <div class="eyebrow">App-Friendly Library</div>
         <h1>Curriculum Library</h1>
         <p>
-          Open the main curriculum pieces from one place without hunting through
-          the homepage.
+          Open the main curriculum pieces from one place without getting dumped
+          back into the full website flow.
         </p>
       </section>
 
@@ -172,7 +189,7 @@
           <p>Go deeper into implementation, learning design, and support material.</p>
           <div class="meta">Open Details</div>
         </a>
-        <a class="card" href="index.html">
+        <a class="card" href="website-home.html">
           <span class="label">Curriculum</span>
           <h2>Full Curriculum Site</h2>
           <p>Open the larger curriculum homepage and its section-based content.</p>
@@ -181,8 +198,32 @@
         <a class="card" href="one-pager.html">
           <span class="label">Quick View</span>
           <h2>One-Pager</h2>
-          <p>Read the mobile-ready one-pager with a visible way back.</p>
+          <p>Read the mobile-ready one-pager inside the app.</p>
           <div class="meta">Open One-Pager</div>
+        </a>
+        <a class="card" href="mmmf-hub/web/community-revenue-portal.html">
+          <span class="label">Revenue</span>
+          <h2>Community Revenue</h2>
+          <p>Open the mobile-friendly community pricing and revenue page.</p>
+          <div class="meta">Open Revenue Page</div>
+        </a>
+        <a class="card" href="mmmf-hub/web/school-revenue-portal.html">
+          <span class="label">Revenue</span>
+          <h2>School Revenue</h2>
+          <p>Open the school and district revenue page without leaving the app flow.</p>
+          <div class="meta">Open Revenue Page</div>
+        </a>
+        <a class="card" href="flyer.html">
+          <span class="label">Flyer</span>
+          <h2>Community Flyer</h2>
+          <p>Open the flyer with app-friendly navigation and a clear way back.</p>
+          <div class="meta">Open Flyer</div>
+        </a>
+        <a class="card" href="flyer-social.html">
+          <span class="label">Social</span>
+          <h2>Social Flyer</h2>
+          <p>Open the social flyer with app-friendly navigation controls.</p>
+          <div class="meta">Open Social Flyer</div>
         </a>
         <a class="card" href="bio.html">
           <span class="label">Founders</span>
@@ -197,6 +238,17 @@
           <div class="meta">View Resume</div>
         </a>
       </section>
+
+      <div class="page-end-actions">
+        <button class="scroll-top-btn" type="button" data-scroll-top>
+          Return to the Top of Page
+        </button>
+      </div>
     </main>
+    <script>
+      document.querySelector("[data-scroll-top]")?.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    </script>
   </body>
 </html>

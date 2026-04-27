@@ -197,6 +197,10 @@
         gap: 10px;
         margin-top: 22px;
       }
+      .footer-actions.top-actions {
+        margin-top: 18px;
+        margin-bottom: 6px;
+      }
       .footer-actions a {
         display: inline-flex;
         align-items: center;
@@ -216,6 +220,22 @@
         border: 1px solid rgba(37, 48, 68, 0.14);
         color: var(--slate);
         background: rgba(255, 255, 255, 0.72);
+      }
+      .page-end-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 26px;
+      }
+      .scroll-top-btn {
+        border: 1px solid rgba(37, 48, 68, 0.14);
+        background: rgba(255, 255, 255, 0.86);
+        color: var(--slate);
+        min-height: 46px;
+        padding: 0 18px;
+        border-radius: 999px;
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
       }
       @media (max-width: 640px) {
         .secondary-grid {
@@ -244,6 +264,13 @@
           getting dropped into the full website layout.
         </p>
       </section>
+
+      <div class="footer-actions top-actions">
+        <a class="primary" href="/student-portal.html">Student Login</a>
+        <a class="primary" href="/student-portal.html?entry=instructor">Instructor Login</a>
+        <a class="primary" href="/curriculum-library.html">Curriculum Library</a>
+        <a class="secondary" href="/website-home.html">Main Website</a>
+      </div>
 
       <div class="section-title">Start Here</div>
       <div class="quick-grid">
@@ -356,25 +383,24 @@
           <p>Keep the MMMF one-pager available directly inside the app.</p>
           <div class="meta">Open One-Pager</div>
         </a>
-        <a class="card" href="/ModernManners%20Community%20Revenue.pdf">
-          <span class="card-label">PDF</span>
+        <a class="card" href="/mmmf-hub/web/community-revenue-portal.html">
+          <span class="card-label">Revenue</span>
           <h3>Community Revenue</h3>
-          <p>Open the community revenue packet from the bundled site files.</p>
-          <div class="meta">Open PDF</div>
+          <p>Open the mobile-ready community revenue planning page.</p>
+          <div class="meta">Open Revenue Page</div>
         </a>
-        <a class="card" href="/ModernManners%20School%20Revenue.pdf">
-          <span class="card-label">PDF</span>
+        <a class="card" href="/mmmf-hub/web/school-revenue-portal.html">
+          <span class="card-label">Revenue</span>
           <h3>School Revenue</h3>
-          <p>Open the school revenue packet from inside the app.</p>
-          <div class="meta">Open PDF</div>
+          <p>Open the mobile-ready school and district revenue planning page.</p>
+          <div class="meta">Open Revenue Page</div>
         </a>
       </div>
 
-      <div class="footer-actions">
-        <a class="primary" href="/student-portal.html">Student Login</a>
-        <a class="primary" href="/student-portal.html?entry=instructor">Instructor Login</a>
-        <a class="primary" href="/curriculum-library.html">Curriculum Library</a>
-        <a class="secondary" href="/website-home.html">Main Website</a>
+      <div class="page-end-actions">
+        <button class="scroll-top-btn" type="button" data-scroll-top>
+          Return to the Top of Page
+        </button>
       </div>
     </main>
     <script src="/pwa-gestures.js"></script>
@@ -384,6 +410,10 @@
           navigator.serviceWorker.register("/sw.js").catch(() => {});
         });
       }
+
+      document.querySelector("[data-scroll-top]")?.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
     </script>
   </body>
 </html>

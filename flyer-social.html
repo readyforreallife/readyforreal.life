@@ -10,6 +10,13 @@
     <link rel="stylesheet" href="flyer-social.css" />
   </head>
   <body>
+    <div class="page-shell">
+      <div class="topbar">
+        <a class="nav-btn" href="app.html" id="socialFlyerBackBtn">App Home</a>
+        <a class="nav-btn" href="curriculum-library.html">Curriculum Library</a>
+        <a class="nav-btn" href="website-home.html">Main Website</a>
+      </div>
+
     <main class="social">
       <header>
         <img src="assets/brand.png" class="logo" alt="Ready For Real Life" />
@@ -64,6 +71,25 @@
         <div>lifeprepco@gmail.com • 435‑840‑1896</div>
         <div>readyforreal.life • @readyforreal.life</div>
       </footer>
+
+      <div class="page-end-actions">
+        <button class="nav-btn scroll-top-btn" type="button" data-scroll-top>
+          Return to the Top of Page
+        </button>
+      </div>
     </main>
+    </div>
+    <script>
+      document.getElementById("socialFlyerBackBtn")?.addEventListener("click", (event) => {
+        if (window.history.length > 1) {
+          event.preventDefault();
+          window.history.back();
+        }
+      });
+
+      document.querySelector("[data-scroll-top]")?.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      });
+    </script>
   </body>
 </html>

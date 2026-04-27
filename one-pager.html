@@ -158,6 +158,25 @@
       .card ul li + li {
         margin-top: 6px;
       }
+      .page-end-actions {
+        display: flex;
+        justify-content: center;
+        margin-top: 20px;
+      }
+      .scroll-top-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 18px;
+        border-radius: 999px;
+        border: 1px solid var(--rule);
+        background: rgba(255, 255, 255, 0.94);
+        color: var(--slate);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
       @media (min-width: 720px) {
         .modules,
         .frameworks,
@@ -285,6 +304,12 @@
           </article>
         </div>
       </section>
+
+      <div class="page-end-actions">
+        <button class="scroll-top-btn" type="button" data-scroll-top>
+          Return to the Top of Page
+        </button>
+      </div>
     </main>
 
     <script>
@@ -293,6 +318,10 @@
           event.preventDefault();
           window.history.back();
         }
+      });
+
+      document.querySelector("[data-scroll-top]")?.addEventListener("click", () => {
+        window.scrollTo({ top: 0, behavior: "smooth" });
       });
     </script>
   </body>
