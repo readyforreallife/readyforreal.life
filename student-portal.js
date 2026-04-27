@@ -808,15 +808,16 @@ function resetPortalScrollForEntry() {
     window.history.scrollRestoration = "manual";
   }
 
-  if (PAGE_HASH === "#teacher-access") {
-    window.history.replaceState({}, "", `${window.location.pathname}${window.location.search}`);
-  }
+  const params = new URLSearchParams(window.location.search);
+  params.delete("entry");
+
+  const cleanedSearch = params.toString();
+  const cleanedUrl = `${window.location.pathname}${cleanedSearch ? `?${cleanedSearch}` : ""}`;
+  window.history.replaceState({}, "", cleanedUrl);
 
   const scrollTop = () => window.scrollTo(0, 0);
   scrollTop();
   requestAnimationFrame(scrollTop);
-  window.addEventListener("load", scrollTop, { once: true });
-  window.addEventListener("pageshow", scrollTop, { once: true });
   setTimeout(scrollTop, 120);
 }
 
