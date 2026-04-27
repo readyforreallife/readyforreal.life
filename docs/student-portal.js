@@ -187,9 +187,11 @@ const signupStatus = document.getElementById("teacherStatus");
 const portalApiUrlInput = document.getElementById("portalApiUrlInput");
 const portalBootstrapSecretInput = document.getElementById("portalBootstrapSecretInput");
 const storageBucketInput = document.getElementById("storageBucketInput");
+const portalSetupToggleBtn = document.getElementById("portalSetupToggleBtn");
 const savePortalApiBtn = document.getElementById("savePortalApiBtn");
 const clearSupabaseConfigBtn = document.getElementById("clearSupabaseConfigBtn");
 const portalSetupStatus = document.getElementById("portalSetupStatus");
+const teacherAccess = document.getElementById("teacher-access");
 const studentPortal = document.getElementById("studentPortal");
 const welcomeCohort = document.getElementById("welcomeCohort");
 const welcomeTitle = document.getElementById("welcomeTitle");
@@ -278,11 +280,26 @@ function hasSupabaseConfig() {
   return Boolean(settings.supabaseUrl && settings.supabaseAnonKey);
 }
 
+function shouldShowPortalSetupByDefault() {
+  const params = new URLSearchParams(window.location.search);
+  return !hasSupabaseConfig() || params.get("setup") === "1";
+}
+
 function syncSettingsInputs() {
   portalApiUrlInput.value = settings.supabaseUrl || "";
   portalBootstrapSecretInput.value = settings.supabaseAnonKey || "";
   storageBucketInput.value = settings.storageBucket || DEFAULT_STORAGE_BUCKET;
   studentIdInput.value = settings.lastAuthEmail || "";
+}
+
+function updatePortalSetupVisibility(forceOpen = false) {
+  if (!teacherAccess || !portalSetupToggleBtn) return;
+  const shouldShow = forceOpen || shouldShowPortalSetupByDefault();
+  teacherAccess.hidden = !shouldShow;
+  portalSetupToggleBtn.textContent = shouldShow
+    ? "Hide Advanced Connection Settings"
+    : "Advanced Connection Settings";
+  portalSetupToggleBtn.setAttribute("aria-expanded", String(shouldShow));
 }
 
 function resetPortalScrollForEntry() {
@@ -1067,6 +1084,7 @@ savePortalApiBtn.addEventListener("click", async () => {
     if (error) throw error;
     await handleSessionChange(data.session);
     showStatus(portalSetupStatus, "Supabase connection saved on this device.", "success");
+    updatePortalSetupVisibility(false);
   } catch (error) {
     showStatus(portalSetupStatus, error.message);
   }
@@ -1084,6 +1102,16 @@ clearSupabaseConfigBtn.addEventListener("click", () => {
   initializeSupabaseClient();
   renderLoggedOutState();
   showStatus(portalSetupStatus, "Saved Supabase settings cleared from this device.", "success");
+  updatePortalSetupVisibility(false);
+});
+
+portalSetupToggleBtn?.addEventListener("click", () => {
+  const willShow = teacherAccess.hidden;
+  teacherAccess.hidden = !willShow;
+  portalSetupToggleBtn.textContent = willShow
+    ? "Hide Advanced Connection Settings"
+    : "Advanced Connection Settings";
+  portalSetupToggleBtn.setAttribute("aria-expanded", String(willShow));
 });
 
 loginForm.addEventListener("submit", async (event) => {
@@ -1139,6 +1167,7 @@ uploadFileBtn.addEventListener("click", async () => {
 
 syncSettingsInputs();
 resetPortalScrollForEntry();
+updatePortalSetupVisibility();
 
 if (initializeSupabaseClient()) {
   supabaseClient.auth

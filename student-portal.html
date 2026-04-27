@@ -321,6 +321,25 @@
         margin-top: 18px;
       }
 
+      #teacher-access[hidden] {
+        display: none;
+      }
+
+      .setup-toggle {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 38px;
+        padding: 0 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(24, 48, 79, 0.14);
+        background: rgba(255, 255, 255, 0.8);
+        color: var(--navy);
+        font: inherit;
+        font-weight: 700;
+        cursor: pointer;
+      }
+
       label {
         display: grid;
         gap: 8px;
@@ -862,7 +881,13 @@
             <div class="status-line" id="studentLoginStatus"></div>
           </form>
 
-          <div class="teacher-entry stack" id="teacher-access">
+          <div class="assignment-actions" style="margin-top: 16px">
+            <button class="setup-toggle" id="portalSetupToggleBtn" type="button">
+              Advanced Connection Settings
+            </button>
+          </div>
+
+          <div class="teacher-entry stack" id="teacher-access" hidden>
             <p class="section-kicker" style="margin-top: 10px">Portal Setup</p>
             <p class="subcopy">
               These connection settings are for the app or browser on this
