@@ -1,4 +1,4 @@
-const CACHE_VERSION = "rfrl-shell-v1";
+const CACHE_VERSION = "rfrl-shell-v3";
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `runtime-${CACHE_VERSION}`;
 const OFFLINE_URL = "/offline.html";
@@ -7,6 +7,8 @@ const APP_SHELL = [
   "/",
   "/app.html",
   "/index.html",
+  "/student-portal.html",
+  "/student-portal.js",
   "/manifest.json",
   "/offline.html",
   "/pwa-gestures.js",
