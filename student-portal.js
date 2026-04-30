@@ -988,66 +988,71 @@ function renderCourseRoadmap(role) {
 
   const isInstructor = role === "instructor";
   courseRoadmapList.innerHTML = COURSE_WEEKS.map(
-    (week) => `
-      <article class="week-card">
-        <div class="week-head">
+    (week, index) => `
+      <details class="week-card" ${index === 0 ? "open" : ""}>
+        <summary class="week-head">
           <div>
             <div class="mini-label">${escapeHtml(week.module)}</div>
             <h4>${escapeHtml(week.title)}</h4>
+            <p class="week-focus">${escapeHtml(week.focus)}</p>
           </div>
-          <span class="week-number">Week ${week.week}</span>
+          <span class="week-summary-actions">
+            <span class="week-number">Week ${week.week}</span>
+            <span class="week-toggle" aria-hidden="true"></span>
+          </span>
+        </summary>
+        <div class="week-details">
+          <div class="week-list">
+            <section class="week-list-block">
+              <strong>${isInstructor ? "Student experience this week" : "What you will do"}</strong>
+              <ul>
+                ${(isInstructor ? week.studentActions : week.studentActions)
+                  .map((item) => `<li>${escapeHtml(item)}</li>`)
+                  .join("")}
+              </ul>
+            </section>
+            <section class="week-list-block">
+              <strong>${isInstructor ? "What to look for" : "What shows your growth"}</strong>
+              <ul>
+                ${(isInstructor ? week.studentEvidence : week.studentEvidence)
+                  .map((item) => `<li>${escapeHtml(item)}</li>`)
+                  .join("")}
+              </ul>
+            </section>
+            ${
+              isInstructor
+                ? `
+                  <section class="week-list-block">
+                    <strong>How to facilitate it</strong>
+                    <ul>
+                      ${week.instructorMoves.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                    </ul>
+                  </section>
+                  <section class="week-list-block">
+                    <strong>Prep before you teach</strong>
+                    <ul>
+                      ${week.instructorPrep.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                    </ul>
+                  </section>
+                `
+                : `
+                  <section class="week-list-block">
+                    <strong>Why it matters</strong>
+                    <ul>
+                      ${week.instructorMoves.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                    </ul>
+                  </section>
+                  <section class="week-list-block">
+                    <strong>How to prepare yourself</strong>
+                    <ul>
+                      ${week.instructorPrep.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                    </ul>
+                  </section>
+                `
+            }
+          </div>
         </div>
-        <p class="week-focus">${escapeHtml(week.focus)}</p>
-        <div class="week-list">
-          <section class="week-list-block">
-            <strong>${isInstructor ? "Student experience this week" : "What you will do"}</strong>
-            <ul>
-              ${(isInstructor ? week.studentActions : week.studentActions)
-                .map((item) => `<li>${escapeHtml(item)}</li>`)
-                .join("")}
-            </ul>
-          </section>
-          <section class="week-list-block">
-            <strong>${isInstructor ? "What to look for" : "What shows your growth"}</strong>
-            <ul>
-              ${(isInstructor ? week.studentEvidence : week.studentEvidence)
-                .map((item) => `<li>${escapeHtml(item)}</li>`)
-                .join("")}
-            </ul>
-          </section>
-          ${
-            isInstructor
-              ? `
-                <section class="week-list-block">
-                  <strong>How to facilitate it</strong>
-                  <ul>
-                    ${week.instructorMoves.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-                  </ul>
-                </section>
-                <section class="week-list-block">
-                  <strong>Prep before you teach</strong>
-                  <ul>
-                    ${week.instructorPrep.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-                  </ul>
-                </section>
-              `
-              : `
-                <section class="week-list-block">
-                  <strong>Why it matters</strong>
-                  <ul>
-                    ${week.instructorMoves.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-                  </ul>
-                </section>
-                <section class="week-list-block">
-                  <strong>How to prepare yourself</strong>
-                  <ul>
-                    ${week.instructorPrep.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
-                  </ul>
-                </section>
-              `
-          }
-        </div>
-      </article>
+      </details>
     `,
   ).join("");
 }

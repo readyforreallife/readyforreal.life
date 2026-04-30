@@ -907,6 +907,10 @@
         box-shadow: 0 14px 30px rgba(24, 48, 79, 0.08);
       }
 
+      details.week-card {
+        display: block;
+      }
+
       .portal-shell.instructor-view .week-card {
         background: linear-gradient(180deg, rgba(243, 250, 250, 0.98), rgba(255, 255, 255, 0.98));
         border-color: rgba(34, 111, 112, 0.16);
@@ -921,7 +925,25 @@
 
       .week-head {
         grid-template-columns: minmax(0, 1fr) auto;
-        align-items: start;
+        align-items: center;
+        cursor: pointer;
+        list-style: none;
+      }
+
+      .week-head::-webkit-details-marker {
+        display: none;
+      }
+
+      .week-head:focus-visible {
+        outline: 3px solid rgba(13, 115, 119, 0.32);
+        outline-offset: 8px;
+        border-radius: 16px;
+      }
+
+      .week-summary-actions {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
       }
 
       .week-number {
@@ -937,6 +959,32 @@
         font-size: 11px;
         letter-spacing: 0.08em;
         text-transform: uppercase;
+      }
+
+      .week-toggle {
+        width: 36px;
+        height: 36px;
+        display: inline-grid;
+        place-items: center;
+        border-radius: 999px;
+        background: var(--navy);
+        color: #fff;
+        box-shadow: 0 10px 22px rgba(24, 48, 79, 0.16);
+      }
+
+      .week-toggle::before {
+        content: "+";
+        font-size: 22px;
+        font-weight: 800;
+        line-height: 1;
+      }
+
+      .week-card[open] .week-toggle::before {
+        content: "-";
+      }
+
+      .week-details {
+        margin-top: 18px;
       }
 
       .week-module {
@@ -961,6 +1009,7 @@
       }
 
       .week-focus {
+        margin: 12px 0 0;
         color: var(--muted);
         line-height: 1.7;
       }
