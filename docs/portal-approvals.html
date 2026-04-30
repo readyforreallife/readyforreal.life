@@ -1,0 +1,530 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>Portal Registration Approvals | Ready for Real Life</title>
+    <link rel="icon" href="favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #101724;
+        --paper: #f6f1e8;
+        --panel: #fffaf2;
+        --navy: #18304f;
+        --gold: #c89b3c;
+        --muted: #66748a;
+        --rule: rgba(24, 48, 79, 0.16);
+        --danger: #b0432e;
+        --ok: #1f7a55;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "DM Sans", system-ui, sans-serif;
+      }
+
+      header {
+        background: var(--navy);
+        color: white;
+        border-bottom: 4px solid var(--gold);
+      }
+
+      .header-inner,
+      main {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .header-inner {
+        padding: 26px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      h1 {
+        margin: 0;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.8rem, 4vw, 3rem);
+        letter-spacing: 0;
+      }
+
+      .subtitle {
+        margin: 8px 0 0;
+        color: rgba(255, 255, 255, 0.78);
+        max-width: 680px;
+      }
+
+      a,
+      button {
+        font: inherit;
+      }
+
+      .nav-actions,
+      .actions,
+      .filters {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .link-btn,
+      button {
+        min-height: 42px;
+        border-radius: 8px;
+        border: 1px solid var(--rule);
+        padding: 0 14px;
+        background: white;
+        color: var(--navy);
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .link-btn.primary,
+      button.primary {
+        background: var(--gold);
+        border-color: #dcb863;
+        color: #1e2430;
+      }
+
+      button.danger {
+        color: white;
+        background: var(--danger);
+        border-color: var(--danger);
+      }
+
+      button:disabled {
+        opacity: 0.55;
+        cursor: wait;
+      }
+
+      main {
+        padding: 24px 0 44px;
+      }
+
+      .toolbar,
+      .manual-panel,
+      .empty,
+      .request {
+        background: var(--panel);
+        border: 1px solid var(--rule);
+        border-radius: 8px;
+        box-shadow: 0 18px 45px rgba(24, 48, 79, 0.08);
+      }
+
+      .toolbar,
+      .manual-panel {
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--navy);
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        min-height: 42px;
+        border-radius: 8px;
+        border: 1px solid rgba(24, 48, 79, 0.2);
+        background: white;
+        padding: 9px 11px;
+        font: inherit;
+        color: var(--ink);
+      }
+
+      textarea {
+        min-height: 84px;
+        resize: vertical;
+      }
+
+      .toolbar-grid,
+      .manual-grid {
+        display: grid;
+        grid-template-columns: minmax(180px, 1fr) 170px auto;
+        gap: 12px;
+        align-items: end;
+      }
+
+      .manual-grid {
+        grid-template-columns: repeat(2, minmax(180px, 1fr));
+      }
+
+      .manual-grid .wide {
+        grid-column: 1 / -1;
+      }
+
+      .status {
+        min-height: 22px;
+        margin: 10px 0 0;
+        font-weight: 700;
+        color: var(--muted);
+      }
+
+      .status.ok {
+        color: var(--ok);
+      }
+
+      .status.err {
+        color: var(--danger);
+      }
+
+      .summary {
+        margin: 18px 0 10px;
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .list {
+        display: grid;
+        gap: 12px;
+      }
+
+      .request {
+        padding: 16px;
+        display: grid;
+        grid-template-columns: 1fr auto;
+        gap: 16px;
+      }
+
+      .request h2 {
+        margin: 0;
+        font-family: "Playfair Display", serif;
+        font-size: 1.35rem;
+        color: var(--navy);
+      }
+
+      .meta,
+      .notes {
+        margin: 8px 0 0;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: #eef2f7;
+        color: var(--navy);
+        font-family: "DM Mono", monospace;
+        font-size: 0.78rem;
+      }
+
+      .request-controls {
+        display: grid;
+        grid-template-columns: 150px;
+        gap: 8px;
+        align-content: start;
+      }
+
+      .empty {
+        padding: 28px;
+        color: var(--muted);
+        font-weight: 700;
+        text-align: center;
+      }
+
+      @media (max-width: 760px) {
+        .toolbar-grid,
+        .manual-grid,
+        .request {
+          grid-template-columns: 1fr;
+        }
+
+        .request-controls {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-inner">
+        <div>
+          <h1>Portal Approvals</h1>
+          <p class="subtitle">
+            Review course registrations, choose student or instructor access,
+            and approve or deny portal account creation.
+          </p>
+        </div>
+        <div class="nav-actions">
+          <a class="link-btn" href="index.html">Main Site</a>
+          <a class="link-btn primary" href="student-portal.html">Portal Login</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="toolbar" aria-label="Approval controls">
+        <div class="toolbar-grid">
+          <label>
+            Admin key
+            <input id="adminKeyInput" type="password" autocomplete="current-password" />
+          </label>
+          <label>
+            View
+            <select id="statusFilter">
+              <option value="pending">Pending</option>
+              <option value="approved">Approved</option>
+              <option value="revoked">Denied</option>
+              <option value="used">Account created</option>
+              <option value="">All</option>
+            </select>
+          </label>
+          <button class="primary" id="refreshBtn" type="button">Refresh</button>
+        </div>
+        <div class="status" id="statusLine"></div>
+      </section>
+
+      <section class="manual-panel" aria-label="Manual registration">
+        <form id="manualForm">
+          <div class="manual-grid">
+            <label>
+              Full name
+              <input id="manualName" required />
+            </label>
+            <label>
+              Email
+              <input id="manualEmail" type="email" required />
+            </label>
+            <label>
+              Initial role
+              <select id="manualRole">
+                <option value="student">Student</option>
+                <option value="instructor">Instructor</option>
+              </select>
+            </label>
+            <label>
+              Notes
+              <input id="manualNotes" placeholder="Optional" />
+            </label>
+            <div class="actions wide">
+              <button type="submit">Add Pending Registration</button>
+            </div>
+          </div>
+        </form>
+      </section>
+
+      <div class="summary" id="summaryLine">No registrations loaded yet.</div>
+      <section class="list" id="requestList" aria-live="polite"></section>
+    </main>
+
+    <script>
+      const SUPABASE_URL = "https://dwliijpjplrdgdvaaoak.supabase.co";
+      const SUPABASE_ANON_KEY =
+        "sb_publishable_6BJeJE-TYfqry9V6mnixGQ_s5M7wNnh";
+      const ADMIN_KEY_STORAGE = "rfrl_portal_admin_key";
+
+      const els = {
+        adminKey: document.getElementById("adminKeyInput"),
+        statusFilter: document.getElementById("statusFilter"),
+        refresh: document.getElementById("refreshBtn"),
+        status: document.getElementById("statusLine"),
+        summary: document.getElementById("summaryLine"),
+        list: document.getElementById("requestList"),
+        manualForm: document.getElementById("manualForm"),
+        manualName: document.getElementById("manualName"),
+        manualEmail: document.getElementById("manualEmail"),
+        manualRole: document.getElementById("manualRole"),
+        manualNotes: document.getElementById("manualNotes"),
+      };
+
+      let enrollments = [];
+
+      function setStatus(message, type = "") {
+        els.status.textContent = message || "";
+        els.status.className = `status ${type}`.trim();
+      }
+
+      function escapeHtml(value) {
+        return String(value || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#039;");
+      }
+
+      function formatDate(value) {
+        if (!value) return "No date";
+        return new Intl.DateTimeFormat(undefined, {
+          dateStyle: "medium",
+          timeStyle: "short",
+        }).format(new Date(value));
+      }
+
+      async function rpc(functionName, body) {
+        const res = await fetch(`${SUPABASE_URL}/rest/v1/rpc/${functionName}`, {
+          method: "POST",
+          headers: {
+            apikey: SUPABASE_ANON_KEY,
+            Authorization: `Bearer ${SUPABASE_ANON_KEY}`,
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify(body),
+        });
+        const data = await res.json().catch(() => null);
+        if (!res.ok) {
+          throw new Error(
+            data && data.message ? data.message : "Supabase request failed.",
+          );
+        }
+        return data;
+      }
+
+      function render() {
+        els.summary.textContent = `${enrollments.length} registration${
+          enrollments.length === 1 ? "" : "s"
+        } shown.`;
+        if (!enrollments.length) {
+          els.list.innerHTML =
+            '<div class="empty">Nothing needs attention in this view.</div>';
+          return;
+        }
+
+        els.list.innerHTML = enrollments
+          .map((item) => {
+            const notes = item.notes
+              ? `<p class="notes">${escapeHtml(item.notes).replace(/\n/g, "<br>")}</p>`
+              : "";
+            const disabled = item.status === "used" ? "disabled" : "";
+            return `
+              <article class="request" data-id="${escapeHtml(item.id)}">
+                <div>
+                  <h2>${escapeHtml(item.full_name || "Unnamed registrant")}</h2>
+                  <p class="meta">
+                    ${escapeHtml(item.email)} ·
+                    <span class="badge">${escapeHtml(item.status)}</span>
+                  </p>
+                  <p class="meta">
+                    Current role: ${escapeHtml(item.role)} ·
+                    Updated ${escapeHtml(formatDate(item.updated_at))}
+                  </p>
+                  ${notes}
+                </div>
+                <div class="request-controls">
+                  <select data-role ${disabled}>
+                    <option value="student" ${item.role === "student" ? "selected" : ""}>Student</option>
+                    <option value="instructor" ${item.role === "instructor" ? "selected" : ""}>Instructor</option>
+                  </select>
+                  <button class="primary" data-action="approved" ${disabled}>Approve</button>
+                  <button class="danger" data-action="revoked" ${disabled}>Deny</button>
+                  <button data-action="pending" ${disabled}>Back to Pending</button>
+                </div>
+              </article>
+            `;
+          })
+          .join("");
+      }
+
+      async function loadEnrollments() {
+        const adminKey = els.adminKey.value.trim();
+        if (!adminKey) {
+          setStatus("Enter the admin key first.", "err");
+          return;
+        }
+        localStorage.setItem(ADMIN_KEY_STORAGE, adminKey);
+        els.refresh.disabled = true;
+        setStatus("Loading registrations...");
+        try {
+          enrollments = await rpc("list_course_enrollments_for_admin", {
+            admin_key: adminKey,
+            enrollment_status: els.statusFilter.value,
+          });
+          render();
+          setStatus("Registrations loaded.", "ok");
+        } catch (error) {
+          setStatus(error.message, "err");
+        } finally {
+          els.refresh.disabled = false;
+        }
+      }
+
+      async function reviewEnrollment(card, nextStatus) {
+        const id = card.getAttribute("data-id");
+        const role = card.querySelector("[data-role]").value;
+        const buttons = card.querySelectorAll("button, select");
+        buttons.forEach((button) => {
+          button.disabled = true;
+        });
+        setStatus("Saving review...");
+        try {
+          await rpc("review_course_enrollment", {
+            admin_key: els.adminKey.value.trim(),
+            enrollment_id: id,
+            next_status: nextStatus,
+            next_role: role,
+            admin_notes: null,
+          });
+          setStatus("Review saved.", "ok");
+          await loadEnrollments();
+        } catch (error) {
+          setStatus(error.message, "err");
+          buttons.forEach((button) => {
+            button.disabled = false;
+          });
+        }
+      }
+
+      els.refresh.addEventListener("click", loadEnrollments);
+      els.statusFilter.addEventListener("change", loadEnrollments);
+
+      els.list.addEventListener("click", (event) => {
+        const button = event.target.closest("button[data-action]");
+        if (!button) return;
+        const card = button.closest(".request");
+        reviewEnrollment(card, button.getAttribute("data-action"));
+      });
+
+      els.manualForm.addEventListener("submit", async (event) => {
+        event.preventDefault();
+        setStatus("Adding pending registration...");
+        try {
+          await rpc("submit_course_registration", {
+            account_email: els.manualEmail.value.trim(),
+            full_name: els.manualName.value.trim(),
+            requested_role: els.manualRole.value,
+            registration_notes: els.manualNotes.value.trim(),
+            requested_cohort: "Ready for Real Life Cohort",
+            requested_track: "Core Skills Focus",
+          });
+          els.manualForm.reset();
+          setStatus("Pending registration added.", "ok");
+          els.statusFilter.value = "pending";
+          await loadEnrollments();
+        } catch (error) {
+          setStatus(error.message, "err");
+        }
+      });
+
+      els.adminKey.value = localStorage.getItem(ADMIN_KEY_STORAGE) || "";
+      if (els.adminKey.value) {
+        loadEnrollments();
+      }
+    </script>
+  </body>
+</html>

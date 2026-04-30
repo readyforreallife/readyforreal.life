@@ -2126,6 +2126,14 @@
         </a>
         <a
           class="nav-action nav-linkish nav-mobile-only"
+          id="menuApprovalQueueBtn"
+          href="portal-approvals.html"
+          style="display: none"
+        >
+          Approval Queue
+        </a>
+        <a
+          class="nav-action nav-linkish nav-mobile-only"
           id="menuCertificateFolderBtn"
           href="https://readyforreallife.github.io/mmmf-codex/web/certificate-folder.html"
           style="display: none"
@@ -2237,6 +2245,9 @@
               id="registrationFolderBtn"
               href="https://readyforreallife.github.io/mmmf-codex/web/registration-folder.html"
               >Registration Folder</a
+            >
+            <a class="util-btn" id="approvalQueueBtn" href="portal-approvals.html"
+              >Approval Queue</a
             >
             <a
               class="util-btn"
@@ -3871,6 +3882,9 @@
         const DEFAULT_REGISTRATION_ENDPOINT =
           "https://flat-flower-4af8mmmf-agreement-admin.mikeyterry44.workers.dev";
         const FALLBACK_REGISTRATION_ENDPOINTS = [DEFAULT_REGISTRATION_ENDPOINT];
+        const PORTAL_SUPABASE_URL = "https://dwliijpjplrdgdvaaoak.supabase.co";
+        const PORTAL_SUPABASE_ANON_KEY =
+          "sb_publishable_6BJeJE-TYfqry9V6mnixGQ_s5M7wNnh";
         const LEGACY_SETTINGS_KEY = "decision-lab-settings-v1";
         const LEGACY_TEACHER_KEY = "decision-lab-teacher-mode";
 
@@ -3909,6 +3923,9 @@
         const menuFormalDocsBtn = document.getElementById("menuFormalDocsBtn");
         const menuRegistrationFolderBtn = document.getElementById(
           "menuRegistrationFolderBtn",
+        );
+        const menuApprovalQueueBtn = document.getElementById(
+          "menuApprovalQueueBtn",
         );
         const menuCertificateFolderBtn = document.getElementById(
           "menuCertificateFolderBtn",
@@ -4012,6 +4029,7 @@
           [
             menuFormalDocsBtn,
             menuRegistrationFolderBtn,
+            menuApprovalQueueBtn,
             menuCertificateFolderBtn,
             menuStripeCenterBtn,
             menuStripeDashboardShortcutBtn,
@@ -4218,6 +4236,50 @@
           return { ok: false, data: null };
         }
 
+        function roleFromRegistrationGroup(group) {
+          return String(group || "").toLowerCase() === "educator"
+            ? "instructor"
+            : "student";
+        }
+
+        async function submitPortalRegistration(payload) {
+          const notes = [
+            payload.phone ? `Phone: ${payload.phone}` : "",
+            payload.group ? `Best fit: ${payload.group}` : "",
+            payload.notes ? `Notes: ${payload.notes}` : "",
+          ]
+            .filter(Boolean)
+            .join("\n");
+          const res = await fetch(
+            `${PORTAL_SUPABASE_URL}/rest/v1/rpc/submit_course_registration`,
+            {
+              method: "POST",
+              headers: {
+                apikey: PORTAL_SUPABASE_ANON_KEY,
+                Authorization: `Bearer ${PORTAL_SUPABASE_ANON_KEY}`,
+                "Content-Type": "application/json",
+              },
+              body: JSON.stringify({
+                account_email: payload.email,
+                full_name: payload.name,
+                requested_role: roleFromRegistrationGroup(payload.group),
+                registration_notes: notes,
+                requested_cohort: "Ready for Real Life Cohort",
+                requested_track: "Core Skills Focus",
+              }),
+            },
+          );
+          const data = await res.json().catch(() => null);
+          if (!res.ok || !data || data.ok === false) {
+            throw new Error(
+              data && data.message
+                ? data.message
+                : "Could not add this registration to the approval queue.",
+            );
+          }
+          return data;
+        }
+
         setTeacherUnlocked(isTeacherUnlocked());
         const legacySettingsRaw = localStorage.getItem(LEGACY_SETTINGS_KEY);
         let legacySettings = null;
@@ -4281,7 +4343,7 @@
           settingsBtn.click();
         });
         adminBtn?.addEventListener("click", () => {
-          window.location.href = "admin/index.html";
+          window.location.href = "portal-approvals.html";
         });
         menuAdminBtn?.addEventListener("click", () => {
           closeMobileNav();
@@ -4488,6 +4550,7 @@
             return;
           }
           try {
+            const portalRegistration = await submitPortalRegistration(payload);
             let result = { ok: false, data: null };
             for (const url of endpointCandidates) {
               // Try each configured endpoint until one accepts/dispatches.
@@ -4495,28 +4558,33 @@
               result = await trySubmitToEndpoint(url, payload, secret);
               if (result.ok) break;
             }
-            if (result.ok) {
-              const emailSent = !!(result.data && result.data.email_sent);
-              const emailConfigured = !!(
-                result.data && result.data.email_service_configured
-              );
-              const message = emailSent
-                ? "Submitted. Thank you. A confirmation email is on its way."
-                : emailConfigured
-                  ? "Submitted. Your registration was saved, but the confirmation email could not be sent yet."
-                  : "Submitted. Thank you. Your registration was saved.";
-              showStatus(message, false);
-              setTimeout(() => closeModal(registerModal), 900);
-              registerSubmitting = false;
-              if (registerSubmitBtn) {
-                registerSubmitBtn.disabled = false;
-                registerSubmitBtn.textContent = "Submit";
-                registerSubmitBtn.style.opacity = "1";
-                registerSubmitBtn.style.cursor = "pointer";
-              }
-              return;
+            if (!result.ok) {
+              console.warn("Registration email endpoint did not accept the submission.");
             }
-            throw new Error("All endpoints failed");
+            const alreadyApproved = ["approved", "used"].includes(
+              String(portalRegistration.status || ""),
+            );
+            const emailSent = !!(result.data && result.data.email_sent);
+            const emailConfigured = !!(
+              result.data && result.data.email_service_configured
+            );
+            const message = alreadyApproved
+              ? "Submitted. This email is already approved for portal access."
+              : emailSent
+                ? "Submitted. Thank you. Your registration is waiting for approval."
+                : emailConfigured
+                  ? "Submitted. Your registration is waiting for approval, but the confirmation email could not be sent yet."
+                  : "Submitted. Thank you. Your registration is waiting for approval.";
+            showStatus(message, false);
+            setTimeout(() => closeModal(registerModal), 900);
+            registerSubmitting = false;
+            if (registerSubmitBtn) {
+              registerSubmitBtn.disabled = false;
+              registerSubmitBtn.textContent = "Submit";
+              registerSubmitBtn.style.opacity = "1";
+              registerSubmitBtn.style.cursor = "pointer";
+            }
+            return;
           } catch (_err) {
             const queue = JSON.parse(
               localStorage.getItem("dl_registration_queue") || "[]",

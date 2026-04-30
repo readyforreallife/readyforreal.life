@@ -27,6 +27,7 @@ Open the Supabase SQL editor and run:
 
 That will create:
 
+- `course_enrollments`
 - `profiles`
 - `community_profiles`
 - `user_assignments`
@@ -35,12 +36,47 @@ That will create:
 - the private `portal-files` storage bucket
 - the authenticated-read `community-profiles` image bucket
 - RLS policies so users can only access their own records and files
+- an auth trigger that blocks account creation unless the email has an approved
+  course enrollment
 
 Run the updated SQL again if your project was already set up before the
-community profile feature was added. It is idempotent and will add the missing
-shared-profile table, policies, and storage bucket.
+course enrollment gate or community profile feature was added. It is idempotent
+and will add the missing enrollment table, shared-profile table, policies,
+trigger, and storage bucket.
 
-## 3. Auth settings
+## 3. Approve course registrations before account creation
+
+Course registrations now enter `course_enrollments` as `pending`. Open
+`portal-approvals.html`, enter the admin key, choose `Student` or `Instructor`,
+and approve or deny each request. The portal and the Supabase auth trigger both
+check this table before account creation.
+
+The default admin key is `4429`, matching Teacher Mode. To change it, run:
+
+```sql
+update public.portal_admin_settings
+set admin_key_hash = crypt('NEW-KEY-HERE', gen_salt('bf'))
+where id = true;
+```
+
+You can still add or approve a user manually from SQL when needed:
+
+```sql
+insert into public.course_enrollments (email, role, status, full_name)
+values
+  ('student@example.com', 'student', 'approved', 'Student Name'),
+  ('teacher@example.com', 'instructor', 'approved', 'Instructor Name')
+on conflict (email) do update
+set role = excluded.role,
+    status = excluded.status,
+    full_name = excluded.full_name;
+```
+
+Use the same email address from the course registration form. Once an approved
+person creates an account, the enrollment row is marked `used` and linked to
+their auth user.
+
+## 4. Auth settings
 
 In Supabase Auth:
 
@@ -50,7 +86,7 @@ In Supabase Auth:
 If email confirmation is enabled, new users will need to confirm their email
 before their first sign-in session is created.
 
-## 4. Connect the portal
+## 5. Connect the portal
 
 On the portal page, save:
 
@@ -60,7 +96,7 @@ On the portal page, save:
 
 The default bucket name in the SQL is `portal-files`.
 
-## 5. Shared identity visibility
+## 6. Shared identity visibility
 
 This setup now has two visibility layers:
 
