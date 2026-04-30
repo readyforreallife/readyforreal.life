@@ -411,7 +411,8 @@
             const notes = item.notes
               ? `<p class="notes">${escapeHtml(item.notes).replace(/\n/g, "<br>")}</p>`
               : "";
-            const disabled = item.status === "used" ? "disabled" : "";
+            const reviewDisabled = item.status === "used" ? "disabled" : "";
+            const deleteDisabled = item.user_id ? "" : "disabled";
             return `
               <article class="request" data-id="${escapeHtml(item.id)}">
                 <div>
@@ -424,16 +425,20 @@
                     Current role: ${escapeHtml(item.role)} ·
                     Updated ${escapeHtml(formatDate(item.updated_at))}
                   </p>
+                  <p class="meta">
+                    Portal account: ${item.user_id ? escapeHtml(item.user_id) : "Not created yet"}
+                  </p>
                   ${notes}
                 </div>
                 <div class="request-controls">
-                  <select data-role ${disabled}>
+                  <select data-role ${reviewDisabled}>
                     <option value="student" ${item.role === "student" ? "selected" : ""}>Student</option>
                     <option value="instructor" ${item.role === "instructor" ? "selected" : ""}>Instructor</option>
                   </select>
-                  <button class="primary" data-action="approved" ${disabled}>Approve</button>
-                  <button class="danger" data-action="revoked" ${disabled}>Deny</button>
-                  <button data-action="pending" ${disabled}>Back to Pending</button>
+                  <button class="primary" data-action="approved" ${reviewDisabled}>Approve</button>
+                  <button class="danger" data-action="revoked" ${reviewDisabled}>Deny</button>
+                  <button data-action="pending" ${reviewDisabled}>Back to Pending</button>
+                  <button class="danger" data-delete-account ${deleteDisabled}>Delete Account</button>
                 </div>
               </article>
             `;
@@ -490,10 +495,46 @@
         }
       }
 
+      async function deletePortalAccount(card) {
+        const id = card.getAttribute("data-id");
+        const name =
+          card.querySelector("h2")?.textContent?.trim() || "this account";
+        const confirmed = window.confirm(
+          `Delete the portal account for ${name}? This removes the auth login, profile, assignments, workbook entries, and uploaded files.`,
+        );
+        if (!confirmed) return;
+
+        const buttons = card.querySelectorAll("button, select");
+        buttons.forEach((button) => {
+          button.disabled = true;
+        });
+        setStatus("Deleting account...");
+        try {
+          await rpc("admin_delete_portal_account", {
+            admin_key: els.adminKey.value.trim(),
+            enrollment_id: id,
+          });
+          setStatus("Account deleted.", "ok");
+          await loadEnrollments();
+        } catch (error) {
+          setStatus(error.message, "err");
+          buttons.forEach((button) => {
+            button.disabled = false;
+          });
+        }
+      }
+
       els.refresh.addEventListener("click", loadEnrollments);
       els.statusFilter.addEventListener("change", loadEnrollments);
 
       els.list.addEventListener("click", (event) => {
+        const deleteButton = event.target.closest("button[data-delete-account]");
+        if (deleteButton) {
+          const card = deleteButton.closest(".request");
+          deletePortalAccount(card);
+          return;
+        }
+
         const button = event.target.closest("button[data-action]");
         if (!button) return;
         const card = button.closest(".request");

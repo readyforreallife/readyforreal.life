@@ -181,6 +181,12 @@
         color: #fff;
       }
 
+      .btn.danger {
+        background: var(--rose);
+        border-color: var(--rose);
+        color: #fff;
+      }
+
       .hero-grid,
       .portal-grid,
       .section-grid,
@@ -1461,7 +1467,11 @@
                 <button class="btn ghost" id="studentLogoutBtn" type="button">
                   Log Out
                 </button>
+                <button class="btn danger" id="deleteAccountBtn" type="button">
+                  Delete My Account
+                </button>
               </div>
+              <div class="status-line" id="accountStatus"></div>
             </div>
             <div class="welcome-side">
               <div class="welcome-identity">

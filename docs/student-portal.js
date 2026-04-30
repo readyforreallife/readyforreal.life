@@ -658,6 +658,8 @@ const identityCardTrack = document.getElementById("identityCardTrack");
 const progressSummary = document.getElementById("progressSummary");
 const progressFill = document.getElementById("progressFill");
 const studentLogoutBtn = document.getElementById("studentLogoutBtn");
+const deleteAccountBtn = document.getElementById("deleteAccountBtn");
+const accountStatus = document.getElementById("accountStatus");
 const bioForm = document.getElementById("bioForm");
 const bioProudInput = document.getElementById("bioProudInput");
 const bioGoalInput = document.getElementById("bioGoalInput");
@@ -1412,6 +1414,7 @@ function renderLoggedOutState() {
   studentPortal.classList.remove("visible");
   clearStatus(bioStatus);
   clearStatus(fileUploadStatus);
+  clearStatus(accountStatus);
 }
 
 async function handleSessionChange(session, options = {}) {
@@ -2096,6 +2099,34 @@ async function logoutUser() {
   showStatus(studentLoginStatus, "Signed out.", "success");
 }
 
+async function deleteOwnAccount() {
+  if (!state.user) {
+    showStatus(accountStatus, "Sign in before deleting your account.");
+    return;
+  }
+
+  const confirmation = window.prompt(
+    "This permanently deletes your portal account, profile, assignments, workbook entries, and uploaded files. Type DELETE to continue.",
+  );
+  if (confirmation !== "DELETE") {
+    showStatus(accountStatus, "Account deletion cancelled.");
+    return;
+  }
+
+  deleteAccountBtn.disabled = true;
+  showStatus(accountStatus, "Deleting your account...");
+  const supabase = getSupabase();
+  const { error } = await supabase.rpc("delete_own_portal_account");
+  if (error) {
+    deleteAccountBtn.disabled = false;
+    throw error;
+  }
+
+  await supabase.auth.signOut({ scope: "local" }).catch(() => {});
+  renderLoggedOutState();
+  showStatus(studentLoginStatus, "Your account was deleted.", "success");
+}
+
 savePortalApiBtn.addEventListener("click", async () => {
   settings.supabaseUrl = normalizeUrl(portalApiUrlInput.value);
   settings.supabaseAnonKey = portalBootstrapSecretInput.value.trim();
@@ -2192,6 +2223,14 @@ studentLogoutBtn.addEventListener("click", async () => {
     await logoutUser();
   } catch (error) {
     showStatus(studentLoginStatus, error.message);
+  }
+});
+
+deleteAccountBtn?.addEventListener("click", async () => {
+  try {
+    await deleteOwnAccount();
+  } catch (error) {
+    showStatus(accountStatus, error.message);
   }
 });
 

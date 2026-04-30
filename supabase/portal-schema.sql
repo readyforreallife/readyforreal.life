@@ -378,6 +378,107 @@ $$;
 
 grant execute on function public.review_course_enrollment(text, uuid, text, text, text) to anon, authenticated;
 
+create or replace function public.delete_own_portal_account()
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  target_user_id uuid;
+  target_email text;
+begin
+  target_user_id := auth.uid();
+
+  if target_user_id is null then
+    raise exception 'Sign in before deleting your account.'
+      using errcode = 'P0001';
+  end if;
+
+  select email
+  into target_email
+  from auth.users
+  where id = target_user_id;
+
+  delete from storage.objects
+  where bucket_id in ('portal-files', 'community-profiles')
+    and (storage.foldername(name))[1] = target_user_id::text;
+
+  update public.course_enrollments
+  set status = 'revoked',
+      user_id = null,
+      used_at = null,
+      updated_at = timezone('utc', now())
+  where user_id = target_user_id;
+
+  delete from auth.users
+  where id = target_user_id;
+
+  return jsonb_build_object(
+    'ok', true,
+    'user_id', target_user_id,
+    'email', target_email
+  );
+end;
+$$;
+
+grant execute on function public.delete_own_portal_account() to authenticated;
+
+create or replace function public.admin_delete_portal_account(
+  admin_key text,
+  enrollment_id uuid
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  enrollment public.course_enrollments%rowtype;
+begin
+  if not public.portal_admin_key_matches(admin_key) then
+    raise exception 'Admin key did not match.' using errcode = 'P0001';
+  end if;
+
+  select *
+  into enrollment
+  from public.course_enrollments
+  where id = enrollment_id;
+
+  if enrollment.id is null then
+    raise exception 'Enrollment was not found.' using errcode = 'P0001';
+  end if;
+
+  if enrollment.user_id is null then
+    raise exception 'This enrollment does not have a linked portal account.'
+      using errcode = 'P0001';
+  end if;
+
+  delete from storage.objects
+  where bucket_id in ('portal-files', 'community-profiles')
+    and (storage.foldername(name))[1] = enrollment.user_id::text;
+
+  update public.course_enrollments
+  set status = 'revoked',
+      user_id = null,
+      used_at = null,
+      updated_at = timezone('utc', now())
+  where id = enrollment.id;
+
+  delete from auth.users
+  where id = enrollment.user_id;
+
+  return jsonb_build_object(
+    'ok', true,
+    'id', enrollment.id,
+    'email', enrollment.email::text,
+    'deleted_user_id', enrollment.user_id
+  );
+end;
+$$;
+
+grant execute on function public.admin_delete_portal_account(text, uuid) to anon, authenticated;
+
 create or replace function public.enforce_course_enrollment_after_signup()
 returns trigger
 language plpgsql
