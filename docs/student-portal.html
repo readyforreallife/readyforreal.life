@@ -500,6 +500,22 @@
         line-height: 1.7;
       }
 
+      .welcome-meta {
+        margin-top: 16px;
+      }
+
+      .welcome-meta .chip {
+        min-height: 34px;
+        padding: 0 12px;
+        background: rgba(255, 250, 242, 0.96);
+        border: 1px solid rgba(255, 255, 255, 0.5);
+        color: #18304f;
+        font-size: 11px;
+        font-weight: 800;
+        letter-spacing: 0.04em;
+        box-shadow: 0 10px 24px rgba(8, 18, 32, 0.18);
+      }
+
       .welcome-side {
         padding: 18px;
         border-radius: 24px;
@@ -554,8 +570,7 @@
 
       .welcome-side,
       .welcome-side p,
-      .welcome-side span,
-      .welcome-side div {
+      .welcome-side span {
         color: #f7fbff;
       }
 
@@ -594,6 +609,22 @@
         margin-top: 18px;
         background: linear-gradient(180deg, #fffaf2 0%, #fff 100%);
         border: 1px solid rgba(200, 155, 60, 0.2);
+        color: var(--navy);
+      }
+
+      .welcome-side .progress-card {
+        background: rgba(255, 250, 242, 0.96);
+        border-color: rgba(255, 255, 255, 0.58);
+        box-shadow: 0 18px 36px rgba(15, 22, 35, 0.16);
+      }
+
+      .welcome-side .progress-card .mini-label {
+        color: #8b6420;
+      }
+
+      .welcome-side .progress-card div {
+        color: var(--navy);
+        font-weight: 800;
       }
 
       .identity-profile {
@@ -1320,8 +1351,16 @@
           <form class="teacher-entry stack" id="signupForm">
             <p class="section-kicker" style="margin-top: 10px">Create Account</p>
             <p class="subcopy">
-              Create either a student or instructor account. Each user will only
-              be able to view, edit, save, and delete their own information.
+              Register for the course first, then create either a student or
+              instructor account with the same approved email address. Each user
+              will only be able to view, edit, save, and delete their own
+              information.
+            </p>
+            <p class="subcopy" style="margin-top: 10px">
+              Need to register?
+              <a href="https://readyforreallife.github.io/mmmf-codex/web/registration-form.html">
+                Open the course registration form
+              </a>.
             </p>
             <label>
               Full name
@@ -1397,7 +1436,7 @@
               <strong id="identityCardName">Student Name</strong>
               <p id="identityCardTrack" class="subtle"></p>
               <div class="progress-card">
-                <div class="mini-label">Completion Pride Meter</div>
+                <div class="mini-label">Course Progress</div>
                 <div id="progressSummary">0 of 0 items complete</div>
                 <div class="progress-track">
                   <div class="progress-fill" id="progressFill"></div>

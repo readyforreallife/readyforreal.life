@@ -1945,6 +1945,30 @@ async function signUpUser() {
   }
 
   const supabase = getSupabase();
+  const { data: enrollmentAllowed, error: enrollmentError } = await supabase.rpc(
+    "can_create_portal_account",
+    {
+      account_email: email,
+      requested_role: role,
+    },
+  );
+
+  if (enrollmentError) {
+    showStatus(
+      signupStatus,
+      "The course registration gate is not set up yet. Ask the teacher to run the updated Supabase SQL.",
+    );
+    return;
+  }
+
+  if (!enrollmentAllowed) {
+    showStatus(
+      signupStatus,
+      "Register for the course first. After your registration is approved, use the same email address here to create your account.",
+    );
+    return;
+  }
+
   const { data, error } = await supabase.auth.signUp({
     email,
     password,
