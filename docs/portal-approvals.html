@@ -239,6 +239,11 @@
         color: var(--ok);
       }
 
+      .badge.approved {
+        background: rgba(31, 122, 85, 0.12);
+        color: var(--ok);
+      }
+
       .badge.unpaid {
         background: rgba(176, 67, 46, 0.1);
         color: var(--danger);
@@ -443,6 +448,12 @@
               paymentStatus === "paid" || paymentStatus === "waived"
                 ? "paid"
                 : "unpaid";
+            const statusClass =
+              item.status === "approved" || item.status === "used"
+                ? "approved"
+                : item.status === "revoked"
+                  ? "unpaid"
+                  : "";
             const isPaymentCleared =
               paymentStatus === "paid" || paymentStatus === "waived";
             const approvedWithoutPayment =
@@ -472,7 +483,7 @@
                   <h2>${escapeHtml(item.full_name || "Unnamed registrant")}</h2>
                   <p class="meta">
                     ${escapeHtml(item.email)} ·
-                    <span class="badge">${escapeHtml(item.status)}</span>
+                    <span class="badge ${statusClass}">${escapeHtml(item.status)}</span>
                     <span class="badge ${paymentClass}">${escapeHtml(paymentLabel)}</span>
                     ${approvalBadge}
                   </p>
