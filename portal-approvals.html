@@ -244,6 +244,11 @@
         color: var(--danger);
       }
 
+      .badge.ready {
+        background: rgba(200, 155, 60, 0.16);
+        color: #7a560f;
+      }
+
       .request-controls {
         display: grid;
         grid-template-columns: 150px;
@@ -438,6 +443,16 @@
               paymentStatus === "paid" || paymentStatus === "waived"
                 ? "paid"
                 : "unpaid";
+            const isPaymentCleared =
+              paymentStatus === "paid" || paymentStatus === "waived";
+            const approvalBadge =
+              item.status === "pending"
+                ? isPaymentCleared
+                  ? `<span class="badge ready">Ready to approve</span>`
+                  : `<span class="badge unpaid">Needs payment or waiver</span>`
+                : "";
+            const approveDisabled =
+              item.status === "used" || !isPaymentCleared ? "disabled" : "";
             const paymentDetails =
               item.payment_amount_cents && item.payment_currency
                 ? ` · ${escapeHtml(String(item.payment_currency).toUpperCase())} ${(
@@ -452,6 +467,7 @@
                     ${escapeHtml(item.email)} ·
                     <span class="badge">${escapeHtml(item.status)}</span>
                     <span class="badge ${paymentClass}">${escapeHtml(paymentLabel)}</span>
+                    ${approvalBadge}
                   </p>
                   <p class="meta">
                     Current role: ${escapeHtml(item.role)} ·
@@ -471,7 +487,7 @@
                     <option value="student" ${item.role === "student" ? "selected" : ""}>Student</option>
                     <option value="instructor" ${item.role === "instructor" ? "selected" : ""}>Instructor</option>
                   </select>
-                  <button class="primary" data-action="approved" ${reviewDisabled}>Approve</button>
+                  <button class="primary" data-action="approved" ${approveDisabled}>Approve</button>
                   <button class="danger" data-action="revoked" ${reviewDisabled}>Deny</button>
                   <button data-action="pending" ${reviewDisabled}>Back to Pending</button>
                   <button data-payment="paid">Mark Paid</button>
@@ -511,6 +527,19 @@
 
       async function reviewEnrollment(card, nextStatus) {
         const id = card.getAttribute("data-id");
+        const enrollment = enrollments.find((item) => item.id === id);
+        const paymentStatus = String(enrollment?.payment_status || "unpaid");
+        if (
+          nextStatus === "approved" &&
+          paymentStatus !== "paid" &&
+          paymentStatus !== "waived"
+        ) {
+          setStatus(
+            "Mark the registration as paid or waive payment before approving access.",
+            "err",
+          );
+          return;
+        }
         const role = card.querySelector("[data-role]").value;
         const buttons = card.querySelectorAll("button, select");
         buttons.forEach((button) => {
