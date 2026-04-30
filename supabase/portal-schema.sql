@@ -40,6 +40,11 @@ create table if not exists public.course_enrollments (
   notes text not null default '',
   user_id uuid references auth.users(id) on delete set null,
   used_at timestamptz,
+  payment_status text not null default 'unpaid',
+  stripe_checkout_session_id text not null default '',
+  payment_amount_cents integer,
+  payment_currency text not null default '',
+  paid_at timestamptz,
   created_at timestamptz not null default timezone('utc', now()),
   updated_at timestamptz not null default timezone('utc', now())
 );
@@ -50,6 +55,28 @@ drop constraint if exists course_enrollments_status_check;
 alter table public.course_enrollments
 add constraint course_enrollments_status_check
 check (status in ('pending', 'invited', 'approved', 'used', 'revoked'));
+
+alter table public.course_enrollments
+add column if not exists payment_status text not null default 'unpaid';
+
+alter table public.course_enrollments
+add column if not exists stripe_checkout_session_id text not null default '';
+
+alter table public.course_enrollments
+add column if not exists payment_amount_cents integer;
+
+alter table public.course_enrollments
+add column if not exists payment_currency text not null default '';
+
+alter table public.course_enrollments
+add column if not exists paid_at timestamptz;
+
+alter table public.course_enrollments
+drop constraint if exists course_enrollments_payment_status_check;
+
+alter table public.course_enrollments
+add constraint course_enrollments_payment_status_check
+check (payment_status in ('unpaid', 'paid', 'refunded', 'waived'));
 
 create table if not exists public.portal_admin_settings (
   id boolean primary key default true check (id),
@@ -256,7 +283,8 @@ begin
     'id', enrollment.id,
     'email', enrollment.email::text,
     'status', enrollment.status,
-    'role', enrollment.role
+    'role', enrollment.role,
+    'payment_status', enrollment.payment_status
   );
 end;
 $$;
@@ -278,6 +306,11 @@ returns table (
   notes text,
   user_id uuid,
   used_at timestamptz,
+  payment_status text,
+  stripe_checkout_session_id text,
+  payment_amount_cents integer,
+  payment_currency text,
+  paid_at timestamptz,
   created_at timestamptz,
   updated_at timestamptz
 )
@@ -303,6 +336,11 @@ begin
     enrollment.notes,
     enrollment.user_id,
     enrollment.used_at,
+    enrollment.payment_status,
+    enrollment.stripe_checkout_session_id,
+    enrollment.payment_amount_cents,
+    enrollment.payment_currency,
+    enrollment.paid_at,
     enrollment.created_at,
     enrollment.updated_at
   from public.course_enrollments enrollment
@@ -371,12 +409,67 @@ begin
     'id', enrollment.id,
     'email', enrollment.email::text,
     'status', enrollment.status,
-    'role', enrollment.role
+    'role', enrollment.role,
+    'payment_status', enrollment.payment_status
   );
 end;
 $$;
 
 grant execute on function public.review_course_enrollment(text, uuid, text, text, text) to anon, authenticated;
+
+create or replace function public.admin_mark_course_enrollment_paid(
+  admin_key text,
+  enrollment_id uuid,
+  next_payment_status text default 'paid'
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  enrollment public.course_enrollments%rowtype;
+  normalized_payment_status text;
+begin
+  if not public.portal_admin_key_matches(admin_key) then
+    raise exception 'Admin key did not match.' using errcode = 'P0001';
+  end if;
+
+  normalized_payment_status := case
+    when next_payment_status in ('unpaid', 'paid', 'refunded', 'waived') then next_payment_status
+    else null
+  end;
+
+  if normalized_payment_status is null then
+    raise exception 'Payment status must be unpaid, paid, refunded, or waived.'
+      using errcode = 'P0001';
+  end if;
+
+  update public.course_enrollments
+  set payment_status = normalized_payment_status,
+      paid_at = case
+        when normalized_payment_status in ('paid', 'waived') then coalesce(paid_at, timezone('utc', now()))
+        else null
+      end,
+      updated_at = timezone('utc', now())
+  where id = enrollment_id
+  returning * into enrollment;
+
+  if enrollment.id is null then
+    raise exception 'Enrollment was not found.' using errcode = 'P0001';
+  end if;
+
+  return jsonb_build_object(
+    'ok', true,
+    'id', enrollment.id,
+    'email', enrollment.email::text,
+    'payment_status', enrollment.payment_status,
+    'paid_at', enrollment.paid_at
+  );
+end;
+$$;
+
+grant execute on function public.admin_mark_course_enrollment_paid(text, uuid, text) to anon, authenticated;
 
 create or replace function public.delete_own_portal_account()
 returns jsonb

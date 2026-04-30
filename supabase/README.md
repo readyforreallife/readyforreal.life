@@ -51,6 +51,16 @@ Course registrations now enter `course_enrollments` as `pending`. Open
 and approve or deny each request. The portal and the Supabase auth trigger both
 check this table before account creation.
 
+Payment is tracked separately from approval:
+
+- `payment_status = unpaid` means the person has submitted Get Access but no
+  Stripe payment has been recorded yet.
+- `payment_status = paid` shows as a checkmark in the approval queue.
+- `payment_status = waived` is available for manual/school/group exceptions.
+
+The recommended workflow is: Get Access submission, Stripe payment, then admin
+approval when the class/cohort is ready.
+
 The default admin key is `4429`, matching Teacher Mode. To change it, run:
 
 ```sql

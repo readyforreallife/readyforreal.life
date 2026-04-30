@@ -4276,6 +4276,17 @@
           return data;
         }
 
+        function buildStripeCheckoutUrl(payload, portalRegistration) {
+          const url = new URL(ACCESS_CONTROL.checkoutUrl);
+          if (payload.email) {
+            url.searchParams.set("prefilled_email", payload.email);
+          }
+          if (portalRegistration?.id) {
+            url.searchParams.set("client_reference_id", portalRegistration.id);
+          }
+          return url.toString();
+        }
+
         setTeacherUnlocked(isTeacherUnlocked());
         const legacySettingsRaw = localStorage.getItem(LEGACY_SETTINGS_KEY);
         let legacySettings = null;
@@ -4570,12 +4581,14 @@
             const message = alreadyApproved
               ? "Submitted. This email is already approved for portal access."
               : emailSent
-                ? "Submitted. Thank you. Your registration is waiting for approval."
+                ? "Submitted. Thank you. Sending you to secure payment..."
                 : emailConfigured
-                  ? "Submitted. Your registration is waiting for approval, but the confirmation email could not be sent yet."
-                  : "Submitted. Thank you. Your registration is waiting for approval.";
+                  ? "Submitted. Sending you to secure payment. The confirmation email could not be sent yet."
+                  : "Submitted. Sending you to secure payment...";
             showStatus(message, false);
-            setTimeout(() => closeModal(registerModal), 900);
+            setTimeout(() => {
+              window.location.href = buildStripeCheckoutUrl(payload, portalRegistration);
+            }, 900);
             registerSubmitting = false;
             if (registerSubmitBtn) {
               registerSubmitBtn.disabled = false;

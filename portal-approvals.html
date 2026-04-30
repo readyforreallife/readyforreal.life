@@ -234,6 +234,16 @@
         font-size: 0.78rem;
       }
 
+      .badge.paid {
+        background: rgba(31, 122, 85, 0.12);
+        color: var(--ok);
+      }
+
+      .badge.unpaid {
+        background: rgba(176, 67, 46, 0.1);
+        color: var(--danger);
+      }
+
       .request-controls {
         display: grid;
         grid-template-columns: 150px;
@@ -413,6 +423,25 @@
               : "";
             const reviewDisabled = item.status === "used" ? "disabled" : "";
             const deleteDisabled = item.user_id ? "" : "disabled";
+            const paymentStatus = String(item.payment_status || "unpaid");
+            const paymentLabel =
+              paymentStatus === "paid"
+                ? "✓ Paid"
+                : paymentStatus === "waived"
+                  ? "✓ Waived"
+                  : paymentStatus === "refunded"
+                    ? "Refunded"
+                    : "Not paid";
+            const paymentClass =
+              paymentStatus === "paid" || paymentStatus === "waived"
+                ? "paid"
+                : "unpaid";
+            const paymentDetails =
+              item.payment_amount_cents && item.payment_currency
+                ? ` · ${escapeHtml(String(item.payment_currency).toUpperCase())} ${(
+                    Number(item.payment_amount_cents) / 100
+                  ).toFixed(2)}`
+                : "";
             return `
               <article class="request" data-id="${escapeHtml(item.id)}">
                 <div>
@@ -420,10 +449,15 @@
                   <p class="meta">
                     ${escapeHtml(item.email)} ·
                     <span class="badge">${escapeHtml(item.status)}</span>
+                    <span class="badge ${paymentClass}">${escapeHtml(paymentLabel)}</span>
                   </p>
                   <p class="meta">
                     Current role: ${escapeHtml(item.role)} ·
                     Updated ${escapeHtml(formatDate(item.updated_at))}
+                  </p>
+                  <p class="meta">
+                    Payment: ${escapeHtml(paymentLabel)}${paymentDetails}
+                    ${item.paid_at ? ` · ${escapeHtml(formatDate(item.paid_at))}` : ""}
                   </p>
                   <p class="meta">
                     Portal account: ${item.user_id ? escapeHtml(item.user_id) : "Not created yet"}
@@ -438,6 +472,8 @@
                   <button class="primary" data-action="approved" ${reviewDisabled}>Approve</button>
                   <button class="danger" data-action="revoked" ${reviewDisabled}>Deny</button>
                   <button data-action="pending" ${reviewDisabled}>Back to Pending</button>
+                  <button data-payment="paid">Mark Paid</button>
+                  <button data-payment="unpaid">Mark Unpaid</button>
                   <button class="danger" data-delete-account ${deleteDisabled}>Delete Account</button>
                 </div>
               </article>
@@ -524,10 +560,40 @@
         }
       }
 
+      async function markPayment(card, nextPaymentStatus) {
+        const id = card.getAttribute("data-id");
+        const buttons = card.querySelectorAll("button, select");
+        buttons.forEach((button) => {
+          button.disabled = true;
+        });
+        setStatus("Updating payment status...");
+        try {
+          await rpc("admin_mark_course_enrollment_paid", {
+            admin_key: els.adminKey.value.trim(),
+            enrollment_id: id,
+            next_payment_status: nextPaymentStatus,
+          });
+          setStatus("Payment status updated.", "ok");
+          await loadEnrollments();
+        } catch (error) {
+          setStatus(error.message, "err");
+          buttons.forEach((button) => {
+            button.disabled = false;
+          });
+        }
+      }
+
       els.refresh.addEventListener("click", loadEnrollments);
       els.statusFilter.addEventListener("change", loadEnrollments);
 
       els.list.addEventListener("click", (event) => {
+        const paymentButton = event.target.closest("button[data-payment]");
+        if (paymentButton) {
+          const card = paymentButton.closest(".request");
+          markPayment(card, paymentButton.getAttribute("data-payment"));
+          return;
+        }
+
         const deleteButton = event.target.closest("button[data-delete-account]");
         if (deleteButton) {
           const card = deleteButton.closest(".request");
