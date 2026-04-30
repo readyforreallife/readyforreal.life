@@ -491,7 +491,7 @@
                   <button class="danger" data-action="revoked" ${reviewDisabled}>Deny</button>
                   <button data-action="pending" ${reviewDisabled}>Back to Pending</button>
                   <button data-payment="paid">Mark Paid</button>
-                  <button data-payment="waived">Waive Payment</button>
+                  <button class="primary" data-waive-approve ${reviewDisabled}>Waive + Approve</button>
                   <button data-payment="unpaid">Mark Unpaid</button>
                   <button class="danger" data-delete-account ${deleteDisabled}>Delete Account</button>
                   <button class="danger" data-remove-registration ${removeDisabled}>Remove Registration</button>
@@ -653,10 +653,41 @@
         }
       }
 
+      async function waiveAndApprove(card) {
+        const id = card.getAttribute("data-id");
+        const role = card.querySelector("[data-role]").value;
+        const buttons = card.querySelectorAll("button, select");
+        buttons.forEach((button) => {
+          button.disabled = true;
+        });
+        setStatus("Waiving payment and approving access...");
+        try {
+          await rpc("admin_waive_course_enrollment_and_approve", {
+            admin_key: els.adminKey.value.trim(),
+            enrollment_id: id,
+            next_role: role,
+          });
+          setStatus("Payment waived and access approved.", "ok");
+          await loadEnrollments();
+        } catch (error) {
+          setStatus(error.message, "err");
+          buttons.forEach((button) => {
+            button.disabled = false;
+          });
+        }
+      }
+
       els.refresh.addEventListener("click", loadEnrollments);
       els.statusFilter.addEventListener("change", loadEnrollments);
 
       els.list.addEventListener("click", (event) => {
+        const waiveApproveButton = event.target.closest("button[data-waive-approve]");
+        if (waiveApproveButton) {
+          const card = waiveApproveButton.closest(".request");
+          waiveAndApprove(card);
+          return;
+        }
+
         const removeButton = event.target.closest("button[data-remove-registration]");
         if (removeButton) {
           const card = removeButton.closest(".request");
