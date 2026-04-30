@@ -423,6 +423,8 @@
               : "";
             const reviewDisabled = item.status === "used" ? "disabled" : "";
             const deleteDisabled = item.user_id ? "" : "disabled";
+            const removeDisabled =
+              item.status === "revoked" && !item.user_id ? "" : "disabled";
             const paymentStatus = String(item.payment_status || "unpaid");
             const paymentLabel =
               paymentStatus === "paid"
@@ -475,6 +477,7 @@
                   <button data-payment="paid">Mark Paid</button>
                   <button data-payment="unpaid">Mark Unpaid</button>
                   <button class="danger" data-delete-account ${deleteDisabled}>Delete Account</button>
+                  <button class="danger" data-remove-registration ${removeDisabled}>Remove Registration</button>
                 </div>
               </article>
             `;
@@ -560,6 +563,35 @@
         }
       }
 
+      async function removeDeniedRegistration(card) {
+        const id = card.getAttribute("data-id");
+        const name =
+          card.querySelector("h2")?.textContent?.trim() || "this registration";
+        const confirmed = window.confirm(
+          `Remove the denied registration for ${name}? This only removes the registration row from this approval queue.`,
+        );
+        if (!confirmed) return;
+
+        const buttons = card.querySelectorAll("button, select");
+        buttons.forEach((button) => {
+          button.disabled = true;
+        });
+        setStatus("Removing registration...");
+        try {
+          await rpc("admin_remove_denied_course_registration", {
+            admin_key: els.adminKey.value.trim(),
+            enrollment_id: id,
+          });
+          setStatus("Denied registration removed.", "ok");
+          await loadEnrollments();
+        } catch (error) {
+          setStatus(error.message, "err");
+          buttons.forEach((button) => {
+            button.disabled = false;
+          });
+        }
+      }
+
       async function markPayment(card, nextPaymentStatus) {
         const id = card.getAttribute("data-id");
         const buttons = card.querySelectorAll("button, select");
@@ -587,6 +619,13 @@
       els.statusFilter.addEventListener("change", loadEnrollments);
 
       els.list.addEventListener("click", (event) => {
+        const removeButton = event.target.closest("button[data-remove-registration]");
+        if (removeButton) {
+          const card = removeButton.closest(".request");
+          removeDeniedRegistration(card);
+          return;
+        }
+
         const paymentButton = event.target.closest("button[data-payment]");
         if (paymentButton) {
           const card = paymentButton.closest(".request");

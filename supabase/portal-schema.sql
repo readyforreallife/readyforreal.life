@@ -471,6 +471,55 @@ $$;
 
 grant execute on function public.admin_mark_course_enrollment_paid(text, uuid, text) to anon, authenticated;
 
+create or replace function public.admin_remove_denied_course_registration(
+  admin_key text,
+  enrollment_id uuid
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  enrollment public.course_enrollments%rowtype;
+begin
+  if not public.portal_admin_key_matches(admin_key) then
+    raise exception 'Admin key did not match.' using errcode = 'P0001';
+  end if;
+
+  select *
+  into enrollment
+  from public.course_enrollments
+  where id = enrollment_id;
+
+  if enrollment.id is null then
+    raise exception 'Registration was not found.' using errcode = 'P0001';
+  end if;
+
+  if enrollment.user_id is not null then
+    raise exception 'Delete the linked portal account before removing this registration.'
+      using errcode = 'P0001';
+  end if;
+
+  if enrollment.status <> 'revoked' then
+    raise exception 'Only denied registrations can be removed.'
+      using errcode = 'P0001';
+  end if;
+
+  delete from public.course_enrollments
+  where id = enrollment.id;
+
+  return jsonb_build_object(
+    'ok', true,
+    'id', enrollment.id,
+    'email', enrollment.email::text,
+    'removed', true
+  );
+end;
+$$;
+
+grant execute on function public.admin_remove_denied_course_registration(text, uuid) to anon, authenticated;
+
 create or replace function public.delete_own_portal_account()
 returns jsonb
 language plpgsql
