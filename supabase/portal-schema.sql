@@ -471,6 +471,25 @@ $$;
 
 grant execute on function public.admin_mark_course_enrollment_paid(text, uuid, text) to anon, authenticated;
 
+create or replace function public.admin_set_course_enrollment_payment(
+  admin_key text,
+  enrollment_id uuid,
+  next_payment_status text
+)
+returns jsonb
+language sql
+security definer
+set search_path = public
+as $$
+  select public.admin_mark_course_enrollment_paid(
+    admin_key,
+    enrollment_id,
+    next_payment_status
+  );
+$$;
+
+grant execute on function public.admin_set_course_enrollment_payment(text, uuid, text) to anon, authenticated;
+
 create or replace function public.admin_remove_denied_course_registration(
   admin_key text,
   enrollment_id uuid
