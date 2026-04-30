@@ -390,6 +390,24 @@ begin
     else null
   end;
 
+  if normalized_status = 'approved' then
+    select *
+    into enrollment
+    from public.course_enrollments
+    where id = enrollment_id
+      and status <> 'used';
+
+    if enrollment.id is null then
+      raise exception 'Enrollment was not found or has already been used.'
+        using errcode = 'P0001';
+    end if;
+
+    if enrollment.payment_status not in ('paid', 'waived') then
+      raise exception 'Mark the registration as paid or waive payment before approving access.'
+        using errcode = 'P0001';
+    end if;
+  end if;
+
   update public.course_enrollments
   set status = normalized_status,
       role = coalesce(normalized_role, role),
