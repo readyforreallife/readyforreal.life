@@ -648,19 +648,7 @@
         });
         setStatus("Updating payment status...");
         try {
-          const params = {
-            admin_key: els.adminKey.value.trim(),
-            enrollment_id: id,
-            next_payment_status: nextPaymentStatus,
-          };
-          try {
-            await rpc("admin_set_course_enrollment_payment", params);
-          } catch (error) {
-            if (!/schema cache|function/i.test(String(error.message || ""))) {
-              throw error;
-            }
-            await rpc("admin_mark_course_enrollment_paid", params);
-          }
+          await setPaymentStatus(id, nextPaymentStatus);
           setStatus("Payment status updated.", "ok");
           await loadEnrollments();
         } catch (error) {
@@ -671,21 +659,43 @@
         }
       }
 
+      async function setPaymentStatus(id, nextPaymentStatus) {
+        const params = {
+          admin_key: els.adminKey.value.trim(),
+          enrollment_id: id,
+          next_payment_status: nextPaymentStatus,
+        };
+        try {
+          return await rpc("admin_set_course_enrollment_payment", params);
+        } catch (error) {
+          if (!/schema cache|function/i.test(String(error.message || ""))) {
+            throw error;
+          }
+          return rpc("admin_mark_course_enrollment_paid", params);
+        }
+      }
+
       async function waiveAndApprove(card) {
         const id = card.getAttribute("data-id");
         const role = card.querySelector("[data-role]").value;
+        const enrollment = enrollments.find((item) => item.id === id);
         const buttons = card.querySelectorAll("button, select");
         buttons.forEach((button) => {
           button.disabled = true;
         });
         setStatus("Waiving payment and approving access...");
         try {
-          await rpc("admin_waive_course_enrollment_and_approve", {
-            admin_key: els.adminKey.value.trim(),
-            enrollment_id: id,
-            next_role: role,
-          });
-          setStatus("Payment waived and access approved.", "ok");
+          await setPaymentStatus(id, "waived");
+          if (enrollment?.status !== "approved") {
+            await rpc("review_course_enrollment", {
+              admin_key: els.adminKey.value.trim(),
+              enrollment_id: id,
+              next_status: "approved",
+              next_role: role,
+              admin_notes: null,
+            });
+          }
+          setStatus("Payment waived and access is good to go.", "ok");
           await loadEnrollments();
         } catch (error) {
           setStatus(error.message, "err");
