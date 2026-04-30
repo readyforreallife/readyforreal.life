@@ -463,6 +463,8 @@
                   : "";
             const isPaymentCleared =
               paymentStatus === "paid" || paymentStatus === "waived";
+            const isAccessCleared =
+              item.status === "approved" && isPaymentCleared;
             const approvalBadge =
               item.status === "pending"
                 ? isPaymentCleared
@@ -472,7 +474,13 @@
                   ? `<span class="badge approved">Access approved</span>`
                 : "";
             const approveDisabled =
-              item.status === "used" || !isPaymentCleared ? "disabled" : "";
+              item.status === "used" || item.status === "approved" || !isPaymentCleared
+                ? "disabled"
+                : "";
+            const markPaidDisabled =
+              paymentStatus === "paid" || isAccessCleared ? "disabled" : "";
+            const waiveApproveDisabled = isAccessCleared ? "disabled" : reviewDisabled;
+            const markUnpaidDisabled = item.status === "used" ? "disabled" : "";
             const waiveApproveLabel = "Waive + Approve";
             const paymentDetails =
               item.payment_amount_cents && item.payment_currency
@@ -511,9 +519,9 @@
                   <button class="primary" data-action="approved" ${approveDisabled}>Approve</button>
                   <button class="danger" data-action="revoked" ${reviewDisabled}>Deny</button>
                   <button data-action="pending" ${reviewDisabled}>Back to Pending</button>
-                  <button data-payment="paid">Mark Paid</button>
-                  <button class="primary" data-waive-approve ${reviewDisabled}>${waiveApproveLabel}</button>
-                  <button data-payment="unpaid">Mark Unpaid</button>
+                  <button data-payment="paid" ${markPaidDisabled}>Mark Paid</button>
+                  <button class="primary" data-waive-approve ${waiveApproveDisabled}>${isAccessCleared ? "Complete" : waiveApproveLabel}</button>
+                  <button data-payment="unpaid" ${markUnpaidDisabled}>Mark Unpaid</button>
                   <button class="danger" data-delete-account ${deleteDisabled}>Delete Account</button>
                   <button class="danger" data-remove-registration ${removeDisabled}>Remove Registration</button>
                 </div>
