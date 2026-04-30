@@ -92,9 +92,21 @@ In Supabase Auth:
 
 - Enable Email provider
 - Decide whether email confirmation is required
+- Use custom SMTP before you open registration to real customers
+- Replace the default Supabase Auth email templates with the branded templates
+  in [email-templates](/Users/mikey/Desktop/Desktop%20Stuff/decision-lab/supabase/email-templates)
 
 If email confirmation is enabled, new users will need to confirm their email
 before their first sign-in session is created.
+
+Recommended sender settings:
+
+- Sender name: `Ready for Real Life Instruction and Education`
+- Sender email: `support@readyforreal.life` or `no-reply@readyforreal.life`
+
+The built-in Supabase mailer is useful for testing, but production messages
+should go through your own SMTP provider so customers see your sender name and
+domain instead of "Supabase Auth".
 
 ## 5. Connect the portal
 
