@@ -435,7 +435,11 @@
             const deleteDisabled = item.user_id ? "" : "disabled";
             const removeDisabled =
               item.status === "revoked" && !item.user_id ? "" : "disabled";
-            const paymentStatus = String(item.payment_status || "unpaid");
+            const rawPaymentStatus = String(item.payment_status || "unpaid");
+            const paymentStatus =
+              item.status === "approved" && rawPaymentStatus === "unpaid"
+                ? "waived"
+                : rawPaymentStatus;
             const paymentLabel =
               paymentStatus === "paid"
                 ? "✓ Paid"
@@ -456,21 +460,17 @@
                   : "";
             const isPaymentCleared =
               paymentStatus === "paid" || paymentStatus === "waived";
-            const approvedWithoutPayment =
-              item.status === "approved" && !isPaymentCleared;
             const approvalBadge =
               item.status === "pending"
                 ? isPaymentCleared
                   ? `<span class="badge ready">Ready to approve</span>`
                   : `<span class="badge unpaid">Needs payment or waiver</span>`
-                : approvedWithoutPayment
-                  ? `<span class="badge unpaid">Approved - fix payment</span>`
+                : item.status === "approved"
+                  ? `<span class="badge approved">Access approved</span>`
                 : "";
             const approveDisabled =
               item.status === "used" || !isPaymentCleared ? "disabled" : "";
-            const waiveApproveLabel = approvedWithoutPayment
-              ? "Fix Waiver"
-              : "Waive + Approve";
+            const waiveApproveLabel = "Waive + Approve";
             const paymentDetails =
               item.payment_amount_cents && item.payment_currency
                 ? ` · ${escapeHtml(String(item.payment_currency).toUpperCase())} ${(
