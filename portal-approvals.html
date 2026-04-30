@@ -678,15 +678,23 @@
       async function waiveAndApprove(card) {
         const id = card.getAttribute("data-id");
         const role = card.querySelector("[data-role]").value;
-        const enrollment = enrollments.find((item) => item.id === id);
         const buttons = card.querySelectorAll("button, select");
         buttons.forEach((button) => {
           button.disabled = true;
         });
         setStatus("Waiving payment and approving access...");
         try {
-          await setPaymentStatus(id, "waived");
-          if (enrollment?.status !== "approved") {
+          try {
+            await rpc("admin_fix_course_enrollment_waiver", {
+              admin_key: els.adminKey.value.trim(),
+              enrollment_id: id,
+              next_role: role,
+            });
+          } catch (error) {
+            if (!/schema cache|function/i.test(String(error.message || ""))) {
+              throw error;
+            }
+            await setPaymentStatus(id, "waived");
             await rpc("review_course_enrollment", {
               admin_key: els.adminKey.value.trim(),
               enrollment_id: id,

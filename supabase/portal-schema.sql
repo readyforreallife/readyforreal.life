@@ -561,6 +561,62 @@ $$;
 
 grant execute on function public.admin_waive_course_enrollment_and_approve(text, uuid, text) to anon, authenticated;
 
+create or replace function public.admin_fix_course_enrollment_waiver(
+  admin_key text,
+  enrollment_id uuid,
+  next_role text default null
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  enrollment public.course_enrollments%rowtype;
+  normalized_role text;
+begin
+  if not public.portal_admin_key_matches(admin_key) then
+    raise exception 'Admin key did not match.' using errcode = 'P0001';
+  end if;
+
+  normalized_role := case
+    when next_role = 'instructor' then 'instructor'
+    when next_role = 'student' then 'student'
+    else null
+  end;
+
+  update public.course_enrollments
+  set status = case
+        when status in ('pending', 'invited') then 'approved'
+        else status
+      end,
+      role = coalesce(normalized_role, role),
+      payment_status = 'waived',
+      paid_at = coalesce(paid_at, timezone('utc', now())),
+      updated_at = timezone('utc', now())
+  where id = enrollment_id
+    and status <> 'used'
+  returning * into enrollment;
+
+  if enrollment.id is null then
+    raise exception 'Enrollment was not found or has already been used.'
+      using errcode = 'P0001';
+  end if;
+
+  return jsonb_build_object(
+    'ok', true,
+    'id', enrollment.id,
+    'email', enrollment.email::text,
+    'status', enrollment.status,
+    'role', enrollment.role,
+    'payment_status', enrollment.payment_status,
+    'paid_at', enrollment.paid_at
+  );
+end;
+$$;
+
+grant execute on function public.admin_fix_course_enrollment_waiver(text, uuid, text) to anon, authenticated;
+
 create or replace function public.admin_remove_denied_course_registration(
   admin_key text,
   enrollment_id uuid
