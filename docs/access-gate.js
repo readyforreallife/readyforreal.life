@@ -5,7 +5,7 @@
     storageKey: "rrl_paid_access",
     unlockedAtKey: "rrl_paid_access_unlocked_at",
     unlockCode: "MRT-PAID-2026",
-    checkoutUrl: "https://buy.stripe.com/9B628r30NcCG1qd1s8dIA00",
+    accessUrl: "index.html#get-access",
   };
   const LS = {
     registrationEndpoint: "dl_registration_endpoint",
@@ -148,7 +148,7 @@
     gate.innerHTML = `
       <div class="shared-access-copy">Preview mode is active. Full materials on this page are restricted to licensed users.</div>
       <div class="shared-access-actions">
-        <a class="shared-access-btn" id="sharedPurchaseTop" href="${ACCESS_CONTROL.checkoutUrl}">Purchase Full Access</a>
+        <a class="shared-access-btn" id="sharedPurchaseTop" href="${ACCESS_CONTROL.accessUrl}">Get Access</a>
         <button class="shared-access-btn secondary" id="sharedUnlockTop" type="button">I Have Access</button>
       </div>
     `;
@@ -159,9 +159,9 @@
     overlay.innerHTML = `
       <div class="shared-access-panel">
         <h3>Full Access Is Locked</h3>
-        <p>This page is part of the protected MMMF experience. Purchase licensed access or enter your code to continue.</p>
+        <p>This page is part of the protected MMMF experience. Submit Get Access or enter your code to continue.</p>
         <div class="shared-access-actions">
-          <a class="shared-access-btn" href="${ACCESS_CONTROL.checkoutUrl}">Purchase Full Access</a>
+          <a class="shared-access-btn" href="${ACCESS_CONTROL.accessUrl}">Get Access</a>
           <button class="shared-access-btn secondary" id="sharedUnlockOverlay" type="button">Enter Access Code</button>
         </div>
         <div class="shared-access-actions shared-access-nav">
