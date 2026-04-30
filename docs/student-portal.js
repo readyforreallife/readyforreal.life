@@ -805,10 +805,6 @@ function syncSettingsInputs() {
   portalBootstrapSecretInput.value = settings.supabaseAnonKey || "";
   storageBucketInput.value = settings.storageBucket || DEFAULT_STORAGE_BUCKET;
   studentIdInput.value = settings.lastAuthEmail || "";
-  if (signupRoleInput) {
-    signupRoleInput.value = EXPECTED_PORTAL_ROLE;
-    signupRoleInput.disabled = true;
-  }
 }
 
 function updatePortalSetupVisibility(forceOpen = false) {
@@ -889,14 +885,6 @@ function defaultAvatarForRole(role) {
 
 function roleLabel(role) {
   return role === "instructor" ? "instructor" : "student";
-}
-
-function roleMismatchMessage(actualRole) {
-  const expected = roleLabel(EXPECTED_PORTAL_ROLE);
-  const actual = roleLabel(actualRole);
-  const otherLogin =
-    EXPECTED_PORTAL_ROLE === "student" ? "Instructor Login" : "Student Login";
-  return `This is the ${expected} login, but the saved account is an ${actual} account. You have been signed out here. Use ${otherLogin} for that account.`;
 }
 
 function portalCopyForRole(role) {
@@ -1366,13 +1354,6 @@ async function loadPortalData(defaults = null, options = {}) {
   const { scrollToWelcome = false } = options;
 
   const profile = await ensureProfile(user, defaults || {});
-  if (profile.role !== EXPECTED_PORTAL_ROLE) {
-    const message = roleMismatchMessage(profile.role);
-    await supabaseClient.auth.signOut({ scope: "local" });
-    renderLoggedOutState();
-    showStatus(studentLoginStatus, message);
-    throw new Error(message);
-  }
 
   let communityProfile = null;
   let communityProfiles = [];

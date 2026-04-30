@@ -2168,10 +2168,9 @@
       </nav>
       <div class="utility-bar">
         <button class="util-btn primary" id="registerBtn" type="button">
-          Register Now
+          Get Access
         </button>
-        <a class="util-btn" href="student-portal.html">Student Login</a>
-        <a class="util-btn" href="student-portal.html?entry=instructor">Instructor Login</a>
+        <a class="util-btn" href="student-portal.html">Portal Login</a>
         <a class="util-btn" href="app.html">App Home</a>
         <a
           class="util-btn"
@@ -2287,7 +2286,7 @@
         </div>
         <div class="access-actions">
           <a class="access-btn" id="purchaseLinkTop" href="#"
-            >Purchase Full Access</a
+            >Get Access</a
           >
           <button class="access-btn secondary" id="unlockBtnTop" type="button">
             I Have Access
@@ -2407,12 +2406,8 @@
           </div>
           <div class="inst-actions">
             <a class="bio-link" href="student-portal.html">
-              <span>Students</span>
-              Student Login
-            </a>
-            <a class="bio-link" href="student-portal.html?entry=instructor">
-              <span>Instructors</span>
-              Instructor Login
+              <span>Portal</span>
+              Portal Login
             </a>
             <a class="bio-link" href="app.html">
               <span>Mobile</span>
@@ -2439,7 +2434,7 @@
           </p>
           <div class="access-actions">
             <a class="access-btn" id="purchaseLinkOverlay" href="#"
-              >Purchase Full Access</a
+              >Get Access</a
             >
             <button
               class="access-btn secondary"
@@ -3700,10 +3695,11 @@
       <div class="modal" id="registerModal" aria-hidden="true">
         <div class="modal-backdrop" data-close-register></div>
         <div class="modal-panel">
-          <h3 class="modal-title">Register for Future Classes</h3>
+          <h3 class="modal-title">Get Access</h3>
           <p class="modal-sub">
-            Leave your info and I will contact you when class dates and
-            locations are posted.
+            Leave your info so your access can be reviewed. After approval,
+            you can create one portal account with the role assigned by the
+            program admin.
           </p>
           <form id="registerForm" novalidate>
             <div class="form-grid">
@@ -4463,6 +4459,9 @@
           }
           openModal(registerModal);
         });
+        if (window.location.hash === "#get-access") {
+          setTimeout(() => registerBtn.click(), 100);
+        }
         document
           .getElementById("registerCloseBtn")
           .addEventListener("click", () => closeModal(registerModal));
@@ -4751,9 +4750,14 @@
         function isUnlocked() {
           return localStorage.getItem(ACCESS_CONTROL.storageKey) === "1";
         }
-        if (purchaseLinkTop) purchaseLinkTop.href = ACCESS_CONTROL.checkoutUrl;
-        if (purchaseLinkOverlay)
-          purchaseLinkOverlay.href = ACCESS_CONTROL.checkoutUrl;
+        [purchaseLinkTop, purchaseLinkOverlay].forEach((link) => {
+          if (!link) return;
+          link.href = "#get-access";
+          link.addEventListener("click", (event) => {
+            event.preventDefault();
+            registerBtn?.click();
+          });
+        });
         setLockedState(
           !(
             isUnlocked() ||
