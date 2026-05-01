@@ -92,7 +92,7 @@
         z-index: 50;
         background: var(--slate);
         border-bottom: 3px solid var(--gold);
-        padding: 10px 16px;
+        padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 10px;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -121,6 +121,9 @@
         height: 20px;
         object-fit: contain;
         border-radius: 4px;
+      }
+      .brand-short {
+        display: none;
       }
       .nav-actions {
         display: flex;
@@ -241,6 +244,12 @@
         line-height: 1;
         color: #fff;
         margin-bottom: 8px;
+      }
+      .stat-card .value.framework-name {
+        font-family: "DM Sans", sans-serif;
+        font-size: clamp(1.35rem, 2.4vw, 1.8rem);
+        font-weight: 800;
+        line-height: 1.15;
       }
       .stat-card p {
         font-size: 12.5px;
@@ -937,9 +946,19 @@
       @media (max-width: 720px) {
         nav {
           align-items: flex-start;
+          padding: calc(12px + env(safe-area-inset-top, 0px)) 14px 12px;
         }
         .brand {
           font-size: 9px;
+          flex-basis: 100%;
+          max-width: calc(100vw - 28px);
+          letter-spacing: 0.1em;
+        }
+        .brand-full {
+          display: none;
+        }
+        .brand-short {
+          display: inline;
         }
         .shell {
           padding: 0 18px 40px;
@@ -956,6 +975,12 @@
         }
         .hero-side {
           grid-template-columns: 1fr;
+        }
+        .stat-card {
+          min-height: auto;
+        }
+        .stat-card .value.framework-name {
+          font-size: 1.35rem;
         }
         .nav-actions {
           justify-content: flex-start;
@@ -986,8 +1011,9 @@
   <body>
     <nav>
       <a class="brand" href="/"
-        ><img src="assets/logo-square.png" alt="Site logo" />Ready for Real
-        Life Instruction and Education</a
+        ><img src="assets/logo-square.png" alt="Site logo" /><span class="brand-full"
+          >Ready for Real Life Instruction and Education</span
+        ><span class="brand-short">Ready for Real Life</span></a
       >
       <div class="nav-actions">
         <a
@@ -1044,7 +1070,7 @@
           </div>
           <div class="stat-card">
             <div class="label">Built From</div>
-            <div class="value">PLRR</div>
+            <div class="value framework-name">Pause, Label, Reframe, Respond</div>
             <p>
               Strong judgment, self-control, repair, and real-world
               decision-making are built into every round.
