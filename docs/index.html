@@ -1825,7 +1825,7 @@
         color: var(--slate);
         font-size: 13px;
       }
-      .form-grid input,
+      .form-grid input:not([type="checkbox"]):not([type="radio"]),
       .form-grid select,
       .form-grid textarea {
         width: 100%;
@@ -1838,7 +1838,37 @@
       }
       .form-grid input[type="checkbox"],
       .form-grid input[type="radio"] {
-        width: 16px;
+        width: 16px !important;
+        height: 16px !important;
+        min-width: 16px;
+        max-width: 16px;
+        padding: 0 !important;
+      }
+      .form-grid .check-list {
+        display: grid;
+        grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+        gap: 10px;
+      }
+      .form-grid .check-list label {
+        display: grid;
+        grid-template-columns: 18px minmax(0, 1fr);
+        align-items: start;
+        column-gap: 10px;
+        width: 100%;
+      }
+      .form-grid .check-list label span {
+        display: block;
+        min-width: 0;
+        line-height: 1.35;
+      }
+      .form-grid label.check-list {
+        grid-template-columns: minmax(0, 1fr);
+      }
+      .form-grid label.check-list span {
+        display: grid;
+        grid-template-columns: 18px minmax(0, 1fr);
+        align-items: start;
+        column-gap: 10px;
       }
       .modal-actions {
         margin-top: 16px;

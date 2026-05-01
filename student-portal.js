@@ -18,29 +18,65 @@ const DEFAULT_ASSIGNMENTS = {
   student: [
     {
       id: "pocc-scenario",
-      title: "POCC Scenario Response",
+      title: "POCC Decision Practice",
       objective:
-        "Use the POCC sequence to make a stronger call under pressure and explain why it protects trust and long-term outcomes.",
+        "Learn the POCC decision sequence, use it on a realistic pressure moment, and explain the choice you would make.",
       due_label: "Due this week",
-      rubric_focus: "Decision quality, consequence awareness, accountability",
+      rubric_focus: "Pause, options, consequences, choice, accountability",
+      student_steps: [
+        "Learn it: POCC means Pause, Options, Consequences, Choose.",
+        "Pick one realistic pressure moment: a friend pushes you, someone posts something about you, you are tempted to lie, or you are angry and want to react.",
+        "Write one sentence for each POCC step before you choose.",
+        "End with the exact words or action you would use.",
+      ],
+      student_resources: [
+        "Use the Week 11 roadmap card: Use POCC for better online decisions.",
+        "Use any class notes or workbook examples about decision-making, digital choices, or conflict pressure.",
+      ],
+      student_prompt:
+        "Situation: ____. Pause: ____. Options: ____. Consequences: ____. Choose: ____. Why this protects my future self: ____.",
       sort_order: 10,
     },
     {
       id: "digital-reputation",
-      title: "Digital Reputation Reflection",
+      title: "Digital Reputation Investigation",
       objective:
-        "Analyze one online choice and show how it affects credibility, opportunity, and self-respect.",
+        "Study one online choice, then explain how it can affect credibility, opportunity, and self-respect.",
       due_label: "Due Friday",
       rubric_focus: "Self-awareness, judgment, real-life transfer",
+      student_steps: [
+        "Learn it: a digital choice can be a post, comment, like, share, screenshot, username, message, or photo.",
+        "Choose one example. It can be a made-up example, a public example discussed in class, or one of your own choices without naming private people.",
+        "Analyze it with three questions: What does this make people believe about me? What opportunity could it help or hurt? Does it match the person I want to become?",
+        "Write one stronger replacement choice.",
+      ],
+      student_resources: [
+        "Use the Week 10 roadmap card: See the long life of digital choices.",
+        "Use the Week 12 roadmap card if your example involves repair, deleting, apologizing, or changing a habit.",
+      ],
+      student_prompt:
+        "Online choice I am analyzing: ____. Credibility effect: ____. Opportunity effect: ____. Self-respect effect: ____. Better choice next time: ____.",
       sort_order: 20,
     },
     {
       id: "repair-move",
-      title: "Repair Move Practice",
+      title: "Accountability and Repair Practice",
       objective:
-        "Write and rehearse an accountable repair response after a mistake or conflict.",
+        "Write a repair response that owns the mistake, explains the impact, and names the follow-through.",
       due_label: "Due next Monday",
       rubric_focus: "Ownership, communication, follow-through",
+      student_steps: [
+        "Choose a school, home, friendship, work, or online mistake someone could realistically make.",
+        "Write what happened without excuses.",
+        "Name who was affected and how.",
+        "Write the repair move: apology, changed behavior, replacement action, or follow-up check-in.",
+      ],
+      student_resources: [
+        "Use the Week 9 roadmap card: Practice accountability and repair.",
+        "Use conflict language from Weeks 7-8 if the repair involves another person.",
+      ],
+      student_prompt:
+        "What happened: ____. Who was affected: ____. My accountable words: ____. My follow-through action: ____.",
       sort_order: 30,
     },
   ],
@@ -641,6 +677,105 @@ const COURSE_WEEKS = [
   },
 ];
 
+const STUDENT_WEEK_GUIDES = {
+  1: {
+    learn: ["Respect is visible: people can see it in greeting, posture, listening, tone, and follow-through."],
+    do: ["Practice a 20-second introduction with eye contact, name, and one clear sentence about yourself.", "Use active listening once: repeat back the main idea before you respond."],
+    submit: ["Write the greeting or listening stem you used and what changed in the interaction."],
+    transfer: ["Try it with a teacher, family member, coworker, or classmate before the next session."],
+  },
+  2: {
+    learn: ["Conversation habits are small choices: interrupting, waiting, asking a follow-up, and showing attention all change trust."],
+    do: ["Have a three-turn conversation: ask, listen, follow up.", "Notice one moment when you wanted to interrupt and what you did instead."],
+    submit: ["Describe the conversation and name one habit you want to improve next time."],
+    transfer: ["Use the same habit in a class discussion, family conversation, or text exchange."],
+  },
+  3: {
+    learn: ["Manners are not just politeness. They are a way to protect opportunity and show maturity in real settings."],
+    do: ["Choose one real setting: school office, job conversation, family request, team project, or public place.", "Use respectful tone, timing, and wording on purpose."],
+    submit: ["Explain what you did, how the other person responded, and what you learned."],
+    transfer: ["Repeat the same respectful move in a harder setting."],
+  },
+  4: {
+    learn: ["Naming an emotion early helps you control the next choice before the emotion controls you."],
+    do: ["Pick one trigger from this week.", "Name the emotion, body signal, and usual reaction."],
+    submit: ["Complete this sentence: When ___ happened, I felt ___, my body ___, and my usual reaction is ___."],
+    transfer: ["Notice the same body signal once before you respond."],
+  },
+  5: {
+    learn: ["PLRR means Pause, Label, Reframe, Respond. It is a regulation routine for pressure moments."],
+    do: ["Use PLRR on one scenario from class or real life.", "Write one sentence for each step."],
+    submit: ["Pause: ___. Label: ___. Reframe: ___. Respond: ___."],
+    transfer: ["Try the pause step before answering when you feel rushed, embarrassed, or irritated."],
+  },
+  6: {
+    learn: ["Regulation is useful anywhere pressure shows up: family, school, online, deadlines, conflict, or disappointment."],
+    do: ["Choose one pressure moment and apply PLRR again without help.", "Explain how your response protects a long-term goal."],
+    submit: ["Describe the pressure, your PLRR response, and the future goal it protects."],
+    transfer: ["Use PLRR in one non-classroom situation this week."],
+  },
+  7: {
+    learn: ["Conflict usually escalates in patterns. You can slow the pattern down by noticing the trigger, the reaction, and the next best move."],
+    do: ["Map a conflict: trigger, first reaction, risk, better response.", "Choose words that keep dignity for both people."],
+    submit: ["Write the conflict map and the calmer response you would try."],
+    transfer: ["Use a pause or boundary sentence before a disagreement grows."],
+  },
+  8: {
+    learn: ["Strong language is calm, clear, and direct. It is not passive, explosive, or disrespectful."],
+    do: ["Write two boundary sentences and one disagreement sentence.", "Practice saying them without sarcasm or extra attack words."],
+    submit: ["Submit your three sentences and when you would use each one."],
+    transfer: ["Use one respectful boundary sentence in a real situation."],
+  },
+  9: {
+    learn: ["A real apology includes ownership, impact, repair, and follow-through. Words alone are not enough."],
+    do: ["Choose a mistake scenario and write a repair response.", "Name the action that would rebuild trust."],
+    submit: ["Submit the repair response and the follow-through action."],
+    transfer: ["Look for one small way to repair trust through action, not just words."],
+  },
+  10: {
+    learn: ["Digital choices last longer than the feeling that caused them. Screenshots, shares, and search results can affect reputation."],
+    do: ["Choose a digital choice: post, comment, share, like, message, photo, username, or screenshot.", "Ask: audience, permanence, consequence."],
+    submit: ["Explain who could see it, how long it could last, and what it could cost or build."],
+    transfer: ["Pause before one post, message, or reaction this week."],
+  },
+  11: {
+    learn: ["POCC means Pause, Options, Consequences, Choose. It helps you slow down before a fast online or social decision."],
+    do: ["Use POCC on a scenario involving pressure, temptation, anger, embarrassment, or online conflict.", "Compare at least two options before choosing."],
+    submit: ["Submit one sentence for Pause, Options, Consequences, and Choose."],
+    transfer: ["Use POCC before replying to something that bothers you."],
+  },
+  12: {
+    learn: ["A digital reset means changing a pattern: deleting is sometimes helpful, but repair and future boundaries matter too."],
+    do: ["Choose one digital habit to reset.", "Name the trigger, replacement habit, and accountability support."],
+    submit: ["Submit a reset plan with one boundary you will use."],
+    transfer: ["Change one notification, follow, privacy setting, or posting habit."],
+  },
+  13: {
+    learn: ["Identity is built by repeated choices. Standards are what you want your actions to prove about you."],
+    do: ["Choose three words you want to be known for.", "Connect each word to one behavior people can actually see."],
+    submit: ["Submit your three standards and the behaviors that prove them."],
+    transfer: ["Pick one standard to practice for a full day."],
+  },
+  14: {
+    learn: ["Responsibility is follow-through: doing what you said, checking your work, and making it right when you miss."],
+    do: ["Set one behavior goal for the week.", "Track whether you did it for at least three days."],
+    submit: ["Submit your goal, your three-day check, and what helped or got in the way."],
+    transfer: ["Use a reminder, checklist, or accountability person."],
+  },
+  15: {
+    learn: ["Leadership is not only being in front. It can look like steadiness, service, encouragement, and making the group better."],
+    do: ["Choose one way to help another person or improve a group situation.", "Use one course skill while doing it."],
+    submit: ["Explain what you did, which skill you used, and what changed."],
+    transfer: ["Use the same leadership move outside class."],
+  },
+  16: {
+    learn: ["The capstone asks you to prove transfer: show how the course skills now help you make better real-life choices."],
+    do: ["Choose one real or realistic situation and use at least two course tools, such as PLRR, POCC, repair, respectful communication, or digital reset."],
+    submit: ["Submit your capstone response with the situation, tools used, choice made, and next standard."],
+    transfer: ["Name one habit you will keep after the course ends."],
+  },
+};
+
 const ROLE_PORTAL_COPY = {
   student: {
     roadmapLabel: "16-Week Student Path",
@@ -1155,9 +1290,11 @@ function closeIdentityModal() {
 function renderCourseRoadmap(role) {
   if (!courseRoadmapList) return;
 
-  const isInstructor = role === "instructor";
+  const isInstructor = isInstructorOrOwner(role);
   courseRoadmapList.innerHTML = COURSE_WEEKS.map(
-    (week, index) => `
+    (week, index) => {
+      const guide = STUDENT_WEEK_GUIDES[week.week];
+      return `
       <details class="week-card" ${index === 0 ? "open" : ""}>
         <summary class="week-head">
           <div>
@@ -1172,25 +1309,21 @@ function renderCourseRoadmap(role) {
         </summary>
         <div class="week-details">
           <div class="week-list">
-            <section class="week-list-block">
-              <strong>${isInstructor ? "Student experience this week" : "What you will do"}</strong>
-              <ul>
-                ${(isInstructor ? week.studentActions : week.studentActions)
-                  .map((item) => `<li>${escapeHtml(item)}</li>`)
-                  .join("")}
-              </ul>
-            </section>
-            <section class="week-list-block">
-              <strong>${isInstructor ? "What to look for" : "What shows your growth"}</strong>
-              <ul>
-                ${(isInstructor ? week.studentEvidence : week.studentEvidence)
-                  .map((item) => `<li>${escapeHtml(item)}</li>`)
-                  .join("")}
-              </ul>
-            </section>
             ${
               isInstructor
                 ? `
+                  <section class="week-list-block">
+                    <strong>Student experience this week</strong>
+                    <ul>
+                      ${week.studentActions.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                    </ul>
+                  </section>
+                  <section class="week-list-block">
+                    <strong>What to look for</strong>
+                    <ul>
+                      ${week.studentEvidence.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                    </ul>
+                  </section>
                   <section class="week-list-block">
                     <strong>How to facilitate it</strong>
                     <ul>
@@ -1206,15 +1339,27 @@ function renderCourseRoadmap(role) {
                 `
                 : `
                   <section class="week-list-block">
-                    <strong>Why it matters</strong>
+                    <strong>Learn first</strong>
                     <ul>
-                      ${week.instructorMoves.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                      ${(guide?.learn || [week.focus]).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
                     </ul>
                   </section>
                   <section class="week-list-block">
-                    <strong>How to prepare yourself</strong>
+                    <strong>Do this</strong>
                     <ul>
-                      ${week.instructorPrep.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                      ${(guide?.do || week.studentActions).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                    </ul>
+                  </section>
+                  <section class="week-list-block">
+                    <strong>Submit or show</strong>
+                    <ul>
+                      ${(guide?.submit || week.studentEvidence).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                    </ul>
+                  </section>
+                  <section class="week-list-block">
+                    <strong>Try it in real life</strong>
+                    <ul>
+                      ${(guide?.transfer || []).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
                     </ul>
                   </section>
                 `
@@ -1222,12 +1367,17 @@ function renderCourseRoadmap(role) {
           </div>
         </div>
       </details>
-    `,
+    `;
+    },
   ).join("");
 }
 
 function assignmentTemplatesForRole(role) {
   return DEFAULT_ASSIGNMENTS[role] || DEFAULT_ASSIGNMENTS.student;
+}
+
+function assignmentTemplateByKey(role, key) {
+  return assignmentTemplatesForRole(role).find((assignment) => assignment.id === key) || null;
 }
 
 function workbookTemplatesForRole(role) {
@@ -1683,6 +1833,13 @@ function renderPortal(options = {}) {
 
   assignmentList.innerHTML = state.assignments
     .map((assignment) => {
+      const assignmentGuide = assignmentTemplateByKey(profile.role, assignment.assignment_key);
+      const displayTitle = assignmentGuide?.title || assignment.title;
+      const displayObjective = assignmentGuide?.objective || assignment.objective;
+      const displayRubric = assignmentGuide?.rubric_focus || assignment.rubric_focus;
+      const displaySteps = assignmentGuide?.student_steps || [];
+      const displayResources = assignmentGuide?.student_resources || [];
+      const displayPrompt = assignmentGuide?.student_prompt || "";
       const statusText = assignment.ready_for_review
         ? assignment.review_status === "Not reviewed"
           ? "Ready for review"
@@ -1694,17 +1851,33 @@ function renderPortal(options = {}) {
           <div class="assignment-head">
             <div>
               <div class="mini-label">${escapeHtml(assignment.due_label)}</div>
-              <h4>${escapeHtml(assignment.title)}</h4>
+              <h4>${escapeHtml(displayTitle)}</h4>
             </div>
             <span class="status-badge ${badgeClass(statusText)}">${escapeHtml(statusText)}</span>
           </div>
-          <p>${escapeHtml(assignment.objective)}</p>
+          <p>${escapeHtml(displayObjective)}</p>
           <div class="assignment-meta">
-            <span class="chip">${escapeHtml(assignment.rubric_focus)}</span>
+            <span class="chip">${escapeHtml(displayRubric)}</span>
           </div>
+          ${
+            displaySteps.length
+              ? `<div class="student-help-box">
+                  <strong>How to do this</strong>
+                  <ol>${displaySteps.map((step) => `<li>${escapeHtml(step)}</li>`).join("")}</ol>
+                </div>`
+              : ""
+          }
+          ${
+            displayResources.length
+              ? `<div class="student-help-box soft">
+                  <strong>Where to look first</strong>
+                  <ul>${displayResources.map((resource) => `<li>${escapeHtml(resource)}</li>`).join("")}</ul>
+                </div>`
+              : ""
+          }
           <label style="margin-top:14px">
             Your response / reflection
-            <textarea id="submission-${assignment.id}" placeholder="Write your response here.">${escapeHtml(assignment.submission || "")}</textarea>
+            <textarea id="submission-${assignment.id}" placeholder="${escapeHtml(displayPrompt || "Write your response here.")}">${escapeHtml(assignment.submission || "")}</textarea>
           </label>
           <div class="assignment-actions">
             <button class="btn primary" type="button" data-save-assignment="${assignment.id}">Save Work</button>
