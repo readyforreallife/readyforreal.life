@@ -777,9 +777,6 @@
       }
 
       async function init() {
-        const canUsePage = await requireApprovalRole();
-        if (!canUsePage) return;
-
         els.refresh.addEventListener("click", loadEnrollments);
         els.statusFilter.addEventListener("change", loadEnrollments);
 
@@ -842,6 +839,8 @@
         els.adminKey.value = localStorage.getItem(ADMIN_KEY_STORAGE) || "";
         if (els.adminKey.value) {
           loadEnrollments();
+        } else {
+          setStatus("Enter the private admin key to manage portal approvals.");
         }
       }
 

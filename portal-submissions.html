@@ -549,9 +549,6 @@
       }
 
       async function init() {
-        const canUsePage = await requireReviewerRole();
-        if (!canUsePage) return;
-
         els.adminKey.value = localStorage.getItem(ADMIN_KEY_STORAGE) || "";
         els.reviewer.value = localStorage.getItem(REVIEWER_STORAGE) || "Owner";
         els.refresh.addEventListener("click", loadSubmissions);
@@ -565,6 +562,7 @@
         if (els.adminKey.value) {
           loadSubmissions();
         } else {
+          setStatus("Enter the private admin key to review document submissions.");
           renderSubmissions();
         }
       }
