@@ -326,6 +326,9 @@
         background: #fbf8f1;
         padding: 18px;
       }
+      .teacher-block[hidden] {
+        display: none;
+      }
       .live-block {
         margin-top: 14px;
         border-top: 1px solid var(--rule);
@@ -1126,7 +1129,7 @@
                 </select>
               </div>
             </div>
-            <div class="teacher-block">
+            <div class="teacher-block" id="teacherSetupBlock" hidden>
               <div class="teacher-label">Teacher setup</div>
               <div class="field-row" style="max-width: 220px">
                 <label for="teamCountSelect">Team count</label>

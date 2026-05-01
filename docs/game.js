@@ -16,6 +16,7 @@ const themeSelectEl = document.getElementById("themeSelect");
 const questionCountSelectEl = document.getElementById("questionCountSelect");
 const timerSelectEl = document.getElementById("timerSelect");
 const teamCountSelectEl = document.getElementById("teamCountSelect");
+const teacherSetupBlockEl = document.getElementById("teacherSetupBlock");
 const teamFieldsEl = document.getElementById("teamFields");
 const teamGridEl = document.getElementById("teamGrid");
 const hostLiveBtn = document.getElementById("hostLiveBtn");
@@ -472,6 +473,9 @@ function getTeamNames() {
 
 function renderTeamInputs() {
   const isClassroom = gameModeEl.value === "classroom";
+  if (teacherSetupBlockEl) {
+    teacherSetupBlockEl.hidden = !isClassroom;
+  }
   teamFieldsEl.hidden = !isClassroom;
   if (!isClassroom) return;
 
