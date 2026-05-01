@@ -438,6 +438,11 @@
             const deleteDisabled = item.user_id ? "" : "disabled";
             const removeDisabled =
               item.status === "revoked" && !item.user_id ? "" : "disabled";
+            const removeLabel = item.user_id
+              ? "Delete Account First"
+              : item.status === "revoked"
+                ? "Remove Registration"
+                : "Deny Before Removing";
             const rawPaymentStatus = String(item.payment_status || "unpaid");
             const paymentStatus =
               item.status === "approved" && rawPaymentStatus === "unpaid"
@@ -523,7 +528,7 @@
                   <button class="primary" data-waive-approve ${waiveApproveDisabled}>${isAccessCleared ? "Complete" : waiveApproveLabel}</button>
                   <button data-payment="unpaid" ${markUnpaidDisabled}>Mark Unpaid</button>
                   <button class="danger" data-delete-account ${deleteDisabled}>Delete Account</button>
-                  <button class="danger" data-remove-registration ${removeDisabled}>Remove Registration</button>
+                  <button class="danger" data-remove-registration ${removeDisabled}>${removeLabel}</button>
                 </div>
               </article>
             `;
