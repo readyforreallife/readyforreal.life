@@ -1773,11 +1773,49 @@
         background: var(--white);
         font-size: 13px;
         line-height: 1.4;
+        min-width: 0;
       }
-      .check-list input {
-        width: auto;
+      .check-list label span,
+      .check-list label {
+        overflow-wrap: anywhere;
+      }
+      .check-list input[type="checkbox"],
+      .check-list input[type="radio"] {
+        flex: 0 0 16px;
+        width: 16px !important;
+        min-width: 16px;
+        max-width: 16px;
+        height: 16px;
+        padding: 0;
         margin-top: 2px;
-        flex: 0 0 auto;
+        accent-color: var(--gold);
+      }
+      label.check-list {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 10px;
+        border: 1px solid var(--rule);
+        border-radius: 10px;
+        background: var(--white);
+        line-height: 1.4;
+      }
+      label.check-list span {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        min-width: 0;
+      }
+      label.check-list input[type="checkbox"],
+      label.check-list input[type="radio"] {
+        flex: 0 0 16px;
+        width: 16px !important;
+        min-width: 16px;
+        max-width: 16px;
+        height: 16px;
+        padding: 0;
+        margin-top: 2px;
+        accent-color: var(--gold);
       }
       .req {
         color: #9b3d2c;
@@ -1797,6 +1835,10 @@
         background: var(--white);
         color: var(--ink);
         font-size: 14px;
+      }
+      .form-grid input[type="checkbox"],
+      .form-grid input[type="radio"] {
+        width: 16px;
       }
       .modal-actions {
         margin-top: 16px;
@@ -3799,10 +3841,10 @@
                 <legend>Program Details</legend>
                 <label>Implementation track <span class="req">*</span></label>
                 <div class="check-list">
-                  <label><input type="checkbox" name="tracks" value="Grades 7-8" /> Grades 7-8</label>
-                  <label><input type="checkbox" name="tracks" value="Grades 9-12" /> Grades 9-12</label>
-                  <label><input type="checkbox" name="tracks" value="Community Youth" /> Community Youth</label>
-                  <label><input type="checkbox" name="tracks" value="Community Adult" /> Community Adult</label>
+                  <label><input type="checkbox" name="tracks" value="Grades 7-8" /><span>Grades 7-8</span></label>
+                  <label><input type="checkbox" name="tracks" value="Grades 9-12" /><span>Grades 9-12</span></label>
+                  <label><input type="checkbox" name="tracks" value="Community Youth" /><span>Community Youth</span></label>
+                  <label><input type="checkbox" name="tracks" value="Community Adult" /><span>Community Adult</span></label>
                 </div>
                 <div class="form-grid two" style="margin-top: 10px">
                   <label for="regDelivery">Preferred delivery <span class="req">*</span></label>
@@ -3844,12 +3886,12 @@
                 <textarea id="regPopulation" name="population" rows="3"></textarea>
                 <label>Most pressing soft-skill gap</label>
                 <div class="check-list">
-                  <label><input type="checkbox" name="gaps" value="Respectful communication" /> Respectful communication</label>
-                  <label><input type="checkbox" name="gaps" value="Emotional regulation" /> Emotional regulation</label>
-                  <label><input type="checkbox" name="gaps" value="Decision-making under pressure" /> Decision-making under pressure</label>
-                  <label><input type="checkbox" name="gaps" value="Digital citizenship" /> Digital citizenship</label>
-                  <label><input type="checkbox" name="gaps" value="Accountability and repair" /> Accountability and repair</label>
-                  <label><input type="checkbox" name="gaps" value="All of the above" /> All of the above</label>
+                  <label><input type="checkbox" name="gaps" value="Respectful communication" /><span>Respectful communication</span></label>
+                  <label><input type="checkbox" name="gaps" value="Emotional regulation" /><span>Emotional regulation</span></label>
+                  <label><input type="checkbox" name="gaps" value="Decision-making under pressure" /><span>Decision-making under pressure</span></label>
+                  <label><input type="checkbox" name="gaps" value="Digital citizenship" /><span>Digital citizenship</span></label>
+                  <label><input type="checkbox" name="gaps" value="Accountability and repair" /><span>Accountability and repair</span></label>
+                  <label><input type="checkbox" name="gaps" value="All of the above" /><span>All of the above</span></label>
                 </div>
                 <div class="form-grid two" style="margin-top: 10px">
                   <label for="regConfidence">Facilitation confidence</label>
