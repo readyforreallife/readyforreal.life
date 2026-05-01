@@ -283,7 +283,7 @@
         </div>
         <div class="nav-actions">
           <a class="link-btn" href="index.html">Main Site</a>
-          <a class="link-btn" href="portal-approvals.html">Portal Approvals</a>
+          <a class="link-btn admin-nav-link" href="portal-approvals.html" hidden>Portal Approvals</a>
           <a class="link-btn primary" href="student-portal.html">Portal Login</a>
         </div>
       </div>
@@ -330,6 +330,7 @@
 
       const els = {
         adminKey: document.getElementById("adminKeyInput"),
+        adminLinks: document.querySelectorAll(".admin-nav-link"),
         statusFilter: document.getElementById("statusFilter"),
         reviewer: document.getElementById("reviewerInput"),
         refresh: document.getElementById("refreshBtn"),
@@ -395,6 +396,32 @@
         }
 
         return true;
+      }
+
+      async function syncAdminNavigation() {
+        let canShowAdminLinks = Boolean(localStorage.getItem(ADMIN_KEY_STORAGE));
+
+        try {
+          const { data: sessionData } = await client.auth.getSession();
+          const user = sessionData?.session?.user;
+          if (user) {
+            const { data: profile } = await client
+              .from("profiles")
+              .select("role")
+              .eq("user_id", user.id)
+              .maybeSingle();
+            canShowAdminLinks = canShowAdminLinks || userCanReviewDocuments(profile?.role);
+          }
+        } catch (error) {
+          canShowAdminLinks = Boolean(localStorage.getItem(ADMIN_KEY_STORAGE));
+        }
+
+        els.adminLinks.forEach((link) => {
+          link.hidden = !canShowAdminLinks;
+          link.setAttribute("aria-hidden", String(!canShowAdminLinks));
+          link.tabIndex = canShowAdminLinks ? 0 : -1;
+          link.style.display = canShowAdminLinks ? "" : "none";
+        });
       }
 
       function formatStatus(status) {
@@ -549,6 +576,7 @@
       }
 
       async function init() {
+        await syncAdminNavigation();
         els.adminKey.value = localStorage.getItem(ADMIN_KEY_STORAGE) || "";
         els.reviewer.value = localStorage.getItem(REVIEWER_STORAGE) || "Owner";
         els.refresh.addEventListener("click", loadSubmissions);
@@ -560,6 +588,7 @@
         });
 
         if (els.adminKey.value) {
+          await syncAdminNavigation();
           loadSubmissions();
         } else {
           setStatus("Enter the private admin key to review document submissions.");

@@ -142,7 +142,11 @@
         display: none;
       }
 
-      body.portal-instructor .instructor-nav-link {
+      .instructor-nav-link[hidden] {
+        display: none !important;
+      }
+
+      body.portal-instructor .instructor-nav-link:not([hidden]) {
         display: inline-flex;
       }
 

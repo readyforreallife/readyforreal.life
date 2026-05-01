@@ -1764,6 +1764,7 @@ function renderPortal(options = {}) {
     link.hidden = !isPrivilegedPortalUser;
     link.setAttribute("aria-hidden", String(!isPrivilegedPortalUser));
     link.tabIndex = isPrivilegedPortalUser ? 0 : -1;
+    link.style.display = isPrivilegedPortalUser ? "" : "none";
   });
 
   const roleCopy = portalCopyForRole(profile.role);

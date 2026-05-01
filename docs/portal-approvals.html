@@ -296,7 +296,7 @@
         </div>
         <div class="nav-actions">
           <a class="link-btn" href="index.html">Main Site</a>
-          <a class="link-btn" href="portal-submissions.html">Document Reviews</a>
+          <a class="link-btn admin-nav-link" href="portal-submissions.html" hidden>Document Reviews</a>
           <a class="link-btn primary" href="student-portal.html">Portal Login</a>
         </div>
       </div>
@@ -367,6 +367,7 @@
 
       const els = {
         adminKey: document.getElementById("adminKeyInput"),
+        adminLinks: document.querySelectorAll(".admin-nav-link"),
         statusFilter: document.getElementById("statusFilter"),
         refresh: document.getElementById("refreshBtn"),
         status: document.getElementById("statusLine"),
@@ -426,6 +427,32 @@
         }
 
         return true;
+      }
+
+      async function syncAdminNavigation() {
+        let canShowAdminLinks = Boolean(localStorage.getItem(ADMIN_KEY_STORAGE));
+
+        try {
+          const { data: sessionData } = await authClient.auth.getSession();
+          const user = sessionData?.session?.user;
+          if (user) {
+            const { data: profile } = await authClient
+              .from("profiles")
+              .select("role")
+              .eq("user_id", user.id)
+              .maybeSingle();
+            canShowAdminLinks = canShowAdminLinks || userCanApproveAccess(profile?.role);
+          }
+        } catch (error) {
+          canShowAdminLinks = Boolean(localStorage.getItem(ADMIN_KEY_STORAGE));
+        }
+
+        els.adminLinks.forEach((link) => {
+          link.hidden = !canShowAdminLinks;
+          link.setAttribute("aria-hidden", String(!canShowAdminLinks));
+          link.tabIndex = canShowAdminLinks ? 0 : -1;
+          link.style.display = canShowAdminLinks ? "" : "none";
+        });
       }
 
       function escapeHtml(value) {
@@ -777,6 +804,7 @@
       }
 
       async function init() {
+        await syncAdminNavigation();
         els.refresh.addEventListener("click", loadEnrollments);
         els.statusFilter.addEventListener("change", loadEnrollments);
 
@@ -838,6 +866,7 @@
 
         els.adminKey.value = localStorage.getItem(ADMIN_KEY_STORAGE) || "";
         if (els.adminKey.value) {
+          await syncAdminNavigation();
           loadEnrollments();
         } else {
           setStatus("Enter the private admin key to manage portal approvals.");
