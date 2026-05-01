@@ -600,7 +600,7 @@
         const name =
           card.querySelector("h2")?.textContent?.trim() || "this account";
         const confirmed = window.confirm(
-          `Delete the portal account for ${name}? This removes the auth login, profile, assignments, workbook entries, and uploaded files.`,
+          `Delete the portal account for ${name}? This removes the auth login and database records. Uploaded files can be cleaned from storage separately if needed.`,
         );
         if (!confirmed) return;
 
@@ -633,7 +633,7 @@
         );
         const confirmed = window.confirm(
           hasLinkedAccount
-            ? `Remove the registration for ${name}? This also deletes the linked portal account, profile, assignments, workbook entries, and uploaded files.`
+            ? `Remove the registration for ${name}? This also deletes the linked portal login and database records. Uploaded files can be cleaned from storage separately if needed.`
             : `Remove the registration for ${name}? This removes the registration row from this approval queue.`,
         );
         if (!confirmed) return;

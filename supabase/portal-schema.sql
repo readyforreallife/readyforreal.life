@@ -695,10 +695,6 @@ begin
   linked_user_id := enrollment.user_id;
 
   if linked_user_id is not null then
-    delete from storage.objects
-    where bucket_id in ('portal-files', 'community-profiles')
-      and (storage.foldername(name))[1] = linked_user_id::text;
-
     update public.course_enrollments
     set user_id = null,
         used_at = null,
@@ -745,10 +741,6 @@ begin
   into target_email
   from auth.users
   where id = target_user_id;
-
-  delete from storage.objects
-  where bucket_id in ('portal-files', 'community-profiles')
-    and (storage.foldername(name))[1] = target_user_id::text;
 
   update public.course_enrollments
   set status = 'revoked',
@@ -799,10 +791,6 @@ begin
     raise exception 'This enrollment does not have a linked portal account.'
       using errcode = 'P0001';
   end if;
-
-  delete from storage.objects
-  where bucket_id in ('portal-files', 'community-profiles')
-    and (storage.foldername(name))[1] = enrollment.user_id::text;
 
   update public.course_enrollments
   set status = 'revoked',
