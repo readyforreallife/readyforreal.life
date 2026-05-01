@@ -1018,26 +1018,35 @@ function getSupabase() {
 }
 
 function createWelcomeCopy(role, name) {
-  if (role === "instructor") {
+  if (isInstructorOrOwner(role)) {
     return `${name} has a secure instructor home base for pacing, lesson delivery, facilitation notes, and implementation reflection across the full 16-week course.`;
   }
   return `${name} has a secure student home base for weekly assignments, workbook reflections, personal files, and saved feedback across the full 16-week course.`;
 }
 
+function normalizePortalRole(role) {
+  return String(role || "student").trim().toLowerCase();
+}
+
+function isInstructorOrOwner(role) {
+  return ["instructor", "owner"].includes(normalizePortalRole(role));
+}
+
 function defaultTrackForRole(role) {
-  return role === "instructor" ? "Instructor Workspace" : "Core Skills Focus";
+  return isInstructorOrOwner(role) ? "Instructor Workspace" : "Core Skills Focus";
 }
 
 function defaultCohortForRole(role) {
-  return role === "instructor" ? "Instruction Team" : "Ready for Real Life Cohort";
+  return isInstructorOrOwner(role) ? "Instruction Team" : "Ready for Real Life Cohort";
 }
 
 function defaultAvatarForRole(role) {
-  return role === "instructor" ? "🧭" : "🚀";
+  return isInstructorOrOwner(role) ? "🧭" : "🚀";
 }
 
 function roleLabel(role) {
-  return role === "instructor" ? "instructor" : "student";
+  const normalizedRole = normalizePortalRole(role);
+  return isInstructorOrOwner(normalizedRole) ? normalizedRole : "student";
 }
 
 function portalCopyForRole(role) {
@@ -1595,12 +1604,18 @@ function renderPortal(options = {}) {
 
   updateAuthenticatedView(true);
   studentPortal.classList.add("visible");
-  studentPortal.classList.toggle("instructor-view", state.profile.role === "instructor");
-  studentPortal.classList.toggle("student-view", state.profile.role !== "instructor");
-  document.body.classList.toggle("portal-instructor", state.profile.role === "instructor");
-  document.body.classList.toggle("portal-student", state.profile.role !== "instructor");
-
   const profile = state.profile;
+  const isPrivilegedPortalUser = isInstructorOrOwner(profile.role);
+  studentPortal.classList.toggle("instructor-view", isPrivilegedPortalUser);
+  studentPortal.classList.toggle("student-view", !isPrivilegedPortalUser);
+  document.body.classList.toggle("portal-instructor", isPrivilegedPortalUser);
+  document.body.classList.toggle("portal-student", !isPrivilegedPortalUser);
+  document.querySelectorAll(".instructor-nav-link").forEach((link) => {
+    link.hidden = !isPrivilegedPortalUser;
+    link.setAttribute("aria-hidden", String(!isPrivilegedPortalUser));
+    link.tabIndex = isPrivilegedPortalUser ? 0 : -1;
+  });
+
   const roleCopy = portalCopyForRole(profile.role);
   const firstName = profile.display_name.split(/\s+/)[0] || profile.display_name;
   const progress = computeProgress(

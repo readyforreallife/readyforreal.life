@@ -355,6 +355,48 @@
         els.status.className = `status ${type}`.trim();
       }
 
+      function userCanReviewDocuments(role) {
+        return ["instructor", "owner"].includes(String(role || "").trim().toLowerCase());
+      }
+
+      function showAccessDenied() {
+        document.querySelector("main").innerHTML = `
+          <section class="panel">
+            <h1>Instructor Access Required</h1>
+            <p class="lede">
+              Document reviews are only available to approved instructors and owners.
+              Student accounts can still submit their own forms from the student portal.
+            </p>
+            <div class="actions">
+              <a class="link-btn" href="student-portal.html">Back to Portal</a>
+              <a class="link-btn" href="index.html">Main Website</a>
+            </div>
+          </section>
+        `;
+      }
+
+      async function requireReviewerRole() {
+        const { data: sessionData } = await client.auth.getSession();
+        const user = sessionData?.session?.user;
+        if (!user) {
+          showAccessDenied();
+          return false;
+        }
+
+        const { data: profile, error } = await client
+          .from("profiles")
+          .select("role")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        if (error || !userCanReviewDocuments(profile?.role)) {
+          showAccessDenied();
+          return false;
+        }
+
+        return true;
+      }
+
       function formatStatus(status) {
         return String(status || "submitted")
           .replace(/_/g, " ")
@@ -506,21 +548,28 @@
         setStatus("Review saved.", "ok");
       }
 
-      els.adminKey.value = localStorage.getItem(ADMIN_KEY_STORAGE) || "";
-      els.reviewer.value = localStorage.getItem(REVIEWER_STORAGE) || "Owner";
-      els.refresh.addEventListener("click", loadSubmissions);
-      els.statusFilter.addEventListener("change", loadSubmissions);
-      els.list.addEventListener("click", (event) => {
-        const button = event.target.closest("[data-save-review]");
-        if (!button) return;
-        saveReview(button.getAttribute("data-save-review"));
-      });
+      async function init() {
+        const canUsePage = await requireReviewerRole();
+        if (!canUsePage) return;
 
-      if (els.adminKey.value) {
-        loadSubmissions();
-      } else {
-        renderSubmissions();
+        els.adminKey.value = localStorage.getItem(ADMIN_KEY_STORAGE) || "";
+        els.reviewer.value = localStorage.getItem(REVIEWER_STORAGE) || "Owner";
+        els.refresh.addEventListener("click", loadSubmissions);
+        els.statusFilter.addEventListener("change", loadSubmissions);
+        els.list.addEventListener("click", (event) => {
+          const button = event.target.closest("[data-save-review]");
+          if (!button) return;
+          saveReview(button.getAttribute("data-save-review"));
+        });
+
+        if (els.adminKey.value) {
+          loadSubmissions();
+        } else {
+          renderSubmissions();
+        }
       }
+
+      init();
     </script>
   </body>
 </html>

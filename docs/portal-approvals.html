@@ -357,11 +357,13 @@
       <section class="list" id="requestList" aria-live="polite"></section>
     </main>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
     <script>
       const SUPABASE_URL = "https://dwliijpjplrdgdvaaoak.supabase.co";
       const SUPABASE_ANON_KEY =
         "sb_publishable_6BJeJE-TYfqry9V6mnixGQ_s5M7wNnh";
       const ADMIN_KEY_STORAGE = "rfrl_portal_admin_key";
+      const authClient = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
 
       const els = {
         adminKey: document.getElementById("adminKeyInput"),
@@ -382,6 +384,48 @@
       function setStatus(message, type = "") {
         els.status.textContent = message || "";
         els.status.className = `status ${type}`.trim();
+      }
+
+      function userCanApproveAccess(role) {
+        return ["instructor", "owner"].includes(String(role || "").trim().toLowerCase());
+      }
+
+      function showAccessDenied() {
+        document.querySelector("main").innerHTML = `
+          <section class="toolbar">
+            <h2>Instructor Access Required</h2>
+            <p class="subtitle">
+              Portal approvals are only available to approved instructors and owners.
+              Student accounts cannot approve, deny, or remove registrations.
+            </p>
+            <div class="nav-actions">
+              <a class="link-btn primary" href="student-portal.html">Back to Portal</a>
+              <a class="link-btn" href="index.html">Main Site</a>
+            </div>
+          </section>
+        `;
+      }
+
+      async function requireApprovalRole() {
+        const { data: sessionData } = await authClient.auth.getSession();
+        const user = sessionData?.session?.user;
+        if (!user) {
+          showAccessDenied();
+          return false;
+        }
+
+        const { data: profile, error } = await authClient
+          .from("profiles")
+          .select("role")
+          .eq("user_id", user.id)
+          .maybeSingle();
+
+        if (error || !userCanApproveAccess(profile?.role)) {
+          showAccessDenied();
+          return false;
+        }
+
+        return true;
       }
 
       function escapeHtml(value) {
@@ -732,69 +776,76 @@
         }
       }
 
-      els.refresh.addEventListener("click", loadEnrollments);
-      els.statusFilter.addEventListener("change", loadEnrollments);
+      async function init() {
+        const canUsePage = await requireApprovalRole();
+        if (!canUsePage) return;
 
-      els.list.addEventListener("click", (event) => {
-        const waiveApproveButton = event.target.closest("button[data-waive-approve]");
-        if (waiveApproveButton) {
-          const card = waiveApproveButton.closest(".request");
-          waiveAndApprove(card);
-          return;
+        els.refresh.addEventListener("click", loadEnrollments);
+        els.statusFilter.addEventListener("change", loadEnrollments);
+
+        els.list.addEventListener("click", (event) => {
+          const waiveApproveButton = event.target.closest("button[data-waive-approve]");
+          if (waiveApproveButton) {
+            const card = waiveApproveButton.closest(".request");
+            waiveAndApprove(card);
+            return;
+          }
+
+          const removeButton = event.target.closest("button[data-remove-registration]");
+          if (removeButton) {
+            const card = removeButton.closest(".request");
+            removeDeniedRegistration(card);
+            return;
+          }
+
+          const paymentButton = event.target.closest("button[data-payment]");
+          if (paymentButton) {
+            const card = paymentButton.closest(".request");
+            markPayment(card, paymentButton.getAttribute("data-payment"));
+            return;
+          }
+
+          const deleteButton = event.target.closest("button[data-delete-account]");
+          if (deleteButton) {
+            const card = deleteButton.closest(".request");
+            deletePortalAccount(card);
+            return;
+          }
+
+          const button = event.target.closest("button[data-action]");
+          if (!button) return;
+          const card = button.closest(".request");
+          reviewEnrollment(card, button.getAttribute("data-action"));
+        });
+
+        els.manualForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          setStatus("Adding pending registration...");
+          try {
+            await rpc("submit_course_registration", {
+              account_email: els.manualEmail.value.trim(),
+              full_name: els.manualName.value.trim(),
+              requested_role: els.manualRole.value,
+              registration_notes: els.manualNotes.value.trim(),
+              requested_cohort: "Ready for Real Life Cohort",
+              requested_track: "Core Skills Focus",
+            });
+            els.manualForm.reset();
+            setStatus("Pending registration added.", "ok");
+            els.statusFilter.value = "pending";
+            await loadEnrollments();
+          } catch (error) {
+            setStatus(error.message, "err");
+          }
+        });
+
+        els.adminKey.value = localStorage.getItem(ADMIN_KEY_STORAGE) || "";
+        if (els.adminKey.value) {
+          loadEnrollments();
         }
-
-        const removeButton = event.target.closest("button[data-remove-registration]");
-        if (removeButton) {
-          const card = removeButton.closest(".request");
-          removeDeniedRegistration(card);
-          return;
-        }
-
-        const paymentButton = event.target.closest("button[data-payment]");
-        if (paymentButton) {
-          const card = paymentButton.closest(".request");
-          markPayment(card, paymentButton.getAttribute("data-payment"));
-          return;
-        }
-
-        const deleteButton = event.target.closest("button[data-delete-account]");
-        if (deleteButton) {
-          const card = deleteButton.closest(".request");
-          deletePortalAccount(card);
-          return;
-        }
-
-        const button = event.target.closest("button[data-action]");
-        if (!button) return;
-        const card = button.closest(".request");
-        reviewEnrollment(card, button.getAttribute("data-action"));
-      });
-
-      els.manualForm.addEventListener("submit", async (event) => {
-        event.preventDefault();
-        setStatus("Adding pending registration...");
-        try {
-          await rpc("submit_course_registration", {
-            account_email: els.manualEmail.value.trim(),
-            full_name: els.manualName.value.trim(),
-            requested_role: els.manualRole.value,
-            registration_notes: els.manualNotes.value.trim(),
-            requested_cohort: "Ready for Real Life Cohort",
-            requested_track: "Core Skills Focus",
-          });
-          els.manualForm.reset();
-          setStatus("Pending registration added.", "ok");
-          els.statusFilter.value = "pending";
-          await loadEnrollments();
-        } catch (error) {
-          setStatus(error.message, "err");
-        }
-      });
-
-      els.adminKey.value = localStorage.getItem(ADMIN_KEY_STORAGE) || "";
-      if (els.adminKey.value) {
-        loadEnrollments();
       }
+
+      init();
     </script>
   </body>
 </html>
