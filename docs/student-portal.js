@@ -1561,6 +1561,7 @@ function renderLoggedOutState() {
   state.workbookEntries = [];
   state.documentSubmissions = [];
   state.files = [];
+  document.body.classList.remove("portal-instructor", "portal-student");
   updateAuthenticatedView(false);
   studentPortal.classList.remove("visible");
   clearStatus(bioStatus);
@@ -1596,6 +1597,8 @@ function renderPortal(options = {}) {
   studentPortal.classList.add("visible");
   studentPortal.classList.toggle("instructor-view", state.profile.role === "instructor");
   studentPortal.classList.toggle("student-view", state.profile.role !== "instructor");
+  document.body.classList.toggle("portal-instructor", state.profile.role === "instructor");
+  document.body.classList.toggle("portal-student", state.profile.role !== "instructor");
 
   const profile = state.profile;
   const roleCopy = portalCopyForRole(profile.role);
