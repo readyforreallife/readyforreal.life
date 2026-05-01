@@ -1,0 +1,526 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta http-equiv="Cache-Control" content="no-store" />
+    <meta http-equiv="Pragma" content="no-cache" />
+    <meta http-equiv="Expires" content="0" />
+    <title>Document Review Inbox | Ready for Real Life</title>
+    <link rel="icon" href="favicon.ico" />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;800&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --ink: #101724;
+        --paper: #f6f1e8;
+        --panel: #fffaf2;
+        --navy: #18304f;
+        --gold: #c89b3c;
+        --muted: #66748a;
+        --rule: rgba(24, 48, 79, 0.16);
+        --danger: #b0432e;
+        --ok: #1f7a55;
+      }
+
+      * {
+        box-sizing: border-box;
+      }
+
+      body {
+        margin: 0;
+        min-height: 100vh;
+        background: var(--paper);
+        color: var(--ink);
+        font-family: "DM Sans", system-ui, sans-serif;
+      }
+
+      header {
+        background: var(--navy);
+        color: white;
+        border-bottom: 4px solid var(--gold);
+      }
+
+      .header-inner,
+      main {
+        width: min(1180px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+
+      .header-inner {
+        padding: 26px 0;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 18px;
+        flex-wrap: wrap;
+      }
+
+      h1,
+      h2 {
+        font-family: "Playfair Display", serif;
+        color: var(--navy);
+        letter-spacing: 0;
+      }
+
+      h1 {
+        margin: 0;
+        color: white;
+        font-size: clamp(1.8rem, 4vw, 3rem);
+      }
+
+      h2 {
+        margin: 0;
+        font-size: 1.35rem;
+      }
+
+      .subtitle {
+        margin: 8px 0 0;
+        color: rgba(255, 255, 255, 0.78);
+        max-width: 720px;
+      }
+
+      a,
+      button {
+        font: inherit;
+      }
+
+      .nav-actions,
+      .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
+      .link-btn,
+      button {
+        min-height: 42px;
+        border-radius: 8px;
+        border: 1px solid var(--rule);
+        padding: 0 14px;
+        background: white;
+        color: var(--navy);
+        font-weight: 700;
+        text-decoration: none;
+        cursor: pointer;
+      }
+
+      .link-btn.primary,
+      button.primary {
+        background: var(--gold);
+        border-color: #dcb863;
+        color: #1e2430;
+      }
+
+      button:disabled {
+        opacity: 0.55;
+        cursor: wait;
+      }
+
+      main {
+        padding: 24px 0 44px;
+      }
+
+      .toolbar,
+      .submission,
+      .empty {
+        background: var(--panel);
+        border: 1px solid var(--rule);
+        border-radius: 8px;
+        box-shadow: 0 18px 45px rgba(24, 48, 79, 0.08);
+      }
+
+      .toolbar {
+        padding: 16px;
+        margin-bottom: 16px;
+      }
+
+      .toolbar-grid {
+        display: grid;
+        grid-template-columns: minmax(180px, 1fr) 180px minmax(180px, 240px) auto;
+        gap: 12px;
+        align-items: end;
+      }
+
+      label {
+        display: grid;
+        gap: 6px;
+        font-size: 0.82rem;
+        font-weight: 700;
+        color: var(--navy);
+      }
+
+      input,
+      select,
+      textarea {
+        width: 100%;
+        min-height: 42px;
+        border-radius: 8px;
+        border: 1px solid rgba(24, 48, 79, 0.2);
+        background: white;
+        padding: 9px 11px;
+        font: inherit;
+        color: var(--ink);
+      }
+
+      textarea {
+        min-height: 108px;
+        resize: vertical;
+      }
+
+      .status {
+        min-height: 22px;
+        margin: 10px 0 0;
+        font-weight: 700;
+        color: var(--muted);
+      }
+
+      .status.ok {
+        color: var(--ok);
+      }
+
+      .status.err {
+        color: var(--danger);
+      }
+
+      .summary {
+        margin: 18px 0 10px;
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .list {
+        display: grid;
+        gap: 14px;
+      }
+
+      .submission {
+        padding: 16px;
+        display: grid;
+        grid-template-columns: 1fr minmax(240px, 320px);
+        gap: 18px;
+      }
+
+      .meta {
+        margin: 8px 0 0;
+        color: var(--muted);
+        line-height: 1.45;
+      }
+
+      .badge {
+        display: inline-flex;
+        align-items: center;
+        min-height: 28px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: #eef2f7;
+        color: var(--navy);
+        font-family: "DM Mono", monospace;
+        font-size: 0.78rem;
+      }
+
+      .badge.approved {
+        background: rgba(31, 122, 85, 0.12);
+        color: var(--ok);
+      }
+
+      .badge.needs_revision,
+      .badge.returned {
+        background: rgba(176, 67, 46, 0.1);
+        color: var(--danger);
+      }
+
+      .answer-grid {
+        display: grid;
+        gap: 8px;
+        margin-top: 14px;
+      }
+
+      .answer {
+        padding: 10px;
+        border-radius: 8px;
+        background: white;
+        border: 1px solid var(--rule);
+      }
+
+      .answer strong {
+        color: var(--navy);
+      }
+
+      .review-panel {
+        display: grid;
+        gap: 10px;
+        align-content: start;
+      }
+
+      .empty {
+        padding: 28px;
+        color: var(--muted);
+        font-weight: 700;
+        text-align: center;
+      }
+
+      @media (max-width: 820px) {
+        .toolbar-grid,
+        .submission {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header>
+      <div class="header-inner">
+        <div>
+          <h1>Document Review Inbox</h1>
+          <p class="subtitle">
+            Review submitted forms, surveys, workbook responses, agreements,
+            and other program documents from students and instructors.
+          </p>
+        </div>
+        <div class="nav-actions">
+          <a class="link-btn" href="index.html">Main Site</a>
+          <a class="link-btn" href="portal-approvals.html">Portal Approvals</a>
+          <a class="link-btn primary" href="student-portal.html">Portal Login</a>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <section class="toolbar" aria-label="Document review controls">
+        <div class="toolbar-grid">
+          <label>
+            Admin key
+            <input id="adminKeyInput" type="password" autocomplete="current-password" />
+          </label>
+          <label>
+            View
+            <select id="statusFilter">
+              <option value="">All</option>
+              <option value="submitted">Submitted</option>
+              <option value="in_review">In review</option>
+              <option value="needs_revision">Needs revision</option>
+              <option value="approved">Approved</option>
+              <option value="returned">Returned</option>
+            </select>
+          </label>
+          <label>
+            Reviewer name
+            <input id="reviewerInput" placeholder="Owner / Instructor" />
+          </label>
+          <button class="primary" id="refreshBtn" type="button">Refresh</button>
+        </div>
+        <div class="status" id="statusLine"></div>
+      </section>
+
+      <div class="summary" id="summaryLine">No submissions loaded yet.</div>
+      <section class="list" id="submissionList" aria-live="polite"></section>
+    </main>
+
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script>
+      const SUPABASE_URL = "https://dwliijpjplrdgdvaaoak.supabase.co";
+      const SUPABASE_ANON_KEY =
+        "sb_publishable_6BJeJE-TYfqry9V6mnixGQ_s5M7wNnh";
+      const ADMIN_KEY_STORAGE = "rfrl_portal_admin_key";
+      const REVIEWER_STORAGE = "rfrl_portal_reviewer_name";
+
+      const els = {
+        adminKey: document.getElementById("adminKeyInput"),
+        statusFilter: document.getElementById("statusFilter"),
+        reviewer: document.getElementById("reviewerInput"),
+        refresh: document.getElementById("refreshBtn"),
+        status: document.getElementById("statusLine"),
+        summary: document.getElementById("summaryLine"),
+        list: document.getElementById("submissionList"),
+      };
+
+      let submissions = [];
+      const client = window.supabase.createClient(SUPABASE_URL, SUPABASE_ANON_KEY);
+
+      function escapeHtml(value) {
+        return String(value || "")
+          .replace(/&/g, "&amp;")
+          .replace(/</g, "&lt;")
+          .replace(/>/g, "&gt;")
+          .replace(/"/g, "&quot;")
+          .replace(/'/g, "&#39;");
+      }
+
+      function setStatus(message, type = "") {
+        els.status.textContent = message || "";
+        els.status.className = `status ${type}`.trim();
+      }
+
+      function formatStatus(status) {
+        return String(status || "submitted")
+          .replace(/_/g, " ")
+          .replace(/\b\w/g, (letter) => letter.toUpperCase());
+      }
+
+      function formatDate(value) {
+        if (!value) return "No date saved";
+        return new Date(value).toLocaleString();
+      }
+
+      function labelForKey(key) {
+        return String(key || "")
+          .replace(/^_/, "")
+          .replace(/_/g, " ")
+          .replace(/\b\w/g, (letter) => letter.toUpperCase());
+      }
+
+      function formatAnswerValue(value) {
+        if (Array.isArray(value)) return value.length ? value.join(", ") : "Not selected";
+        if (value && typeof value === "object") return JSON.stringify(value, null, 2);
+        return value || "No response";
+      }
+
+      function answersHtml(answers) {
+        const entries = Object.entries(answers || {});
+        if (!entries.length) return `<div class="answer">No answers were included.</div>`;
+        return entries
+          .map(
+            ([key, value]) => `
+              <div class="answer">
+                <strong>${escapeHtml(labelForKey(key))}</strong>
+                <div>${escapeHtml(formatAnswerValue(value))}</div>
+              </div>
+            `,
+          )
+          .join("");
+      }
+
+      function renderSubmissions() {
+        els.summary.textContent = submissions.length
+          ? `${submissions.length} submission${submissions.length === 1 ? "" : "s"} shown.`
+          : "No submissions match this view.";
+
+        els.list.innerHTML = submissions.length
+          ? submissions
+              .map(
+                (submission) => `
+                  <article class="submission">
+                    <div>
+                      <h2>${escapeHtml(submission.document_title)}</h2>
+                      <p class="meta">
+                        ${escapeHtml(submission.submitter_name || submission.display_name || "Unknown user")} ·
+                        ${escapeHtml(submission.submitter_email || submission.email || "No email")} ·
+                        ${escapeHtml(submission.submitter_role || "student")}
+                      </p>
+                      <p class="meta">
+                        <span class="badge ${escapeHtml(submission.status)}">${escapeHtml(formatStatus(submission.status))}</span>
+                        ${escapeHtml(submission.document_type || "document")} ·
+                        Submitted ${escapeHtml(formatDate(submission.submitted_at || submission.created_at))}
+                      </p>
+                      <div class="answer-grid">${answersHtml(submission.answers)}</div>
+                    </div>
+                    <div class="review-panel">
+                      <label>
+                        Review status
+                        <select data-review-status="${escapeHtml(submission.id)}">
+                          ${["submitted", "in_review", "needs_revision", "approved", "returned"]
+                            .map(
+                              (status) =>
+                                `<option value="${status}" ${status === submission.status ? "selected" : ""}>${formatStatus(status)}</option>`,
+                            )
+                            .join("")}
+                        </select>
+                      </label>
+                      <label>
+                        Score / grade / note
+                        <input data-review-score="${escapeHtml(submission.id)}" value="${escapeHtml(submission.owner_score || "")}" placeholder="Optional" />
+                      </label>
+                      <label>
+                        Feedback
+                        <textarea data-review-feedback="${escapeHtml(submission.id)}" placeholder="Write feedback, a grade note, or next steps.">${escapeHtml(submission.owner_feedback || "")}</textarea>
+                      </label>
+                      <button class="primary" type="button" data-save-review="${escapeHtml(submission.id)}">Save Review</button>
+                    </div>
+                  </article>
+                `,
+              )
+              .join("")
+          : `<div class="empty">No submitted documents are waiting in this view.</div>`;
+      }
+
+      async function loadSubmissions() {
+        const adminKey = els.adminKey.value.trim();
+        if (!adminKey) {
+          setStatus("Enter the admin key first.", "err");
+          return;
+        }
+
+        localStorage.setItem(ADMIN_KEY_STORAGE, adminKey);
+        localStorage.setItem(REVIEWER_STORAGE, els.reviewer.value.trim());
+        els.refresh.disabled = true;
+        setStatus("Loading submissions...");
+
+        const { data, error } = await client.rpc("list_document_submissions_for_admin", {
+          admin_key: adminKey,
+          submission_status: els.statusFilter.value,
+        });
+
+        els.refresh.disabled = false;
+        if (error) {
+          setStatus(error.message, "err");
+          return;
+        }
+
+        submissions = data || [];
+        renderSubmissions();
+        setStatus("Submissions loaded.", "ok");
+      }
+
+      async function saveReview(submissionId) {
+        const adminKey = els.adminKey.value.trim();
+        const status = document.querySelector(`[data-review-status="${submissionId}"]`)?.value;
+        const score = document.querySelector(`[data-review-score="${submissionId}"]`)?.value.trim() || "";
+        const feedback =
+          document.querySelector(`[data-review-feedback="${submissionId}"]`)?.value.trim() || "";
+
+        if (!adminKey) {
+          setStatus("Enter the admin key first.", "err");
+          return;
+        }
+
+        setStatus("Saving review...");
+        const { error } = await client.rpc("review_document_submission", {
+          admin_key: adminKey,
+          submission_id: submissionId,
+          next_status: status,
+          review_score: score,
+          review_feedback: feedback,
+          reviewer_name: els.reviewer.value.trim() || "Owner",
+        });
+
+        if (error) {
+          setStatus(error.message, "err");
+          return;
+        }
+
+        await loadSubmissions();
+        setStatus("Review saved.", "ok");
+      }
+
+      els.adminKey.value = localStorage.getItem(ADMIN_KEY_STORAGE) || "";
+      els.reviewer.value = localStorage.getItem(REVIEWER_STORAGE) || "Owner";
+      els.refresh.addEventListener("click", loadSubmissions);
+      els.statusFilter.addEventListener("change", loadSubmissions);
+      els.list.addEventListener("click", (event) => {
+        const button = event.target.closest("[data-save-review]");
+        if (!button) return;
+        saveReview(button.getAttribute("data-save-review"));
+      });
+
+      if (els.adminKey.value) {
+        loadSubmissions();
+      } else {
+        renderSubmissions();
+      }
+    </script>
+  </body>
+</html>

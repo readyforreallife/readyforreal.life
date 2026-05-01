@@ -37,6 +37,7 @@ const entries = [
   "curriculum-library.html",
   "one-pager.html",
   "portal-approvals.html",
+  "portal-submissions.html",
   "sw.js",
   "apple-touch-icon-rfrl.png",
   "apple-touch-icon.png",

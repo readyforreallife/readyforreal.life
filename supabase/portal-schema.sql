@@ -132,6 +132,24 @@ create table if not exists public.user_files (
   updated_at timestamptz not null default timezone('utc', now())
 );
 
+create table if not exists public.document_submissions (
+  id uuid primary key default gen_random_uuid(),
+  user_id uuid not null references auth.users(id) on delete cascade,
+  document_key text not null,
+  document_title text not null,
+  document_type text not null default 'document',
+  submitter_role text not null default 'student' check (submitter_role in ('student', 'instructor')),
+  answers jsonb not null default '{}'::jsonb,
+  status text not null default 'submitted' check (status in ('draft', 'submitted', 'in_review', 'needs_revision', 'approved', 'returned')),
+  owner_score text not null default '',
+  owner_feedback text not null default '',
+  reviewed_by text not null default '',
+  submitted_at timestamptz,
+  reviewed_at timestamptz,
+  created_at timestamptz not null default timezone('utc', now()),
+  updated_at timestamptz not null default timezone('utc', now())
+);
+
 create table if not exists public.community_profiles (
   user_id uuid primary key references auth.users(id) on delete cascade,
   display_name text not null,
@@ -154,6 +172,8 @@ create index if not exists idx_course_enrollments_status_updated on public.cours
 create index if not exists idx_user_assignments_user_sort on public.user_assignments(user_id, sort_order);
 create index if not exists idx_user_workbook_entries_user_sort on public.user_workbook_entries(user_id, sort_order);
 create index if not exists idx_user_files_user_created on public.user_files(user_id, created_at desc);
+create index if not exists idx_document_submissions_user_created on public.document_submissions(user_id, created_at desc);
+create index if not exists idx_document_submissions_status_updated on public.document_submissions(status, updated_at desc);
 create index if not exists idx_community_profiles_role_name on public.community_profiles(role, display_name);
 
 drop trigger if exists set_profiles_updated_at on public.profiles;
@@ -813,6 +833,197 @@ $$;
 
 grant execute on function public.admin_delete_portal_account(text, uuid) to anon, authenticated;
 
+create or replace function public.submit_document_response(
+  document_key text,
+  document_title text,
+  document_type text default 'document',
+  response_answers jsonb default '{}'::jsonb,
+  next_status text default 'submitted'
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  target_user_id uuid;
+  profile_row public.profiles%rowtype;
+  submission public.document_submissions%rowtype;
+  normalized_status text;
+begin
+  target_user_id := auth.uid();
+
+  if target_user_id is null then
+    raise exception 'Sign in before submitting document work.'
+      using errcode = 'P0001';
+  end if;
+
+  select *
+  into profile_row
+  from public.profiles
+  where id = target_user_id;
+
+  normalized_status := case
+    when next_status in ('draft', 'submitted') then next_status
+    else 'submitted'
+  end;
+
+  insert into public.document_submissions (
+    user_id,
+    document_key,
+    document_title,
+    document_type,
+    submitter_role,
+    answers,
+    status,
+    submitted_at
+  )
+  values (
+    target_user_id,
+    coalesce(nullif(trim(document_key), ''), 'general-document'),
+    coalesce(nullif(trim(document_title), ''), 'Document Submission'),
+    coalesce(nullif(trim(document_type), ''), 'document'),
+    coalesce(profile_row.role, 'student'),
+    coalesce(response_answers, '{}'::jsonb),
+    normalized_status,
+    case when normalized_status = 'submitted' then timezone('utc', now()) else null end
+  )
+  returning * into submission;
+
+  return jsonb_build_object(
+    'ok', true,
+    'id', submission.id,
+    'document_key', submission.document_key,
+    'document_title', submission.document_title,
+    'status', submission.status,
+    'submitted_at', submission.submitted_at
+  );
+end;
+$$;
+
+grant execute on function public.submit_document_response(text, text, text, jsonb, text) to authenticated;
+
+create or replace function public.list_document_submissions_for_admin(
+  admin_key text,
+  submission_status text default ''
+)
+returns table (
+  id uuid,
+  user_id uuid,
+  submitter_name text,
+  submitter_email text,
+  submitter_role text,
+  document_key text,
+  document_title text,
+  document_type text,
+  answers jsonb,
+  status text,
+  owner_score text,
+  owner_feedback text,
+  reviewed_by text,
+  submitted_at timestamptz,
+  reviewed_at timestamptz,
+  created_at timestamptz,
+  updated_at timestamptz
+)
+language plpgsql
+stable
+security definer
+set search_path = public
+as $$
+begin
+  if not public.portal_admin_key_matches(admin_key) then
+    raise exception 'Admin key did not match.' using errcode = 'P0001';
+  end if;
+
+  return query
+  select
+    submission.id,
+    submission.user_id,
+    coalesce(profile.display_name, auth_user.email, 'Portal User') as submitter_name,
+    coalesce(profile.email, auth_user.email, '') as submitter_email,
+    submission.submitter_role,
+    submission.document_key,
+    submission.document_title,
+    submission.document_type,
+    submission.answers,
+    submission.status,
+    submission.owner_score,
+    submission.owner_feedback,
+    submission.reviewed_by,
+    submission.submitted_at,
+    submission.reviewed_at,
+    submission.created_at,
+    submission.updated_at
+  from public.document_submissions submission
+  left join public.profiles profile on profile.id = submission.user_id
+  left join auth.users auth_user on auth_user.id = submission.user_id
+  where submission_status is null
+    or submission_status = ''
+    or submission.status = submission_status
+  order by submission.updated_at desc, submission.created_at desc;
+end;
+$$;
+
+grant execute on function public.list_document_submissions_for_admin(text, text) to anon, authenticated;
+
+create or replace function public.review_document_submission(
+  admin_key text,
+  submission_id uuid,
+  next_status text,
+  review_score text default '',
+  review_feedback text default '',
+  reviewer_name text default 'Owner'
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  submission public.document_submissions%rowtype;
+  normalized_status text;
+begin
+  if not public.portal_admin_key_matches(admin_key) then
+    raise exception 'Admin key did not match.' using errcode = 'P0001';
+  end if;
+
+  normalized_status := case
+    when next_status in ('submitted', 'in_review', 'needs_revision', 'approved', 'returned') then next_status
+    else null
+  end;
+
+  if normalized_status is null then
+    raise exception 'Review status must be submitted, in_review, needs_revision, approved, or returned.'
+      using errcode = 'P0001';
+  end if;
+
+  update public.document_submissions
+  set status = normalized_status,
+      owner_score = coalesce(review_score, ''),
+      owner_feedback = coalesce(review_feedback, ''),
+      reviewed_by = coalesce(nullif(trim(reviewer_name), ''), 'Owner'),
+      reviewed_at = timezone('utc', now()),
+      updated_at = timezone('utc', now())
+  where id = submission_id
+  returning * into submission;
+
+  if submission.id is null then
+    raise exception 'Document submission was not found.' using errcode = 'P0001';
+  end if;
+
+  return jsonb_build_object(
+    'ok', true,
+    'id', submission.id,
+    'status', submission.status,
+    'owner_score', submission.owner_score,
+    'reviewed_at', submission.reviewed_at
+  );
+end;
+$$;
+
+grant execute on function public.review_document_submission(text, uuid, text, text, text, text) to anon, authenticated;
+
 create or replace function public.enforce_course_enrollment_after_signup()
 returns trigger
 language plpgsql
@@ -880,6 +1091,12 @@ before update on public.user_files
 for each row
 execute function public.set_updated_at();
 
+drop trigger if exists set_document_submissions_updated_at on public.document_submissions;
+create trigger set_document_submissions_updated_at
+before update on public.document_submissions
+for each row
+execute function public.set_updated_at();
+
 drop trigger if exists set_community_profiles_updated_at on public.community_profiles;
 create trigger set_community_profiles_updated_at
 before update on public.community_profiles
@@ -892,6 +1109,7 @@ alter table public.portal_admin_settings enable row level security;
 alter table public.user_assignments enable row level security;
 alter table public.user_workbook_entries enable row level security;
 alter table public.user_files enable row level security;
+alter table public.document_submissions enable row level security;
 alter table public.community_profiles enable row level security;
 
 drop policy if exists "Profiles are private to their owner" on public.profiles;
@@ -1023,6 +1241,35 @@ on public.user_files
 for delete
 to authenticated
 using (auth.uid() = user_id);
+
+drop policy if exists "Document submissions are private to their owner" on public.document_submissions;
+create policy "Document submissions are private to their owner"
+on public.document_submissions
+for select
+to authenticated
+using (auth.uid() = user_id);
+
+drop policy if exists "Document submissions can be inserted by their owner" on public.document_submissions;
+create policy "Document submissions can be inserted by their owner"
+on public.document_submissions
+for insert
+to authenticated
+with check (auth.uid() = user_id);
+
+drop policy if exists "Document submissions can be updated by their owner while draft" on public.document_submissions;
+create policy "Document submissions can be updated by their owner while draft"
+on public.document_submissions
+for update
+to authenticated
+using (auth.uid() = user_id and status = 'draft')
+with check (auth.uid() = user_id and status in ('draft', 'submitted'));
+
+drop policy if exists "Document submissions can be deleted by their owner while draft" on public.document_submissions;
+create policy "Document submissions can be deleted by their owner while draft"
+on public.document_submissions
+for delete
+to authenticated
+using (auth.uid() = user_id and status = 'draft');
 
 drop policy if exists "Community profiles are visible to enrolled users" on public.community_profiles;
 create policy "Community profiles are visible to enrolled users"

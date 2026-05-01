@@ -1613,6 +1613,41 @@
         </div>
 
         <section class="section-card panel" style="margin-top: 18px">
+          <div class="mini-label">Document Submission Studio</div>
+          <h3>Complete forms, workbook pages, surveys, and document responses</h3>
+          <p>
+            Use this app-ready workspace for any program document that asks you
+            to write, select, check, reflect, or submit work. Each submission is
+            labeled with your account and sent to the owner/instructor review
+            inbox.
+          </p>
+          <form class="stack" id="documentSubmissionForm">
+            <label>
+              Document or form
+              <select id="documentSubmissionTemplate"></select>
+            </label>
+            <div class="section-grid" id="documentSubmissionFields"></div>
+            <label>
+              Additional notes or context
+              <textarea
+                id="documentSubmissionNotes"
+                placeholder="Add anything the reviewer should know."
+              ></textarea>
+            </label>
+            <div class="assignment-actions">
+              <button class="btn primary" type="submit">
+                Submit Document for Review
+              </button>
+            </div>
+            <div class="status-line" id="documentSubmissionStatus"></div>
+          </form>
+          <div style="margin-top: 18px">
+            <div class="mini-label">Your submitted documents</div>
+            <div class="section-grid" id="documentSubmissionList"></div>
+          </div>
+        </section>
+
+        <section class="section-card panel" style="margin-top: 18px">
           <div class="mini-label" id="fileSectionLabel">Private File Vault</div>
           <h3 id="fileSectionTitle">Your files and uploads</h3>
           <p id="fileSectionCopy">

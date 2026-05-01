@@ -124,6 +124,152 @@ const DEFAULT_WORKBOOK_PROMPTS = {
   ],
 };
 
+const DOCUMENT_SUBMISSION_TEMPLATES = [
+  {
+    key: "participant-workbook",
+    title: "Participant Workbook",
+    type: "workbook",
+    fields: [
+      { id: "section", label: "Workbook section, activity, or page", kind: "text" },
+      { id: "written_response", label: "Written response", kind: "textarea" },
+      { id: "reflection", label: "Reflection or evidence of growth", kind: "textarea" },
+      {
+        id: "completion_checks",
+        label: "Completion checks",
+        kind: "checks",
+        options: [
+          "I completed the requested activity.",
+          "I checked my response for honesty and detail.",
+          "I am ready for instructor review.",
+        ],
+      },
+    ],
+  },
+  {
+    key: "casel-survey",
+    title: "CASEL Self-Efficacy Survey",
+    type: "survey",
+    fields: [
+      {
+        id: "survey_phase",
+        label: "Survey timing",
+        kind: "choice",
+        options: ["Pre-Course", "Post-Course"],
+      },
+      { id: "grade_track", label: "Grade / track", kind: "text" },
+      {
+        id: "casel_scores",
+        label: "Enter your scores or summary of selected ratings",
+        kind: "textarea",
+      },
+      {
+        id: "growth_notes",
+        label: "What did you notice about your growth?",
+        kind: "textarea",
+      },
+    ],
+  },
+  {
+    key: "scenario-cards",
+    title: "Scenario Card Response",
+    type: "scenario",
+    fields: [
+      { id: "scenario_title", label: "Scenario card or prompt", kind: "text" },
+      { id: "response_choice", label: "What would you do?", kind: "textarea" },
+      { id: "reasoning", label: "Why is that the strongest response?", kind: "textarea" },
+      {
+        id: "framework_used",
+        label: "Framework used",
+        kind: "checks",
+        options: ["PLRR", "POCC", "Respectful communication", "Repair move"],
+      },
+    ],
+  },
+  {
+    key: "manners-in-motion",
+    title: "Manners in Motion Challenge",
+    type: "challenge",
+    fields: [
+      { id: "challenge", label: "Challenge card or action", kind: "text" },
+      { id: "what_happened", label: "What happened when you tried it?", kind: "textarea" },
+      { id: "next_time", label: "What will you improve next time?", kind: "textarea" },
+      {
+        id: "completed",
+        label: "Completion",
+        kind: "checks",
+        options: ["I attempted the challenge.", "I reflected on the result."],
+      },
+    ],
+  },
+  {
+    key: "registration-intake",
+    title: "Registration and Intake Form",
+    type: "intake",
+    fields: [
+      { id: "organization", label: "School / organization", kind: "text" },
+      { id: "track", label: "Implementation track", kind: "text" },
+      { id: "needs", label: "Needs, goals, or context", kind: "textarea" },
+      {
+        id: "agreements",
+        label: "Acknowledgements",
+        kind: "checks",
+        options: [
+          "The information is accurate.",
+          "I understand this initiates program onboarding.",
+          "I consent to review and follow-up.",
+        ],
+      },
+    ],
+  },
+  {
+    key: "facilitator-certification",
+    title: "Facilitator Certification / Licensing Agreement",
+    type: "agreement",
+    fields: [
+      { id: "organization", label: "Organization represented", kind: "text" },
+      { id: "agreement_number", label: "Agreement number, if assigned", kind: "text" },
+      {
+        id: "agreement_checks",
+        label: "Agreement acknowledgements",
+        kind: "checks",
+        options: [
+          "I understand the intellectual-property restrictions.",
+          "I understand the licensed-use expectations.",
+          "I am submitting this for owner review.",
+        ],
+      },
+      { id: "signature_name", label: "Typed signature name", kind: "text" },
+    ],
+  },
+  {
+    key: "instructor-guide",
+    title: "Instructor Guide / Facilitation Notes",
+    type: "instructor",
+    fields: [
+      { id: "week_or_section", label: "Week, module, or guide section", kind: "text" },
+      { id: "delivery_notes", label: "Delivery notes", kind: "textarea" },
+      { id: "student_response", label: "Student response or evidence noticed", kind: "textarea" },
+      { id: "adjustments", label: "Adjustments for next session", kind: "textarea" },
+    ],
+  },
+  {
+    key: "general-document",
+    title: "Other Program Document or Form",
+    type: "document",
+    fields: [
+      { id: "document_name", label: "Document/form name", kind: "text" },
+      { id: "prompt_or_item", label: "Prompt, question, or item being completed", kind: "textarea" },
+      { id: "response", label: "Response", kind: "textarea" },
+      {
+        id: "review_ready",
+        label: "Review status",
+        kind: "checks",
+        options: ["This is complete and ready for review."],
+      },
+    ],
+  },
+];
+
 const COURSE_WEEKS = [
   {
     week: 1,
@@ -677,6 +823,12 @@ const assignmentList = document.getElementById("assignmentList");
 const workbookList = document.getElementById("workbookList");
 const resourceList = document.getElementById("resourceList");
 const feedbackList = document.getElementById("feedbackList");
+const documentSubmissionForm = document.getElementById("documentSubmissionForm");
+const documentSubmissionTemplate = document.getElementById("documentSubmissionTemplate");
+const documentSubmissionFields = document.getElementById("documentSubmissionFields");
+const documentSubmissionNotes = document.getElementById("documentSubmissionNotes");
+const documentSubmissionStatus = document.getElementById("documentSubmissionStatus");
+const documentSubmissionList = document.getElementById("documentSubmissionList");
 const fileUploadInput = document.getElementById("fileUploadInput");
 const uploadFileBtn = document.getElementById("uploadFileBtn");
 const fileUploadStatus = document.getElementById("fileUploadStatus");
@@ -729,6 +881,7 @@ let state = {
   communityProfiles: [],
   assignments: [],
   workbookEntries: [],
+  documentSubmissions: [],
   files: [],
 };
 
@@ -1087,15 +1240,18 @@ function formatBytes(bytes) {
   return `${(value / (1024 * 1024)).toFixed(1)} MB`;
 }
 
-function computeProgress(assignments, workbookEntries) {
+function computeProgress(assignments, workbookEntries, documentSubmissions = []) {
   const completedAssignments = assignments.filter((assignment) =>
     ["Approved", "Exceeds expectations"].includes(assignment.review_status),
   ).length;
   const completedWorkbook = workbookEntries.filter((entry) =>
     String(entry.response || "").trim(),
   ).length;
-  const total = assignments.length + workbookEntries.length || 1;
-  const completed = completedAssignments + completedWorkbook;
+  const completedDocuments = documentSubmissions.filter(
+    (submission) => submission.status === "approved",
+  ).length;
+  const total = assignments.length + workbookEntries.length + documentSubmissions.length || 1;
+  const completed = completedAssignments + completedWorkbook + completedDocuments;
   return {
     completed,
     total,
@@ -1347,6 +1503,17 @@ async function loadFiles(userId) {
   return data || [];
 }
 
+async function loadDocumentSubmissions(userId) {
+  const supabase = getSupabase();
+  const { data, error } = await supabase
+    .from("document_submissions")
+    .select("*")
+    .eq("user_id", userId)
+    .order("created_at", { ascending: false });
+  if (error) throw error;
+  return data || [];
+}
+
 async function loadPortalData(defaults = null, options = {}) {
   const user = state.user;
   if (!user) return;
@@ -1367,9 +1534,10 @@ async function loadPortalData(defaults = null, options = {}) {
     console.warn("Community profile features are not ready yet.", error);
   }
 
-  const [assignments, workbookEntries, files] = await Promise.all([
+  const [assignments, workbookEntries, documentSubmissions, files] = await Promise.all([
     ensureAssignments(user.id, profile.role),
     ensureWorkbookEntries(user.id, profile.role),
+    loadDocumentSubmissions(user.id),
     loadFiles(user.id),
   ]);
 
@@ -1378,6 +1546,7 @@ async function loadPortalData(defaults = null, options = {}) {
   state.communityProfiles = communityProfiles;
   state.assignments = assignments;
   state.workbookEntries = workbookEntries;
+  state.documentSubmissions = documentSubmissions;
   state.files = files;
   renderPortal({ scrollToWelcome });
 }
@@ -1390,6 +1559,7 @@ function renderLoggedOutState() {
   state.communityProfiles = [];
   state.assignments = [];
   state.workbookEntries = [];
+  state.documentSubmissions = [];
   state.files = [];
   updateAuthenticatedView(false);
   studentPortal.classList.remove("visible");
@@ -1430,7 +1600,11 @@ function renderPortal(options = {}) {
   const profile = state.profile;
   const roleCopy = portalCopyForRole(profile.role);
   const firstName = profile.display_name.split(/\s+/)[0] || profile.display_name;
-  const progress = computeProgress(state.assignments, state.workbookEntries);
+  const progress = computeProgress(
+    state.assignments,
+    state.workbookEntries,
+    state.documentSubmissions,
+  );
 
   welcomeCohort.textContent = profile.cohort || defaultCohortForRole(profile.role);
   welcomeTitle.textContent = profile.welcome_title || `Welcome, ${firstName}.`;
@@ -1553,6 +1727,8 @@ function renderPortal(options = {}) {
     )
     .join("");
 
+  renderDocumentSubmissionStudio();
+
   resourceList.innerHTML = DEFAULT_RESOURCES.map(
     (resource) => `
       <article class="resource-card">
@@ -1570,9 +1746,14 @@ function renderPortal(options = {}) {
   const feedbackItems = state.assignments.filter(
     (assignment) => assignment.review_status !== "Not reviewed",
   );
+  const documentFeedbackItems = state.documentSubmissions.filter(
+    (submission) =>
+      submission.owner_feedback ||
+      submission.owner_score ||
+      ["needs_revision", "approved", "returned"].includes(submission.status),
+  );
 
-  feedbackList.innerHTML = feedbackItems.length
-    ? feedbackItems
+  const assignmentFeedbackHtml = feedbackItems
         .map(
           (assignment) => `
             <article class="assignment-card">
@@ -1595,8 +1776,32 @@ function renderPortal(options = {}) {
             </article>
           `,
         )
-        .join("")
-    : `<div class="empty">No feedback has been saved on this account yet.</div>`;
+        .join("");
+  const documentFeedbackHtml = documentFeedbackItems
+    .map(
+      (submission) => `
+        <article class="assignment-card">
+          <div class="assignment-head">
+            <div>
+              <div class="mini-label">Document review</div>
+              <h4>${escapeHtml(submission.document_title)}</h4>
+            </div>
+            <span class="status-badge ${submission.status === "approved" ? "complete" : submission.status === "needs_revision" ? "revise" : "review"}">${escapeHtml(formatSubmissionStatus(submission.status))}</span>
+          </div>
+          <p><strong>Score:</strong> ${escapeHtml(submission.owner_score || "Pending")}</p>
+          <div class="feedback-box">
+            <strong>Reviewer note</strong>
+            <div style="margin-top:8px">${escapeHtml(submission.owner_feedback || "No note yet.")}</div>
+          </div>
+        </article>
+      `,
+    )
+    .join("");
+
+  feedbackList.innerHTML =
+    assignmentFeedbackHtml || documentFeedbackHtml
+      ? `${assignmentFeedbackHtml}${documentFeedbackHtml}`
+      : `<div class="empty">No feedback has been saved on this account yet.</div>`;
 
   fileList.innerHTML = state.files.length
     ? state.files
@@ -1669,6 +1874,223 @@ function badgeClass(status) {
     default:
       return "pending";
   }
+}
+
+function formatSubmissionStatus(status) {
+  switch (status) {
+    case "draft":
+      return "Draft";
+    case "submitted":
+      return "Submitted";
+    case "in_review":
+      return "In review";
+    case "needs_revision":
+      return "Needs revision";
+    case "approved":
+      return "Approved";
+    case "returned":
+      return "Returned";
+    default:
+      return status || "Submitted";
+  }
+}
+
+function formatSubmissionAnswers(answers) {
+  if (!answers || typeof answers !== "object") return "";
+  return Object.entries(answers)
+    .filter(([key]) => key !== "_notes")
+    .map(([key, value]) => {
+      const label = key
+        .replace(/_/g, " ")
+        .replace(/\b\w/g, (char) => char.toUpperCase());
+      const text = Array.isArray(value) ? value.join(", ") : value;
+      return `<div><strong>${escapeHtml(label)}:</strong> ${escapeHtml(text || "No response")}</div>`;
+    })
+    .join("");
+}
+
+function selectedDocumentSubmissionTemplate() {
+  const key = documentSubmissionTemplate?.value || DOCUMENT_SUBMISSION_TEMPLATES[0]?.key;
+  return (
+    DOCUMENT_SUBMISSION_TEMPLATES.find((template) => template.key === key) ||
+    DOCUMENT_SUBMISSION_TEMPLATES[0]
+  );
+}
+
+function renderDocumentSubmissionTemplateOptions() {
+  if (!documentSubmissionTemplate) return;
+  if (documentSubmissionTemplate.options.length) return;
+
+  documentSubmissionTemplate.innerHTML = DOCUMENT_SUBMISSION_TEMPLATES.map(
+    (template) =>
+      `<option value="${escapeHtml(template.key)}">${escapeHtml(template.title)}</option>`,
+  ).join("");
+}
+
+function renderDocumentSubmissionFields() {
+  if (!documentSubmissionFields) return;
+  const template = selectedDocumentSubmissionTemplate();
+  if (!template) {
+    documentSubmissionFields.innerHTML = "";
+    return;
+  }
+
+  documentSubmissionFields.innerHTML = template.fields
+    .map((field) => {
+      const fieldId = `document-field-${field.id}`;
+      if (field.kind === "textarea") {
+        return `
+          <label>
+            ${escapeHtml(field.label)}
+            <textarea id="${escapeHtml(fieldId)}" data-document-field="${escapeHtml(field.id)}" placeholder="Write your response here."></textarea>
+          </label>
+        `;
+      }
+
+      if (field.kind === "choice") {
+        return `
+          <label>
+            ${escapeHtml(field.label)}
+            <select id="${escapeHtml(fieldId)}" data-document-field="${escapeHtml(field.id)}">
+              ${(field.options || []).map((option) => `<option value="${escapeHtml(option)}">${escapeHtml(option)}</option>`).join("")}
+            </select>
+          </label>
+        `;
+      }
+
+      if (field.kind === "checks") {
+        return `
+          <fieldset class="assignment-card" style="margin:0">
+            <legend class="mini-label">${escapeHtml(field.label)}</legend>
+            ${(field.options || [])
+              .map(
+                (option, index) => `
+                  <label style="display:grid;grid-template-columns:18px minmax(0,1fr);align-items:start;gap:10px;margin-top:10px">
+                    <input type="checkbox" data-document-field="${escapeHtml(field.id)}" value="${escapeHtml(option)}" style="width:16px;height:16px;margin-top:2px" />
+                    <span>${escapeHtml(option)}</span>
+                  </label>
+                `,
+              )
+              .join("")}
+          </fieldset>
+        `;
+      }
+
+      return `
+        <label>
+          ${escapeHtml(field.label)}
+          <input id="${escapeHtml(fieldId)}" data-document-field="${escapeHtml(field.id)}" placeholder="Type your response here." />
+        </label>
+      `;
+    })
+    .join("");
+}
+
+function collectDocumentSubmissionAnswers(template) {
+  const answers = {};
+  template.fields.forEach((field) => {
+    const inputs = Array.from(
+      documentSubmissionFields.querySelectorAll(`[data-document-field="${field.id}"]`),
+    );
+
+    if (field.kind === "checks") {
+      answers[field.id] = inputs
+        .filter((input) => input.checked)
+        .map((input) => input.value);
+      return;
+    }
+
+    answers[field.id] = inputs[0]?.value?.trim() || "";
+  });
+
+  answers._notes = documentSubmissionNotes?.value.trim() || "";
+  return answers;
+}
+
+function renderDocumentSubmissionStudio() {
+  if (!documentSubmissionForm || !documentSubmissionList) return;
+  renderDocumentSubmissionTemplateOptions();
+  if (!documentSubmissionFields.children.length) {
+    renderDocumentSubmissionFields();
+  }
+
+  documentSubmissionList.innerHTML = state.documentSubmissions.length
+    ? state.documentSubmissions
+        .map(
+          (submission) => `
+            <article class="resource-card">
+              <div class="assignment-head">
+                <div>
+                  <div class="mini-label">${escapeHtml(submission.document_type || "document")}</div>
+                  <h4>${escapeHtml(submission.document_title)}</h4>
+                </div>
+                <span class="status-badge ${submission.status === "approved" ? "complete" : submission.status === "needs_revision" ? "revise" : "review"}">${escapeHtml(formatSubmissionStatus(submission.status))}</span>
+              </div>
+              <p>${escapeHtml(submission.submitted_at ? `Submitted ${new Date(submission.submitted_at).toLocaleString()}` : "Saved for review")}</p>
+              <div class="feedback-box">
+                ${formatSubmissionAnswers(submission.answers)}
+                ${
+                  submission.answers?._notes
+                    ? `<div style="margin-top:8px"><strong>Notes:</strong> ${escapeHtml(submission.answers._notes)}</div>`
+                    : ""
+                }
+              </div>
+              ${
+                submission.owner_feedback || submission.owner_score
+                  ? `<div class="feedback-box">
+                      <strong>Owner / instructor review</strong>
+                      <div style="margin-top:8px"><strong>Score:</strong> ${escapeHtml(submission.owner_score || "Pending")}</div>
+                      <div style="margin-top:8px">${escapeHtml(submission.owner_feedback || "No note yet.")}</div>
+                    </div>`
+                  : ""
+              }
+            </article>
+          `,
+        )
+        .join("")
+    : `<div class="empty">No forms or documents have been submitted yet.</div>`;
+}
+
+async function submitDocumentSubmission(event) {
+  event.preventDefault();
+  if (!state.user) {
+    showStatus(documentSubmissionStatus, "Sign in before submitting a document.");
+    return;
+  }
+
+  const template = selectedDocumentSubmissionTemplate();
+  if (!template) {
+    showStatus(documentSubmissionStatus, "Choose a document first.");
+    return;
+  }
+
+  const answers = collectDocumentSubmissionAnswers(template);
+  const hasResponse = Object.entries(answers).some(([key, value]) => {
+    if (key === "_notes") return false;
+    if (Array.isArray(value)) return value.length > 0;
+    return String(value || "").trim();
+  });
+
+  if (!hasResponse) {
+    showStatus(documentSubmissionStatus, "Add at least one response before submitting.");
+    return;
+  }
+
+  showStatus(documentSubmissionStatus, "Submitting document for review...");
+  const supabase = getSupabase();
+  const { error } = await supabase.rpc("submit_document_response", {
+    document_key: template.key,
+    document_title: template.title,
+    document_type: template.type,
+    response_answers: answers,
+    next_status: "submitted",
+  });
+
+  if (error) throw error;
+  documentSubmissionForm.reset();
+  renderDocumentSubmissionFields();
+  await loadPortalData();
+  showStatus(documentSubmissionStatus, "Document submitted for owner/instructor review.", "success");
 }
 
 async function saveAssignment(assignmentId, readyForReview) {
@@ -2228,6 +2650,16 @@ uploadProfileImageBtn.addEventListener("click", async () => {
     await uploadProfileImage();
   } catch (error) {
     showStatus(profileImageStatus, error.message);
+  }
+});
+
+documentSubmissionTemplate?.addEventListener("change", renderDocumentSubmissionFields);
+
+documentSubmissionForm?.addEventListener("submit", async (event) => {
+  try {
+    await submitDocumentSubmission(event);
+  } catch (error) {
+    showStatus(documentSubmissionStatus, error.message);
   }
 });
 
