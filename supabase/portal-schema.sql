@@ -666,6 +666,64 @@ $$;
 
 grant execute on function public.admin_remove_denied_course_registration(text, uuid) to anon, authenticated;
 
+create or replace function public.admin_remove_course_registration(
+  admin_key text,
+  enrollment_id uuid
+)
+returns jsonb
+language plpgsql
+security definer
+set search_path = public
+as $$
+declare
+  enrollment public.course_enrollments%rowtype;
+  linked_user_id uuid;
+begin
+  if not public.portal_admin_key_matches(admin_key) then
+    raise exception 'Admin key did not match.' using errcode = 'P0001';
+  end if;
+
+  select *
+  into enrollment
+  from public.course_enrollments
+  where id = enrollment_id;
+
+  if enrollment.id is null then
+    raise exception 'Registration was not found.' using errcode = 'P0001';
+  end if;
+
+  linked_user_id := enrollment.user_id;
+
+  if linked_user_id is not null then
+    delete from storage.objects
+    where bucket_id in ('portal-files', 'community-profiles')
+      and (storage.foldername(name))[1] = linked_user_id::text;
+
+    update public.course_enrollments
+    set user_id = null,
+        used_at = null,
+        updated_at = timezone('utc', now())
+    where id = enrollment.id;
+
+    delete from auth.users
+    where id = linked_user_id;
+  end if;
+
+  delete from public.course_enrollments
+  where id = enrollment.id;
+
+  return jsonb_build_object(
+    'ok', true,
+    'id', enrollment.id,
+    'email', enrollment.email::text,
+    'removed', true,
+    'deleted_user_id', linked_user_id
+  );
+end;
+$$;
+
+grant execute on function public.admin_remove_course_registration(text, uuid) to anon, authenticated;
+
 create or replace function public.delete_own_portal_account()
 returns jsonb
 language plpgsql
