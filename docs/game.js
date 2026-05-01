@@ -91,6 +91,7 @@ const state = {
     session: null,
     lastQuestionIndex: -1,
     selectedChoice: -1,
+    autoRevealInFlight: false,
   },
 };
 
@@ -438,6 +439,15 @@ function finishRound() {
 
 function nextQuestion() {
   if (state.live.active) {
+    if (
+      state.live.host &&
+      state.live.session?.started &&
+      !state.live.session?.completed &&
+      !state.live.session?.revealed
+    ) {
+      hostRevealLiveAnswer();
+      return;
+    }
     hostNextLiveQuestion();
     return;
   }
@@ -515,6 +525,7 @@ function beginGame() {
     session: null,
     lastQuestionIndex: -1,
     selectedChoice: -1,
+    autoRevealInFlight: false,
   };
   waitingCardEl.hidden = true;
 
@@ -645,13 +656,28 @@ function getLiveTimeRemaining(session) {
 
 function refreshLiveClock() {
   if (!state.live.session) return;
-  timerEl.textContent = String(getLiveTimeRemaining(state.live.session));
+  const timeLeft = getLiveTimeRemaining(state.live.session);
+  timerEl.textContent = String(timeLeft);
+  if (
+    timeLeft <= 0 &&
+    state.live.host &&
+    state.live.session.started &&
+    !state.live.session.completed &&
+    !state.live.session.revealed
+  ) {
+    hostRevealLiveAnswer({ automatic: true });
+  }
 }
 
 function syncLiveClock(session) {
   stopLiveClock();
-  timerEl.textContent = String(getLiveTimeRemaining(session));
+  const timeLeft = getLiveTimeRemaining(session);
+  timerEl.textContent = String(timeLeft);
   if (!session || !session.started || session.completed || session.revealed) {
+    return;
+  }
+  if (timeLeft <= 0 && state.live.host) {
+    hostRevealLiveAnswer({ automatic: true });
     return;
   }
   state.live.clockId = window.setInterval(refreshLiveClock, 1000);
@@ -706,14 +732,19 @@ function updateLiveHud(session) {
   if (state.live.host) {
     const timeLeft = getLiveTimeRemaining(session);
     modeNoteEl.textContent =
-      timeLeft > 0
-        ? `${session.activeTeam || "Current team"} is active. Let teams vote before time runs out, then reveal the strongest answer and advance when you are ready.`
-        : `${session.activeTeam || "Current team"} is out of time. Reveal the strongest answer to discuss it, then move to the next question.`;
+      session.revealed
+        ? `Answer revealed for ${session.activeTeam || "the active player"}. Review it, then move to the next question.`
+        : timeLeft > 0
+          ? `${session.activeTeam || "Current team"} is active. The host screen is view-only during the turn, so only the active player can lock the answer.`
+          : `${session.activeTeam || "Current team"} is out of time. The round is revealing the locked answer automatically.`;
   } else {
+    const isMyTurn = isLiveParticipantTurn(session);
     const voteText =
       state.live.selectedChoice >= 0 && !session.revealed
         ? "Your vote is locked. Wait for the teacher to reveal the strongest response."
-        : "Choose the strongest response before time runs out.";
+        : isMyTurn
+          ? "Choose the strongest response before time runs out."
+          : `Wait for ${session.activeTeam || "the active player"} to answer.`;
     modeNoteEl.textContent = `You are joined as ${state.live.participantName || "participant"} on ${state.live.participantTeam || "your team"}. ${voteText}`;
   }
   renderClassroomBoardFromTeams(
@@ -723,9 +754,53 @@ function updateLiveHud(session) {
   );
 }
 
+function isLiveParticipantTurn(session) {
+  if (!session || state.live.host) return false;
+  const activeTeam = String(session.activeTeam || "").trim();
+  const participantTeam = String(state.live.participantTeam || "").trim();
+  if (!activeTeam) return true;
+  return Boolean(participantTeam) && activeTeam === participantTeam;
+}
+
+function getParticipantChoiceFromSession(session) {
+  const me = session?.me || {};
+  const possible = [
+    me.choiceIndex,
+    me.choice_index,
+    me.selectedChoice,
+    me.selected_choice,
+    me.selectedAnswer,
+    me.selected_answer,
+    me.vote,
+  ];
+  const match = possible.find((value) => Number.isInteger(Number(value)));
+  return match === undefined ? -1 : Number(match);
+}
+
+function getLiveLockedChoice(session) {
+  const ownChoice = getParticipantChoiceFromSession(session);
+  if (ownChoice >= 0) return ownChoice;
+
+  const counts = session?.voteCounts || {};
+  const ranked = Object.entries(counts)
+    .map(([choice, count]) => ({
+      choice: Number(choice),
+      count: Number(count || 0),
+    }))
+    .filter((entry) => Number.isInteger(entry.choice) && entry.count > 0)
+    .sort((a, b) => b.count - a.count || a.choice - b.choice);
+
+  return ranked.length ? ranked[0].choice : -1;
+}
+
 function renderLiveQuestion(session) {
   const question = session.currentQuestion;
   if (!question) return;
+  const lockedChoice = state.live.host
+    ? getLiveLockedChoice(session)
+    : Math.max(state.live.selectedChoice, getParticipantChoiceFromSession(session));
+  const isParticipantTurn = isLiveParticipantTurn(session);
+  const timeLeft = getLiveTimeRemaining(session);
 
   categoryBadgeEl.textContent = `${question.theme} · ${question.category}`;
   difficultyBadgeEl.textContent = question.bloom;
@@ -741,16 +816,19 @@ function renderLiveQuestion(session) {
     button.className = `answer-card palette-${index % 4}`;
     button.innerHTML = `<span class="answer-symbol">${["▲", "◆", "●", "■"][index % 4]}</span><span>${escapeHtml(choice)}</span>`;
     if (!state.live.host && session.me && session.me.teamName) {
-      const alreadySelected = state.live.selectedChoice === index;
+      const alreadySelected = lockedChoice === index;
       if (alreadySelected && !session.revealed) {
         button.classList.add("selected");
       }
+    }
+    if (state.live.host || !isParticipantTurn || timeLeft <= 0 || lockedChoice >= 0) {
+      button.disabled = true;
     }
     if (session.revealed) {
       button.disabled = true;
       if (index === question.answer) {
         button.classList.add("correct");
-      } else if (index === session.selectedAnswer) {
+      } else if (index === session.selectedAnswer || index === lockedChoice) {
         button.classList.add("incorrect");
       }
     }
@@ -779,14 +857,22 @@ function renderLiveQuestion(session) {
           ? "Finish Round"
           : "Next Question";
     }
+  } else if (state.live.host) {
+    nextBtn.hidden = false;
+    nextBtn.textContent = getLiveLockedChoice(session) >= 0 ? "Reveal Locked Answer" : "Reveal No Answer";
+  } else if (!isParticipantTurn) {
+    explanationEl.innerHTML = `<div><strong>Waiting.</strong> It is ${escapeHtml(session.activeTeam || "another player")}'s turn. Your answer buttons stay locked until your turn.</div>`;
+  } else if (timeLeft <= 0) {
+    explanationEl.innerHTML = `<div><strong>Time.</strong> This turn is closed. Wait for the host screen to reveal the result.</div>`;
   }
 }
 
 function applyLiveSession(session) {
   const previousIndex = Number(state.live.lastQuestionIndex);
   state.live.session = session;
-  if (!state.live.host && previousIndex !== Number(session.currentIndex)) {
+  if (previousIndex !== Number(session.currentIndex)) {
     state.live.selectedChoice = -1;
+    state.live.autoRevealInFlight = false;
   }
   state.live.lastQuestionIndex = Number(session.currentIndex);
   populateJoinTeams(session.teams || []);
@@ -940,20 +1026,24 @@ async function handleLiveAnswer(button, question, explicitIndex = -1) {
   if (choiceIndex < 0) return;
 
   if (state.live.host) {
-    try {
-      const response = await workerRequest({
-        action: "challenge_host_answer",
-        code: state.live.code,
-        host_key: state.live.hostKey,
-        selected_answer: choiceIndex,
-      });
-      if (choiceIndex === state.live.session.currentQuestion.answer) {
-        startBurst();
-      }
-      applyLiveSession(response.session);
-    } catch (error) {
-      window.alert(error.message);
-    }
+    explanationEl.innerHTML = `<div><strong>Host view only.</strong> This is ${escapeHtml(state.live.session.activeTeam || "the active player")}'s turn. Use the reveal button after the player answers or time runs out.</div>`;
+    return;
+  }
+
+  if (!isLiveParticipantTurn(state.live.session)) {
+    window.alert(
+      `It is ${state.live.session.activeTeam || "another player"}'s turn right now.`,
+    );
+    return;
+  }
+
+  if (getLiveTimeRemaining(state.live.session) <= 0) {
+    window.alert("Time is up for this turn.");
+    return;
+  }
+
+  if (state.live.selectedChoice >= 0 || getParticipantChoiceFromSession(state.live.session) >= 0) {
+    window.alert("Your answer is already locked for this turn.");
     return;
   }
 
@@ -981,6 +1071,48 @@ async function handleLiveAnswer(button, question, explicitIndex = -1) {
   }
 }
 
+async function hostRevealLiveAnswer(options = {}) {
+  if (!state.live.host || !state.live.session?.currentQuestion) return;
+  if (state.live.session.revealed || state.live.session.completed) return;
+  if (state.live.autoRevealInFlight) return;
+
+  const lockedChoice = getLiveLockedChoice(state.live.session);
+  const correctAnswer = Number(state.live.session.currentQuestion.answer);
+  const missedAnswer = Math.max(
+    0,
+    state.live.session.currentQuestion.choices.findIndex(
+      (_choice, index) => index !== correctAnswer,
+    ),
+  );
+  const selectedAnswer =
+    lockedChoice >= 0 ? lockedChoice : missedAnswer;
+  state.live.autoRevealInFlight = true;
+
+  try {
+    const response = await workerRequest({
+      action: "challenge_host_answer",
+      code: state.live.code,
+      host_key: state.live.hostKey,
+      selected_answer: selectedAnswer,
+    });
+    if (lockedChoice < 0) {
+      setLiveStatus(
+        options.automatic
+          ? "Time expired before an answer was locked. The turn was marked missed so you can move on."
+          : "No answer was locked. The turn was marked missed so you can move on.",
+      );
+    }
+    if (selectedAnswer === state.live.session.currentQuestion.answer) {
+      startBurst();
+    }
+    applyLiveSession(response.session);
+  } catch (error) {
+    window.alert(error.message);
+  } finally {
+    state.live.autoRevealInFlight = false;
+  }
+}
+
 async function hostNextLiveQuestion() {
   try {
     const response = await workerRequest({
@@ -989,6 +1121,7 @@ async function hostNextLiveQuestion() {
       host_key: state.live.hostKey,
     });
     state.live.selectedChoice = -1;
+    state.live.autoRevealInFlight = false;
     applyLiveSession(response.session);
   } catch (error) {
     window.alert(error.message);
