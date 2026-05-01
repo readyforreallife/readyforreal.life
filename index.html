@@ -1739,6 +1739,49 @@
         display: grid;
         gap: 10px;
       }
+      .form-grid.two {
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+      }
+      @media (max-width: 640px) {
+        .form-grid.two {
+          grid-template-columns: 1fr;
+        }
+      }
+      .modal-section {
+        border: 1px solid var(--rule);
+        border-radius: 12px;
+        padding: 14px;
+        background: rgba(255, 255, 255, 0.58);
+      }
+      .modal-section legend {
+        padding: 0 6px;
+        color: var(--slate);
+        font-weight: 800;
+        font-size: 13px;
+      }
+      .check-list {
+        display: grid;
+        gap: 8px;
+      }
+      .check-list label {
+        display: flex;
+        align-items: flex-start;
+        gap: 8px;
+        padding: 9px 10px;
+        border: 1px solid var(--rule);
+        border-radius: 10px;
+        background: var(--white);
+        font-size: 13px;
+        line-height: 1.4;
+      }
+      .check-list input {
+        width: auto;
+        margin-top: 2px;
+        flex: 0 0 auto;
+      }
+      .req {
+        color: #9b3d2c;
+      }
       .form-grid label {
         font-weight: 600;
         color: var(--slate);
@@ -3697,28 +3740,144 @@
         <div class="modal-panel">
           <h3 class="modal-title">Get Access</h3>
           <p class="modal-sub">
-            Leave your info so your access can be reviewed. After approval,
-            you can create one portal account with the role assigned by the
-            program admin.
+            Complete the registration and intake details so your access can be
+            reviewed, payment can be matched, and your portal role can be
+            assigned.
           </p>
           <form id="registerForm" novalidate>
             <div class="form-grid">
-              <label for="regName">Full name</label>
-              <input id="regName" name="name" required />
-              <label for="regEmail">Email</label>
-              <input id="regEmail" name="email" type="email" required />
-              <label for="regPhone">Phone (optional)</label>
-              <input id="regPhone" name="phone" />
-              <label for="regGroup">Best fit</label>
-              <select id="regGroup" name="group" required>
-                <option value="">Select one</option>
-                <option>Youth</option>
-                <option>Adult</option>
-                <option>Family</option>
-                <option>Educator</option>
-              </select>
-              <label for="regNotes">Notes (optional)</label>
-              <textarea id="regNotes" name="notes" rows="3"></textarea>
+              <fieldset class="modal-section">
+                <legend>Your Information</legend>
+                <div class="form-grid two">
+                  <label for="regFirstName">First name <span class="req">*</span></label>
+                  <input id="regFirstName" name="first_name" autocomplete="given-name" required />
+                  <label for="regLastName">Last name <span class="req">*</span></label>
+                  <input id="regLastName" name="last_name" autocomplete="family-name" required />
+                  <label for="regEmail">Email <span class="req">*</span></label>
+                  <input id="regEmail" name="email" type="email" autocomplete="email" required />
+                  <label for="regPhone">Phone</label>
+                  <input id="regPhone" name="phone" type="tel" autocomplete="tel" />
+                </div>
+              </fieldset>
+
+              <fieldset class="modal-section">
+                <legend>Role and Organization</legend>
+                <div class="form-grid">
+                  <label for="regRole">Your role <span class="req">*</span></label>
+                  <select id="regRole" name="role" required>
+                    <option value="">Select your role</option>
+                    <option>K-12 Teacher</option>
+                    <option>School Counselor</option>
+                    <option>School Administrator</option>
+                    <option>University / College Instructor</option>
+                    <option>Community Program Facilitator</option>
+                    <option>Youth Organization Leader</option>
+                    <option>Faith Community Leader</option>
+                    <option>Parent / Guardian</option>
+                    <option>Student</option>
+                    <option>Other Educator or Coach</option>
+                  </select>
+                  <label for="regOrg">School or organization <span class="req">*</span></label>
+                  <input id="regOrg" name="organization" placeholder="School, district, organization, or family" required />
+                  <label for="regLocation">City and state</label>
+                  <input id="regLocation" name="location" placeholder="Tooele, Utah" />
+                  <label for="regReferral">How did you hear about us?</label>
+                  <select id="regReferral" name="referral">
+                    <option value="">Select one</option>
+                    <option>Colleague or coworker</option>
+                    <option>School administrator</option>
+                    <option>readyforreal.life website</option>
+                    <option>Social media</option>
+                    <option>Professional conference or event</option>
+                    <option>Word of mouth</option>
+                    <option>Other</option>
+                  </select>
+                </div>
+              </fieldset>
+
+              <fieldset class="modal-section">
+                <legend>Program Details</legend>
+                <label>Implementation track <span class="req">*</span></label>
+                <div class="check-list">
+                  <label><input type="checkbox" name="tracks" value="Grades 7-8" /> Grades 7-8</label>
+                  <label><input type="checkbox" name="tracks" value="Grades 9-12" /> Grades 9-12</label>
+                  <label><input type="checkbox" name="tracks" value="Community Youth" /> Community Youth</label>
+                  <label><input type="checkbox" name="tracks" value="Community Adult" /> Community Adult</label>
+                </div>
+                <div class="form-grid two" style="margin-top: 10px">
+                  <label for="regDelivery">Preferred delivery <span class="req">*</span></label>
+                  <select id="regDelivery" name="delivery" required>
+                    <option value="">Select delivery format</option>
+                    <option>Daily elective (45-60 min)</option>
+                    <option>A/B block (90 min)</option>
+                    <option>Advisory / enrichment block</option>
+                    <option>Community workshop series</option>
+                    <option>Online / hybrid</option>
+                    <option>Not sure yet</option>
+                  </select>
+                  <label for="regStartDate">Anticipated start date</label>
+                  <input id="regStartDate" name="start_date" type="date" />
+                  <label for="regClassSize">Estimated class / group size</label>
+                  <select id="regClassSize" name="class_size">
+                    <option value="">Select one</option>
+                    <option>Under 10</option>
+                    <option>10-15</option>
+                    <option>16-20</option>
+                    <option>21-25</option>
+                    <option>26-30</option>
+                    <option>Over 30</option>
+                  </select>
+                  <label for="regTraining">Teach the Teacher training</label>
+                  <select id="regTraining" name="training">
+                    <option value="">Select one</option>
+                    <option>Yes - fully certified</option>
+                    <option>In progress</option>
+                    <option>Not yet - interested</option>
+                    <option>Requesting training info</option>
+                  </select>
+                </div>
+              </fieldset>
+
+              <fieldset class="modal-section">
+                <legend>Students and Support</legend>
+                <label for="regPopulation">Describe your student or participant population</label>
+                <textarea id="regPopulation" name="population" rows="3"></textarea>
+                <label>Most pressing soft-skill gap</label>
+                <div class="check-list">
+                  <label><input type="checkbox" name="gaps" value="Respectful communication" /> Respectful communication</label>
+                  <label><input type="checkbox" name="gaps" value="Emotional regulation" /> Emotional regulation</label>
+                  <label><input type="checkbox" name="gaps" value="Decision-making under pressure" /> Decision-making under pressure</label>
+                  <label><input type="checkbox" name="gaps" value="Digital citizenship" /> Digital citizenship</label>
+                  <label><input type="checkbox" name="gaps" value="Accountability and repair" /> Accountability and repair</label>
+                  <label><input type="checkbox" name="gaps" value="All of the above" /> All of the above</label>
+                </div>
+                <div class="form-grid two" style="margin-top: 10px">
+                  <label for="regConfidence">Facilitation confidence</label>
+                  <select id="regConfidence" name="confidence">
+                    <option value="">Select one</option>
+                    <option value="1">1 - Not confident</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5 - Very confident</option>
+                  </select>
+                  <label for="regSupport">Support needed most</label>
+                  <select id="regSupport" name="support">
+                    <option value="">Select one</option>
+                    <option>One-on-one coaching call with Michael</option>
+                    <option>Sample lesson plan for my track</option>
+                    <option>Parent / community communication template</option>
+                    <option>Access to full digital curriculum portal</option>
+                    <option>I'm good - just need the materials</option>
+                  </select>
+                </div>
+                <label for="regNotes">Anything else we should know?</label>
+                <textarea id="regNotes" name="notes" rows="3"></textarea>
+              </fieldset>
+
+              <label class="check-list" for="regConsent">
+                <span><input id="regConsent" name="consent" type="checkbox" required /> I understand that submitting this form requests enrollment and that my information will be used to process access and follow up about onboarding.</span>
+              </label>
             </div>
             <div id="registerStatus" class="form-status"></div>
             <div class="modal-actions">
@@ -4233,7 +4392,8 @@
         }
 
         function roleFromRegistrationGroup(group) {
-          return String(group || "").toLowerCase() === "educator"
+          const value = String(group || "").toLowerCase();
+          return /teacher|counselor|administrator|instructor|facilitator|leader|educator|coach/.test(value)
             ? "instructor"
             : "student";
         }
@@ -4241,7 +4401,9 @@
         async function submitPortalRegistration(payload) {
           const notes = [
             payload.phone ? `Phone: ${payload.phone}` : "",
-            payload.group ? `Best fit: ${payload.group}` : "",
+            payload.group ? `Role / Track: ${payload.group}` : "",
+            payload.organization ? `Organization: ${payload.organization}` : "",
+            payload.details ? payload.details : "",
             payload.notes ? `Notes: ${payload.notes}` : "",
           ]
             .filter(Boolean)
@@ -4494,26 +4656,87 @@
             registerSubmitBtn.style.cursor = "not-allowed";
           }
           const formData = new FormData(registerForm);
+          const tracks = formData.getAll("tracks").map(String).filter(Boolean);
+          const gaps = formData.getAll("gaps").map(String).filter(Boolean);
+          const firstName = String(formData.get("first_name") || "").trim();
+          const lastName = String(formData.get("last_name") || "").trim();
+          const role = String(formData.get("role") || "").trim();
+          const organization = String(formData.get("organization") || "").trim();
+          const delivery = String(formData.get("delivery") || "").trim();
+          const details = [
+            `Location: ${String(formData.get("location") || "").trim() || "—"}`,
+            `Referral: ${String(formData.get("referral") || "").trim() || "—"}`,
+            `Tracks: ${tracks.join(", ") || "—"}`,
+            `Delivery: ${delivery || "—"}`,
+            `Start Date: ${String(formData.get("start_date") || "").trim() || "—"}`,
+            `Class Size: ${String(formData.get("class_size") || "").trim() || "—"}`,
+            `Training Status: ${String(formData.get("training") || "").trim() || "—"}`,
+            `Population: ${String(formData.get("population") || "").trim() || "—"}`,
+            `Gaps Identified: ${gaps.join(", ") || "—"}`,
+            `Facilitation Confidence: ${String(formData.get("confidence") || "").trim() || "—"}`,
+            `Support Needed: ${String(formData.get("support") || "").trim() || "—"}`,
+            `Consent Given: ${formData.get("consent") ? "Yes" : "No"}`,
+          ].join("\n");
           const payload = {
             action: "registration_submit",
             type: "registration",
             event: "registration",
-            form: "register_now",
-            name: String(formData.get("name") || "").trim(),
+            form: "main_get_access_intake",
+            registration_kind: "mmmf",
+            name: `${firstName} ${lastName}`.trim(),
             email: String(formData.get("email") || "").trim(),
             phone: String(formData.get("phone") || "").trim(),
-            group: String(formData.get("group") || "").trim(),
+            group: [role, tracks.join(", ")].filter(Boolean).join(" | "),
+            role,
+            organization,
+            location: String(formData.get("location") || "").trim(),
+            referral: String(formData.get("referral") || "").trim(),
+            tracks: tracks.join(", "),
+            delivery,
+            start_date: String(formData.get("start_date") || "").trim(),
+            class_size: String(formData.get("class_size") || "").trim(),
+            training: String(formData.get("training") || "").trim(),
+            population: String(formData.get("population") || "").trim(),
+            gaps: gaps.join(", "),
+            confidence: String(formData.get("confidence") || "").trim(),
+            support: String(formData.get("support") || "").trim(),
+            details,
             notes: String(formData.get("notes") || "").trim(),
             timestamp: new Date().toISOString(),
           };
           payload.program = "Ready for Real Life Instruction and Education";
-          payload.organization = "";
           payload.details_json = JSON.stringify({
-            source: "website-register-modal",
-            bestFit: payload.group,
+            source: "main-get-access-intake",
+            role,
+            organization,
+            location: payload.location,
+            referral: payload.referral,
+            tracks: payload.tracks,
+            delivery: payload.delivery,
+            startDate: payload.start_date,
+            classSize: payload.class_size,
+            training: payload.training,
+            population: payload.population,
+            gaps: payload.gaps,
+            confidence: payload.confidence,
+            support: payload.support,
+            extraNotes: payload.notes,
+            consent: !!formData.get("consent"),
           });
-          if (!payload.name || !payload.email || !payload.group) {
-            showStatus("Please complete name, email, and best fit.", true);
+          if (
+            !firstName ||
+            !lastName ||
+            !payload.email ||
+            !role ||
+            !organization ||
+            !tracks.length ||
+            !delivery ||
+            !formData.get("consent")
+          ) {
+            showStatus(
+              "Please complete first name, last name, email, role, organization, track, delivery, and consent.",
+              true,
+            );
             registerSubmitting = false;
             if (registerSubmitBtn) {
               registerSubmitBtn.disabled = false;
