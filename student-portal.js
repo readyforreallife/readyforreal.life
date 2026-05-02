@@ -976,6 +976,22 @@ const courseRoadmapLabel = document.getElementById("courseRoadmapLabel");
 const courseRoadmapTitle = document.getElementById("courseRoadmapTitle");
 const courseRoadmapCopy = document.getElementById("courseRoadmapCopy");
 const courseRoadmapList = document.getElementById("courseRoadmapList");
+const classroomSearchInput = document.getElementById("classroomSearchInput");
+const classroomWeekNavList = document.getElementById("classroomWeekNavList");
+const classroomWeekCount = document.getElementById("classroomWeekCount");
+const classroomAssignmentCount = document.getElementById("classroomAssignmentCount");
+const classroomDocumentCount = document.getElementById("classroomDocumentCount");
+const classroomFileCount = document.getElementById("classroomFileCount");
+const classroomFeedbackCount = document.getElementById("classroomFeedbackCount");
+const classroomCommunityCount = document.getElementById("classroomCommunityCount");
+const classroomResourceCount = document.getElementById("classroomResourceCount");
+const classroomProgressPercent = document.getElementById("classroomProgressPercent");
+const classroomProgressText = document.getElementById("classroomProgressText");
+const classroomAssignmentTotal = document.getElementById("classroomAssignmentTotal");
+const classroomDocumentTotal = document.getElementById("classroomDocumentTotal");
+const classroomFeedbackTotal = document.getElementById("classroomFeedbackTotal");
+const expandRoadmapBtn = document.getElementById("expandRoadmapBtn");
+const collapseRoadmapBtn = document.getElementById("collapseRoadmapBtn");
 const bioSectionLabel = document.getElementById("bioSectionLabel");
 const bioSectionTitle = document.getElementById("bioSectionTitle");
 const bioSectionCopy = document.getElementById("bioSectionCopy");
@@ -1295,7 +1311,7 @@ function renderCourseRoadmap(role) {
     (week, index) => {
       const guide = STUDENT_WEEK_GUIDES[week.week];
       return `
-      <details class="week-card" ${index === 0 ? "open" : ""}>
+      <details class="week-card" id="classroom-week-${week.week}" ${index === 0 ? "open" : ""}>
         <summary class="week-head">
           <div>
             <div class="mini-label">${escapeHtml(week.module)}</div>
@@ -1416,6 +1432,70 @@ function computeProgress(assignments, workbookEntries, documentSubmissions = [])
     total,
     percent: Math.round((completed / total) * 100),
   };
+}
+
+function countReviewedItems(assignments, documentSubmissions) {
+  const reviewedAssignments = assignments.filter(
+    (assignment) => assignment.review_status !== "Not reviewed",
+  ).length;
+  const reviewedDocuments = documentSubmissions.filter(
+    (submission) =>
+      submission.owner_feedback ||
+      submission.owner_score ||
+      ["needs_revision", "approved", "returned"].includes(submission.status),
+  ).length;
+  return reviewedAssignments + reviewedDocuments;
+}
+
+function renderClassroomDashboard(progress, profile) {
+  const reviewedCount = countReviewedItems(state.assignments, state.documentSubmissions);
+
+  if (classroomWeekCount) classroomWeekCount.textContent = String(COURSE_WEEKS.length);
+  if (classroomAssignmentCount) classroomAssignmentCount.textContent = String(state.assignments.length);
+  if (classroomDocumentCount) classroomDocumentCount.textContent = String(state.documentSubmissions.length);
+  if (classroomFileCount) classroomFileCount.textContent = String(state.files.length);
+  if (classroomFeedbackCount) classroomFeedbackCount.textContent = String(reviewedCount);
+  if (classroomCommunityCount) classroomCommunityCount.textContent = String(state.communityProfiles.length);
+  if (classroomResourceCount) classroomResourceCount.textContent = String(DEFAULT_RESOURCES.length);
+
+  if (classroomProgressPercent) classroomProgressPercent.textContent = `${progress.percent}%`;
+  if (classroomProgressText) {
+    classroomProgressText.textContent = `${progress.completed} of ${progress.total} milestones complete`;
+  }
+  if (classroomAssignmentTotal) classroomAssignmentTotal.textContent = String(state.assignments.length);
+  if (classroomDocumentTotal) classroomDocumentTotal.textContent = String(state.documentSubmissions.length);
+  if (classroomFeedbackTotal) classroomFeedbackTotal.textContent = String(reviewedCount);
+
+  if (classroomWeekNavList) {
+    classroomWeekNavList.innerHTML = COURSE_WEEKS.map(
+      (week) => `
+        <a href="#classroom-week-${week.week}" data-classroom-week-link="${week.week}">
+          <span>Week ${week.week}</span>
+          <span aria-hidden="true">${week.week === 1 ? "✓" : "•"}</span>
+        </a>
+      `,
+    ).join("");
+  }
+
+  const searchValue = classroomSearchInput?.value?.trim().toLowerCase() || "";
+  if (searchValue) {
+    filterClassroomWeeks(searchValue);
+  }
+
+  document.body.dataset.portalRole = profile.role || "student";
+}
+
+function filterClassroomWeeks(query) {
+  courseRoadmapList?.querySelectorAll(".week-card").forEach((card) => {
+    const text = card.textContent.toLowerCase();
+    card.hidden = Boolean(query) && !text.includes(query);
+  });
+
+  classroomWeekNavList?.querySelectorAll("a").forEach((link) => {
+    const weekId = link.getAttribute("data-classroom-week-link");
+    const card = weekId ? document.getElementById(`classroom-week-${weekId}`) : null;
+    link.hidden = Boolean(card?.hidden);
+  });
 }
 
 function initializeSupabaseClient() {
@@ -1819,6 +1899,7 @@ function renderPortal(options = {}) {
     profileImageNote.textContent = roleCopy.imageNote;
   }
   renderCourseRoadmap(profile.role);
+  renderClassroomDashboard(progress, profile);
   renderProfileImage(state.communityProfile || profile);
 
   bioProudInput.value = profile.bio_proud || "";
@@ -2846,6 +2927,22 @@ uploadProfileImageBtn.addEventListener("click", async () => {
 });
 
 documentSubmissionTemplate?.addEventListener("change", renderDocumentSubmissionFields);
+
+classroomSearchInput?.addEventListener("input", () => {
+  filterClassroomWeeks(classroomSearchInput.value.trim().toLowerCase());
+});
+
+expandRoadmapBtn?.addEventListener("click", () => {
+  courseRoadmapList?.querySelectorAll("details.week-card").forEach((card) => {
+    card.open = true;
+  });
+});
+
+collapseRoadmapBtn?.addEventListener("click", () => {
+  courseRoadmapList?.querySelectorAll("details.week-card").forEach((card, index) => {
+    card.open = index === 0;
+  });
+});
 
 documentSubmissionForm?.addEventListener("submit", async (event) => {
   try {

@@ -459,6 +459,260 @@
         display: block;
       }
 
+      .classroom-portal {
+        margin-top: 26px;
+      }
+
+      .classroom-hero {
+        padding: 0;
+        overflow: hidden;
+        border-color: rgba(200, 155, 60, 0.25);
+      }
+
+      .classroom-hero-top {
+        display: grid;
+        gap: 18px;
+        grid-template-columns: minmax(0, 1fr) minmax(260px, 380px);
+        align-items: end;
+        padding: 28px;
+        background:
+          radial-gradient(circle at 12% 16%, rgba(255, 255, 255, 0.14), transparent 24%),
+          linear-gradient(135deg, #142946 0%, #1d3c62 58%, #255c67 100%);
+        color: #fff;
+      }
+
+      .classroom-hero h2 {
+        margin: 8px 0 0;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2.35rem, 5vw, 4.4rem);
+        line-height: 0.98;
+        color: #fff;
+      }
+
+      .classroom-hero p {
+        margin: 14px 0 0;
+        max-width: 860px;
+        color: rgba(255, 255, 255, 0.9);
+        line-height: 1.65;
+      }
+
+      .classroom-hero-actions,
+      .classroom-tabs,
+      .classroom-stat-grid {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+
+      .classroom-tabs {
+        padding: 14px 28px;
+        border-top: 3px solid var(--gold);
+        background: rgba(255, 250, 242, 0.96);
+      }
+
+      .classroom-tab {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 40px;
+        padding: 0 14px;
+        border-radius: 999px;
+        border: 1px solid rgba(24, 48, 79, 0.1);
+        background: #fff;
+        color: var(--navy);
+        font-weight: 800;
+        text-decoration: none;
+        box-shadow: 0 8px 18px rgba(24, 48, 79, 0.06);
+      }
+
+      .classroom-tab.primary-tab {
+        background: var(--navy);
+        color: #fff;
+      }
+
+      .classroom-progress-panel {
+        padding: 18px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.14);
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        color: #fff;
+      }
+
+      .classroom-progress-panel strong,
+      .classroom-progress-panel span {
+        color: #fff;
+      }
+
+      .classroom-progress-panel .progress-track {
+        background: rgba(255, 255, 255, 0.24);
+      }
+
+      .classroom-progress-panel .progress-fill {
+        background: linear-gradient(90deg, #f0c45a 0%, #7cc6c4 100%);
+      }
+
+      .classroom-layout {
+        display: grid;
+        grid-template-columns: minmax(240px, 290px) minmax(0, 1fr);
+        gap: 18px;
+        align-items: start;
+        margin-top: 18px;
+      }
+
+      .classroom-sidebar {
+        position: sticky;
+        top: 18px;
+        padding: 18px;
+        border-radius: 22px;
+        background: rgba(255, 255, 255, 0.92);
+        border: 1px solid rgba(24, 48, 79, 0.08);
+        box-shadow: 0 18px 38px rgba(24, 48, 79, 0.08);
+      }
+
+      .classroom-search {
+        display: grid;
+        gap: 8px;
+        padding: 14px;
+        border-radius: 18px;
+        background: rgba(24, 48, 79, 0.04);
+        border: 1px solid rgba(24, 48, 79, 0.08);
+      }
+
+      .classroom-search input {
+        min-height: 42px;
+      }
+
+      .classroom-nav {
+        display: grid;
+        gap: 8px;
+        margin-top: 16px;
+      }
+
+      .classroom-nav a {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: 10px;
+        align-items: center;
+        min-height: 42px;
+        padding: 0 12px;
+        border-radius: 14px;
+        color: var(--navy);
+        text-decoration: none;
+        font-weight: 800;
+      }
+
+      .classroom-nav a:hover,
+      .classroom-nav a:focus-visible {
+        background: rgba(24, 48, 79, 0.07);
+      }
+
+      .classroom-nav-count {
+        display: inline-grid;
+        place-items: center;
+        min-width: 26px;
+        height: 26px;
+        padding: 0 8px;
+        border-radius: 999px;
+        background: rgba(24, 48, 79, 0.1);
+        color: var(--navy);
+        font-size: 12px;
+      }
+
+      .classroom-week-nav {
+        display: grid;
+        gap: 2px;
+        margin-top: 12px;
+        max-height: 420px;
+        overflow: auto;
+        padding-right: 2px;
+      }
+
+      .classroom-week-nav a {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        align-items: center;
+        gap: 8px;
+        min-height: 38px;
+        padding: 0 10px;
+        border-radius: 12px;
+        color: var(--muted);
+        text-decoration: none;
+        font-weight: 700;
+      }
+
+      .classroom-week-nav a:first-child {
+        color: var(--navy);
+        background: rgba(200, 155, 60, 0.12);
+      }
+
+      .classroom-main {
+        display: grid;
+        gap: 18px;
+        min-width: 0;
+      }
+
+      .classroom-section {
+        padding: 22px;
+      }
+
+      .classroom-section-head {
+        display: flex;
+        justify-content: space-between;
+        align-items: flex-start;
+        gap: 14px;
+        margin-bottom: 16px;
+      }
+
+      .classroom-section h3 {
+        margin: 0;
+      }
+
+      .classroom-section-copy {
+        margin: 8px 0 0;
+        color: var(--muted);
+        line-height: 1.65;
+      }
+
+      .classroom-stat-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .classroom-stat-card {
+        padding: 16px;
+        border-radius: 18px;
+        background: rgba(24, 48, 79, 0.055);
+        border: 1px solid rgba(24, 48, 79, 0.08);
+      }
+
+      .classroom-stat-card strong {
+        display: block;
+        color: var(--navy);
+        font-size: 1.65rem;
+        font-family: "Playfair Display", serif;
+      }
+
+      .classroom-two-col {
+        display: grid;
+        grid-template-columns: minmax(280px, 0.88fr) minmax(0, 1.12fr);
+        gap: 18px;
+      }
+
+      .classroom-subpanel {
+        padding: 18px;
+        border-radius: 22px;
+        border: 1px solid rgba(24, 48, 79, 0.08);
+        background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 247, 242, 0.95));
+      }
+
+      .classroom-toolbar {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+      }
+
       .portal-shell.instructor-view .welcome-banner {
         background:
           radial-gradient(circle at 8% 16%, rgba(255, 255, 255, 0.18), transparent 20%),
@@ -1261,6 +1515,9 @@
       @media (max-width: 960px) {
         .hero-grid,
         .portal-grid,
+        .classroom-hero-top,
+        .classroom-layout,
+        .classroom-two-col,
         .teacher-grid,
         .welcome-grid,
         .sample-grid,
@@ -1269,6 +1526,14 @@
         .community-grid,
         .identity-modal-grid {
           grid-template-columns: 1fr;
+        }
+
+        .classroom-sidebar {
+          position: static;
+        }
+
+        .classroom-stat-grid {
+          grid-template-columns: repeat(2, minmax(0, 1fr));
         }
       }
 
@@ -1281,10 +1546,30 @@
         .hero-panel,
         .login-panel,
         .section-card,
+        .classroom-section,
+        .classroom-sidebar,
         .welcome-banner,
         .teacher-workspace {
           padding: 20px;
           border-radius: 24px;
+        }
+
+        .classroom-hero-top {
+          padding: 22px;
+        }
+
+        .classroom-tabs {
+          padding: 12px;
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+        }
+
+        .classroom-tab {
+          width: 100%;
+        }
+
+        .classroom-stat-grid {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -1498,237 +1783,300 @@
         </section>
       </section>
 
-      <section class="portal-shell" id="studentPortal">
-        <section class="welcome-banner panel">
-          <div class="welcome-grid">
+      <section class="portal-shell classroom-portal" id="studentPortal">
+        <section class="classroom-hero panel" id="classroom-overview">
+          <div class="classroom-hero-top">
             <div>
               <div class="mini-label" id="welcomeCohort">Pioneer Cohort</div>
               <h2 id="welcomeTitle">Welcome back.</h2>
               <p id="welcomeCopy"></p>
               <div class="welcome-meta" id="welcomeMeta"></div>
-              <div class="assignment-actions" style="margin-top: 18px">
-                <button class="btn ghost" id="studentLogoutBtn" type="button">
-                  Log Out
-                </button>
-                <button class="btn danger" id="deleteAccountBtn" type="button">
-                  Delete My Account
-                </button>
+              <div class="classroom-hero-actions" style="margin-top: 18px">
+                <button class="btn ghost" id="studentLogoutBtn" type="button">Log Out</button>
+                <button class="btn danger" id="deleteAccountBtn" type="button">Delete My Account</button>
               </div>
               <div class="status-line" id="accountStatus"></div>
             </div>
-            <div class="welcome-side">
+            <aside class="classroom-progress-panel">
               <div class="welcome-identity">
-                <img
-                  id="welcomeProfileImage"
-                  class="welcome-profile-photo"
-                  alt="Your profile photo"
-                  hidden
-                />
-                <div
-                  id="welcomeProfileFallback"
-                  class="welcome-profile-photo welcome-profile-fallback"
-                  aria-label="Profile image placeholder"
-                >
-                  🚀
-                </div>
-                <button class="welcome-profile-edit" id="editWelcomeProfileBtn" type="button">
-                  Edit My Image
-                </button>
+                <img id="welcomeProfileImage" class="welcome-profile-photo" alt="Your profile photo" hidden />
+                <div id="welcomeProfileFallback" class="welcome-profile-photo welcome-profile-fallback" aria-label="Profile image placeholder">🚀</div>
+                <button class="welcome-profile-edit" id="editWelcomeProfileBtn" type="button">Edit My Image</button>
               </div>
               <strong id="identityCardName">Student Name</strong>
               <p id="identityCardTrack" class="subtle"></p>
-              <div class="progress-card">
+              <div style="margin-top: 14px">
                 <div class="mini-label">Course Progress</div>
-                <div id="progressSummary">0 of 0 items complete</div>
+                <div id="progressSummary">0 of 0 milestones complete</div>
                 <div class="progress-track">
                   <div class="progress-fill" id="progressFill"></div>
                 </div>
               </div>
-            </div>
+            </aside>
           </div>
+          <nav class="classroom-tabs" aria-label="Classroom sections">
+            <a class="classroom-tab primary-tab" href="#classroom-contents">Content</a>
+            <a class="classroom-tab" href="#classroom-assignments">Assignments</a>
+            <a class="classroom-tab" href="#classroom-documents">Document Studio</a>
+            <a class="classroom-tab" href="#classroom-submissions">Submissions</a>
+            <a class="classroom-tab" href="#classroom-grades">Grades</a>
+            <a class="classroom-tab" href="#classroom-community">Classlist</a>
+            <a class="classroom-tab" href="#classroom-resources">Resources</a>
+          </nav>
         </section>
 
-        <section class="section-card panel roadmap-card">
-          <div class="mini-label" id="courseRoadmapLabel">16-Week Roadmap</div>
-          <h3 id="courseRoadmapTitle">Your full semester path</h3>
-          <p id="courseRoadmapCopy">
-            See the full 16-week flow, what this role is responsible for each
-            week, and how the course builds from module to module.
-          </p>
-          <div class="roadmap-grid" id="courseRoadmapList"></div>
-        </section>
+        <div class="classroom-layout">
+          <aside class="classroom-sidebar" aria-label="Course menu">
+            <label class="classroom-search">
+              <span class="mini-label">Search topics</span>
+              <input id="classroomSearchInput" type="search" placeholder="Search weeks, work, documents..." />
+            </label>
+            <nav class="classroom-nav">
+              <a href="#classroom-overview">Overview <span class="classroom-nav-count">1</span></a>
+              <a href="#classroom-contents">Table of Contents <span class="classroom-nav-count" id="classroomWeekCount">16</span></a>
+              <a href="#classroom-assignments">Assignments <span class="classroom-nav-count" id="classroomAssignmentCount">0</span></a>
+              <a href="#classroom-documents">Document Studio <span class="classroom-nav-count" id="classroomDocumentCount">0</span></a>
+              <a href="#classroom-submissions">Submissions <span class="classroom-nav-count" id="classroomFileCount">0</span></a>
+              <a href="#classroom-grades">Grades & Feedback <span class="classroom-nav-count" id="classroomFeedbackCount">0</span></a>
+              <a href="#classroom-community">Classlist <span class="classroom-nav-count" id="classroomCommunityCount">0</span></a>
+              <a href="#classroom-resources">Resources <span class="classroom-nav-count" id="classroomResourceCount">0</span></a>
+            </nav>
+            <div class="mini-label" style="margin-top: 18px">Course schedule</div>
+            <div class="classroom-week-nav" id="classroomWeekNavList"></div>
+          </aside>
 
-        <div class="portal-grid">
-          <section class="section-card panel">
-            <div class="mini-label" id="bioSectionLabel">Personal Bio</div>
-            <h3 id="bioSectionTitle">Your story matters here</h3>
-            <p id="bioSectionCopy">
-              This is the profile your teacher can see while reviewing your work.
-              Use it to share what drives you, where you want to grow, and what
-              support helps you do your best.
-            </p>
-            <div class="identity-profile">
-              <div class="identity-avatar-card">
-                <img id="profileImagePreview" class="profile-avatar" alt="Your profile photo" hidden />
-                <div
-                  id="profileImageFallback"
-                  class="profile-avatar profile-avatar-fallback"
-                  aria-label="Profile image placeholder"
-                >
-                  🚀
+          <div class="classroom-main">
+            <section class="classroom-section panel" id="classroom-dashboard">
+              <div class="classroom-section-head">
+                <div>
+                  <div class="mini-label">Classroom Home</div>
+                  <h3>Today’s dashboard</h3>
+                  <p class="classroom-section-copy">
+                    Start here, then move through content, assignments, submissions, and feedback.
+                  </p>
                 </div>
-                <div class="identity-note" id="profileImageNote">
-                  Add a current photo so your page feels personal and other enrolled users can recognize you.
+              </div>
+              <div class="classroom-stat-grid">
+                <div class="classroom-stat-card">
+                  <div class="mini-label">Progress</div>
+                  <strong id="classroomProgressPercent">0%</strong>
+                  <span id="classroomProgressText">0 of 0 complete</span>
                 </div>
+                <div class="classroom-stat-card">
+                  <div class="mini-label">Assignments</div>
+                  <strong id="classroomAssignmentTotal">0</strong>
+                  <span>Current work items</span>
+                </div>
+                <div class="classroom-stat-card">
+                  <div class="mini-label">Documents</div>
+                  <strong id="classroomDocumentTotal">0</strong>
+                  <span>Submitted forms</span>
+                </div>
+                <div class="classroom-stat-card">
+                  <div class="mini-label">Feedback</div>
+                  <strong id="classroomFeedbackTotal">0</strong>
+                  <span>Reviewed items</span>
+                </div>
+              </div>
+            </section>
+
+            <section class="classroom-section panel roadmap-card" id="classroom-contents">
+              <div class="classroom-section-head">
+                <div>
+                  <div class="mini-label" id="courseRoadmapLabel">16-Week Roadmap</div>
+                  <h3 id="courseRoadmapTitle">Table of Contents</h3>
+                  <p class="classroom-section-copy" id="courseRoadmapCopy">
+                    See each week, what to learn, what to do, and what to submit.
+                  </p>
+                </div>
+                <div class="classroom-toolbar">
+                  <button class="btn secondary" id="expandRoadmapBtn" type="button">Expand All</button>
+                  <button class="btn secondary" id="collapseRoadmapBtn" type="button">Collapse All</button>
+                </div>
+              </div>
+              <div class="roadmap-grid" id="courseRoadmapList"></div>
+            </section>
+
+            <section class="classroom-section panel" id="classroom-assignments">
+              <div class="classroom-section-head">
+                <div>
+                  <div class="mini-label" id="assignmentSectionLabel">Mission Hub</div>
+                  <h3 id="assignmentSectionTitle">Assignments and growth path</h3>
+                  <p class="classroom-section-copy" id="assignmentSectionCopy">
+                    Complete work, save drafts, and mark ready for review.
+                  </p>
+                </div>
+              </div>
+              <div class="classroom-two-col">
+                <section class="classroom-subpanel">
+                  <div class="mini-label">Current work</div>
+                  <div class="section-grid" id="assignmentList"></div>
+                </section>
+                <section class="classroom-subpanel">
+                  <div class="mini-label" id="workbookSectionLabel">Workbook Studio</div>
+                  <h3 id="workbookSectionTitle">Workbook and reflections</h3>
+                  <p class="classroom-section-copy" id="workbookSectionCopy">
+                    Write and revise reflections that show growth over time.
+                  </p>
+                  <div class="section-grid" id="workbookList"></div>
+                </section>
+              </div>
+            </section>
+
+            <section class="classroom-section panel" id="classroom-profile">
+              <div class="classroom-section-head">
+                <div>
+                  <div class="mini-label" id="bioSectionLabel">Personal Bio</div>
+                  <h3 id="bioSectionTitle">Your story matters here</h3>
+                  <p class="classroom-section-copy" id="bioSectionCopy">
+                    Share what drives you, where you want to grow, and what support helps.
+                  </p>
+                </div>
+              </div>
+              <div class="classroom-two-col">
+                <section class="classroom-subpanel">
+                  <div class="identity-profile">
+                    <div class="identity-avatar-card">
+                      <img id="profileImagePreview" class="profile-avatar" alt="Your profile photo" hidden />
+                      <div id="profileImageFallback" class="profile-avatar profile-avatar-fallback" aria-label="Profile image placeholder">🚀</div>
+                      <div class="identity-note" id="profileImageNote">
+                        Add a current photo so enrolled users can recognize you.
+                      </div>
+                      <label>
+                        Profile image
+                        <input id="profileImageInput" type="file" accept="image/*" />
+                      </label>
+                      <div class="assignment-actions">
+                        <button class="btn secondary" id="uploadProfileImageBtn" type="button">Save Profile Image</button>
+                      </div>
+                      <div class="status-line" id="profileImageStatus"></div>
+                    </div>
+                  </div>
+                </section>
+                <section class="classroom-subpanel">
+                  <form class="stack" id="bioForm">
+                    <label>
+                      What are you proud to be building in your life right now?
+                      <textarea id="bioProudInput"></textarea>
+                    </label>
+                    <label>
+                      Future goal or dream
+                      <textarea id="bioGoalInput"></textarea>
+                    </label>
+                    <label>
+                      Strengths you want your teacher to know
+                      <textarea id="bioStrengthsInput"></textarea>
+                    </label>
+                    <label>
+                      Support that helps you succeed
+                      <textarea id="bioSupportInput"></textarea>
+                    </label>
+                    <button class="btn primary" type="submit">Save My Bio</button>
+                    <div class="status-line" id="bioStatus"></div>
+                  </form>
+                  <div class="progress-card">
+                    <div class="mini-label">Teacher Snapshot</div>
+                    <div id="bioPreview" class="empty">
+                      Save your bio to create your teacher-facing summary.
+                    </div>
+                  </div>
+                </section>
+              </div>
+            </section>
+
+            <section class="classroom-section panel" id="classroom-documents">
+              <div class="classroom-section-head">
+                <div>
+                  <div class="mini-label">Document Submission Studio</div>
+                  <h3>Forms, workbook pages, surveys, and document responses</h3>
+                  <p class="classroom-section-copy">
+                    Complete anything that asks you to write, select, check, reflect, or submit work.
+                    Each submission is labeled with your account for owner/instructor review.
+                  </p>
+                </div>
+              </div>
+              <form class="stack" id="documentSubmissionForm">
                 <label>
-                  Profile image
-                  <input id="profileImageInput" type="file" accept="image/*" />
+                  Document or form
+                  <select id="documentSubmissionTemplate"></select>
+                </label>
+                <div class="section-grid" id="documentSubmissionFields"></div>
+                <label>
+                  Additional notes or context
+                  <textarea id="documentSubmissionNotes" placeholder="Add anything the reviewer should know."></textarea>
                 </label>
                 <div class="assignment-actions">
-                  <button class="btn secondary" id="uploadProfileImageBtn" type="button">
-                    Save Profile Image
-                  </button>
+                  <button class="btn primary" type="submit">Submit Document for Review</button>
                 </div>
-                <div class="status-line" id="profileImageStatus"></div>
+                <div class="status-line" id="documentSubmissionStatus"></div>
+              </form>
+              <div style="margin-top: 18px">
+                <div class="mini-label">Your submitted documents</div>
+                <div class="section-grid" id="documentSubmissionList"></div>
               </div>
-            </div>
-            <form class="stack" id="bioForm">
-              <label>
-                What are you proud to be building in your life right now?
-                <textarea id="bioProudInput"></textarea>
-              </label>
-              <label>
-                Future goal or dream
-                <textarea id="bioGoalInput"></textarea>
-              </label>
-              <label>
-                Strengths you want your teacher to know
-                <textarea id="bioStrengthsInput"></textarea>
-              </label>
-              <label>
-                Support that helps you succeed
-                <textarea id="bioSupportInput"></textarea>
-              </label>
-              <button class="btn primary" type="submit">Save My Bio</button>
-              <div class="status-line" id="bioStatus"></div>
-            </form>
+            </section>
 
-            <div class="progress-card">
-              <div class="mini-label">Teacher Snapshot</div>
-              <div id="bioPreview" class="empty">
-                Save your bio to create your teacher-facing summary.
+            <section class="classroom-section panel" id="classroom-submissions">
+              <div class="classroom-section-head">
+                <div>
+                  <div class="mini-label" id="fileSectionLabel">Private File Vault</div>
+                  <h3 id="fileSectionTitle">Submissions and uploads</h3>
+                  <p class="classroom-section-copy" id="fileSectionCopy">
+                    Upload private files to your own storage space.
+                  </p>
+                </div>
               </div>
-            </div>
-          </section>
+              <label>
+                Choose file
+                <input id="fileUploadInput" type="file" />
+              </label>
+              <div class="assignment-actions">
+                <button class="btn primary" id="uploadFileBtn" type="button">Upload File</button>
+              </div>
+              <div class="status-line" id="fileUploadStatus"></div>
+              <div class="section-grid" id="fileList"></div>
+            </section>
 
-          <section class="section-card panel">
-            <div class="mini-label" id="assignmentSectionLabel">Mission Hub</div>
-            <h3 id="assignmentSectionTitle">Your assignments and growth path</h3>
-            <p id="assignmentSectionCopy">
-              Complete work here, mark it ready for review, and come back to see
-              teacher scoring, encouragement, and next-step coaching.
-            </p>
-            <div class="section-grid" id="assignmentList"></div>
-          </section>
-        </div>
+            <section class="classroom-section panel" id="classroom-grades">
+              <div class="classroom-section-head">
+                <div>
+                  <div class="mini-label" id="feedbackSectionLabel">Grades & Feedback</div>
+                  <h3 id="feedbackSectionTitle">Saved feedback and review history</h3>
+                  <p class="classroom-section-copy" id="feedbackSectionCopy">
+                    Any feedback stored on your account lives here.
+                  </p>
+                </div>
+              </div>
+              <div class="section-grid" id="feedbackList"></div>
+            </section>
 
-        <div class="portal-grid" style="margin-top: 18px">
-          <section class="section-card panel">
-            <div class="mini-label" id="workbookSectionLabel">Workbook Studio</div>
-            <h3 id="workbookSectionTitle">Reflection and workbook prompts</h3>
-            <p id="workbookSectionCopy">
-              Students should be able to open the workbook right where they log
-              in. This version keeps those reflections in one place so they can
-              write, revise, and build evidence of growth over time.
-            </p>
-            <div class="section-grid" id="workbookList"></div>
-          </section>
+            <section class="classroom-section panel" id="classroom-community">
+              <div class="classroom-section-head">
+                <div>
+                  <div class="mini-label" id="communitySectionLabel">Classlist</div>
+                  <h3 id="communitySectionTitle">The people enrolled in this program</h3>
+                  <p class="classroom-section-copy" id="communitySectionCopy">
+                    See enrolled students and instructors and the introductions they chose to share.
+                  </p>
+                </div>
+              </div>
+              <div class="community-grid" id="communityDirectoryList"></div>
+            </section>
 
-          <section class="section-card panel">
-            <div class="mini-label" id="resourceSectionLabel">Success Resources</div>
-            <h3 id="resourceSectionTitle">Guides, manuals, and tools</h3>
-            <p id="resourceSectionCopy">
-              Everything students need to succeed should feel close, not hidden.
-              These links can later point to protected files, lesson manuals, and
-              licensed workbook downloads.
-            </p>
-            <div class="resource-grid" id="resourceList"></div>
-          </section>
-        </div>
-
-        <section class="section-card panel" style="margin-top: 18px">
-          <div class="mini-label">Document Submission Studio</div>
-          <h3>Complete forms, workbook pages, surveys, and document responses</h3>
-          <p>
-            Use this app-ready workspace for any program document that asks you
-            to write, select, check, reflect, or submit work. Each submission is
-            labeled with your account and sent to the owner/instructor review
-            inbox.
-          </p>
-          <form class="stack" id="documentSubmissionForm">
-            <label>
-              Document or form
-              <select id="documentSubmissionTemplate"></select>
-            </label>
-            <div class="section-grid" id="documentSubmissionFields"></div>
-            <label>
-              Additional notes or context
-              <textarea
-                id="documentSubmissionNotes"
-                placeholder="Add anything the reviewer should know."
-              ></textarea>
-            </label>
-            <div class="assignment-actions">
-              <button class="btn primary" type="submit">
-                Submit Document for Review
-              </button>
-            </div>
-            <div class="status-line" id="documentSubmissionStatus"></div>
-          </form>
-          <div style="margin-top: 18px">
-            <div class="mini-label">Your submitted documents</div>
-            <div class="section-grid" id="documentSubmissionList"></div>
+            <section class="classroom-section panel" id="classroom-resources">
+              <div class="classroom-section-head">
+                <div>
+                  <div class="mini-label" id="resourceSectionLabel">Success Resources</div>
+                  <h3 id="resourceSectionTitle">Guides, manuals, and tools</h3>
+                  <p class="classroom-section-copy" id="resourceSectionCopy">
+                    Everything students and instructors need should feel close, not hidden.
+                  </p>
+                </div>
+              </div>
+              <div class="resource-grid" id="resourceList"></div>
+            </section>
           </div>
-        </section>
-
-        <section class="section-card panel" style="margin-top: 18px">
-          <div class="mini-label" id="fileSectionLabel">Private File Vault</div>
-          <h3 id="fileSectionTitle">Your files and uploads</h3>
-          <p id="fileSectionCopy">
-            Upload private files to your own storage space. Only your logged-in
-            account should be able to view, save, or delete these files.
-          </p>
-          <label>
-            Choose file
-            <input id="fileUploadInput" type="file" />
-          </label>
-          <div class="assignment-actions">
-            <button class="btn primary" id="uploadFileBtn" type="button">Upload File</button>
-          </div>
-          <div class="status-line" id="fileUploadStatus"></div>
-          <div class="section-grid" id="fileList"></div>
-        </section>
-
-        <section class="section-card panel" style="margin-top: 18px">
-          <div class="mini-label" id="communitySectionLabel">Learning Community</div>
-          <h3 id="communitySectionTitle">The people enrolled in this program</h3>
-          <p id="communitySectionCopy">
-            See the students and instructors in this program, their current
-            photo, and the introduction they chose to share with the enrolled
-            community.
-          </p>
-          <div class="community-grid" id="communityDirectoryList"></div>
-        </section>
-
-        <section class="section-card panel" style="margin-top: 18px">
-          <div class="mini-label" id="feedbackSectionLabel">Teacher Feedback</div>
-          <h3 id="feedbackSectionTitle">Saved feedback and review history</h3>
-          <p id="feedbackSectionCopy">
-            Any feedback stored on your account lives here. This keeps your own
-            review history private to your login.
-          </p>
-          <div class="section-grid" id="feedbackList"></div>
-        </section>
+        </div>
       </section>
 
       <div class="identity-modal" id="identityModal" hidden>
