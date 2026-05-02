@@ -81,7 +81,7 @@
         z-index: 40;
         background: var(--slate);
         border-bottom: 3px solid var(--gold);
-        padding: 10px 16px;
+        padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 10px;
         display: flex;
         align-items: center;
         justify-content: space-between;
@@ -104,6 +104,9 @@
         object-fit: contain;
         border-radius: 4px;
         filter: drop-shadow(0 2px 6px rgba(0, 0, 0, 0.25));
+      }
+      .brand-short {
+        display: none;
       }
       .nav-actions {
         display: flex;
@@ -360,14 +363,29 @@
         .brand {
           white-space: normal;
           font-size: 9px;
+          max-width: calc(100vw - 28px);
+          letter-spacing: 0.1em;
           line-height: 1.5;
         }
+        .brand-full {
+          display: none;
+        }
+        .brand-short {
+          display: inline;
+        }
         .nav-actions {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
           width: 100%;
         }
         .nav-actions a {
-          flex: 1 1 120px;
+          align-items: center;
+          display: inline-flex;
+          justify-content: center;
+          min-height: 44px;
+          padding: 9px 8px;
           text-align: center;
+          white-space: normal;
         }
         .hero-wrap {
           grid-template-columns: 1fr;
@@ -401,8 +419,10 @@
   <body>
     <nav>
       <a class="brand" href="index.html"
-        ><img src="assets/logo-square.png" alt="Site logo" />Ready for Real
-        Life Instruction and Education</a
+        ><img src="assets/logo-square.png" alt="Site logo" /><span
+          class="brand-full"
+          >Ready for Real Life Instruction and Education</span
+        ><span class="brand-short">Ready for Real Life</span></a
       >
       <div class="nav-actions">
         <a

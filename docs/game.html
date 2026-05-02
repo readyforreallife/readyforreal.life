@@ -983,9 +983,16 @@
           font-size: 1.35rem;
         }
         .nav-actions {
-          justify-content: flex-start;
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(118px, 1fr));
+          width: 100%;
         }
         .nav-actions a {
+          align-items: center;
+          display: inline-flex;
+          justify-content: center;
+          min-height: 44px;
+          padding: 9px 8px;
           white-space: normal;
           text-align: center;
         }

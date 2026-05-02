@@ -1,6 +1,6 @@
 .site-search-shell {
-  position: sticky;
-  top: 52px;
+  position: static;
+  top: auto;
   z-index: 45;
   padding: 8px 16px 0;
 }
@@ -20,6 +20,7 @@
 .site-search-wrap {
   max-width: 1160px;
   margin: 0 auto;
+  width: 100%;
 }
 .site-search-shell.site-search-inline .site-search-wrap {
   max-width: none;
@@ -62,6 +63,7 @@
 }
 .site-search-input {
   width: 100%;
+  min-width: 0;
   border: 0;
   background: transparent;
   color: #0e1118;
@@ -147,22 +149,34 @@
 }
 @media (max-width: 900px) {
   .site-search-shell {
-    top: 44px;
-    padding: 8px 12px 0;
+    top: auto;
+    padding: 8px max(12px, env(safe-area-inset-right, 0px)) 0
+      max(12px, env(safe-area-inset-left, 0px));
   }
   .site-search-bar {
-    align-items: flex-start;
-    flex-direction: column;
+    align-items: center;
+    flex-direction: row;
+    gap: 8px;
+    border-radius: 18px;
+    padding: 10px 12px;
   }
+  .site-search-label,
   .site-search-hint {
-    white-space: normal;
+    display: none;
+  }
+  .site-search-icon {
+    font-size: 18px;
+  }
+  .site-search-input {
+    font-size: 16px;
   }
   .site-search-shell.site-search-inline {
     min-width: 100%;
     flex-basis: 100%;
   }
   .site-search-shell.site-search-page {
-    padding: 12px 12px 0;
+    padding: 12px max(12px, env(safe-area-inset-right, 0px)) 0
+      max(12px, env(safe-area-inset-left, 0px));
   }
   .site-search-shell.site-search-inline .site-search-bar {
     align-items: center;

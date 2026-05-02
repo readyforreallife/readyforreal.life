@@ -92,7 +92,7 @@
         z-index: 50;
         background: var(--slate);
         border-bottom: 3px solid var(--gold);
-        padding: 10px 16px;
+        padding: calc(10px + env(safe-area-inset-top, 0px)) 16px 10px;
         display: flex;
         flex-wrap: wrap;
         align-items: center;
@@ -121,6 +121,9 @@
         height: 20px;
         object-fit: contain;
         border-radius: 4px;
+      }
+      .brand-short {
+        display: none;
       }
       .nav-actions {
         display: flex;
@@ -248,13 +251,41 @@
       @media (max-width: 900px) {
         nav {
           align-items: flex-start;
+          padding: calc(12px + env(safe-area-inset-top, 0px)) 14px 12px;
         }
         .brand {
           font-size: 9px;
+          flex-basis: 100%;
+          max-width: calc(100vw - 28px);
+          letter-spacing: 0.1em;
+        }
+        .brand-full {
+          display: none;
+        }
+        .brand-short {
+          display: inline;
+        }
+        .nav-actions {
+          display: grid;
+          grid-template-columns: repeat(auto-fit, minmax(110px, 1fr));
+          width: 100%;
         }
         .nav-actions a {
+          align-items: center;
+          display: inline-flex;
+          justify-content: center;
+          min-height: 44px;
+          padding: 9px 8px;
           white-space: normal;
           text-align: center;
+        }
+        .hero h1 {
+          font-size: clamp(2rem, 12vw, 3.25rem);
+          overflow-wrap: anywhere;
+        }
+        .hero-sub {
+          font-size: clamp(1rem, 4.8vw, 1.35rem);
+          line-height: 1.7;
         }
         .hero,
         .main {
@@ -267,8 +298,10 @@
   <body>
     <nav>
       <a class="brand" href="index.html"
-        ><img src="assets/logo-square.png" alt="Site logo" />Ready for Real
-        Life Instruction and Education</a
+        ><img src="assets/logo-square.png" alt="Site logo" /><span
+          class="brand-full"
+          >Ready for Real Life Instruction and Education</span
+        ><span class="brand-short">Ready for Real Life</span></a
       >
       <div class="nav-actions">
         <a

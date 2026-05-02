@@ -39,7 +39,7 @@
           <div class="site-search-icon" aria-hidden="true">🔎</div>
           <div class="site-search-copy">
             <label class="site-search-label" for="site-search-input">Search the site</label>
-            <input id="site-search-input" class="site-search-input" type="search" autocomplete="off" placeholder="Search modules, resume, assessment, offer, bio, MMMF Hub..." />
+            <input id="site-search-input" class="site-search-input" type="search" autocomplete="off" placeholder="Search site..." />
           </div>
           <div class="site-search-hint">Enter opens the best match</div>
         </div>

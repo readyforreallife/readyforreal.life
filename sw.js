@@ -1,4 +1,4 @@
-const CACHE_VERSION = "rfrl-shell-v11";
+const CACHE_VERSION = "rfrl-shell-v12";
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `runtime-${CACHE_VERSION}`;
 const OFFLINE_URL = "/offline.html";
