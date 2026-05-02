@@ -287,6 +287,7 @@ if (hubRoot) {
     "MMMF_Participant_Workbook.docx",
     "MMMF_CASEL_Survey.docx",
     "MMMF_Facilitator_Certification_Agreement.docx",
+    "MMMF_Online_8Week_Syllabus.docx",
   ].forEach((filename) => {
     generateDocxPreview(
       path.join(hubDocsSource, filename),
