@@ -182,30 +182,6 @@ const DOCUMENT_SUBMISSION_TEMPLATES = [
     ],
   },
   {
-    key: "casel-survey",
-    title: "CASEL Self-Efficacy Survey",
-    type: "survey",
-    fields: [
-      {
-        id: "survey_phase",
-        label: "Survey timing",
-        kind: "choice",
-        options: ["Pre-Course", "Post-Course"],
-      },
-      { id: "grade_track", label: "Grade / track", kind: "text" },
-      {
-        id: "casel_scores",
-        label: "Enter your scores or summary of selected ratings",
-        kind: "textarea",
-      },
-      {
-        id: "growth_notes",
-        label: "What did you notice about your growth?",
-        kind: "textarea",
-      },
-    ],
-  },
-  {
     key: "scenario-cards",
     title: "Scenario Card Response",
     type: "scenario",
@@ -305,6 +281,132 @@ const DOCUMENT_SUBMISSION_TEMPLATES = [
     ],
   },
 ];
+
+const CASEL_SCALE_OPTIONS = [
+  { value: 1, label: "Not at all true for me" },
+  { value: 2, label: "A little true for me" },
+  { value: 3, label: "Mostly true for me" },
+  { value: 4, label: "Definitely true for me" },
+];
+
+const CASEL_SURVEY_SECTIONS = [
+  {
+    title: "Self-Awareness",
+    prompt: "How well do I know myself?",
+    items: [
+      "I can name what I am feeling, even when the emotion is strong or uncomfortable.",
+      "I understand what kinds of situations tend to trigger a strong reaction in me.",
+      "I know my personal strengths and areas where I still need to grow.",
+      "I can tell the difference between how I feel inside and how I act on the outside.",
+      "I recognize when my emotions are starting to affect how I think or make decisions.",
+    ],
+  },
+  {
+    title: "Self-Management",
+    prompt: "How well do I manage myself?",
+    items: [
+      "When I feel frustrated or upset, I can slow myself down before I respond.",
+      "I have strategies I actually use to calm myself down in stressful situations.",
+      "I can set a goal and follow through on it even when it gets difficult.",
+      "I manage my time and responsibilities without needing constant reminders.",
+      "I can keep my composure in situations where I feel pressure or criticism.",
+    ],
+  },
+  {
+    title: "Social Awareness",
+    prompt: "How well do I understand others?",
+    items: [
+      "I can read a social situation and adjust how I act based on what is appropriate.",
+      "I try to understand a situation from the other person's perspective before I respond.",
+      "I treat people with respect even when I disagree with them or do not like them.",
+      "I notice when someone around me is struggling, even if they do not say anything.",
+      "I understand that what is appropriate in one setting may not be appropriate in another.",
+    ],
+  },
+  {
+    title: "Relationship Skills",
+    prompt: "How well do I communicate and connect?",
+    items: [
+      "I can communicate what I think and feel clearly and respectfully.",
+      "I listen to others without interrupting or planning my response while they are talking.",
+      "When I disagree with someone, I can work through it without it becoming a bigger conflict.",
+      "I can give and receive feedback without shutting down or getting defensive.",
+      "I know how to repair a relationship after a conflict or mistake.",
+    ],
+  },
+  {
+    title: "Responsible Decision-Making",
+    prompt: "How well do I make decisions under pressure?",
+    items: [
+      "Before I act, I think about the possible consequences - short-term and long-term.",
+      "I consider how my decisions affect other people, not just myself.",
+      "When I face a hard choice, I can pause and think through my options before deciding.",
+      "I take responsibility for my mistakes instead of making excuses or blaming others.",
+      "I can make a decision I feel good about even when I am under pressure or being watched.",
+    ],
+  },
+  {
+    title: "Digital Citizenship",
+    prompt: "How well do I handle myself online?",
+    items: [
+      "I think about how something I post or send online could affect my reputation later.",
+      "I communicate online with the same respect I would use in person.",
+      "I understand that digital choices can have real, permanent consequences.",
+      "I know how to respond to online conflict or pressure without making it worse.",
+    ],
+  },
+];
+
+const CASEL_SURVEY_ITEMS = CASEL_SURVEY_SECTIONS.flatMap((section, sectionIndex) =>
+  section.items.map((text, itemIndex) => ({
+    id: `casel_${String(
+      CASEL_SURVEY_SECTIONS.slice(0, sectionIndex).reduce(
+        (total, current) => total + current.items.length,
+        0,
+      ) +
+        itemIndex +
+        1,
+    ).padStart(2, "0")}`,
+    number:
+      CASEL_SURVEY_SECTIONS.slice(0, sectionIndex).reduce(
+        (total, current) => total + current.items.length,
+        0,
+      ) +
+      itemIndex +
+      1,
+    section: section.title,
+    text,
+  })),
+);
+
+const CASEL_QUIZ_ADMINISTRATIONS = [
+  {
+    key: "casel-survey-week-1",
+    title: "Week 1 CASEL Self-Efficacy Survey",
+    label: "Week 1",
+    timing: "Pre-Course",
+    description:
+      "Complete this baseline survey before the course begins so your instructor can see your starting point.",
+  },
+  {
+    key: "casel-survey-week-8",
+    title: "Week 8 CASEL Self-Efficacy Survey",
+    label: "Week 8",
+    timing: "Mid-Course",
+    description:
+      "Complete the same survey at the midpoint so your instructor can compare growth and adjust coaching.",
+  },
+  {
+    key: "casel-survey-final",
+    title: "Final Week CASEL Self-Efficacy Survey",
+    label: "Final Week",
+    timing: "Post-Course",
+    description:
+      "Complete the same survey at the end of the course so your instructor can document growth and provide final feedback.",
+  },
+];
+
+const CASEL_MAX_SCORE = CASEL_SURVEY_ITEMS.length * 4;
 
 const COURSE_WEEKS = [
   {
@@ -1020,6 +1122,8 @@ const assignmentList = document.getElementById("assignmentList");
 const workbookList = document.getElementById("workbookList");
 const discussionList = document.getElementById("discussionList");
 const discussionStatus = document.getElementById("discussionStatus");
+const quizList = document.getElementById("quizList");
+const quizStatus = document.getElementById("quizStatus");
 const resourceList = document.getElementById("resourceList");
 const feedbackList = document.getElementById("feedbackList");
 const documentSubmissionForm = document.getElementById("documentSubmissionForm");
@@ -1047,6 +1151,7 @@ const classroomWeekNavList = document.getElementById("classroomWeekNavList");
 const classroomWeekCount = document.getElementById("classroomWeekCount");
 const classroomAssignmentCount = document.getElementById("classroomAssignmentCount");
 const classroomDiscussionCount = document.getElementById("classroomDiscussionCount");
+const classroomQuizCount = document.getElementById("classroomQuizCount");
 const classroomDocumentCount = document.getElementById("classroomDocumentCount");
 const classroomFileCount = document.getElementById("classroomFileCount");
 const classroomFeedbackCount = document.getElementById("classroomFeedbackCount");
@@ -1096,6 +1201,7 @@ const CLASSROOM_HASH_TO_VIEW = {
   "#classroom-contents": "contents",
   "#classroom-assignments": "assignments",
   "#classroom-discussions": "discussions",
+  "#classroom-quizzes": "quizzes",
   "#classroom-documents": "documents",
   "#classroom-submissions": "submissions",
   "#classroom-grades": "grades",
@@ -1628,6 +1734,7 @@ function renderClassroomDashboard(progress, profile) {
   if (classroomWeekCount) classroomWeekCount.textContent = String(COURSE_WEEKS.length);
   if (classroomAssignmentCount) classroomAssignmentCount.textContent = String(state.assignments.length);
   if (classroomDiscussionCount) classroomDiscussionCount.textContent = String(DISCUSSION_TOPICS.length);
+  if (classroomQuizCount) classroomQuizCount.textContent = String(CASEL_QUIZ_ADMINISTRATIONS.length);
   if (classroomDocumentCount) classroomDocumentCount.textContent = String(state.documentSubmissions.length);
   if (classroomFileCount) classroomFileCount.textContent = String(state.files.length);
   if (classroomFeedbackCount) classroomFeedbackCount.textContent = String(reviewedCount);
@@ -2133,6 +2240,232 @@ function renderDiscussions() {
   discussionList.innerHTML = DISCUSSION_TOPICS.map(renderDiscussionTopic).join("");
 }
 
+function latestSubmissionForKey(documentKey) {
+  return state.documentSubmissions
+    .filter((submission) => submission.document_key === documentKey)
+    .sort((a, b) => new Date(b.submitted_at || 0) - new Date(a.submitted_at || 0))[0];
+}
+
+function caselLevelForScore(total) {
+  const percent = total / CASEL_MAX_SCORE;
+  if (percent >= 0.83) return "Strong Foundation";
+  if (percent >= 0.65) return "Developing Skills";
+  if (percent >= 0.46) return "Building Awareness";
+  return "Emerging Awareness";
+}
+
+function renderCaselScaleLegend() {
+  return `
+    <div class="casel-scale-legend">
+      ${CASEL_SCALE_OPTIONS.map(
+        (option) => `<span><strong>${option.value}</strong> ${escapeHtml(option.label)}</span>`,
+      ).join("")}
+    </div>
+  `;
+}
+
+function renderCaselSurveyItems(quiz, answers = {}) {
+  let itemOffset = 0;
+  return CASEL_SURVEY_SECTIONS.map((section) => {
+    const sectionItems = section.items
+      .map((text, sectionItemIndex) => {
+        const itemNumber = itemOffset + sectionItemIndex + 1;
+        const itemId = `casel_${String(itemNumber).padStart(2, "0")}`;
+        const selectedValue = Number(answers?.casel_ratings?.[itemId] || answers?.[itemId] || 0);
+        return `
+          <div class="casel-rating-row">
+            <div>
+              <strong>${itemNumber}.</strong> ${escapeHtml(text)}
+            </div>
+            <div class="casel-rating-options" role="radiogroup" aria-label="${escapeHtml(text)}">
+              ${CASEL_SCALE_OPTIONS.map(
+                (option) => `
+                  <label>
+                    <input
+                      type="radio"
+                      name="${escapeHtml(quiz.key)}-${escapeHtml(itemId)}"
+                      value="${option.value}"
+                      data-casel-rating="${escapeHtml(itemId)}"
+                      ${selectedValue === option.value ? "checked" : ""}
+                    />
+                    <span>${option.value}</span>
+                  </label>
+                `,
+              ).join("")}
+            </div>
+          </div>
+        `;
+      })
+      .join("");
+    itemOffset += section.items.length;
+    return `
+      <fieldset class="casel-section">
+        <legend>
+          <span>${escapeHtml(section.title)}</span>
+          <small>${escapeHtml(section.prompt)}</small>
+        </legend>
+        ${sectionItems}
+      </fieldset>
+    `;
+  }).join("");
+}
+
+function renderQuizCenter() {
+  if (!quizList) return;
+
+  quizList.innerHTML = CASEL_QUIZ_ADMINISTRATIONS.map((quiz) => {
+    const submission = latestSubmissionForKey(quiz.key);
+    const answers = submission?.answers || {};
+    const scoreText = answers.casel_total_score
+      ? `${answers.casel_total_score} / ${answers.casel_possible_score || CASEL_MAX_SCORE}`
+      : "Not scored yet";
+    const statusClass =
+      submission?.status === "approved"
+        ? "complete"
+        : submission?.status === "needs_revision"
+          ? "revise"
+          : submission
+            ? "review"
+            : "pending";
+
+    return `
+      <article class="quiz-card" data-casel-quiz-card="${escapeHtml(quiz.key)}">
+        <div class="assignment-head">
+          <div>
+            <div class="mini-label">${escapeHtml(quiz.label)} Quiz</div>
+            <h4>${escapeHtml(quiz.title)}</h4>
+          </div>
+          <span class="status-badge ${statusClass}">
+            ${escapeHtml(submission ? formatSubmissionStatus(submission.status) : "Not submitted")}
+          </span>
+        </div>
+        <p>${escapeHtml(quiz.description)}</p>
+        <div class="student-help-box soft">
+          <strong>Instructions</strong>
+          <ol>
+            <li>Answer every statement honestly using the 1-4 scale.</li>
+            <li>Your instructor will review the score, compare growth, and respond with feedback.</li>
+            <li>This is for growth, not punishment. The goal is to see what support helps you improve.</li>
+          </ol>
+        </div>
+        <form class="casel-quiz-form" data-casel-quiz="${escapeHtml(quiz.key)}">
+          <div class="classroom-two-col">
+            <label>
+              Survey timing
+              <input value="${escapeHtml(quiz.timing)}" readonly data-casel-meta="survey_timing" />
+            </label>
+            <label>
+              Grade / track
+              <input value="${escapeHtml(answers.grade_track || "")}" placeholder="Example: Grade 9, Adult, Instructor" data-casel-meta="grade_track" />
+            </label>
+          </div>
+          ${renderCaselScaleLegend()}
+          ${renderCaselSurveyItems(quiz, answers)}
+          <label>
+            Optional open response
+            <textarea data-casel-meta="open_response" placeholder="What is one thing you hope to learn, improve, or keep practicing?">${escapeHtml(answers.open_response || "")}</textarea>
+          </label>
+          <div class="casel-score-preview">
+            <strong>Saved score:</strong> ${escapeHtml(scoreText)}
+            ${answers.casel_level ? `<span class="chip">${escapeHtml(answers.casel_level)}</span>` : ""}
+          </div>
+          ${
+            submission?.owner_feedback || submission?.owner_score
+              ? `<div class="feedback-box">
+                  <strong>Instructor feedback</strong>
+                  <div style="margin-top:8px"><strong>Score:</strong> ${escapeHtml(submission.owner_score || "Pending")}</div>
+                  <div style="margin-top:8px">${escapeHtml(submission.owner_feedback || "No note yet.")}</div>
+                </div>`
+              : ""
+          }
+          <div class="assignment-actions">
+            <button class="btn primary" type="submit">${submission ? "Update Quiz Submission" : "Submit Quiz for Review"}</button>
+          </div>
+        </form>
+      </article>
+    `;
+  }).join("");
+}
+
+function collectCaselQuizAnswers(quizKey) {
+  const quiz = CASEL_QUIZ_ADMINISTRATIONS.find((item) => item.key === quizKey);
+  const form = Array.from(quizList?.querySelectorAll("[data-casel-quiz]") || []).find(
+    (candidate) => candidate.getAttribute("data-casel-quiz") === quizKey,
+  );
+  if (!quiz || !form) return null;
+
+  const ratings = {};
+  const missingItems = [];
+  CASEL_SURVEY_ITEMS.forEach((item) => {
+    const selected = form.querySelector(`[data-casel-rating="${item.id}"]:checked`);
+    if (!selected) {
+      missingItems.push(item.number);
+      return;
+    }
+    ratings[item.id] = Number(selected.value);
+  });
+
+  if (missingItems.length) {
+    throw new Error(`Finish every CASEL rating before submitting. Missing: ${missingItems.join(", ")}.`);
+  }
+
+  const sectionScores = {};
+  CASEL_SURVEY_SECTIONS.forEach((section) => {
+    const itemIds = CASEL_SURVEY_ITEMS.filter((item) => item.section === section.title).map((item) => item.id);
+    const total = itemIds.reduce((sum, id) => sum + (ratings[id] || 0), 0);
+    sectionScores[section.title] = {
+      score: total,
+      possible: itemIds.length * 4,
+    };
+  });
+
+  const totalScore = Object.values(ratings).reduce((sum, value) => sum + value, 0);
+  const percent = Math.round((totalScore / CASEL_MAX_SCORE) * 100);
+
+  return {
+    quiz_week: quiz.label,
+    survey_timing: quiz.timing,
+    grade_track: form.querySelector('[data-casel-meta="grade_track"]')?.value.trim() || "",
+    casel_ratings: ratings,
+    casel_section_scores: sectionScores,
+    casel_total_score: totalScore,
+    casel_possible_score: CASEL_MAX_SCORE,
+    casel_percent: percent,
+    casel_level: caselLevelForScore(totalScore),
+    open_response: form.querySelector('[data-casel-meta="open_response"]')?.value.trim() || "",
+  };
+}
+
+async function submitCaselQuiz(quizKey) {
+  if (!state.user) {
+    showStatus(quizStatus, "Sign in before submitting a quiz.");
+    return;
+  }
+
+  const quiz = CASEL_QUIZ_ADMINISTRATIONS.find((item) => item.key === quizKey);
+  if (!quiz) return;
+
+  const answers = collectCaselQuizAnswers(quizKey);
+  showStatus(quizStatus, "Submitting CASEL survey for instructor review...");
+
+  const supabase = getSupabase();
+  const { error } = await supabase.rpc("submit_document_response", {
+    document_key: quiz.key,
+    document_title: quiz.title,
+    document_type: "quiz",
+    response_answers: answers,
+    next_status: "submitted",
+  });
+  if (error) throw error;
+
+  await loadPortalData();
+  showStatus(
+    quizStatus,
+    `${quiz.title} submitted. Your instructor can now score it and send feedback from Document Reviews.`,
+    "success",
+  );
+}
+
 async function handleSessionChange(session, options = {}) {
   const { scrollToWelcome = false } = options;
   state.session = session || null;
@@ -2327,6 +2660,7 @@ function renderPortal(options = {}) {
 
   renderDocumentSubmissionStudio();
   renderDiscussions();
+  renderQuizCenter();
 
   resourceList.innerHTML = DEFAULT_RESOURCES.map(
     (resource) => `
@@ -2502,10 +2836,25 @@ function formatSubmissionAnswers(answers) {
       const label = key
         .replace(/_/g, " ")
         .replace(/\b\w/g, (char) => char.toUpperCase());
-      const text = Array.isArray(value) ? value.join(", ") : value;
+      const text = formatSubmissionAnswerValue(value);
       return `<div><strong>${escapeHtml(label)}:</strong> ${escapeHtml(text || "No response")}</div>`;
     })
     .join("");
+}
+
+function formatSubmissionAnswerValue(value) {
+  if (Array.isArray(value)) return value.join(", ");
+  if (value && typeof value === "object") {
+    return Object.entries(value)
+      .map(([key, entryValue]) => {
+        if (entryValue && typeof entryValue === "object") {
+          return `${key}: ${JSON.stringify(entryValue)}`;
+        }
+        return `${key}: ${entryValue}`;
+      })
+      .join("; ");
+  }
+  return value;
 }
 
 function selectedDocumentSubmissionTemplate() {
@@ -2851,6 +3200,17 @@ function bindPortalActions() {
         await saveDiscussionReply(button.getAttribute("data-save-discussion-reply"));
       } catch (error) {
         showStatus(discussionStatus, error.message);
+      }
+    });
+  });
+
+  quizList?.querySelectorAll("[data-casel-quiz]").forEach((form) => {
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      try {
+        await submitCaselQuiz(form.getAttribute("data-casel-quiz"));
+      } catch (error) {
+        showStatus(quizStatus, error.message);
       }
     });
   });

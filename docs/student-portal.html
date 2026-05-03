@@ -755,6 +755,113 @@
         font-weight: 800;
       }
 
+      .quiz-card,
+      .casel-section {
+        padding: 18px;
+        border-radius: 22px;
+        border: 1px solid rgba(24, 48, 79, 0.08);
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 14px 34px rgba(24, 48, 79, 0.06);
+      }
+
+      .casel-quiz-form {
+        display: grid;
+        gap: 16px;
+        margin-top: 16px;
+      }
+
+      .casel-scale-legend {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 8px;
+        padding: 12px;
+        border-radius: 16px;
+        background: rgba(24, 48, 79, 0.045);
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+
+      .casel-scale-legend strong {
+        color: var(--navy);
+      }
+
+      .casel-section {
+        margin: 0;
+        box-shadow: none;
+      }
+
+      .casel-section legend {
+        display: grid;
+        gap: 2px;
+        padding: 0 8px;
+        color: var(--navy);
+        font-weight: 900;
+      }
+
+      .casel-section legend small {
+        color: var(--muted);
+        font-weight: 700;
+      }
+
+      .casel-rating-row {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) minmax(220px, 280px);
+        gap: 14px;
+        align-items: center;
+        padding: 13px 0;
+        border-top: 1px solid rgba(24, 48, 79, 0.08);
+        line-height: 1.45;
+      }
+
+      .casel-rating-options {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(40px, 1fr));
+        gap: 8px;
+      }
+
+      .casel-rating-options label {
+        display: grid;
+        place-items: center;
+        min-height: 42px;
+        margin: 0;
+        border-radius: 14px;
+        border: 1px solid rgba(24, 48, 79, 0.12);
+        background: rgba(250, 247, 242, 0.84);
+        cursor: pointer;
+      }
+
+      .casel-rating-options input {
+        position: absolute;
+        opacity: 0;
+        pointer-events: none;
+      }
+
+      .casel-rating-options span {
+        display: grid;
+        place-items: center;
+        width: 28px;
+        height: 28px;
+        border-radius: 999px;
+        color: var(--navy);
+        font-weight: 900;
+      }
+
+      .casel-rating-options input:checked + span {
+        background: var(--navy);
+        color: white;
+      }
+
+      .casel-score-preview {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+        flex-wrap: wrap;
+        padding: 12px 14px;
+        border-radius: 16px;
+        background: rgba(80, 128, 102, 0.1);
+        color: #315f45;
+      }
+
       .classroom-toolbar {
         display: flex;
         gap: 10px;
@@ -1575,6 +1682,7 @@
         .classroom-hero-top,
         .classroom-layout,
         .classroom-two-col,
+        .casel-scale-legend,
         .teacher-grid,
         .welcome-grid,
         .sample-grid,
@@ -1591,6 +1699,10 @@
 
         .classroom-stat-grid {
           grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+
+        .casel-rating-row {
+          grid-template-columns: 1fr;
         }
       }
 
@@ -1627,6 +1739,10 @@
 
         .classroom-stat-grid {
           grid-template-columns: 1fr;
+        }
+
+        .casel-rating-options {
+          grid-template-columns: repeat(4, minmax(34px, 1fr));
         }
       }
     </style>
@@ -1875,6 +1991,7 @@
             <a class="classroom-tab primary-tab" href="#classroom-contents" data-classroom-nav="contents">Content</a>
             <a class="classroom-tab" href="#classroom-assignments" data-classroom-nav="assignments">Assignments</a>
             <a class="classroom-tab" href="#classroom-discussions" data-classroom-nav="discussions">Discussions</a>
+            <a class="classroom-tab" href="#classroom-quizzes" data-classroom-nav="quizzes">Quizzes</a>
             <a class="classroom-tab" href="#classroom-documents" data-classroom-nav="documents">Document Studio</a>
             <a class="classroom-tab" href="#classroom-submissions" data-classroom-nav="submissions">Submissions</a>
             <a class="classroom-tab" href="#classroom-grades" data-classroom-nav="grades">Grades</a>
@@ -1894,6 +2011,7 @@
               <a href="#classroom-contents" data-classroom-nav="contents">Table of Contents <span class="classroom-nav-count" id="classroomWeekCount">16</span></a>
               <a href="#classroom-assignments" data-classroom-nav="assignments">Assignments <span class="classroom-nav-count" id="classroomAssignmentCount">0</span></a>
               <a href="#classroom-discussions" data-classroom-nav="discussions">Discussions <span class="classroom-nav-count" id="classroomDiscussionCount">17</span></a>
+              <a href="#classroom-quizzes" data-classroom-nav="quizzes">Quizzes <span class="classroom-nav-count" id="classroomQuizCount">3</span></a>
               <a href="#classroom-documents" data-classroom-nav="documents">Document Studio <span class="classroom-nav-count" id="classroomDocumentCount">0</span></a>
               <a href="#classroom-submissions" data-classroom-nav="submissions">Submissions <span class="classroom-nav-count" id="classroomFileCount">0</span></a>
               <a href="#classroom-grades" data-classroom-nav="grades">Grades & Feedback <span class="classroom-nav-count" id="classroomFeedbackCount">0</span></a>
@@ -2064,6 +2182,29 @@
               </div>
               <div class="status-line" id="discussionStatus"></div>
               <div class="section-grid" id="discussionList"></div>
+            </section>
+
+            <section class="classroom-section panel" id="classroom-quizzes" data-classroom-view="quizzes">
+              <div class="classroom-section-head">
+                <div>
+                  <div class="mini-label">Quiz Center</div>
+                  <h3>CASEL survey checkpoints</h3>
+                  <p class="classroom-section-copy">
+                    Complete the same CASEL self-efficacy survey in Week 1, Week 8, and the final week.
+                    Each submission goes to your instructor for scoring, growth comparison, and feedback.
+                  </p>
+                </div>
+              </div>
+              <div class="student-help-box">
+                <strong>How these quizzes work</strong>
+                <ol>
+                  <li>Week 1 shows your starting point before the course work begins.</li>
+                  <li>Week 8 shows midpoint growth and helps your instructor adjust support.</li>
+                  <li>The final week shows your end-of-course growth and receives final feedback.</li>
+                </ol>
+              </div>
+              <div class="status-line" id="quizStatus"></div>
+              <div class="section-grid" id="quizList"></div>
             </section>
 
             <section class="classroom-section panel" id="classroom-documents" data-classroom-view="documents">
