@@ -525,7 +525,8 @@
         box-shadow: 0 8px 18px rgba(24, 48, 79, 0.06);
       }
 
-      .classroom-tab.primary-tab {
+      .classroom-tab.primary-tab,
+      .classroom-tab.active {
         background: var(--navy);
         color: #fff;
       }
@@ -602,7 +603,8 @@
       }
 
       .classroom-nav a:hover,
-      .classroom-nav a:focus-visible {
+      .classroom-nav a:focus-visible,
+      .classroom-nav a.active {
         background: rgba(24, 48, 79, 0.07);
       }
 
@@ -640,7 +642,7 @@
         font-weight: 700;
       }
 
-      .classroom-week-nav a:first-child {
+      .classroom-week-nav a.active {
         color: var(--navy);
         background: rgba(200, 155, 60, 0.12);
       }
@@ -1211,6 +1213,14 @@
 
       details.week-card {
         display: block;
+      }
+
+      details.week-card[hidden] {
+        display: none;
+      }
+
+      [data-classroom-view][hidden] {
+        display: none;
       }
 
       .portal-shell.instructor-view .week-card {
@@ -1815,13 +1825,13 @@
             </aside>
           </div>
           <nav class="classroom-tabs" aria-label="Classroom sections">
-            <a class="classroom-tab primary-tab" href="#classroom-contents">Content</a>
-            <a class="classroom-tab" href="#classroom-assignments">Assignments</a>
-            <a class="classroom-tab" href="#classroom-documents">Document Studio</a>
-            <a class="classroom-tab" href="#classroom-submissions">Submissions</a>
-            <a class="classroom-tab" href="#classroom-grades">Grades</a>
-            <a class="classroom-tab" href="#classroom-community">Classlist</a>
-            <a class="classroom-tab" href="#classroom-resources">Resources</a>
+            <a class="classroom-tab primary-tab" href="#classroom-contents" data-classroom-nav="contents">Content</a>
+            <a class="classroom-tab" href="#classroom-assignments" data-classroom-nav="assignments">Assignments</a>
+            <a class="classroom-tab" href="#classroom-documents" data-classroom-nav="documents">Document Studio</a>
+            <a class="classroom-tab" href="#classroom-submissions" data-classroom-nav="submissions">Submissions</a>
+            <a class="classroom-tab" href="#classroom-grades" data-classroom-nav="grades">Grades</a>
+            <a class="classroom-tab" href="#classroom-community" data-classroom-nav="community">Classlist</a>
+            <a class="classroom-tab" href="#classroom-resources" data-classroom-nav="resources">Resources</a>
           </nav>
         </section>
 
@@ -1832,21 +1842,21 @@
               <input id="classroomSearchInput" type="search" placeholder="Search weeks, work, documents..." />
             </label>
             <nav class="classroom-nav">
-              <a href="#classroom-overview">Overview <span class="classroom-nav-count">1</span></a>
-              <a href="#classroom-contents">Table of Contents <span class="classroom-nav-count" id="classroomWeekCount">16</span></a>
-              <a href="#classroom-assignments">Assignments <span class="classroom-nav-count" id="classroomAssignmentCount">0</span></a>
-              <a href="#classroom-documents">Document Studio <span class="classroom-nav-count" id="classroomDocumentCount">0</span></a>
-              <a href="#classroom-submissions">Submissions <span class="classroom-nav-count" id="classroomFileCount">0</span></a>
-              <a href="#classroom-grades">Grades & Feedback <span class="classroom-nav-count" id="classroomFeedbackCount">0</span></a>
-              <a href="#classroom-community">Classlist <span class="classroom-nav-count" id="classroomCommunityCount">0</span></a>
-              <a href="#classroom-resources">Resources <span class="classroom-nav-count" id="classroomResourceCount">0</span></a>
+              <a href="#classroom-overview" data-classroom-nav="overview">Overview <span class="classroom-nav-count">1</span></a>
+              <a href="#classroom-contents" data-classroom-nav="contents">Table of Contents <span class="classroom-nav-count" id="classroomWeekCount">16</span></a>
+              <a href="#classroom-assignments" data-classroom-nav="assignments">Assignments <span class="classroom-nav-count" id="classroomAssignmentCount">0</span></a>
+              <a href="#classroom-documents" data-classroom-nav="documents">Document Studio <span class="classroom-nav-count" id="classroomDocumentCount">0</span></a>
+              <a href="#classroom-submissions" data-classroom-nav="submissions">Submissions <span class="classroom-nav-count" id="classroomFileCount">0</span></a>
+              <a href="#classroom-grades" data-classroom-nav="grades">Grades & Feedback <span class="classroom-nav-count" id="classroomFeedbackCount">0</span></a>
+              <a href="#classroom-community" data-classroom-nav="community">Classlist <span class="classroom-nav-count" id="classroomCommunityCount">0</span></a>
+              <a href="#classroom-resources" data-classroom-nav="resources">Resources <span class="classroom-nav-count" id="classroomResourceCount">0</span></a>
             </nav>
             <div class="mini-label" style="margin-top: 18px">Course schedule</div>
             <div class="classroom-week-nav" id="classroomWeekNavList"></div>
           </aside>
 
           <div class="classroom-main">
-            <section class="classroom-section panel" id="classroom-dashboard">
+            <section class="classroom-section panel" id="classroom-dashboard" data-classroom-view="overview">
               <div class="classroom-section-head">
                 <div>
                   <div class="mini-label">Classroom Home</div>
@@ -1880,7 +1890,7 @@
               </div>
             </section>
 
-            <section class="classroom-section panel roadmap-card" id="classroom-contents">
+            <section class="classroom-section panel roadmap-card" id="classroom-contents" data-classroom-view="contents">
               <div class="classroom-section-head">
                 <div>
                   <div class="mini-label" id="courseRoadmapLabel">16-Week Roadmap</div>
@@ -1890,14 +1900,14 @@
                   </p>
                 </div>
                 <div class="classroom-toolbar">
-                  <button class="btn secondary" id="expandRoadmapBtn" type="button">Expand All</button>
-                  <button class="btn secondary" id="collapseRoadmapBtn" type="button">Collapse All</button>
+                  <button class="btn secondary" id="expandRoadmapBtn" type="button">Expand Week</button>
+                  <button class="btn secondary" id="collapseRoadmapBtn" type="button">Collapse Week</button>
                 </div>
               </div>
               <div class="roadmap-grid" id="courseRoadmapList"></div>
             </section>
 
-            <section class="classroom-section panel" id="classroom-assignments">
+            <section class="classroom-section panel" id="classroom-assignments" data-classroom-view="assignments">
               <div class="classroom-section-head">
                 <div>
                   <div class="mini-label" id="assignmentSectionLabel">Mission Hub</div>
@@ -1923,7 +1933,7 @@
               </div>
             </section>
 
-            <section class="classroom-section panel" id="classroom-profile">
+            <section class="classroom-section panel" id="classroom-profile" data-classroom-view="overview">
               <div class="classroom-section-head">
                 <div>
                   <div class="mini-label" id="bioSectionLabel">Personal Bio</div>
@@ -1984,7 +1994,7 @@
               </div>
             </section>
 
-            <section class="classroom-section panel" id="classroom-documents">
+            <section class="classroom-section panel" id="classroom-documents" data-classroom-view="documents">
               <div class="classroom-section-head">
                 <div>
                   <div class="mini-label">Document Submission Studio</div>
@@ -2016,7 +2026,7 @@
               </div>
             </section>
 
-            <section class="classroom-section panel" id="classroom-submissions">
+            <section class="classroom-section panel" id="classroom-submissions" data-classroom-view="submissions">
               <div class="classroom-section-head">
                 <div>
                   <div class="mini-label" id="fileSectionLabel">Private File Vault</div>
@@ -2037,7 +2047,7 @@
               <div class="section-grid" id="fileList"></div>
             </section>
 
-            <section class="classroom-section panel" id="classroom-grades">
+            <section class="classroom-section panel" id="classroom-grades" data-classroom-view="grades">
               <div class="classroom-section-head">
                 <div>
                   <div class="mini-label" id="feedbackSectionLabel">Grades & Feedback</div>
@@ -2050,7 +2060,7 @@
               <div class="section-grid" id="feedbackList"></div>
             </section>
 
-            <section class="classroom-section panel" id="classroom-community">
+            <section class="classroom-section panel" id="classroom-community" data-classroom-view="community">
               <div class="classroom-section-head">
                 <div>
                   <div class="mini-label" id="communitySectionLabel">Classlist</div>
@@ -2063,7 +2073,7 @@
               <div class="community-grid" id="communityDirectoryList"></div>
             </section>
 
-            <section class="classroom-section panel" id="classroom-resources">
+            <section class="classroom-section panel" id="classroom-resources" data-classroom-view="resources">
               <div class="classroom-section-head">
                 <div>
                   <div class="mini-label" id="resourceSectionLabel">Success Resources</div>

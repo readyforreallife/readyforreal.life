@@ -976,6 +976,8 @@ const courseRoadmapLabel = document.getElementById("courseRoadmapLabel");
 const courseRoadmapTitle = document.getElementById("courseRoadmapTitle");
 const courseRoadmapCopy = document.getElementById("courseRoadmapCopy");
 const courseRoadmapList = document.getElementById("courseRoadmapList");
+const classroomViewPanels = document.querySelectorAll("[data-classroom-view]");
+const classroomNavigationLinks = document.querySelectorAll("[data-classroom-nav]");
 const classroomSearchInput = document.getElementById("classroomSearchInput");
 const classroomWeekNavList = document.getElementById("classroomWeekNavList");
 const classroomWeekCount = document.getElementById("classroomWeekCount");
@@ -1024,6 +1026,21 @@ const identityModalSummary = document.getElementById("identityModalSummary");
 let settings = loadSettings();
 let supabaseClient = null;
 let authSubscription = null;
+const CLASSROOM_HASH_TO_VIEW = {
+  "#classroom-overview": "overview",
+  "#classroom-contents": "contents",
+  "#classroom-assignments": "assignments",
+  "#classroom-documents": "documents",
+  "#classroom-submissions": "submissions",
+  "#classroom-grades": "grades",
+  "#classroom-community": "community",
+  "#classroom-resources": "resources",
+};
+const CLASSROOM_VIEW_TO_HASH = Object.fromEntries(
+  Object.entries(CLASSROOM_HASH_TO_VIEW).map(([hash, view]) => [view, hash]),
+);
+let selectedClassroomWeek = getWeekFromHash() || 1;
+let selectedClassroomView = getInitialClassroomView();
 let state = {
   session: null,
   user: null,
@@ -1447,6 +1464,89 @@ function countReviewedItems(assignments, documentSubmissions) {
   return reviewedAssignments + reviewedDocuments;
 }
 
+function normalizeClassroomWeek(value) {
+  const weekNumber = Number.parseInt(value, 10);
+  if (!Number.isFinite(weekNumber)) return 1;
+  return Math.min(Math.max(weekNumber, 1), COURSE_WEEKS.length);
+}
+
+function getWeekFromHash() {
+  const match = window.location.hash.match(/^#classroom-week-(\d+)$/);
+  return match ? normalizeClassroomWeek(match[1]) : null;
+}
+
+function getViewFromHash() {
+  if (getWeekFromHash()) return "contents";
+  return CLASSROOM_HASH_TO_VIEW[window.location.hash] || null;
+}
+
+function getInitialClassroomView() {
+  return getViewFromHash() || "overview";
+}
+
+function updateClassroomWeekHash(weekNumber) {
+  const nextHash = `#classroom-week-${weekNumber}`;
+  if (window.location.hash === nextHash) return;
+  window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}${nextHash}`);
+}
+
+function updateClassroomViewHash(view) {
+  const nextHash = CLASSROOM_VIEW_TO_HASH[view] || "#classroom-overview";
+  if (window.location.hash === nextHash) return;
+  window.history.replaceState(null, "", `${window.location.pathname}${window.location.search}${nextHash}`);
+}
+
+function applySelectedClassroomView() {
+  classroomViewPanels.forEach((panel) => {
+    panel.hidden = panel.dataset.classroomView !== selectedClassroomView;
+  });
+
+  classroomNavigationLinks.forEach((link) => {
+    const isActive = link.dataset.classroomNav === selectedClassroomView;
+    link.classList.toggle("active", isActive);
+    link.classList.toggle("primary-tab", isActive && link.classList.contains("classroom-tab"));
+    link.setAttribute("aria-current", isActive ? "page" : "false");
+  });
+}
+
+function selectClassroomView(view, options = {}) {
+  selectedClassroomView = CLASSROOM_VIEW_TO_HASH[view] ? view : "overview";
+  if (options.updateHash !== false) {
+    updateClassroomViewHash(selectedClassroomView);
+  }
+  applySelectedClassroomView();
+}
+
+function applySelectedClassroomWeek() {
+  const selectedWeek = normalizeClassroomWeek(selectedClassroomWeek);
+  selectedClassroomWeek = selectedWeek;
+
+  courseRoadmapList?.querySelectorAll("details.week-card").forEach((card) => {
+    const weekMatch = card.id.match(/^classroom-week-(\d+)$/);
+    const isSelected = Number(weekMatch?.[1]) === selectedWeek;
+    card.hidden = !isSelected;
+    card.open = isSelected;
+  });
+
+  classroomWeekNavList?.querySelectorAll("[data-classroom-week-link]").forEach((link) => {
+    const isSelected = Number(link.getAttribute("data-classroom-week-link")) === selectedWeek;
+    link.classList.toggle("active", isSelected);
+    link.setAttribute("aria-current", isSelected ? "true" : "false");
+    const marker = link.querySelector("[data-week-marker]");
+    if (marker) marker.textContent = isSelected ? "✓" : "•";
+  });
+}
+
+function selectClassroomWeek(weekNumber, options = {}) {
+  selectedClassroomWeek = normalizeClassroomWeek(weekNumber);
+  selectedClassroomView = "contents";
+  if (options.updateHash !== false) {
+    updateClassroomWeekHash(selectedClassroomWeek);
+  }
+  applySelectedClassroomView();
+  applySelectedClassroomWeek();
+}
+
 function renderClassroomDashboard(progress, profile) {
   const reviewedCount = countReviewedItems(state.assignments, state.documentSubmissions);
 
@@ -1471,7 +1571,7 @@ function renderClassroomDashboard(progress, profile) {
       (week) => `
         <a href="#classroom-week-${week.week}" data-classroom-week-link="${week.week}">
           <span>Week ${week.week}</span>
-          <span aria-hidden="true">${week.week === 1 ? "✓" : "•"}</span>
+          <span data-week-marker aria-hidden="true">${week.week === selectedClassroomWeek ? "✓" : "•"}</span>
         </a>
       `,
     ).join("");
@@ -1483,19 +1583,18 @@ function renderClassroomDashboard(progress, profile) {
   }
 
   document.body.dataset.portalRole = profile.role || "student";
+  applySelectedClassroomView();
+  applySelectedClassroomWeek();
 }
 
 function filterClassroomWeeks(query) {
-  courseRoadmapList?.querySelectorAll(".week-card").forEach((card) => {
-    const text = card.textContent.toLowerCase();
-    card.hidden = Boolean(query) && !text.includes(query);
-  });
-
   classroomWeekNavList?.querySelectorAll("a").forEach((link) => {
     const weekId = link.getAttribute("data-classroom-week-link");
     const card = weekId ? document.getElementById(`classroom-week-${weekId}`) : null;
-    link.hidden = Boolean(card?.hidden);
+    const text = card?.textContent.toLowerCase() || link.textContent.toLowerCase();
+    link.hidden = Boolean(query) && !text.includes(query);
   });
+  applySelectedClassroomWeek();
 }
 
 function initializeSupabaseClient() {
@@ -2932,16 +3031,42 @@ classroomSearchInput?.addEventListener("input", () => {
   filterClassroomWeeks(classroomSearchInput.value.trim().toLowerCase());
 });
 
-expandRoadmapBtn?.addEventListener("click", () => {
-  courseRoadmapList?.querySelectorAll("details.week-card").forEach((card) => {
-    card.open = true;
+classroomNavigationLinks.forEach((link) => {
+  link.addEventListener("click", (event) => {
+    const view = link.dataset.classroomNav;
+    if (!view) return;
+    event.preventDefault();
+    selectClassroomView(view);
   });
 });
 
+classroomWeekNavList?.addEventListener("click", (event) => {
+  const link = event.target.closest("[data-classroom-week-link]");
+  if (!link) return;
+  event.preventDefault();
+  selectClassroomWeek(link.getAttribute("data-classroom-week-link"));
+});
+
+expandRoadmapBtn?.addEventListener("click", () => {
+  const card = document.getElementById(`classroom-week-${selectedClassroomWeek}`);
+  if (card) card.open = true;
+});
+
 collapseRoadmapBtn?.addEventListener("click", () => {
-  courseRoadmapList?.querySelectorAll("details.week-card").forEach((card, index) => {
-    card.open = index === 0;
-  });
+  const card = document.getElementById(`classroom-week-${selectedClassroomWeek}`);
+  if (card) card.open = false;
+});
+
+window.addEventListener("hashchange", () => {
+  const weekFromHash = getWeekFromHash();
+  if (weekFromHash) {
+    selectClassroomWeek(weekFromHash, { updateHash: false });
+    return;
+  }
+  const viewFromHash = getViewFromHash();
+  if (viewFromHash) {
+    selectClassroomView(viewFromHash, { updateHash: false });
+  }
 });
 
 documentSubmissionForm?.addEventListener("submit", async (event) => {
