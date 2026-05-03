@@ -1392,3 +1392,262 @@ using (
   bucket_id = 'community-profiles'
   and (storage.foldername(name))[1] = auth.uid()::text
 );
+
+create table if not exists public.discussion_posts (
+  id uuid primary key default gen_random_uuid(),
+  topic_key text not null,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  display_name text not null,
+  role text not null default 'student' check (role in ('student', 'instructor')),
+  body text not null,
+  created_at timestamptz not null default timezone('utc', now()),
+  updated_at timestamptz not null default timezone('utc', now()),
+  unique (topic_key, user_id)
+);
+
+create table if not exists public.discussion_replies (
+  id uuid primary key default gen_random_uuid(),
+  post_id uuid not null references public.discussion_posts(id) on delete cascade,
+  topic_key text not null,
+  user_id uuid not null references auth.users(id) on delete cascade,
+  display_name text not null,
+  role text not null default 'student' check (role in ('student', 'instructor')),
+  body text not null,
+  created_at timestamptz not null default timezone('utc', now()),
+  updated_at timestamptz not null default timezone('utc', now())
+);
+
+create index if not exists idx_discussion_posts_topic_created on public.discussion_posts(topic_key, created_at);
+create index if not exists idx_discussion_posts_user_topic on public.discussion_posts(user_id, topic_key);
+create index if not exists idx_discussion_replies_post_created on public.discussion_replies(post_id, created_at);
+create index if not exists idx_discussion_replies_user_topic on public.discussion_replies(user_id, topic_key);
+
+drop trigger if exists set_discussion_posts_updated_at on public.discussion_posts;
+create trigger set_discussion_posts_updated_at
+before update on public.discussion_posts
+for each row
+execute function public.set_updated_at();
+
+drop trigger if exists set_discussion_replies_updated_at on public.discussion_replies;
+create trigger set_discussion_replies_updated_at
+before update on public.discussion_replies
+for each row
+execute function public.set_updated_at();
+
+create or replace function public.discussion_identity(target_user_id uuid)
+returns table(display_name text, role text)
+language sql
+stable
+security definer
+set search_path = public, auth
+as $$
+  select
+    coalesce(
+      nullif(trim(community.display_name), ''),
+      nullif(trim(profile.display_name), ''),
+      nullif(trim(user_record.raw_user_meta_data->>'full_name'), ''),
+      split_part(user_record.email, '@', 1),
+      'Program Member'
+    ) as display_name,
+    case
+      when coalesce(community.role, profile.role, user_record.raw_user_meta_data->>'role') = 'instructor'
+        then 'instructor'
+      else 'student'
+    end as role
+  from auth.users user_record
+  left join public.profiles profile on profile.id = user_record.id
+  left join public.community_profiles community on community.user_id = user_record.id
+  where user_record.id = target_user_id
+  limit 1;
+$$;
+
+create or replace function public.has_discussion_post(target_topic_key text)
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1
+    from public.discussion_posts post
+    where post.topic_key = nullif(trim(target_topic_key), '')
+      and post.user_id = auth.uid()
+  );
+$$;
+
+create or replace function public.can_reply_to_discussion_post(target_post_id uuid, target_topic_key text)
+returns boolean
+language sql
+stable
+security definer
+set search_path = public
+as $$
+  select exists (
+    select 1
+    from public.discussion_posts post
+    where post.id = target_post_id
+      and post.topic_key = nullif(trim(target_topic_key), '')
+      and post.user_id <> auth.uid()
+      and public.has_discussion_post(post.topic_key)
+  );
+$$;
+
+create or replace function public.submit_discussion_post(
+  target_topic_key text,
+  post_body text
+)
+returns public.discussion_posts
+language plpgsql
+security definer
+set search_path = public, auth
+as $$
+declare
+  target_user_id uuid := auth.uid();
+  clean_topic_key text := nullif(trim(target_topic_key), '');
+  clean_body text := nullif(trim(post_body), '');
+  identity_record record;
+  saved_post public.discussion_posts%rowtype;
+begin
+  if target_user_id is null then
+    raise exception 'You must be signed in to post a discussion.';
+  end if;
+
+  if clean_topic_key is null then
+    raise exception 'Choose a discussion topic before posting.';
+  end if;
+
+  if clean_body is null then
+    raise exception 'Write your discussion response before posting.';
+  end if;
+
+  select * into identity_record
+  from public.discussion_identity(target_user_id)
+  limit 1;
+
+  insert into public.discussion_posts (topic_key, user_id, display_name, role, body)
+  values (
+    clean_topic_key,
+    target_user_id,
+    coalesce(identity_record.display_name, 'Program Member'),
+    coalesce(identity_record.role, 'student'),
+    clean_body
+  )
+  on conflict (topic_key, user_id) do update
+  set
+    display_name = excluded.display_name,
+    role = excluded.role,
+    body = excluded.body,
+    updated_at = timezone('utc', now())
+  returning * into saved_post;
+
+  return saved_post;
+end;
+$$;
+
+create or replace function public.submit_discussion_reply(
+  target_post_id uuid,
+  reply_body text
+)
+returns public.discussion_replies
+language plpgsql
+security definer
+set search_path = public, auth
+as $$
+declare
+  target_user_id uuid := auth.uid();
+  clean_body text := nullif(trim(reply_body), '');
+  target_post public.discussion_posts%rowtype;
+  identity_record record;
+  saved_reply public.discussion_replies%rowtype;
+begin
+  if target_user_id is null then
+    raise exception 'You must be signed in to reply to a discussion.';
+  end if;
+
+  if clean_body is null then
+    raise exception 'Write your reply before posting.';
+  end if;
+
+  select * into target_post
+  from public.discussion_posts
+  where id = target_post_id;
+
+  if target_post.id is null then
+    raise exception 'That discussion post could not be found.';
+  end if;
+
+  if target_post.user_id = target_user_id then
+    raise exception 'Reply to at least two classmates instead of replying to your own post.';
+  end if;
+
+  if not public.has_discussion_post(target_post.topic_key) then
+    raise exception 'Post your own discussion response before reading or replying to classmates.';
+  end if;
+
+  select * into identity_record
+  from public.discussion_identity(target_user_id)
+  limit 1;
+
+  insert into public.discussion_replies (post_id, topic_key, user_id, display_name, role, body)
+  values (
+    target_post.id,
+    target_post.topic_key,
+    target_user_id,
+    coalesce(identity_record.display_name, 'Program Member'),
+    coalesce(identity_record.role, 'student'),
+    clean_body
+  )
+  returning * into saved_reply;
+
+  return saved_reply;
+end;
+$$;
+
+grant execute on function public.discussion_identity(uuid) to authenticated;
+grant execute on function public.has_discussion_post(text) to authenticated;
+grant execute on function public.can_reply_to_discussion_post(uuid, text) to authenticated;
+grant execute on function public.submit_discussion_post(text, text) to authenticated;
+grant execute on function public.submit_discussion_reply(uuid, text) to authenticated;
+
+alter table public.discussion_posts enable row level security;
+alter table public.discussion_replies enable row level security;
+
+drop policy if exists "Discussion posts are visible after posting first" on public.discussion_posts;
+create policy "Discussion posts are visible after posting first"
+on public.discussion_posts
+for select
+to authenticated
+using (
+  auth.uid() = user_id
+  or public.has_discussion_post(topic_key)
+);
+
+drop policy if exists "Discussion posts are written through the portal function" on public.discussion_posts;
+create policy "Discussion posts are written through the portal function"
+on public.discussion_posts
+for insert
+to authenticated
+with check (false);
+
+drop policy if exists "Discussion posts are updated through the portal function" on public.discussion_posts;
+create policy "Discussion posts are updated through the portal function"
+on public.discussion_posts
+for update
+to authenticated
+using (false)
+with check (false);
+
+drop policy if exists "Discussion replies are visible after posting first" on public.discussion_replies;
+create policy "Discussion replies are visible after posting first"
+on public.discussion_replies
+for select
+to authenticated
+using (public.has_discussion_post(topic_key));
+
+drop policy if exists "Discussion replies are written through the portal function" on public.discussion_replies;
+create policy "Discussion replies are written through the portal function"
+on public.discussion_replies
+for insert
+to authenticated
+with check (false);

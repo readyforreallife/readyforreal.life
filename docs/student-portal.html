@@ -708,6 +708,53 @@
         background: linear-gradient(180deg, rgba(255, 255, 255, 0.98), rgba(250, 247, 242, 0.95));
       }
 
+      .discussion-topic-card {
+        padding: 18px;
+        border-radius: 22px;
+        border: 1px solid rgba(24, 48, 79, 0.08);
+        background: rgba(255, 255, 255, 0.96);
+        box-shadow: 0 14px 34px rgba(24, 48, 79, 0.06);
+      }
+
+      .discussion-topic-card.locked {
+        background: linear-gradient(180deg, rgba(255, 250, 242, 0.98), rgba(250, 247, 242, 0.94));
+      }
+
+      .discussion-prompt {
+        margin: 12px 0;
+        padding: 14px;
+        border-left: 4px solid var(--gold);
+        border-radius: 14px;
+        background: rgba(200, 155, 60, 0.09);
+        color: var(--navy);
+        line-height: 1.65;
+      }
+
+      .discussion-post {
+        margin-top: 14px;
+        padding: 14px;
+        border-radius: 18px;
+        background: rgba(24, 48, 79, 0.045);
+        border: 1px solid rgba(24, 48, 79, 0.07);
+      }
+
+      .discussion-reply {
+        margin-top: 10px;
+        padding: 12px;
+        border-radius: 14px;
+        background: rgba(255, 255, 255, 0.72);
+        border-left: 3px solid rgba(36, 82, 110, 0.3);
+      }
+
+      .discussion-lock-note {
+        margin-top: 12px;
+        padding: 12px 14px;
+        border-radius: 16px;
+        background: rgba(164, 73, 49, 0.08);
+        color: #8b3f2e;
+        font-weight: 800;
+      }
+
       .classroom-toolbar {
         display: flex;
         gap: 10px;
@@ -1827,6 +1874,7 @@
           <nav class="classroom-tabs" aria-label="Classroom sections">
             <a class="classroom-tab primary-tab" href="#classroom-contents" data-classroom-nav="contents">Content</a>
             <a class="classroom-tab" href="#classroom-assignments" data-classroom-nav="assignments">Assignments</a>
+            <a class="classroom-tab" href="#classroom-discussions" data-classroom-nav="discussions">Discussions</a>
             <a class="classroom-tab" href="#classroom-documents" data-classroom-nav="documents">Document Studio</a>
             <a class="classroom-tab" href="#classroom-submissions" data-classroom-nav="submissions">Submissions</a>
             <a class="classroom-tab" href="#classroom-grades" data-classroom-nav="grades">Grades</a>
@@ -1845,6 +1893,7 @@
               <a href="#classroom-overview" data-classroom-nav="overview">Overview <span class="classroom-nav-count">1</span></a>
               <a href="#classroom-contents" data-classroom-nav="contents">Table of Contents <span class="classroom-nav-count" id="classroomWeekCount">16</span></a>
               <a href="#classroom-assignments" data-classroom-nav="assignments">Assignments <span class="classroom-nav-count" id="classroomAssignmentCount">0</span></a>
+              <a href="#classroom-discussions" data-classroom-nav="discussions">Discussions <span class="classroom-nav-count" id="classroomDiscussionCount">17</span></a>
               <a href="#classroom-documents" data-classroom-nav="documents">Document Studio <span class="classroom-nav-count" id="classroomDocumentCount">0</span></a>
               <a href="#classroom-submissions" data-classroom-nav="submissions">Submissions <span class="classroom-nav-count" id="classroomFileCount">0</span></a>
               <a href="#classroom-grades" data-classroom-nav="grades">Grades & Feedback <span class="classroom-nav-count" id="classroomFeedbackCount">0</span></a>
@@ -1992,6 +2041,29 @@
                   </div>
                 </section>
               </div>
+            </section>
+
+            <section class="classroom-section panel" id="classroom-discussions" data-classroom-view="discussions">
+              <div class="classroom-section-head">
+                <div>
+                  <div class="mini-label">Discussion Board</div>
+                  <h3>Weekly discussion posts and replies</h3>
+                  <p class="classroom-section-copy">
+                    Post your own answer first. After your post is submitted, classmates’ posts unlock.
+                    Then reply to at least two classmates before the week ends.
+                  </p>
+                </div>
+              </div>
+              <div class="student-help-box">
+                <strong>Discussion rules</strong>
+                <ol>
+                  <li>Read the week’s content and complete the week’s work first.</li>
+                  <li>Create your own post before viewing classmates’ posts.</li>
+                  <li>Reply to at least two classmates with specific encouragement, a question, or a useful connection.</li>
+                </ol>
+              </div>
+              <div class="status-line" id="discussionStatus"></div>
+              <div class="section-grid" id="discussionList"></div>
             </section>
 
             <section class="classroom-section panel" id="classroom-documents" data-classroom-view="documents">

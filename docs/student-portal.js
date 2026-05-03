@@ -776,6 +776,52 @@ const STUDENT_WEEK_GUIDES = {
   },
 };
 
+const WEEKLY_DISCUSSION_QUESTIONS = {
+  1: "How can a respectful first impression change the way a group feels and works together?",
+  2: "Which conversation habit do you need most right now, and how will you practice it in one real setting this week?",
+  3: "Describe one real situation where respect could change the outcome. What would you do before, during, and after the moment?",
+  4: "What is one emotion that can run the moment for people? How can naming it early help you choose a stronger response?",
+  5: "Think about a trigger or pressure point. What warning signs show up first, and what reset move can help you respond instead of react?",
+  6: "How can repair after a mistake protect trust better than pretending nothing happened?",
+  7: "What does responsible decision-making look like when there are several good or bad options in front of you?",
+  8: "Use the Pause, Look, Reason, Respond sequence on a realistic choice. What changes when you slow the decision down?",
+  9: "How does one online choice affect credibility, opportunity, and self-respect? Use a real or realistic example from social media, messaging, gaming, or school tech.",
+  10: "What boundary or communication habit helps friendships stay respectful when there is pressure, conflict, or misunderstanding?",
+  11: "How can you show accountability in a family, school, or workplace situation without making excuses?",
+  12: "What is one workplace-ready habit that shows maturity before you ever say a word?",
+  13: "Choose a conflict or pressure scenario. What would a strong repair, reset, or next step sound like?",
+  14: "What personal standard do you want people to connect with your name, and what habit would prove it?",
+  15: "What does leadership look like when you are not the loudest person in the room?",
+  16: "Which course tool will you keep using after the class ends, and how will it help you make better real-life choices?",
+};
+
+const DISCUSSION_TOPICS = [
+  {
+    key: "week-01-introduction",
+    week: 1,
+    label: "Start Here",
+    title: "Introduction Discussion",
+    prompt:
+      "Introduce yourself to the class. Share your name, one goal you have for this course, and one real-life skill you hope to strengthen.",
+    focus: ["Belonging", "Community start", "Course goals"],
+  },
+  ...COURSE_WEEKS.map((week) => {
+    const guide = STUDENT_WEEK_GUIDES[week.week] || {};
+    return {
+      key: `week-${String(week.week).padStart(2, "0")}`,
+      week: week.week,
+      label: `Week ${week.week}`,
+      title: `Week ${week.week}: ${week.title}`,
+      prompt: WEEKLY_DISCUSSION_QUESTIONS[week.week],
+      focus: [
+        week.module,
+        (guide.learn || [])[0] || week.summary,
+        (guide.submit || [])[0] || "Connect your response to the weekly assignment.",
+      ],
+    };
+  }),
+];
+
 const ROLE_PORTAL_COPY = {
   student: {
     roadmapLabel: "16-Week Student Path",
@@ -956,6 +1002,8 @@ const uploadProfileImageBtn = document.getElementById("uploadProfileImageBtn");
 const profileImageStatus = document.getElementById("profileImageStatus");
 const assignmentList = document.getElementById("assignmentList");
 const workbookList = document.getElementById("workbookList");
+const discussionList = document.getElementById("discussionList");
+const discussionStatus = document.getElementById("discussionStatus");
 const resourceList = document.getElementById("resourceList");
 const feedbackList = document.getElementById("feedbackList");
 const documentSubmissionForm = document.getElementById("documentSubmissionForm");
@@ -982,6 +1030,7 @@ const classroomSearchInput = document.getElementById("classroomSearchInput");
 const classroomWeekNavList = document.getElementById("classroomWeekNavList");
 const classroomWeekCount = document.getElementById("classroomWeekCount");
 const classroomAssignmentCount = document.getElementById("classroomAssignmentCount");
+const classroomDiscussionCount = document.getElementById("classroomDiscussionCount");
 const classroomDocumentCount = document.getElementById("classroomDocumentCount");
 const classroomFileCount = document.getElementById("classroomFileCount");
 const classroomFeedbackCount = document.getElementById("classroomFeedbackCount");
@@ -1030,6 +1079,7 @@ const CLASSROOM_HASH_TO_VIEW = {
   "#classroom-overview": "overview",
   "#classroom-contents": "contents",
   "#classroom-assignments": "assignments",
+  "#classroom-discussions": "discussions",
   "#classroom-documents": "documents",
   "#classroom-submissions": "submissions",
   "#classroom-grades": "grades",
@@ -1049,6 +1099,9 @@ let state = {
   communityProfiles: [],
   assignments: [],
   workbookEntries: [],
+  discussionPosts: [],
+  discussionReplies: [],
+  discussionError: "",
   documentSubmissions: [],
   files: [],
 };
@@ -1060,6 +1113,10 @@ function escapeHtml(value) {
     .replaceAll(">", "&gt;")
     .replaceAll('"', "&quot;")
     .replaceAll("'", "&#39;");
+}
+
+function safeDomId(value) {
+  return String(value || "").replace(/[^a-z0-9_-]/gi, "-");
 }
 
 function showStatus(el, message, type = "") {
@@ -1552,6 +1609,7 @@ function renderClassroomDashboard(progress, profile) {
 
   if (classroomWeekCount) classroomWeekCount.textContent = String(COURSE_WEEKS.length);
   if (classroomAssignmentCount) classroomAssignmentCount.textContent = String(state.assignments.length);
+  if (classroomDiscussionCount) classroomDiscussionCount.textContent = String(DISCUSSION_TOPICS.length);
   if (classroomDocumentCount) classroomDocumentCount.textContent = String(state.documentSubmissions.length);
   if (classroomFileCount) classroomFileCount.textContent = String(state.files.length);
   if (classroomFeedbackCount) classroomFeedbackCount.textContent = String(reviewedCount);
@@ -1852,6 +1910,30 @@ async function loadDocumentSubmissions(userId) {
   return data || [];
 }
 
+async function loadDiscussionData() {
+  const supabase = getSupabase();
+  const { data: posts, error: postsError } = await supabase
+    .from("discussion_posts")
+    .select("*")
+    .order("topic_key", { ascending: true })
+    .order("created_at", { ascending: true });
+
+  if (postsError) {
+    return { posts: [], replies: [], error: postsError.message };
+  }
+
+  const { data: replies, error: repliesError } = await supabase
+    .from("discussion_replies")
+    .select("*")
+    .order("created_at", { ascending: true });
+
+  if (repliesError) {
+    return { posts: posts || [], replies: [], error: repliesError.message };
+  }
+
+  return { posts: posts || [], replies: replies || [], error: "" };
+}
+
 async function loadPortalData(defaults = null, options = {}) {
   const user = state.user;
   if (!user) return;
@@ -1872,11 +1954,12 @@ async function loadPortalData(defaults = null, options = {}) {
     console.warn("Community profile features are not ready yet.", error);
   }
 
-  const [assignments, workbookEntries, documentSubmissions, files] = await Promise.all([
+  const [assignments, workbookEntries, documentSubmissions, files, discussionData] = await Promise.all([
     ensureAssignments(user.id, profile.role),
     ensureWorkbookEntries(user.id, profile.role),
     loadDocumentSubmissions(user.id),
     loadFiles(user.id),
+    loadDiscussionData(),
   ]);
 
   state.profile = profile;
@@ -1884,6 +1967,9 @@ async function loadPortalData(defaults = null, options = {}) {
   state.communityProfiles = communityProfiles;
   state.assignments = assignments;
   state.workbookEntries = workbookEntries;
+  state.discussionPosts = discussionData.posts;
+  state.discussionReplies = discussionData.replies;
+  state.discussionError = discussionData.error;
   state.documentSubmissions = documentSubmissions;
   state.files = files;
   renderPortal({ scrollToWelcome });
@@ -1897,6 +1983,9 @@ function renderLoggedOutState() {
   state.communityProfiles = [];
   state.assignments = [];
   state.workbookEntries = [];
+  state.discussionPosts = [];
+  state.discussionReplies = [];
+  state.discussionError = "";
   state.documentSubmissions = [];
   state.files = [];
   document.body.classList.remove("portal-instructor", "portal-student");
@@ -1905,6 +1994,125 @@ function renderLoggedOutState() {
   clearStatus(bioStatus);
   clearStatus(fileUploadStatus);
   clearStatus(accountStatus);
+}
+
+function discussionPostCountForTopic(topicKey) {
+  return state.discussionPosts.filter((post) => post.topic_key === topicKey).length;
+}
+
+function discussionRepliesByCurrentUser(topicKey) {
+  if (!state.user) return [];
+  return state.discussionReplies.filter(
+    (reply) => reply.topic_key === topicKey && reply.user_id === state.user.id,
+  );
+}
+
+function renderDiscussionReplies(postId) {
+  const replies = state.discussionReplies.filter((reply) => reply.post_id === postId);
+  if (!replies.length) return `<div class="empty">No replies yet.</div>`;
+
+  return replies
+    .map(
+      (reply) => `
+        <div class="discussion-reply">
+          <strong>${escapeHtml(reply.display_name)}</strong>
+          <span class="subtle"> · ${escapeHtml(new Date(reply.created_at).toLocaleString())}</span>
+          <div style="margin-top:8px;white-space:pre-wrap">${escapeHtml(reply.body)}</div>
+        </div>
+      `,
+    )
+    .join("");
+}
+
+function renderDiscussionTopic(topic) {
+  const topicPosts = state.discussionPosts.filter((post) => post.topic_key === topic.key);
+  const myPost = topicPosts.find((post) => post.user_id === state.user?.id);
+  const peerPosts = topicPosts.filter((post) => post.user_id !== state.user?.id);
+  const replyTargets = new Set(
+    discussionRepliesByCurrentUser(topic.key)
+      .filter((reply) => peerPosts.some((post) => post.id === reply.post_id))
+      .map((reply) => reply.post_id),
+  );
+  const replyProgress = Math.min(replyTargets.size, 2);
+  const postId = `discussion-post-${safeDomId(topic.key)}`;
+
+  return `
+    <article class="discussion-topic-card ${myPost ? "" : "locked"}">
+      <div class="assignment-head">
+        <div>
+          <div class="mini-label">${escapeHtml(topic.label)}</div>
+          <h4>${escapeHtml(topic.title)}</h4>
+        </div>
+        <span class="status-badge ${myPost && replyProgress >= 2 ? "complete" : myPost ? "review" : "pending"}">
+          ${myPost ? `${replyProgress}/2 replies` : "Post first"}
+        </span>
+      </div>
+      <div class="discussion-prompt">${escapeHtml(topic.prompt)}</div>
+      <div class="assignment-meta">
+        ${topic.focus.map((item) => `<span class="chip">${escapeHtml(item)}</span>`).join("")}
+      </div>
+      <label style="margin-top:14px">
+        Your initial discussion post
+        <textarea id="${escapeHtml(postId)}" placeholder="Write your post before viewing classmates.">${escapeHtml(myPost?.body || "")}</textarea>
+      </label>
+      <div class="assignment-actions">
+        <button class="btn primary" type="button" data-save-discussion-post="${escapeHtml(topic.key)}">
+          ${myPost ? "Update My Post" : "Publish My Post"}
+        </button>
+      </div>
+      ${
+        myPost
+          ? `<div class="discussion-post">
+              <div class="mini-label">Classmate posts unlocked</div>
+              <p class="subtle">Reply to at least two classmates by the end of the week. Use a specific connection, a thoughtful question, or encouragement that helps them keep growing.</p>
+              ${
+                peerPosts.length
+                  ? peerPosts
+                      .map(
+                        (post) => `
+                          <div class="discussion-post">
+                            <strong>${escapeHtml(post.display_name)}</strong>
+                            <span class="subtle"> · ${escapeHtml(new Date(post.created_at).toLocaleString())}</span>
+                            <div style="margin-top:8px;white-space:pre-wrap">${escapeHtml(post.body)}</div>
+                            <div style="margin-top:12px">
+                              <div class="mini-label">Replies</div>
+                              ${renderDiscussionReplies(post.id)}
+                            </div>
+                            <label style="margin-top:12px">
+                              Reply to ${escapeHtml(post.display_name)}
+                              <textarea id="discussion-reply-${escapeHtml(post.id)}" placeholder="Write a specific reply that connects to their idea."></textarea>
+                            </label>
+                            <div class="assignment-actions">
+                              <button class="btn secondary" type="button" data-save-discussion-reply="${escapeHtml(post.id)}">Post Reply</button>
+                            </div>
+                          </div>
+                        `,
+                      )
+                      .join("")
+                  : `<div class="empty">No classmates have posted here yet. When they do, their posts will appear here for replies.</div>`
+              }
+            </div>`
+          : `<div class="discussion-lock-note">Classmate posts are hidden until you publish your own response for this topic.</div>`
+      }
+    </article>
+  `;
+}
+
+function renderDiscussions() {
+  if (!discussionList) return;
+
+  if (state.discussionError) {
+    discussionList.innerHTML = `
+      <div class="empty">
+        Discussions need the updated Supabase schema before they can save posts and replies.
+        Run the updated schema in Supabase, then refresh this page.
+        <br><br>${escapeHtml(state.discussionError)}
+      </div>
+    `;
+    return;
+  }
+
+  discussionList.innerHTML = DISCUSSION_TOPICS.map(renderDiscussionTopic).join("");
 }
 
 async function handleSessionChange(session, options = {}) {
@@ -2100,6 +2308,7 @@ function renderPortal(options = {}) {
     .join("");
 
   renderDocumentSubmissionStudio();
+  renderDiscussions();
 
   resourceList.innerHTML = DEFAULT_RESOURCES.map(
     (resource) => `
@@ -2502,6 +2711,44 @@ async function saveWorkbookEntry(entryId) {
   await loadPortalData();
 }
 
+async function saveDiscussionPost(topicKey) {
+  const textarea = document.getElementById(`discussion-post-${safeDomId(topicKey)}`);
+  const body = textarea?.value.trim() || "";
+  if (!body) {
+    showStatus(discussionStatus, "Write your discussion post before publishing.");
+    return;
+  }
+
+  const supabase = getSupabase();
+  const { error } = await supabase.rpc("submit_discussion_post", {
+    target_topic_key: topicKey,
+    post_body: body,
+  });
+
+  if (error) throw error;
+  await loadPortalData();
+  showStatus(discussionStatus, "Discussion post saved. Classmate posts are now unlocked for that topic.", "success");
+}
+
+async function saveDiscussionReply(postId) {
+  const textarea = document.getElementById(`discussion-reply-${postId}`);
+  const body = textarea?.value.trim() || "";
+  if (!body) {
+    showStatus(discussionStatus, "Write your reply before posting.");
+    return;
+  }
+
+  const supabase = getSupabase();
+  const { error } = await supabase.rpc("submit_discussion_reply", {
+    target_post_id: postId,
+    reply_body: body,
+  });
+
+  if (error) throw error;
+  await loadPortalData();
+  showStatus(discussionStatus, "Reply posted. Keep going until you have replied to at least two classmates.", "success");
+}
+
 async function openFile(fileId) {
   const fileRecord = state.files.find((item) => item.id === fileId);
   if (!fileRecord) return;
@@ -2566,6 +2813,26 @@ function bindPortalActions() {
         showStatus(bioStatus, "Workbook reflection saved.", "success");
       } catch (error) {
         showStatus(studentLoginStatus, error.message);
+      }
+    });
+  });
+
+  discussionList?.querySelectorAll("[data-save-discussion-post]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      try {
+        await saveDiscussionPost(button.getAttribute("data-save-discussion-post"));
+      } catch (error) {
+        showStatus(discussionStatus, error.message);
+      }
+    });
+  });
+
+  discussionList?.querySelectorAll("[data-save-discussion-reply]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      try {
+        await saveDiscussionReply(button.getAttribute("data-save-discussion-reply"));
+      } catch (error) {
+        showStatus(discussionStatus, error.message);
       }
     });
   });
