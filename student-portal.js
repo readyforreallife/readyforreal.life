@@ -822,6 +822,22 @@ const DISCUSSION_TOPICS = [
   }),
 ];
 
+function weeklyDiscussionInstruction(weekNumber, role = "student") {
+  const weeklyTopic = `Week ${weekNumber} discussion`;
+  const replyInstruction =
+    "After posting, read classmates' posts and reply to at least two classmates by the end of the week.";
+
+  if (weekNumber === 1) {
+    return role === "instructor"
+      ? "Confirm students complete the Introduction Discussion and the Week 1 discussion, then reply to at least two classmates after their own posts unlock."
+      : `Complete the Introduction Discussion and ${weeklyTopic}. Post your own response first. ${replyInstruction}`;
+  }
+
+  return role === "instructor"
+    ? `Confirm students complete the ${weeklyTopic}, post their own response first, and reply to at least two classmates after posts unlock.`
+    : `Complete the ${weeklyTopic}. Post your own response first. ${replyInstruction}`;
+}
+
 const ROLE_PORTAL_COPY = {
   student: {
     roadmapLabel: "16-Week Student Path",
@@ -1412,6 +1428,7 @@ function renderCourseRoadmap(role) {
                     <strong>What to look for</strong>
                     <ul>
                       ${week.studentEvidence.map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                      <li>${escapeHtml(weeklyDiscussionInstruction(week.week, "instructor"))}</li>
                     </ul>
                   </section>
                   <section class="week-list-block">
@@ -1444,6 +1461,7 @@ function renderCourseRoadmap(role) {
                     <strong>Submit or show</strong>
                     <ul>
                       ${(guide?.submit || week.studentEvidence).map((item) => `<li>${escapeHtml(item)}</li>`).join("")}
+                      <li>${escapeHtml(weeklyDiscussionInstruction(week.week, "student"))}</li>
                     </ul>
                   </section>
                   <section class="week-list-block">
