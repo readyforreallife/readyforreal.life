@@ -1144,6 +1144,7 @@ const courseRoadmapLabel = document.getElementById("courseRoadmapLabel");
 const courseRoadmapTitle = document.getElementById("courseRoadmapTitle");
 const courseRoadmapCopy = document.getElementById("courseRoadmapCopy");
 const courseRoadmapList = document.getElementById("courseRoadmapList");
+const instructorTrainingOutlook = document.getElementById("instructorTrainingOutlook");
 const classroomViewPanels = document.querySelectorAll("[data-classroom-view]");
 const classroomNavigationLinks = document.querySelectorAll("[data-classroom-nav]");
 const classroomSearchInput = document.getElementById("classroomSearchInput");
@@ -2504,6 +2505,9 @@ function renderPortal(options = {}) {
     link.tabIndex = isPrivilegedPortalUser ? 0 : -1;
     link.style.display = isPrivilegedPortalUser ? "" : "none";
   });
+  if (instructorTrainingOutlook) {
+    instructorTrainingOutlook.hidden = !isPrivilegedPortalUser;
+  }
 
   const roleCopy = portalCopyForRole(profile.role);
   const firstName = profile.display_name.split(/\s+/)[0] || profile.display_name;

@@ -1647,6 +1647,46 @@
         border-bottom-color: var(--gold);
       }
 
+      .legal-strip {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 24px;
+        padding-top: 34px;
+        padding-bottom: 34px;
+        border-top: 1px solid var(--border);
+        background: rgba(255, 255, 255, 0.72);
+      }
+      .legal-strip-title {
+        margin: 0 0 8px;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.35rem, 2vw, 1.8rem);
+        color: var(--ink);
+      }
+      .legal-strip-copy {
+        max-width: 620px;
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      .legal-strip-link {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 48px;
+        padding: 0 22px;
+        border-radius: 999px;
+        background: var(--ink);
+        color: #fff;
+        font-weight: 800;
+        text-decoration: none;
+        box-shadow: 0 14px 28px rgba(24, 48, 79, 0.16);
+        white-space: nowrap;
+      }
+      .legal-strip-link:hover {
+        background: #111827;
+      }
+
       .fade {
         opacity: 0;
         transform: translateY(20px);
@@ -2137,6 +2177,10 @@
         }
         .eval-row {
           grid-template-columns: 1fr;
+        }
+        .legal-strip {
+          align-items: flex-start;
+          flex-direction: column;
         }
         footer {
           grid-template-columns: 1fr;
@@ -3714,83 +3758,22 @@
           </div>
         </section>
 
-        <!-- BUDGET -->
-        <section class="section alt fade protected-content">
-          <p class="section-label">Proposed Project Budget</p>
-          <h2 class="section-title">
-            Resource <span class="accent">Requirements</span>
-          </h2>
-          <div class="budget-grid">
-            <div class="budget-card fade">
-              <div class="budget-amt">$1,200</div>
-              <div class="budget-cat">
-                Curriculum Development<br />Research texts, draft printing,
-                revision copies
-              </div>
-            </div>
-            <div class="budget-card fade">
-              <div class="budget-amt">$2,200</div>
-              <div class="budget-cat">
-                Technology &amp; Software<br />Survey platform, data analysis,
-                simulation tools
-              </div>
-            </div>
-            <div class="budget-card fade">
-              <div class="budget-amt">$2,500</div>
-              <div class="budget-cat">
-                Professional Development<br />Conference registration,
-                collaborative planning
-              </div>
-            </div>
-            <div class="budget-card fade">
-              <div class="budget-amt">$1,800</div>
-              <div class="budget-cat">
-                Instructional Materials<br />Workbooks, classroom supplies,
-                pilot materials
-              </div>
-            </div>
-            <div class="budget-card fade">
-              <div class="budget-amt">$2,000</div>
-              <div class="budget-cat">
-                Evaluation &amp; Data Analysis<br />Assessment development,
-                external review
-              </div>
-            </div>
-            <div class="budget-card fade">
-              <div class="budget-amt">$1,000</div>
-              <div class="budget-cat">
-                Dissemination<br />Final guide printing, replication
-                documentation
-              </div>
-            </div>
-            <div class="budget-card fade">
-              <div class="budget-amt">$500</div>
-              <div class="budget-cat">
-                Indirect Costs<br />Administrative &amp; miscellaneous expenses
-              </div>
-            </div>
-            <div
-              class="budget-card fade"
-              style="border: 1.5px dashed var(--muted)"
-            >
-              <div
-                class="budget-amt"
-                style="font-size: 1.1rem; color: var(--muted)"
-              >
-                In-Kind
-              </div>
-              <div class="budget-cat">
-                Personal time: curriculum design, research, data collection
-                &amp; analysis
-              </div>
-            </div>
+        <section class="section legal-strip fade">
+          <div>
+            <p class="section-label">Business Documentation</p>
+            <h2 class="legal-strip-title">State Sales Tax License</h2>
+            <p class="legal-strip-copy">
+              Available for quick verification without distracting from the
+              program materials.
+            </p>
           </div>
-          <div class="budget-total">
-            <div class="budget-total-label">
-              Total Proposed Budget (Direct Costs)
-            </div>
-            <div class="budget-total-amt">$11,200</div>
-          </div>
+          <a
+            class="legal-strip-link"
+            href="assets/docs/legal/state-sales-tax-license.pdf"
+            target="_blank"
+            rel="noopener"
+            >View License</a
+          >
         </section>
 
         <footer class="protected-content">
@@ -3811,14 +3794,7 @@
             Trilling &amp; Fadel (2009) · Tyler (1949) · Wiles &amp; Bondi
             (2015)<br />
             Utah State Board of Education (2023) ·
-            <a href="privacy-policy.html">Privacy Policy</a><br />
-            <a
-              class="footer-legal-link"
-              href="assets/docs/legal/state-sales-tax-license.pdf"
-              target="_blank"
-              rel="noopener"
-              >State Sales Tax License</a
-            >
+            <a href="privacy-policy.html">Privacy Policy</a>
           </div>
         </footer>
       </div>

@@ -695,6 +695,48 @@
         font-family: "Playfair Display", serif;
       }
 
+      .instructor-training-outlook {
+        margin-top: 18px;
+        padding: 18px;
+        border-radius: 24px;
+        border: 1px solid rgba(200, 155, 60, 0.24);
+        background: linear-gradient(
+          135deg,
+          rgba(255, 252, 246, 0.98),
+          rgba(247, 241, 230, 0.86)
+        );
+      }
+
+      .training-outlook-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+      }
+
+      .training-outlook-card {
+        padding: 16px;
+        border-radius: 18px;
+        border: 1px solid rgba(24, 48, 79, 0.08);
+        background: rgba(255, 255, 255, 0.92);
+      }
+
+      .training-outlook-card.wide {
+        grid-column: 1 / -1;
+      }
+
+      .training-outlook-card h4 {
+        margin: 8px 0;
+        color: var(--navy);
+        font-family: "Playfair Display", serif;
+        font-size: 1.18rem;
+      }
+
+      .training-outlook-card p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+
       .classroom-two-col {
         display: grid;
         grid-template-columns: minmax(280px, 0.88fr) minmax(0, 1.12fr);
@@ -1683,6 +1725,7 @@
         .classroom-layout,
         .classroom-two-col,
         .casel-scale-legend,
+        .training-outlook-grid,
         .teacher-grid,
         .welcome-grid,
         .sample-grid,
@@ -2053,6 +2096,62 @@
                   <div class="mini-label">Feedback</div>
                   <strong id="classroomFeedbackTotal">0</strong>
                   <span>Reviewed items</span>
+                </div>
+              </div>
+              <div
+                class="instructor-training-outlook"
+                id="instructorTrainingOutlook"
+                hidden
+              >
+                <div class="classroom-section-head">
+                  <div>
+                    <div class="mini-label">
+                      Teach the Teacher Training Outlook
+                    </div>
+                    <h3>3-Day Instructor Preparation</h3>
+                    <p class="classroom-section-copy">
+                      Use this as the quick instructor-facing path before
+                      delivering the 16-week course.
+                    </p>
+                  </div>
+                </div>
+                <div class="training-outlook-grid">
+                  <article class="training-outlook-card">
+                    <div class="mini-label">Day 1</div>
+                    <h4>Curriculum Overview</h4>
+                    <p>
+                      Walk through the five modules, the 16-week path, weekly
+                      discussions, CASEL survey checkpoints, assignments, and
+                      student submission flow.
+                    </p>
+                  </article>
+                  <article class="training-outlook-card">
+                    <div class="mini-label">Day 2</div>
+                    <h4>Practice the Methods</h4>
+                    <p>
+                      Model and rehearse the core routines: Pause, Label,
+                      Reframe, Respond; Pause, Options, Consequences, Choose;
+                      respectful communication; and repair.
+                    </p>
+                  </article>
+                  <article class="training-outlook-card">
+                    <div class="mini-label">Day 3</div>
+                    <h4>Facilitation and Review</h4>
+                    <p>
+                      Practice scoring, feedback, class discussion expectations,
+                      document review, pacing decisions, and how to coach
+                      students without doing the work for them.
+                    </p>
+                  </article>
+                  <article class="training-outlook-card wide">
+                    <div class="mini-label">Philosophy</div>
+                    <h4>Teach for Transfer</h4>
+                    <p>
+                      Students should not only understand the lesson. They
+                      should be able to use it in school, home, work, online,
+                      and community pressure moments.
+                    </p>
+                  </article>
                 </div>
               </div>
             </section>
