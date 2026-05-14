@@ -1,12 +1,10 @@
-const CACHE_VERSION = "rfrl-shell-v12";
+const CACHE_VERSION = "rfrl-shell-v13";
 const STATIC_CACHE = `static-${CACHE_VERSION}`;
 const RUNTIME_CACHE = `runtime-${CACHE_VERSION}`;
 const OFFLINE_URL = "/offline.html";
 
 const APP_SHELL = [
-  "/",
   "/app.html",
-  "/index.html",
   "/student-portal.html",
   "/student-portal.js",
   "/portal-submissions.html",
@@ -58,6 +56,20 @@ self.addEventListener("fetch", (event) => {
 
   const url = new URL(request.url);
   if (url.origin !== self.location.origin) return;
+
+  if (
+    request.mode === "navigate" ||
+    request.destination === "document" ||
+    url.pathname === "/" ||
+    url.pathname.endsWith(".html")
+  ) {
+    event.respondWith(
+      fetch(request, { cache: "no-store" }).catch(
+        () => caches.match(OFFLINE_URL),
+      ),
+    );
+    return;
+  }
 
   if (
     url.pathname.endsWith("/portal-approvals.html") ||
