@@ -409,7 +409,11 @@
       }
       .hero-badge.logo-tile {
         background:
-          linear-gradient(180deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02)),
+          linear-gradient(
+            180deg,
+            rgba(255, 255, 255, 0.06),
+            rgba(255, 255, 255, 0.02)
+          ),
           var(--slate);
         border-color: rgba(200, 149, 64, 0.5);
         padding: 10px;
@@ -1686,6 +1690,12 @@
       .legal-strip-link:hover {
         background: #111827;
       }
+      .legal-strip-actions {
+        display: flex;
+        gap: 12px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
 
       .fade {
         opacity: 0;
@@ -1952,6 +1962,7 @@
         line-height: 1.5;
       }
       .copyright-floating {
+        display: none !important;
         position: fixed;
         right: 16px;
         bottom: 16px;
@@ -2181,6 +2192,9 @@
         .legal-strip {
           align-items: flex-start;
           flex-direction: column;
+        }
+        .legal-strip-actions {
+          justify-content: flex-start;
         }
         footer {
           grid-template-columns: 1fr;
@@ -2417,7 +2431,10 @@
               href="https://readyforreallife.github.io/mmmf-codex/web/registration-folder.html"
               >Registration Folder</a
             >
-            <a class="util-btn" id="approvalQueueBtn" href="portal-approvals.html"
+            <a
+              class="util-btn"
+              id="approvalQueueBtn"
+              href="portal-approvals.html"
               >Approval Queue</a
             >
             <a
@@ -2457,9 +2474,7 @@
           licensed users with paid access.
         </div>
         <div class="access-actions">
-          <a class="access-btn" id="purchaseLinkTop" href="#"
-            >Get Access</a
-          >
+          <a class="access-btn" id="purchaseLinkTop" href="#">Get Access</a>
           <button class="access-btn secondary" id="unlockBtnTop" type="button">
             I Have Access
           </button>
@@ -2501,7 +2516,10 @@
             </div>
           </div>
           <div class="hero-card-grid">
-            <div class="hero-badge logo-tile" aria-label="Ready for Real Life logo">
+            <div
+              class="hero-badge logo-tile"
+              aria-label="Ready for Real Life logo"
+            >
               <img
                 src="assets/rfrlei-logo.jpg"
                 alt="Ready for Real Life Instruction and Education logo"
@@ -3761,17 +3779,24 @@
         <section class="section legal-strip fade">
           <div>
             <p class="section-label">Business Documentation</p>
-            <h2 class="legal-strip-title">State Sales Tax License</h2>
+            <h2 class="legal-strip-title">Business Licenses</h2>
             <p class="legal-strip-copy">
-              Available for quick verification without distracting from the
-              program materials.
+              State and city business documentation available for quick
+              verification without distracting from the program materials.
             </p>
           </div>
-          <a
-            class="legal-strip-link"
-            href="assets/docs/legal/state-sales-tax-license.pdf"
-            >View License</a
-          >
+          <div class="legal-strip-actions">
+            <a
+              class="legal-strip-link"
+              href="assets/docs/legal/state-sales-tax-license.pdf"
+              >View State License</a
+            >
+            <a
+              class="legal-strip-link"
+              href="assets/docs/legal/tooele-city-business-license.pdf"
+              >View Tooele License</a
+            >
+          </div>
         </section>
 
         <footer class="protected-content">
@@ -3815,21 +3840,48 @@
               <fieldset class="modal-section">
                 <legend>Your Information</legend>
                 <div class="form-grid two">
-                  <label for="regFirstName">First name <span class="req">*</span></label>
-                  <input id="regFirstName" name="first_name" autocomplete="given-name" required />
-                  <label for="regLastName">Last name <span class="req">*</span></label>
-                  <input id="regLastName" name="last_name" autocomplete="family-name" required />
+                  <label for="regFirstName"
+                    >First name <span class="req">*</span></label
+                  >
+                  <input
+                    id="regFirstName"
+                    name="first_name"
+                    autocomplete="given-name"
+                    required
+                  />
+                  <label for="regLastName"
+                    >Last name <span class="req">*</span></label
+                  >
+                  <input
+                    id="regLastName"
+                    name="last_name"
+                    autocomplete="family-name"
+                    required
+                  />
                   <label for="regEmail">Email <span class="req">*</span></label>
-                  <input id="regEmail" name="email" type="email" autocomplete="email" required />
+                  <input
+                    id="regEmail"
+                    name="email"
+                    type="email"
+                    autocomplete="email"
+                    required
+                  />
                   <label for="regPhone">Phone</label>
-                  <input id="regPhone" name="phone" type="tel" autocomplete="tel" />
+                  <input
+                    id="regPhone"
+                    name="phone"
+                    type="tel"
+                    autocomplete="tel"
+                  />
                 </div>
               </fieldset>
 
               <fieldset class="modal-section">
                 <legend>Role and Organization</legend>
                 <div class="form-grid">
-                  <label for="regRole">Your role <span class="req">*</span></label>
+                  <label for="regRole"
+                    >Your role <span class="req">*</span></label
+                  >
                   <select id="regRole" name="role" required>
                     <option value="">Select your role</option>
                     <option>K-12 Teacher</option>
@@ -3843,10 +3895,21 @@
                     <option>Student</option>
                     <option>Other Educator or Coach</option>
                   </select>
-                  <label for="regOrg">School or organization <span class="req">*</span></label>
-                  <input id="regOrg" name="organization" placeholder="School, district, organization, or family" required />
+                  <label for="regOrg"
+                    >School or organization <span class="req">*</span></label
+                  >
+                  <input
+                    id="regOrg"
+                    name="organization"
+                    placeholder="School, district, organization, or family"
+                    required
+                  />
                   <label for="regLocation">City and state</label>
-                  <input id="regLocation" name="location" placeholder="Tooele, Utah" />
+                  <input
+                    id="regLocation"
+                    name="location"
+                    placeholder="Tooele, Utah"
+                  />
                   <label for="regReferral">How did you hear about us?</label>
                   <select id="regReferral" name="referral">
                     <option value="">Select one</option>
@@ -3865,13 +3928,39 @@
                 <legend>Program Details</legend>
                 <label>Implementation track <span class="req">*</span></label>
                 <div class="check-list">
-                  <label><input type="checkbox" name="tracks" value="Grades 7-8" /><span>Grades 7-8</span></label>
-                  <label><input type="checkbox" name="tracks" value="Grades 9-12" /><span>Grades 9-12</span></label>
-                  <label><input type="checkbox" name="tracks" value="Community Youth" /><span>Community Youth</span></label>
-                  <label><input type="checkbox" name="tracks" value="Community Adult" /><span>Community Adult</span></label>
+                  <label
+                    ><input
+                      type="checkbox"
+                      name="tracks"
+                      value="Grades 7-8"
+                    /><span>Grades 7-8</span></label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      name="tracks"
+                      value="Grades 9-12"
+                    /><span>Grades 9-12</span></label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      name="tracks"
+                      value="Community Youth"
+                    /><span>Community Youth</span></label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      name="tracks"
+                      value="Community Adult"
+                    /><span>Community Adult</span></label
+                  >
                 </div>
                 <div class="form-grid two" style="margin-top: 10px">
-                  <label for="regDelivery">Preferred delivery <span class="req">*</span></label>
+                  <label for="regDelivery"
+                    >Preferred delivery <span class="req">*</span></label
+                  >
                   <select id="regDelivery" name="delivery" required>
                     <option value="">Select delivery format</option>
                     <option>Daily elective (45-60 min)</option>
@@ -3906,16 +3995,58 @@
 
               <fieldset class="modal-section">
                 <legend>Students and Support</legend>
-                <label for="regPopulation">Describe your student or participant population</label>
-                <textarea id="regPopulation" name="population" rows="3"></textarea>
+                <label for="regPopulation"
+                  >Describe your student or participant population</label
+                >
+                <textarea
+                  id="regPopulation"
+                  name="population"
+                  rows="3"
+                ></textarea>
                 <label>Most pressing soft-skill gap</label>
                 <div class="check-list">
-                  <label><input type="checkbox" name="gaps" value="Respectful communication" /><span>Respectful communication</span></label>
-                  <label><input type="checkbox" name="gaps" value="Emotional regulation" /><span>Emotional regulation</span></label>
-                  <label><input type="checkbox" name="gaps" value="Decision-making under pressure" /><span>Decision-making under pressure</span></label>
-                  <label><input type="checkbox" name="gaps" value="Digital citizenship" /><span>Digital citizenship</span></label>
-                  <label><input type="checkbox" name="gaps" value="Accountability and repair" /><span>Accountability and repair</span></label>
-                  <label><input type="checkbox" name="gaps" value="All of the above" /><span>All of the above</span></label>
+                  <label
+                    ><input
+                      type="checkbox"
+                      name="gaps"
+                      value="Respectful communication"
+                    /><span>Respectful communication</span></label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      name="gaps"
+                      value="Emotional regulation"
+                    /><span>Emotional regulation</span></label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      name="gaps"
+                      value="Decision-making under pressure"
+                    /><span>Decision-making under pressure</span></label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      name="gaps"
+                      value="Digital citizenship"
+                    /><span>Digital citizenship</span></label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      name="gaps"
+                      value="Accountability and repair"
+                    /><span>Accountability and repair</span></label
+                  >
+                  <label
+                    ><input
+                      type="checkbox"
+                      name="gaps"
+                      value="All of the above"
+                    /><span>All of the above</span></label
+                  >
                 </div>
                 <div class="form-grid two" style="margin-top: 10px">
                   <label for="regConfidence">Facilitation confidence</label>
@@ -3942,7 +4073,17 @@
               </fieldset>
 
               <label class="check-list" for="regConsent">
-                <span><input id="regConsent" name="consent" type="checkbox" required /> I understand that submitting this form requests enrollment and that my information will be used to process access and follow up about onboarding.</span>
+                <span
+                  ><input
+                    id="regConsent"
+                    name="consent"
+                    type="checkbox"
+                    required
+                  />
+                  I understand that submitting this form requests enrollment and
+                  that my information will be used to process access and follow
+                  up about onboarding.</span
+                >
               </label>
             </div>
             <div id="registerStatus" class="form-status"></div>
@@ -4028,12 +4169,9 @@
           if (!isCapacitorApp()) return;
 
           const hubTargets = {
-            formalDocs:
-              "mmmf-hub/docs/index.html",
-            registrationFolder:
-              "mmmf-hub/web/registration-folder.html",
-            certificateFolder:
-              "mmmf-hub/web/certificate-folder.html",
+            formalDocs: "mmmf-hub/docs/index.html",
+            registrationFolder: "mmmf-hub/web/registration-folder.html",
+            certificateFolder: "mmmf-hub/web/certificate-folder.html",
             hubHome: "mmmf-hub/web/index.html",
           };
 
@@ -4151,7 +4289,9 @@
         const menuCertificateFolderBtn = document.getElementById(
           "menuCertificateFolderBtn",
         );
-        const menuStripeCenterBtn = document.getElementById("menuStripeCenterBtn");
+        const menuStripeCenterBtn = document.getElementById(
+          "menuStripeCenterBtn",
+        );
         const menuStripeDashboardShortcutBtn = document.getElementById(
           "menuStripeDashboardShortcutBtn",
         );
@@ -4209,10 +4349,17 @@
           setMobileNavOpen(false);
         }
 
-        function toggleMenuButton(sourceEl, targetEl, displayWhenVisible = "block") {
+        function toggleMenuButton(
+          sourceEl,
+          targetEl,
+          displayWhenVisible = "block",
+        ) {
           if (!sourceEl || !targetEl) return;
           targetEl.textContent = sourceEl.textContent;
-          targetEl.classList.toggle("locked", sourceEl.classList.contains("locked"));
+          targetEl.classList.toggle(
+            "locked",
+            sourceEl.classList.contains("locked"),
+          );
           targetEl.style.display =
             sourceEl.style.display === "none" ? "none" : displayWhenVisible;
         }
@@ -4459,7 +4606,9 @@
 
         function roleFromRegistrationGroup(group) {
           const value = String(group || "").toLowerCase();
-          return /teacher|counselor|administrator|instructor|facilitator|leader|educator|coach/.test(value)
+          return /teacher|counselor|administrator|instructor|facilitator|leader|educator|coach/.test(
+            value,
+          )
             ? "instructor"
             : "student";
         }
@@ -4570,7 +4719,9 @@
             window.alert("Incorrect PIN.");
           }
         });
-        menuTeacherToggle?.addEventListener("click", () => teacherToggle.click());
+        menuTeacherToggle?.addEventListener("click", () =>
+          teacherToggle.click(),
+        );
 
         settingsBtn.addEventListener("click", () => openModal(settingsModal));
         menuSettingsBtn?.addEventListener("click", () => {
@@ -4727,7 +4878,9 @@
           const firstName = String(formData.get("first_name") || "").trim();
           const lastName = String(formData.get("last_name") || "").trim();
           const role = String(formData.get("role") || "").trim();
-          const organization = String(formData.get("organization") || "").trim();
+          const organization = String(
+            formData.get("organization") || "",
+          ).trim();
           const delivery = String(formData.get("delivery") || "").trim();
           const details = [
             `Location: ${String(formData.get("location") || "").trim() || "—"}`,
@@ -4858,7 +5011,9 @@
               if (result.ok) break;
             }
             if (!result.ok) {
-              console.warn("Registration email endpoint did not accept the submission.");
+              console.warn(
+                "Registration email endpoint did not accept the submission.",
+              );
             }
             const alreadyApproved = ["approved", "used"].includes(
               String(portalRegistration.status || ""),
@@ -4876,7 +5031,10 @@
                   : "Submitted. Sending you to secure payment...";
             showStatus(message, false);
             setTimeout(() => {
-              window.location.href = buildStripeCheckoutUrl(payload, portalRegistration);
+              window.location.href = buildStripeCheckoutUrl(
+                payload,
+                portalRegistration,
+              );
             }, 900);
             registerSubmitting = false;
             if (registerSubmitBtn) {
