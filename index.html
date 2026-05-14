@@ -1696,6 +1696,75 @@
         flex-wrap: wrap;
         justify-content: flex-end;
       }
+      .license-panel {
+        position: fixed;
+        inset: 0;
+        z-index: 400;
+        display: none;
+        background: rgba(17, 24, 39, 0.64);
+      }
+      .license-panel.open {
+        display: block;
+      }
+      .license-panel-shell {
+        position: absolute;
+        inset: max(12px, env(safe-area-inset-top)) 12px
+          max(12px, env(safe-area-inset-bottom));
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+        border: 1px solid var(--border);
+        border-radius: 18px;
+        background: #fff;
+        box-shadow: 0 28px 80px rgba(0, 0, 0, 0.28);
+      }
+      .license-panel-head {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 14px;
+        padding: 14px;
+        border-bottom: 1px solid var(--border);
+        background: var(--paper);
+      }
+      .license-panel-title {
+        margin: 0;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(1.1rem, 3vw, 1.5rem);
+        color: var(--ink);
+      }
+      .license-panel-actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .license-panel-btn {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 44px;
+        padding: 0 16px;
+        border: 1px solid var(--border);
+        border-radius: 999px;
+        background: #fff;
+        color: var(--ink);
+        font-weight: 800;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .license-panel-btn.primary {
+        border-color: var(--ink);
+        background: var(--ink);
+        color: #fff;
+      }
+      .license-panel-frame {
+        width: 100%;
+        flex: 1;
+        min-height: 0;
+        border: 0;
+        background: #fff;
+      }
 
       .fade {
         opacity: 0;
@@ -2195,6 +2264,20 @@
         }
         .legal-strip-actions {
           justify-content: flex-start;
+        }
+        .license-panel-shell {
+          border-radius: 12px;
+        }
+        .license-panel-head {
+          align-items: flex-start;
+          flex-direction: column;
+        }
+        .license-panel-actions {
+          width: 100%;
+          justify-content: flex-start;
+        }
+        .license-panel-btn {
+          flex: 1 1 auto;
         }
         footer {
           grid-template-columns: 1fr;
@@ -3782,16 +3865,49 @@
             <h2 class="legal-strip-title">Business Licenses</h2>
           </div>
           <div class="legal-strip-actions">
-            <a class="legal-strip-link" href="license-viewer.html?license=state"
+            <a
+              class="legal-strip-link"
+              href="assets/docs/legal/state-sales-tax-license.pdf"
+              data-license-file="assets/docs/legal/state-sales-tax-license.pdf"
+              data-license-title="State Sales Tax License"
               >View State License</a
             >
             <a
               class="legal-strip-link"
-              href="license-viewer.html?license=tooele"
+              href="assets/docs/legal/tooele-city-business-license.pdf"
+              data-license-file="assets/docs/legal/tooele-city-business-license.pdf"
+              data-license-title="Tooele City Business License"
               >View Tooele License</a
             >
           </div>
         </section>
+
+        <div class="license-panel" id="licensePanel" aria-hidden="true">
+          <div class="license-panel-shell" role="dialog" aria-modal="true">
+            <div class="license-panel-head">
+              <h2 class="license-panel-title" id="licensePanelTitle">
+                Business License
+              </h2>
+              <div class="license-panel-actions">
+                <button
+                  class="license-panel-btn primary"
+                  type="button"
+                  id="licenseCloseBtn"
+                >
+                  Close
+                </button>
+                <a class="license-panel-btn" id="licenseOpenBtn" href="#"
+                  >Open PDF</a
+                >
+              </div>
+            </div>
+            <iframe
+              class="license-panel-frame"
+              id="licensePanelFrame"
+              title="Business license PDF"
+            ></iframe>
+          </div>
+        </div>
 
         <footer class="protected-content">
           <div>
@@ -5267,6 +5383,49 @@
             (k === "c" || k === "s" || k === "p" || k === "u")
           )
             evt.preventDefault();
+        });
+
+        const licensePanel = document.getElementById("licensePanel");
+        const licensePanelTitle = document.getElementById("licensePanelTitle");
+        const licensePanelFrame = document.getElementById("licensePanelFrame");
+        const licenseCloseBtn = document.getElementById("licenseCloseBtn");
+        const licenseOpenBtn = document.getElementById("licenseOpenBtn");
+
+        function closeLicensePanel() {
+          licensePanel?.classList.remove("open");
+          licensePanel?.setAttribute("aria-hidden", "true");
+          if (licensePanelFrame) licensePanelFrame.src = "about:blank";
+          document.body.style.overflow = "";
+        }
+
+        document.querySelectorAll("[data-license-file]").forEach((link) => {
+          link.addEventListener("click", (event) => {
+            event.preventDefault();
+            const file = link.getAttribute("data-license-file");
+            const title = link.getAttribute("data-license-title");
+            if (!file || !licensePanel || !licensePanelFrame) return;
+            if (licensePanelTitle) {
+              licensePanelTitle.textContent = title || "Business License";
+            }
+            if (licenseOpenBtn) {
+              licenseOpenBtn.href = file;
+              licenseOpenBtn.target = "_blank";
+              licenseOpenBtn.rel = "noopener";
+            }
+            licensePanelFrame.src = file + "#view=FitH";
+            licensePanel.classList.add("open");
+            licensePanel.setAttribute("aria-hidden", "false");
+            document.body.style.overflow = "hidden";
+            licenseCloseBtn?.focus();
+          });
+        });
+
+        licenseCloseBtn?.addEventListener("click", closeLicensePanel);
+        licensePanel?.addEventListener("click", (event) => {
+          if (event.target === licensePanel) closeLicensePanel();
+        });
+        document.addEventListener("keydown", (event) => {
+          if (event.key === "Escape") closeLicensePanel();
         });
 
         if ("serviceWorker" in navigator) {
