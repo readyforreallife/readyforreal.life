@@ -98,8 +98,36 @@
     "page": "Resume",
     "section": "Awards",
     "url": "resume.html#awards",
-    "snippet": "Recognition, honors, and award history.",
-    "keywords": ["awards", "honors", "recognition", "kdp", "mlk", "ccaa"]
+    "snippet": "Recognition, honors, and award history, including Kappa Delta Pi and Louise Berman Fellows Award recognition.",
+    "keywords": [
+      "awards",
+      "honors",
+      "recognition",
+      "kdp",
+      "kappa delta pi",
+      "louise berman",
+      "berman fellows",
+      "mlk",
+      "ccaa"
+    ]
+  },
+  {
+    "title": "Kappa Delta Pi Louise Berman Fellows Award",
+    "page": "Resume",
+    "section": "Awards",
+    "url": "resume.html#awards",
+    "snippet": "Michael R. Terry is listed as a 2025-2026 Kappa Delta Pi Louise Berman Fellows Award recipient.",
+    "keywords": [
+      "kappa delta pi",
+      "kdp",
+      "louise berman",
+      "berman fellows",
+      "fellows award",
+      "teaching excellence",
+      "equitable education",
+      "award",
+      "recognition"
+    ]
   },
   {
     "title": "Founders bio",
