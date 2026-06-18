@@ -55,8 +55,22 @@
         text-transform: uppercase;
       }
       .brand {
+        display: inline-flex;
+        align-items: center;
+        gap: 12px;
         color: #fff;
         text-decoration: none;
+      }
+      .brand-logo {
+        width: 58px;
+        height: 58px;
+        border-radius: 16px;
+        object-fit: cover;
+        border: 1px solid rgba(255, 255, 255, 0.22);
+        box-shadow: 0 10px 24px rgba(0, 0, 0, 0.18);
+      }
+      .brand-copy {
+        min-width: 0;
       }
       .brand strong {
         display: block;
@@ -292,8 +306,15 @@
     <header class="top">
       <div class="wrap top-inner">
         <a class="brand" href="index.html">
-          <span class="eyebrow">Ready for Real Life</span>
-          <strong>Community Interest Survey</strong>
+          <img
+            class="brand-logo"
+            src="assets/rfrlei-logo.jpg"
+            alt="Ready for Real Life Instruction and Education logo"
+          />
+          <span class="brand-copy">
+            <span class="eyebrow">Ready for Real Life</span>
+            <strong>Community Interest Survey</strong>
+          </span>
         </a>
         <nav class="nav" aria-label="Main links">
           <a class="btn" href="index.html">Home</a>
