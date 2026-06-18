@@ -11,6 +11,8 @@
         "Two-minute community survey for parents, educators, students, and community members to show interest in real-world life skills training.",
       keywords: [
         "survey",
+        "results",
+        "survey results",
         "community survey",
         "community interest",
         "life skills survey",
@@ -21,6 +23,27 @@
         "ready for real life survey",
         "real world life skills",
         "tooele",
+      ],
+    },
+    {
+      title: "Survey results folder",
+      page: "Teacher Mode",
+      section: "Survey Results",
+      url: "https://readyforreallife.github.io/mmmf-codex/web/registration-folder.html",
+      snippet:
+        "Protected registration folder where community survey responses can be searched, filtered, exported, and reviewed after Teacher Mode login.",
+      keywords: [
+        "survey",
+        "results",
+        "survey results",
+        "community survey results",
+        "responses",
+        "survey responses",
+        "registration folder",
+        "teacher mode",
+        "admin",
+        "filter",
+        "export",
       ],
     },
   ];
