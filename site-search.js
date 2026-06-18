@@ -1,6 +1,29 @@
 (function () {
   const script = document.currentScript;
   const indexPath = script?.dataset.searchIndex || "site-search-index.json";
+  const BUILT_IN_ENTRIES = [
+    {
+      title: "Community interest survey",
+      page: "Survey",
+      section: "Community Input",
+      url: "survey.html",
+      snippet:
+        "Two-minute community survey for parents, educators, students, and community members to show interest in real-world life skills training.",
+      keywords: [
+        "survey",
+        "community survey",
+        "community interest",
+        "life skills survey",
+        "student survey",
+        "high school survey",
+        "modern manners",
+        "mental fortitude",
+        "ready for real life survey",
+        "real world life skills",
+        "tooele",
+      ],
+    },
+  ];
 
   function normalize(value) {
     return (value || "")
@@ -28,6 +51,16 @@
     }
     if (terms.length && title.includes(terms.join(" "))) score += 10;
     return score;
+  }
+
+  function uniqueEntries(items) {
+    const seen = new Set();
+    return items.filter((item) => {
+      const key = `${item.title || ""}|${item.url || ""}`.toLowerCase();
+      if (seen.has(key)) return false;
+      seen.add(key);
+      return true;
+    });
   }
 
   function buildMarkup() {
@@ -69,12 +102,13 @@
     let entries = [];
 
     try {
-      const response = await fetch(indexPath);
-      entries = await response.json();
+      const response = await fetch(indexPath, { cache: "no-store" });
+      entries = uniqueEntries([
+        ...BUILT_IN_ENTRIES,
+        ...(await response.json()),
+      ]);
     } catch (_error) {
-      results.hidden = false;
-      results.innerHTML = `<div class="site-search-state">Search is not available on this page yet.</div>`;
-      return;
+      entries = BUILT_IN_ENTRIES;
     }
 
     function clearResults() {

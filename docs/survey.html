@@ -1,0 +1,696 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Community Interest Survey | Ready for Real Life</title>
+    <meta
+      name="description"
+      content="Two-minute community interest survey for Ready for Real Life Instruction and Education."
+    />
+    <link rel="stylesheet" href="site-search.css" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;700;800&display=swap");
+      :root {
+        --navy: #24334b;
+        --navy2: #162238;
+        --gold: #d1a03f;
+        --cream: #fff4d5;
+        --paper: #fffaf0;
+        --ink: #1f2937;
+        --muted: #64748b;
+        --line: rgba(36, 51, 75, 0.16);
+        --teal: #367f7b;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: Inter, sans-serif;
+        background: var(--cream);
+        color: var(--ink);
+      }
+      .top {
+        background: var(--navy);
+        color: #fff;
+        border-bottom: 4px solid var(--gold);
+      }
+      .wrap {
+        width: min(1120px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+      .top-inner {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 16px;
+        padding: 18px 0;
+      }
+      .eyebrow {
+        color: var(--gold);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      .brand {
+        color: #fff;
+        text-decoration: none;
+      }
+      .brand strong {
+        display: block;
+        font-family: "Playfair Display", serif;
+        font-size: 1.35rem;
+      }
+      .nav {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        justify-content: flex-end;
+      }
+      .btn,
+      button {
+        min-height: 44px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0 18px;
+        background: #fff;
+        color: var(--navy);
+        font: inherit;
+        font-weight: 800;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .btn.primary,
+      button.primary {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: var(--navy2);
+      }
+      main {
+        padding: 44px 0 70px;
+      }
+      .grid {
+        display: grid;
+        grid-template-columns: minmax(0, 0.95fr) minmax(360px, 1.05fr);
+        gap: 28px;
+        align-items: start;
+      }
+      h1 {
+        margin: 10px 0 16px;
+        font-family: "Playfair Display", serif;
+        font-size: clamp(2.5rem, 6vw, 5rem);
+        line-height: 1;
+        color: var(--navy2);
+      }
+      h1 em {
+        color: var(--gold);
+        font-style: italic;
+      }
+      .lede {
+        color: #48566b;
+        font-size: 1.05rem;
+        line-height: 1.8;
+      }
+      .proof {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 10px;
+        margin-top: 22px;
+      }
+      .proof div,
+      .form-card,
+      .success-card,
+      .post-copy {
+        background: rgba(255, 255, 255, 0.76);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        box-shadow: 0 14px 30px rgba(36, 51, 75, 0.08);
+      }
+      .proof div {
+        padding: 16px;
+      }
+      .proof strong {
+        display: block;
+        color: var(--teal);
+        font-size: 1.5rem;
+      }
+      .proof span {
+        display: block;
+        margin-top: 4px;
+        color: var(--muted);
+        font-size: 0.82rem;
+        line-height: 1.4;
+      }
+      .post-copy {
+        margin-top: 18px;
+        padding: 18px;
+      }
+      .post-copy h2,
+      .form-head h2,
+      .success-card h2 {
+        margin: 0 0 8px;
+        font-family: "Playfair Display", serif;
+        color: var(--navy2);
+      }
+      .post-copy p {
+        margin: 0;
+        color: #475569;
+        line-height: 1.7;
+      }
+      .form-card {
+        overflow: hidden;
+      }
+      .form-head {
+        padding: 22px;
+        background: #fff;
+        border-bottom: 1px solid var(--line);
+      }
+      .form-head p {
+        margin: 0;
+        color: var(--muted);
+        line-height: 1.6;
+      }
+      form {
+        padding: 22px;
+      }
+      fieldset {
+        border: 0;
+        margin: 0 0 22px;
+        padding: 0;
+      }
+      legend,
+      .label {
+        display: block;
+        margin-bottom: 10px;
+        font-weight: 800;
+        color: var(--navy2);
+      }
+      .hint {
+        display: block;
+        margin: -4px 0 12px;
+        color: var(--muted);
+        font-size: 0.86rem;
+      }
+      .options {
+        display: grid;
+        gap: 9px;
+      }
+      .option {
+        display: flex;
+        gap: 10px;
+        align-items: flex-start;
+        padding: 12px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        background: #fff;
+        line-height: 1.45;
+      }
+      .option input {
+        margin-top: 3px;
+        accent-color: var(--gold);
+      }
+      input[type="email"],
+      textarea {
+        width: 100%;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 12px;
+        font: inherit;
+        background: #fff;
+      }
+      textarea {
+        min-height: 86px;
+        resize: vertical;
+      }
+      .actions {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+        align-items: center;
+        padding-top: 18px;
+        border-top: 1px solid var(--line);
+      }
+      .status {
+        display: none;
+        margin-top: 14px;
+        padding: 12px;
+        border-radius: 12px;
+        font-weight: 800;
+      }
+      .status.show {
+        display: block;
+      }
+      .status.success {
+        color: #065f46;
+        background: #d1fae5;
+      }
+      .status.error {
+        color: #991b1b;
+        background: #fee2e2;
+      }
+      .success-card {
+        display: none;
+        padding: 24px;
+      }
+      .share-url {
+        display: block;
+        margin: 12px 0;
+        color: #334155;
+        overflow-wrap: anywhere;
+      }
+      .small {
+        color: var(--muted);
+        font-size: 0.8rem;
+        line-height: 1.5;
+      }
+      @media (max-width: 860px) {
+        .top-inner,
+        .grid {
+          grid-template-columns: 1fr;
+        }
+        .top-inner {
+          align-items: flex-start;
+        }
+        .nav {
+          justify-content: flex-start;
+        }
+      }
+      @media (max-width: 620px) {
+        .proof {
+          grid-template-columns: 1fr;
+        }
+        .btn,
+        button {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap top-inner">
+        <a class="brand" href="index.html">
+          <span class="eyebrow">Ready for Real Life</span>
+          <strong>Community Interest Survey</strong>
+        </a>
+        <nav class="nav" aria-label="Main links">
+          <a class="btn" href="index.html">Home</a>
+          <a class="btn" href="offer.html">Course Offer</a>
+          <a class="btn" href="student-portal.html">Portal Login</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="grid" id="community-survey">
+        <div>
+          <div class="eyebrow">Two-minute community input</div>
+          <h1>
+            Should students learn <em>real-world life skills</em> in school?
+          </h1>
+          <p class="lede">
+            I am developing a 16-week program for grades 9-12 covering conflict
+            resolution, emotional regulation, digital citizenship, and
+            decision-making. Your response helps show local school leaders what
+            parents, educators, students, and community members want students to
+            carry into adult life.
+          </p>
+          <div class="proof" aria-label="Survey details">
+            <div><strong>2</strong><span>minutes to complete</span></div>
+            <div><strong>5</strong><span>short questions</span></div>
+            <div><strong>9-12</strong><span>grade-level focus</span></div>
+          </div>
+          <div class="post-copy">
+            <h2>Shareable post copy</h2>
+            <p>
+              Something I have been building is getting closer to real, and I
+              need your input before I take it to local school leaders. I am
+              developing a 16-week life skills program for high school students
+              in Utah. Takes 2 minutes. No sign-up required.
+            </p>
+          </div>
+        </div>
+
+        <div>
+          <div class="form-card" id="formCard">
+            <div class="form-head">
+              <div class="eyebrow">Quick Survey</div>
+              <h2>Your input matters.</h2>
+              <p>
+                Responses are stored for Ready for Real Life follow-up and
+                school adoption conversations.
+              </p>
+            </div>
+            <form id="surveyForm">
+              <fieldset>
+                <legend>What best describes you?</legend>
+                <div class="options">
+                  <label class="option"
+                    ><input
+                      name="role"
+                      type="radio"
+                      value="Teacher / Educator"
+                      required
+                    />Teacher / Educator</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="role"
+                      type="radio"
+                      value="School Administrator"
+                    />School Administrator</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="role"
+                      type="radio"
+                      value="Parent / Guardian"
+                    />Parent / Guardian</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="role"
+                      type="radio"
+                      value="Community Member"
+                    />Community Member</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="role"
+                      type="radio"
+                      value="Student"
+                    />Student</label
+                  >
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <legend>
+                  Do you believe high school students need more real-world life
+                  skills training?
+                </legend>
+                <div class="options">
+                  <label class="option"
+                    ><input
+                      name="need"
+                      type="radio"
+                      value="Absolutely - it is overdue"
+                      required
+                    />Absolutely - it is overdue</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="need"
+                      type="radio"
+                      value="Yes, but it needs to fit the curriculum"
+                    />Yes, but it needs to fit the curriculum</label
+                  >
+                  <label class="option"
+                    ><input name="need" type="radio" value="I am not sure" />I
+                    am not sure</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="need"
+                      type="radio"
+                      value="I do not think it is a priority"
+                    />I do not think it is a priority</label
+                  >
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <legend>
+                  Which topics feel most urgent for students today?
+                </legend>
+                <span class="hint">Select all that apply.</span>
+                <div class="options">
+                  <label class="option"
+                    ><input
+                      name="topics"
+                      type="checkbox"
+                      value="Handling conflict and difficult conversations"
+                    />Handling conflict and difficult conversations</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="topics"
+                      type="checkbox"
+                      value="Emotional intelligence and self-regulation"
+                    />Emotional intelligence and self-regulation</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="topics"
+                      type="checkbox"
+                      value="Digital citizenship and online behavior"
+                    />Digital citizenship and online behavior</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="topics"
+                      type="checkbox"
+                      value="Respectful communication and manners"
+                    />Respectful communication and manners</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="topics"
+                      type="checkbox"
+                      value="Accountability and decision-making under pressure"
+                    />Accountability and decision-making under pressure</label
+                  >
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <legend>
+                  Would you support a structured life skills program coming to
+                  your school district?
+                </legend>
+                <div class="options">
+                  <label class="option"
+                    ><input
+                      name="support"
+                      type="radio"
+                      value="Yes - I would advocate for it"
+                      required
+                    />Yes - I would advocate for it</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="support"
+                      type="radio"
+                      value="Possibly - I would want to learn more"
+                    />Possibly - I would want to learn more</label
+                  >
+                  <label class="option"
+                    ><input name="support" type="radio" value="I am neutral" />I
+                    am neutral</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="support"
+                      type="radio"
+                      value="Probably not"
+                    />Probably not</label
+                  >
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <label class="label" for="email"
+                  >Want updates when this launches?</label
+                >
+                <span class="hint"
+                  >Optional. Leave your email if you want follow-up.</span
+                >
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  autocomplete="email"
+                />
+              </fieldset>
+
+              <fieldset>
+                <label class="label" for="comment"
+                  >Anything else school leaders should hear?</label
+                >
+                <textarea id="comment" name="comment"></textarea>
+              </fieldset>
+
+              <div class="actions">
+                <button class="primary" id="submitBtn" type="submit">
+                  Submit Survey
+                </button>
+                <button id="copyLinkBtn" type="button">Copy Share Link</button>
+              </div>
+              <div
+                class="status"
+                id="status"
+                role="status"
+                aria-live="polite"
+              ></div>
+              <p class="small">
+                Email is optional. Your response is used to understand community
+                interest in Ready for Real Life.
+              </p>
+            </form>
+          </div>
+
+          <div class="success-card" id="successCard">
+            <div class="eyebrow">Response Received</div>
+            <h2>Thank you for adding your voice.</h2>
+            <p>
+              Your response is now part of the community-interest data for Ready
+              for Real Life school conversations.
+            </p>
+            <code class="share-url" id="shareUrl"></code>
+            <button class="primary" id="copySuccessBtn" type="button">
+              Copy Share Link
+            </button>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      (() => {
+        const ENDPOINT =
+          "https://flat-flower-4af8mmmf-agreement-admin.mikeyterry44.workers.dev";
+        const QUEUE_KEY = "rrl_community_interest_survey_queue";
+        const form = document.getElementById("surveyForm");
+        const status = document.getElementById("status");
+        const submitBtn = document.getElementById("submitBtn");
+        const formCard = document.getElementById("formCard");
+        const successCard = document.getElementById("successCard");
+        const shareUrl = document.getElementById("shareUrl");
+        const canonicalUrl = window.location.href.split("#")[0];
+        let inFlight = false;
+
+        function setStatus(message, kind) {
+          status.textContent = message;
+          status.className = `status show${kind ? " " + kind : ""}`;
+        }
+
+        function selected(name) {
+          return form.querySelector(`[name="${name}"]:checked`)?.value || "";
+        }
+
+        function checked(name) {
+          return Array.from(form.querySelectorAll(`[name="${name}"]:checked`))
+            .map((item) => item.value)
+            .join(", ");
+        }
+
+        function buildPayload() {
+          const data = {
+            role: selected("role"),
+            need: selected("need"),
+            topics: checked("topics"),
+            support: selected("support"),
+            email: form.email.value.trim(),
+            comment: form.comment.value.trim(),
+          };
+          const details = [
+            "Survey: Community Interest Survey",
+            `Role: ${data.role || "-"}`,
+            `Need: ${data.need || "-"}`,
+            `Urgent Topics: ${data.topics || "-"}`,
+            `Support: ${data.support || "-"}`,
+            `Comment: ${data.comment || "-"}`,
+            "Source: readyforreal-life-survey",
+          ].join("\n");
+          return {
+            action: "registration_submit",
+            type: "registration",
+            event: "community_interest_survey",
+            form: "community_interest_survey",
+            registration_kind: "community_interest_survey",
+            program: "Community Interest Survey - Ready for Real Life",
+            name: data.email
+              ? "Community Survey Respondent"
+              : "Anonymous Community Survey Respondent",
+            email: data.email,
+            phone: "",
+            group: data.role,
+            role: data.role,
+            organization: "Community interest survey",
+            details,
+            notes: data.comment,
+            details_json: JSON.stringify(data),
+            timestamp: new Date().toISOString(),
+          };
+        }
+
+        async function submitPayload(payload) {
+          const response = await fetch(ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload),
+          });
+          if (!response.ok) throw new Error("Submission failed.");
+        }
+
+        function queue(payload) {
+          try {
+            const items = JSON.parse(localStorage.getItem(QUEUE_KEY) || "[]");
+            items.push(payload);
+            localStorage.setItem(QUEUE_KEY, JSON.stringify(items));
+          } catch (_error) {}
+        }
+
+        async function copyLink() {
+          try {
+            await navigator.clipboard.writeText(canonicalUrl);
+            setStatus("Share link copied.", "success");
+          } catch (_error) {
+            window.prompt("Copy this survey link:", canonicalUrl);
+          }
+        }
+
+        form.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          if (inFlight) return;
+          if (!form.checkValidity()) {
+            form.reportValidity();
+            return;
+          }
+          const payload = buildPayload();
+          inFlight = true;
+          submitBtn.disabled = true;
+          submitBtn.textContent = "Submitting...";
+          setStatus("Submitting your response...", "");
+          try {
+            await submitPayload(payload);
+            formCard.style.display = "none";
+            successCard.style.display = "block";
+            shareUrl.textContent = canonicalUrl;
+            window.scrollTo({ top: 0, behavior: "smooth" });
+          } catch (_error) {
+            queue(payload);
+            setStatus(
+              "I could not confirm the live submission, so a backup copy was saved on this device. Please try again with a stronger connection.",
+              "error",
+            );
+          } finally {
+            inFlight = false;
+            submitBtn.disabled = false;
+            submitBtn.textContent = "Submit Survey";
+          }
+        });
+
+        document
+          .getElementById("copyLinkBtn")
+          .addEventListener("click", copyLink);
+        document
+          .getElementById("copySuccessBtn")
+          .addEventListener("click", copyLink);
+        shareUrl.textContent = canonicalUrl;
+      })();
+    </script>
+  </body>
+</html>
