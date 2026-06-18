@@ -317,7 +317,7 @@
             class="search"
             id="searchInput"
             type="search"
-            placeholder="Search role, need, support, topic, email, comment..."
+            placeholder="Search role, need, support, topic, training interest, email, comment..."
           />
         </div>
         <div class="notice" id="folderNotice"></div>
@@ -330,6 +330,7 @@
                 <th>Role</th>
                 <th>Need</th>
                 <th>Support</th>
+                <th>Training Interest</th>
                 <th>Topics</th>
                 <th>Email</th>
                 <th>Comment</th>
@@ -417,6 +418,7 @@
             details.source,
             details.need,
             details.support,
+            details.trainingInterest,
             details.topics,
           ]
             .join(" ")
@@ -431,6 +433,7 @@
             role: details.role || entry.role || "",
             need: details.need || "",
             support: details.support || "",
+            trainingInterest: details.trainingInterest || "",
             topics: details.topics || "",
             email: entry.email || details.email || "",
             comment: details.comment || entry.notes || "",
@@ -447,6 +450,7 @@
               row.role,
               row.need,
               row.support,
+              row.trainingInterest,
               row.topics,
               row.email,
               row.comment,
@@ -478,6 +482,7 @@
                   <td><span class="pill">${escapeHtml(row.role || "—")}</span></td>
                   <td>${escapeHtml(row.need || "—")}</td>
                   <td>${escapeHtml(row.support || "—")}</td>
+                  <td>${escapeHtml(row.trainingInterest || "—")}</td>
                   <td>${escapeHtml(row.topics || "—")}</td>
                   <td>${escapeHtml(row.email || "—")}</td>
                   <td>${escapeHtml(row.comment || "—")}</td>
@@ -565,6 +570,7 @@
             "Role",
             "Need",
             "Support",
+            "Training Interest",
             "Topics",
             "Email",
             "Comment",
@@ -577,6 +583,7 @@
                 row.role,
                 row.need,
                 row.support,
+                row.trainingInterest,
                 row.topics,
                 row.email,
                 row.comment,

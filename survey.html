@@ -320,7 +320,7 @@
           </p>
           <div class="proof" aria-label="Survey details">
             <div><strong>2</strong><span>minutes to complete</span></div>
-            <div><strong>5</strong><span>short questions</span></div>
+            <div><strong>6</strong><span>short questions</span></div>
             <div><strong>9-12</strong><span>grade-level focus</span></div>
           </div>
           <div class="post-copy">
@@ -502,6 +502,52 @@
               </fieldset>
 
               <fieldset>
+                <legend>
+                  Would you be interested in attending a deeper training event
+                  to learn this material and become certified in the course
+                  material?
+                </legend>
+                <span class="hint">Select all that apply.</span>
+                <div class="options">
+                  <label class="option"
+                    ><input
+                      name="trainingInterest"
+                      type="checkbox"
+                      value="Interested in a 2-day seminar"
+                    />Interested in a 2-day seminar</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="trainingInterest"
+                      type="checkbox"
+                      value="Interested in a conference with breakout sessions"
+                    />Interested in a conference with breakout sessions</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="trainingInterest"
+                      type="checkbox"
+                      value="Interested in certification"
+                    />Interested in certification</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="trainingInterest"
+                      type="checkbox"
+                      value="Interested, but I would need more information"
+                    />Interested, but I would need more information</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="trainingInterest"
+                      type="checkbox"
+                      value="Not interested at this time"
+                    />Not interested at this time</label
+                  >
+                </div>
+              </fieldset>
+
+              <fieldset>
                 <label class="label" for="email"
                   >Want updates when this launches?</label
                 >
@@ -593,6 +639,7 @@
             need: selected("need"),
             topics: checked("topics"),
             support: selected("support"),
+            trainingInterest: checked("trainingInterest"),
             email: form.email.value.trim(),
             comment: form.comment.value.trim(),
           };
@@ -602,6 +649,7 @@
             `Need: ${data.need || "-"}`,
             `Urgent Topics: ${data.topics || "-"}`,
             `Support: ${data.support || "-"}`,
+            `Training Interest: ${data.trainingInterest || "-"}`,
             `Comment: ${data.comment || "-"}`,
             "Source: readyforreal-life-survey",
           ].join("\n");
