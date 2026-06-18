@@ -317,7 +317,7 @@
             class="search"
             id="searchInput"
             type="search"
-            placeholder="Search role, need, support, topic, training interest, email, comment..."
+            placeholder="Search role, need, grade start, support, topic, training interest, email, comment..."
           />
         </div>
         <div class="notice" id="folderNotice"></div>
@@ -329,6 +329,7 @@
                 <th>Submitted</th>
                 <th>Role</th>
                 <th>Need</th>
+                <th>Grade Start</th>
                 <th>Support</th>
                 <th>Training Interest</th>
                 <th>Topics</th>
@@ -417,6 +418,7 @@
             entry.detailsJson,
             details.source,
             details.need,
+            details.gradeStart,
             details.support,
             details.trainingInterest,
             details.topics,
@@ -432,6 +434,7 @@
             submittedAt: entry.submittedAt || "",
             role: details.role || entry.role || "",
             need: details.need || "",
+            gradeStart: details.gradeStart || "",
             support: details.support || "",
             trainingInterest: details.trainingInterest || "",
             topics: details.topics || "",
@@ -449,6 +452,7 @@
               row.submittedAt,
               row.role,
               row.need,
+              row.gradeStart,
               row.support,
               row.trainingInterest,
               row.topics,
@@ -481,6 +485,7 @@
                   <td>${row.submittedAt ? escapeHtml(new Date(row.submittedAt).toLocaleString()) : "—"}</td>
                   <td><span class="pill">${escapeHtml(row.role || "—")}</span></td>
                   <td>${escapeHtml(row.need || "—")}</td>
+                  <td>${escapeHtml(row.gradeStart || "—")}</td>
                   <td>${escapeHtml(row.support || "—")}</td>
                   <td>${escapeHtml(row.trainingInterest || "—")}</td>
                   <td>${escapeHtml(row.topics || "—")}</td>
@@ -569,6 +574,7 @@
             "Submitted",
             "Role",
             "Need",
+            "Grade Start",
             "Support",
             "Training Interest",
             "Topics",
@@ -582,6 +588,7 @@
                 row.submittedAt,
                 row.role,
                 row.need,
+                row.gradeStart,
                 row.support,
                 row.trainingInterest,
                 row.topics,

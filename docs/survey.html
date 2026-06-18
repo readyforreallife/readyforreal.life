@@ -312,7 +312,7 @@
             Should students learn <em>real-world life skills</em> in school?
           </h1>
           <p class="lede">
-            I am developing a life skills curriculum for grades 9-12 covering
+            I am developing a life skills curriculum for grades K-12 covering
             conflict resolution, emotional regulation, digital citizenship, and
             decision-making. Your response helps show local school leaders what
             parents, educators, students, and community members want students to
@@ -320,16 +320,16 @@
           </p>
           <div class="proof" aria-label="Survey details">
             <div><strong>2</strong><span>minutes to complete</span></div>
-            <div><strong>6</strong><span>short questions</span></div>
-            <div><strong>9-12</strong><span>grade-level focus</span></div>
+            <div><strong>7</strong><span>short questions</span></div>
+            <div><strong>K-12</strong><span>grade-level focus</span></div>
           </div>
           <div class="post-copy">
             <h2>Shareable post copy</h2>
             <p>
               Something I have been building is getting closer to real, and I
               need your input before I take it to local school leaders. I am
-              developing a life skills curriculum for high school students in
-              Utah. Takes 2 minutes. No sign-up required.
+              developing a life skills curriculum for students in every school.
+              Takes 2 minutes. No sign-up required.
             </p>
           </div>
         </div>
@@ -389,8 +389,8 @@
 
               <fieldset>
                 <legend>
-                  Do you believe high school students need more real-world life
-                  skills training?
+                  Do you believe K-12 students need more real-world life skills
+                  training?
                 </legend>
                 <div class="options">
                   <label class="option"
@@ -418,6 +418,51 @@
                       type="radio"
                       value="I do not think it is a priority"
                     />I do not think it is a priority</label
+                  >
+                </div>
+              </fieldset>
+
+              <fieldset>
+                <legend>
+                  In your opinion, which grade level should a curriculum like
+                  this begin?
+                </legend>
+                <div class="options">
+                  <label class="option"
+                    ><input
+                      name="gradeStart"
+                      type="radio"
+                      value="Kindergarten - Grade 2"
+                      required
+                    />Kindergarten - Grade 2</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="gradeStart"
+                      type="radio"
+                      value="Grades 3-5"
+                    />Grades 3-5</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="gradeStart"
+                      type="radio"
+                      value="Grades 6-8"
+                    />Grades 6-8</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="gradeStart"
+                      type="radio"
+                      value="Grades 9-12"
+                    />Grades 9-12</label
+                  >
+                  <label class="option"
+                    ><input
+                      name="gradeStart"
+                      type="radio"
+                      value="I am not sure"
+                    />I am not sure</label
                   >
                 </div>
               </fieldset>
@@ -637,6 +682,7 @@
           const data = {
             role: selected("role"),
             need: selected("need"),
+            gradeStart: selected("gradeStart"),
             topics: checked("topics"),
             support: selected("support"),
             trainingInterest: checked("trainingInterest"),
@@ -647,6 +693,7 @@
             "Survey: Community Interest Survey",
             `Role: ${data.role || "-"}`,
             `Need: ${data.need || "-"}`,
+            `Grade Start: ${data.gradeStart || "-"}`,
             `Urgent Topics: ${data.topics || "-"}`,
             `Support: ${data.support || "-"}`,
             `Training Interest: ${data.trainingInterest || "-"}`,
