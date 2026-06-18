@@ -29,7 +29,7 @@
       title: "Survey results folder",
       page: "Teacher Mode",
       section: "Survey Results",
-      url: "https://readyforreallife.github.io/mmmf-codex/web/registration-folder.html",
+      url: "survey-results.html",
       snippet:
         "Protected registration folder where community survey responses can be searched, filtered, exported, and reviewed after Teacher Mode login.",
       keywords: [

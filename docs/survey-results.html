@@ -1,0 +1,605 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Survey Results Folder | Ready for Real Life</title>
+    <meta
+      name="description"
+      content="Protected survey results folder for Ready for Real Life community interest submissions."
+    />
+    <link rel="stylesheet" href="site-search.css" />
+    <style>
+      @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700;900&family=Inter:wght@400;600;700;800&display=swap");
+      :root {
+        --navy: #24334b;
+        --navy2: #162238;
+        --gold: #d1a03f;
+        --cream: #fff4d5;
+        --paper: #fffaf0;
+        --ink: #1f2937;
+        --muted: #64748b;
+        --line: rgba(36, 51, 75, 0.16);
+        --teal: #367f7b;
+        --danger: #9f3a38;
+      }
+      * {
+        box-sizing: border-box;
+      }
+      body {
+        margin: 0;
+        font-family: Inter, sans-serif;
+        background: var(--cream);
+        color: var(--ink);
+      }
+      .top {
+        background: var(--navy);
+        color: #fff;
+        border-bottom: 4px solid var(--gold);
+      }
+      .wrap {
+        width: min(1280px, calc(100% - 32px));
+        margin: 0 auto;
+      }
+      .top-inner,
+      .actions,
+      .filters {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
+        flex-wrap: wrap;
+      }
+      .top-inner {
+        padding: 22px 0;
+      }
+      .eyebrow {
+        color: var(--gold);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.16em;
+        text-transform: uppercase;
+      }
+      h1,
+      h2 {
+        font-family: "Playfair Display", serif;
+        color: var(--navy2);
+      }
+      h1 {
+        margin: 8px 0 8px;
+        color: #fff;
+        font-size: clamp(2rem, 5vw, 3.2rem);
+      }
+      .sub {
+        max-width: 820px;
+        margin: 0;
+        color: #d6dfec;
+        line-height: 1.7;
+      }
+      .nav {
+        display: flex;
+        gap: 10px;
+        flex-wrap: wrap;
+      }
+      .btn,
+      button {
+        min-height: 42px;
+        border: 1px solid var(--line);
+        border-radius: 999px;
+        padding: 0 16px;
+        background: #fff;
+        color: var(--navy);
+        font: inherit;
+        font-weight: 800;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .btn.primary,
+      button.primary {
+        background: var(--gold);
+        border-color: var(--gold);
+        color: var(--navy2);
+      }
+      main {
+        padding: 28px 0 70px;
+      }
+      .panel {
+        background: rgba(255, 255, 255, 0.82);
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 20px;
+        box-shadow: 0 14px 30px rgba(36, 51, 75, 0.08);
+      }
+      .gate {
+        max-width: 760px;
+      }
+      .gate form,
+      .filters {
+        margin-top: 16px;
+      }
+      input {
+        min-height: 44px;
+        border: 1px solid var(--line);
+        border-radius: 12px;
+        padding: 0 13px;
+        font: inherit;
+        background: #fff;
+      }
+      .gate input {
+        width: min(420px, 100%);
+      }
+      .search {
+        flex: 1 1 320px;
+      }
+      .notice {
+        display: none;
+        margin-top: 12px;
+        border-radius: 12px;
+        padding: 12px;
+        font-weight: 700;
+        line-height: 1.55;
+      }
+      .notice.show {
+        display: block;
+      }
+      .notice.error {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .notice.ok {
+        background: #d1fae5;
+        color: #065f46;
+      }
+      .folder {
+        display: none;
+      }
+      .summary {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 12px;
+        margin: 18px 0;
+      }
+      .stat {
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fff;
+        padding: 14px;
+      }
+      .stat span {
+        display: block;
+        color: var(--muted);
+        font-size: 0.72rem;
+        font-weight: 800;
+        letter-spacing: 0.12em;
+        text-transform: uppercase;
+      }
+      .stat strong {
+        display: block;
+        margin-top: 6px;
+        color: var(--navy2);
+        font-family: "Playfair Display", serif;
+        font-size: 1.55rem;
+      }
+      .table-wrap {
+        overflow: auto;
+        border: 1px solid var(--line);
+        border-radius: 16px;
+        background: #fff;
+      }
+      table {
+        width: 100%;
+        min-width: 1120px;
+        border-collapse: collapse;
+      }
+      th,
+      td {
+        padding: 12px;
+        border-top: 1px solid var(--line);
+        text-align: left;
+        vertical-align: top;
+        font-size: 0.92rem;
+      }
+      th {
+        position: sticky;
+        top: 0;
+        z-index: 1;
+        background: #f8f3e8;
+        color: var(--muted);
+        font-size: 0.74rem;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .pill {
+        display: inline-flex;
+        border-radius: 999px;
+        padding: 4px 8px;
+        background: #e7f7f5;
+        color: #0f766e;
+        font-size: 0.78rem;
+        font-weight: 800;
+      }
+      .empty {
+        display: none;
+        padding: 18px;
+        color: var(--muted);
+      }
+      .small {
+        color: var(--muted);
+        font-size: 0.86rem;
+        line-height: 1.6;
+      }
+      @media (max-width: 760px) {
+        .summary {
+          grid-template-columns: 1fr;
+        }
+        .btn,
+        button,
+        .search {
+          width: 100%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <header class="top">
+      <div class="wrap top-inner">
+        <div>
+          <div class="eyebrow">Teacher Mode Folder</div>
+          <h1>Survey Results Folder</h1>
+          <p class="sub">
+            A separate protected folder for community interest survey
+            submissions only. Program registrations stay out of this view.
+          </p>
+        </div>
+        <nav class="nav" aria-label="Main links">
+          <a class="btn" href="index.html">Home</a>
+          <a class="btn" href="survey.html">Public Survey</a>
+        </nav>
+      </div>
+    </header>
+
+    <main class="wrap">
+      <section class="panel gate" id="gate">
+        <div class="eyebrow">Admin Access</div>
+        <h2>Open survey results</h2>
+        <p class="small">
+          Enter the same admin code used for Teacher Mode. This folder loads the
+          shared registration backend and filters it down to survey submissions.
+        </p>
+        <form id="loginForm">
+          <input
+            id="adminCode"
+            type="password"
+            autocomplete="current-password"
+            placeholder="Admin access code"
+            required
+          />
+          <button class="primary" type="submit">Open Results Folder</button>
+        </form>
+        <div class="notice" id="loginNotice"></div>
+      </section>
+
+      <section class="panel folder" id="folder">
+        <div class="actions">
+          <div>
+            <div class="eyebrow">Survey Responses</div>
+            <h2>Community interest results</h2>
+          </div>
+          <div class="nav">
+            <button type="button" id="refreshBtn">Refresh</button>
+            <button type="button" id="exportCsvBtn">Export CSV</button>
+            <button type="button" id="exportJsonBtn">Export JSON</button>
+            <button type="button" id="lockBtn">Lock</button>
+          </div>
+        </div>
+
+        <div class="summary">
+          <div class="stat">
+            <span>Total survey responses</span>
+            <strong id="totalCount">0</strong>
+          </div>
+          <div class="stat">
+            <span>Advocates</span>
+            <strong id="advocateCount">0</strong>
+          </div>
+          <div class="stat">
+            <span>Emails collected</span>
+            <strong id="emailCount">0</strong>
+          </div>
+          <div class="stat">
+            <span>Latest response</span>
+            <strong id="latestDate">—</strong>
+          </div>
+        </div>
+
+        <div class="filters">
+          <input
+            class="search"
+            id="searchInput"
+            type="search"
+            placeholder="Search role, need, support, topic, email, comment..."
+          />
+        </div>
+        <div class="notice" id="folderNotice"></div>
+
+        <div class="table-wrap">
+          <table>
+            <thead>
+              <tr>
+                <th>Submitted</th>
+                <th>Role</th>
+                <th>Need</th>
+                <th>Support</th>
+                <th>Topics</th>
+                <th>Email</th>
+                <th>Comment</th>
+              </tr>
+            </thead>
+            <tbody id="resultsBody"></tbody>
+          </table>
+          <div class="empty" id="emptyState">
+            No survey submissions match this view yet.
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <script>
+      (() => {
+        const ENDPOINT =
+          "https://flat-flower-4af8mmmf-agreement-admin.mikeyterry44.workers.dev";
+        const SESSION_KEY = "rrl_survey_results_admin_session";
+        const els = {
+          gate: document.getElementById("gate"),
+          folder: document.getElementById("folder"),
+          loginForm: document.getElementById("loginForm"),
+          adminCode: document.getElementById("adminCode"),
+          loginNotice: document.getElementById("loginNotice"),
+          folderNotice: document.getElementById("folderNotice"),
+          searchInput: document.getElementById("searchInput"),
+          resultsBody: document.getElementById("resultsBody"),
+          emptyState: document.getElementById("emptyState"),
+          totalCount: document.getElementById("totalCount"),
+          advocateCount: document.getElementById("advocateCount"),
+          emailCount: document.getElementById("emailCount"),
+          latestDate: document.getElementById("latestDate"),
+          refreshBtn: document.getElementById("refreshBtn"),
+          exportCsvBtn: document.getElementById("exportCsvBtn"),
+          exportJsonBtn: document.getElementById("exportJsonBtn"),
+          lockBtn: document.getElementById("lockBtn"),
+        };
+        const state = {
+          token: sessionStorage.getItem(SESSION_KEY) || "",
+          rows: [],
+        };
+
+        function escapeHtml(value) {
+          return String(value || "")
+            .replace(/&/g, "&amp;")
+            .replace(/</g, "&lt;")
+            .replace(/>/g, "&gt;")
+            .replace(/"/g, "&quot;")
+            .replace(/'/g, "&#039;");
+        }
+
+        function showNotice(el, message, type = "ok") {
+          el.textContent = message || "";
+          el.className = `notice${message ? " show " + type : ""}`;
+        }
+
+        async function post(action, payload = {}) {
+          const response = await fetch(ENDPOINT, {
+            method: "POST",
+            headers: { "Content-Type": "text/plain;charset=utf-8" },
+            body: JSON.stringify({ action, ...payload }),
+          });
+          const data = await response.json().catch(() => null);
+          if (!response.ok || !data || !data.ok) {
+            throw new Error((data && data.error) || "Request failed.");
+          }
+          return data;
+        }
+
+        function parseDetails(entry) {
+          try {
+            return entry.detailsJson ? JSON.parse(entry.detailsJson) : {};
+          } catch (_error) {
+            return {};
+          }
+        }
+
+        function isSurvey(entry, details = parseDetails(entry)) {
+          return [
+            entry.program,
+            entry.organization,
+            entry.notes,
+            entry.detailsJson,
+            details.source,
+            details.need,
+            details.support,
+            details.topics,
+          ]
+            .join(" ")
+            .toLowerCase()
+            .includes("survey");
+        }
+
+        function toSurveyRow(entry) {
+          const details = parseDetails(entry);
+          return {
+            submittedAt: entry.submittedAt || "",
+            role: details.role || entry.role || "",
+            need: details.need || "",
+            support: details.support || "",
+            topics: details.topics || "",
+            email: entry.email || details.email || "",
+            comment: details.comment || entry.notes || "",
+            raw: entry,
+          };
+        }
+
+        function filteredRows() {
+          const query = els.searchInput.value.trim().toLowerCase();
+          if (!query) return state.rows;
+          return state.rows.filter((row) =>
+            [
+              row.submittedAt,
+              row.role,
+              row.need,
+              row.support,
+              row.topics,
+              row.email,
+              row.comment,
+            ]
+              .join(" ")
+              .toLowerCase()
+              .includes(query),
+          );
+        }
+
+        function render() {
+          const rows = filteredRows();
+          els.totalCount.textContent = state.rows.length;
+          els.advocateCount.textContent = state.rows.filter((row) =>
+            row.support.toLowerCase().includes("advocate"),
+          ).length;
+          els.emailCount.textContent = state.rows.filter(
+            (row) => row.email,
+          ).length;
+          els.latestDate.textContent = state.rows[0]?.submittedAt
+            ? new Date(state.rows[0].submittedAt).toLocaleDateString()
+            : "—";
+          els.emptyState.style.display = rows.length ? "none" : "block";
+          els.resultsBody.innerHTML = rows
+            .map(
+              (row) => `
+                <tr>
+                  <td>${row.submittedAt ? escapeHtml(new Date(row.submittedAt).toLocaleString()) : "—"}</td>
+                  <td><span class="pill">${escapeHtml(row.role || "—")}</span></td>
+                  <td>${escapeHtml(row.need || "—")}</td>
+                  <td>${escapeHtml(row.support || "—")}</td>
+                  <td>${escapeHtml(row.topics || "—")}</td>
+                  <td>${escapeHtml(row.email || "—")}</td>
+                  <td>${escapeHtml(row.comment || "—")}</td>
+                </tr>
+              `,
+            )
+            .join("");
+        }
+
+        async function loadResults() {
+          showNotice(els.folderNotice, "Loading survey results...");
+          const data = await post("registration_list", {
+            session_token: state.token,
+          });
+          state.rows = (Array.isArray(data.entries) ? data.entries : [])
+            .filter((entry) => isSurvey(entry))
+            .map(toSurveyRow);
+          render();
+          showNotice(
+            els.folderNotice,
+            `Loaded ${state.rows.length} survey response${state.rows.length === 1 ? "" : "s"}.`,
+          );
+        }
+
+        function openFolder() {
+          els.gate.style.display = "none";
+          els.folder.style.display = "block";
+        }
+
+        function lock() {
+          state.token = "";
+          sessionStorage.removeItem(SESSION_KEY);
+          els.folder.style.display = "none";
+          els.gate.style.display = "block";
+          els.adminCode.value = "";
+        }
+
+        function download(filename, text, type) {
+          const blob = new Blob([text], { type });
+          const url = URL.createObjectURL(blob);
+          const link = document.createElement("a");
+          link.href = url;
+          link.download = filename;
+          link.click();
+          URL.revokeObjectURL(url);
+        }
+
+        function csvCell(value) {
+          return `"${String(value || "").replace(/"/g, '""')}"`;
+        }
+
+        els.loginForm.addEventListener("submit", async (event) => {
+          event.preventDefault();
+          showNotice(els.loginNotice, "");
+          try {
+            const data = await post("admin_login", {
+              access_code: els.adminCode.value.trim(),
+            });
+            state.token = data.session_token;
+            sessionStorage.setItem(SESSION_KEY, state.token);
+            openFolder();
+            await loadResults();
+          } catch (error) {
+            showNotice(els.loginNotice, error.message, "error");
+          }
+        });
+
+        els.refreshBtn.addEventListener("click", () =>
+          loadResults().catch((error) =>
+            showNotice(els.folderNotice, error.message, "error"),
+          ),
+        );
+        els.searchInput.addEventListener("input", render);
+        els.lockBtn.addEventListener("click", lock);
+        els.exportJsonBtn.addEventListener("click", () =>
+          download(
+            "ready-for-real-life-survey-results.json",
+            JSON.stringify(state.rows, null, 2),
+            "application/json",
+          ),
+        );
+        els.exportCsvBtn.addEventListener("click", () => {
+          const header = [
+            "Submitted",
+            "Role",
+            "Need",
+            "Support",
+            "Topics",
+            "Email",
+            "Comment",
+          ];
+          const lines = [
+            header.map(csvCell).join(","),
+            ...state.rows.map((row) =>
+              [
+                row.submittedAt,
+                row.role,
+                row.need,
+                row.support,
+                row.topics,
+                row.email,
+                row.comment,
+              ]
+                .map(csvCell)
+                .join(","),
+            ),
+          ];
+          download(
+            "ready-for-real-life-survey-results.csv",
+            lines.join("\n"),
+            "text/csv",
+          );
+        });
+
+        if (state.token) {
+          openFolder();
+          loadResults().catch((error) => {
+            lock();
+            showNotice(els.loginNotice, error.message, "error");
+          });
+        }
+      })();
+    </script>
+  </body>
+</html>
