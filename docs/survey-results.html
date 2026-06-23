@@ -117,13 +117,20 @@
       .filters {
         margin-top: 16px;
       }
-      input {
+      input,
+      select,
+      textarea {
         min-height: 44px;
         border: 1px solid var(--line);
         border-radius: 12px;
         padding: 0 13px;
         font: inherit;
         background: #fff;
+      }
+      textarea {
+        min-height: 92px;
+        padding: 11px 13px;
+        resize: vertical;
       }
       .gate input {
         width: min(420px, 100%);
@@ -188,7 +195,7 @@
       }
       table {
         width: 100%;
-        min-width: 1120px;
+        min-width: 1220px;
         border-collapse: collapse;
       }
       th,
@@ -223,6 +230,59 @@
         padding: 18px;
         color: var(--muted);
       }
+      .mini {
+        min-height: 34px;
+        padding: 0 12px;
+        font-size: 0.82rem;
+      }
+      .edit-tag {
+        display: inline-block;
+        margin-top: 8px;
+        color: var(--teal);
+        font-size: 0.75rem;
+        font-weight: 800;
+      }
+      .edit-dialog {
+        width: min(760px, calc(100% - 28px));
+        border: 1px solid var(--line);
+        border-radius: 18px;
+        padding: 0;
+        color: var(--ink);
+        box-shadow: 0 28px 70px rgba(15, 23, 42, 0.32);
+      }
+      .edit-dialog::backdrop {
+        background: rgba(15, 23, 42, 0.46);
+      }
+      .edit-box {
+        padding: 20px;
+      }
+      .edit-grid {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 14px;
+        margin-top: 16px;
+      }
+      .edit-field {
+        display: grid;
+        gap: 6px;
+      }
+      .edit-field.wide {
+        grid-column: 1 / -1;
+      }
+      .edit-field label {
+        color: var(--muted);
+        font-size: 0.74rem;
+        font-weight: 800;
+        letter-spacing: 0.1em;
+        text-transform: uppercase;
+      }
+      .dialog-actions {
+        display: flex;
+        justify-content: space-between;
+        gap: 10px;
+        flex-wrap: wrap;
+        margin-top: 18px;
+      }
       .small {
         color: var(--muted);
         font-size: 0.86rem;
@@ -236,6 +296,9 @@
         button,
         .search {
           width: 100%;
+        }
+        .edit-grid {
+          grid-template-columns: 1fr;
         }
       }
     </style>
@@ -292,6 +355,11 @@
             <button type="button" id="lockBtn">Lock</button>
           </div>
         </div>
+        <p class="small">
+          Use Edit to clean up a response for review and export. Edits are
+          saved in this browser because the current shared backend does not
+          provide a server update action yet.
+        </p>
 
         <div class="summary">
           <div class="stat">
@@ -335,6 +403,7 @@
                 <th>Topics</th>
                 <th>Email</th>
                 <th>Comment</th>
+                <th>Actions</th>
               </tr>
             </thead>
             <tbody id="resultsBody"></tbody>
@@ -344,6 +413,59 @@
           </div>
         </div>
       </section>
+
+      <dialog class="edit-dialog" id="editDialog">
+        <form class="edit-box" id="editForm">
+          <input type="hidden" id="editId" />
+          <div class="eyebrow">Edit Survey Response</div>
+          <h2>Response review copy</h2>
+          <p class="small">
+            These changes stay available in this results folder on this browser
+            and are included in CSV and JSON exports.
+          </p>
+          <div class="edit-grid">
+            <div class="edit-field">
+              <label for="editRole">Role</label>
+              <input id="editRole" />
+            </div>
+            <div class="edit-field">
+              <label for="editGradeStart">Grade Start</label>
+              <input id="editGradeStart" />
+            </div>
+            <div class="edit-field wide">
+              <label for="editNeed">Need</label>
+              <textarea id="editNeed"></textarea>
+            </div>
+            <div class="edit-field wide">
+              <label for="editSupport">Support</label>
+              <textarea id="editSupport"></textarea>
+            </div>
+            <div class="edit-field wide">
+              <label for="editTrainingInterest">Training Interest</label>
+              <textarea id="editTrainingInterest"></textarea>
+            </div>
+            <div class="edit-field wide">
+              <label for="editTopics">Topics</label>
+              <textarea id="editTopics"></textarea>
+            </div>
+            <div class="edit-field wide">
+              <label for="editEmail">Email</label>
+              <input id="editEmail" type="email" />
+            </div>
+            <div class="edit-field wide">
+              <label for="editComment">Comment</label>
+              <textarea id="editComment"></textarea>
+            </div>
+          </div>
+          <div class="dialog-actions">
+            <button type="button" id="resetEditBtn">Reset This Response</button>
+            <div class="nav">
+              <button type="button" id="cancelEditBtn">Cancel</button>
+              <button class="primary" type="submit">Save Edit</button>
+            </div>
+          </div>
+        </form>
+      </dialog>
     </main>
 
     <script>
@@ -351,6 +473,7 @@
         const ENDPOINT =
           "https://flat-flower-4af8mmmf-agreement-admin.mikeyterry44.workers.dev";
         const SESSION_KEY = "rrl_survey_results_admin_session";
+        const EDITS_KEY = "rrl_survey_result_edits_v1";
         const els = {
           gate: document.getElementById("gate"),
           folder: document.getElementById("folder"),
@@ -369,10 +492,24 @@
           exportCsvBtn: document.getElementById("exportCsvBtn"),
           exportJsonBtn: document.getElementById("exportJsonBtn"),
           lockBtn: document.getElementById("lockBtn"),
+          editDialog: document.getElementById("editDialog"),
+          editForm: document.getElementById("editForm"),
+          editId: document.getElementById("editId"),
+          editRole: document.getElementById("editRole"),
+          editNeed: document.getElementById("editNeed"),
+          editGradeStart: document.getElementById("editGradeStart"),
+          editSupport: document.getElementById("editSupport"),
+          editTrainingInterest: document.getElementById("editTrainingInterest"),
+          editTopics: document.getElementById("editTopics"),
+          editEmail: document.getElementById("editEmail"),
+          editComment: document.getElementById("editComment"),
+          cancelEditBtn: document.getElementById("cancelEditBtn"),
+          resetEditBtn: document.getElementById("resetEditBtn"),
         };
         const state = {
           token: sessionStorage.getItem(SESSION_KEY) || "",
           rows: [],
+          edits: readEdits(),
         };
 
         function escapeHtml(value) {
@@ -387,6 +524,18 @@
         function showNotice(el, message, type = "ok") {
           el.textContent = message || "";
           el.className = `notice${message ? " show " + type : ""}`;
+        }
+
+        function readEdits() {
+          try {
+            return JSON.parse(localStorage.getItem(EDITS_KEY) || "{}");
+          } catch (_error) {
+            return {};
+          }
+        }
+
+        function saveEdits() {
+          localStorage.setItem(EDITS_KEY, JSON.stringify(state.edits));
         }
 
         async function post(action, payload = {}) {
@@ -430,7 +579,12 @@
 
         function toSurveyRow(entry) {
           const details = parseDetails(entry);
-          return {
+          const id =
+            entry.registrationId ||
+            entry.registration_id ||
+            `${entry.submittedAt || ""}-${entry.email || ""}`;
+          const base = {
+            id,
             submittedAt: entry.submittedAt || "",
             role: details.role || entry.role || "",
             need: details.need || "",
@@ -441,6 +595,14 @@
             email: entry.email || details.email || "",
             comment: details.comment || entry.notes || "",
             raw: entry,
+          };
+          const edit = state.edits[id] || {};
+          return {
+            ...base,
+            ...edit,
+            id,
+            raw: entry,
+            editedLocally: !!state.edits[id],
           };
         }
 
@@ -458,6 +620,7 @@
               row.topics,
               row.email,
               row.comment,
+              row.editedLocally ? "edited" : "",
             ]
               .join(" ")
               .toLowerCase()
@@ -491,10 +654,46 @@
                   <td>${escapeHtml(row.topics || "—")}</td>
                   <td>${escapeHtml(row.email || "—")}</td>
                   <td>${escapeHtml(row.comment || "—")}</td>
+                  <td>
+                    <button class="mini" type="button" data-edit-id="${escapeHtml(row.id)}">Edit</button>
+                    ${row.editedLocally ? '<span class="edit-tag">Edited locally</span>' : ""}
+                  </td>
                 </tr>
               `,
             )
             .join("");
+        }
+
+        function replaceRow(id) {
+          state.rows = state.rows.map((row) =>
+            row.id === id ? toSurveyRow(row.raw) : row,
+          );
+          render();
+        }
+
+        function openEdit(row) {
+          els.editId.value = row.id;
+          els.editRole.value = row.role || "";
+          els.editNeed.value = row.need || "";
+          els.editGradeStart.value = row.gradeStart || "";
+          els.editSupport.value = row.support || "";
+          els.editTrainingInterest.value = row.trainingInterest || "";
+          els.editTopics.value = row.topics || "";
+          els.editEmail.value = row.email || "";
+          els.editComment.value = row.comment || "";
+          if (typeof els.editDialog.showModal === "function") {
+            els.editDialog.showModal();
+          } else {
+            els.editDialog.setAttribute("open", "");
+          }
+        }
+
+        function closeEdit() {
+          if (typeof els.editDialog.close === "function") {
+            els.editDialog.close();
+          } else {
+            els.editDialog.removeAttribute("open");
+          }
         }
 
         async function loadResults() {
@@ -562,6 +761,45 @@
         );
         els.searchInput.addEventListener("input", render);
         els.lockBtn.addEventListener("click", lock);
+        els.resultsBody.addEventListener("click", (event) => {
+          const button = event.target.closest("[data-edit-id]");
+          if (!button) return;
+          const row = state.rows.find((item) => item.id === button.dataset.editId);
+          if (row) openEdit(row);
+        });
+        els.cancelEditBtn.addEventListener("click", closeEdit);
+        els.resetEditBtn.addEventListener("click", () => {
+          const id = els.editId.value;
+          delete state.edits[id];
+          saveEdits();
+          replaceRow(id);
+          closeEdit();
+          showNotice(
+            els.folderNotice,
+            "Local edits were reset for that survey response.",
+          );
+        });
+        els.editForm.addEventListener("submit", (event) => {
+          event.preventDefault();
+          const id = els.editId.value;
+          state.edits[id] = {
+            role: els.editRole.value.trim(),
+            need: els.editNeed.value.trim(),
+            gradeStart: els.editGradeStart.value.trim(),
+            support: els.editSupport.value.trim(),
+            trainingInterest: els.editTrainingInterest.value.trim(),
+            topics: els.editTopics.value.trim(),
+            email: els.editEmail.value.trim(),
+            comment: els.editComment.value.trim(),
+          };
+          saveEdits();
+          replaceRow(id);
+          closeEdit();
+          showNotice(
+            els.folderNotice,
+            "Saved the edited review copy. Exports will use the edited version.",
+          );
+        });
         els.exportJsonBtn.addEventListener("click", () =>
           download(
             "ready-for-real-life-survey-results.json",
@@ -580,6 +818,7 @@
             "Topics",
             "Email",
             "Comment",
+            "Edited Locally",
           ];
           const lines = [
             header.map(csvCell).join(","),
@@ -594,6 +833,7 @@
                 row.topics,
                 row.email,
                 row.comment,
+                row.editedLocally ? "Yes" : "No",
               ]
                 .map(csvCell)
                 .join(","),
