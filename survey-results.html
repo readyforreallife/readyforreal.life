@@ -664,9 +664,13 @@
             .join("");
         }
 
-        function replaceRow(id) {
+        function replaceRow(id, edit = null) {
           state.rows = state.rows.map((row) =>
-            row.id === id ? toSurveyRow(row.raw) : row,
+            String(row.id) === String(id)
+              ? edit
+                ? { ...row, ...edit, editedLocally: true }
+                : toSurveyRow(row.raw)
+              : row,
           );
           render();
         }
@@ -764,7 +768,9 @@
         els.resultsBody.addEventListener("click", (event) => {
           const button = event.target.closest("[data-edit-id]");
           if (!button) return;
-          const row = state.rows.find((item) => item.id === button.dataset.editId);
+          const row = state.rows.find(
+            (item) => String(item.id) === String(button.dataset.editId),
+          );
           if (row) openEdit(row);
         });
         els.cancelEditBtn.addEventListener("click", closeEdit);
@@ -782,7 +788,7 @@
         els.editForm.addEventListener("submit", (event) => {
           event.preventDefault();
           const id = els.editId.value;
-          state.edits[id] = {
+          const edit = {
             role: els.editRole.value.trim(),
             need: els.editNeed.value.trim(),
             gradeStart: els.editGradeStart.value.trim(),
@@ -792,8 +798,9 @@
             email: els.editEmail.value.trim(),
             comment: els.editComment.value.trim(),
           };
+          state.edits[id] = edit;
           saveEdits();
-          replaceRow(id);
+          replaceRow(id, edit);
           closeEdit();
           showNotice(
             els.folderNotice,
