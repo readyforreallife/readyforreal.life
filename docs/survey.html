@@ -30,6 +30,7 @@
         font-family: Inter, sans-serif;
         background: var(--cream);
         color: var(--ink);
+        overflow-x: hidden;
       }
       .top {
         background: var(--navy);
@@ -60,6 +61,7 @@
         gap: 12px;
         color: #fff;
         text-decoration: none;
+        min-width: 0;
       }
       .brand-logo {
         width: 58px;
@@ -76,6 +78,7 @@
         display: block;
         font-family: "Playfair Display", serif;
         font-size: 1.35rem;
+        overflow-wrap: anywhere;
       }
       .nav {
         display: flex;
@@ -220,6 +223,8 @@
         border-radius: 12px;
         background: #fff;
         line-height: 1.45;
+        min-width: 0;
+        overflow-wrap: anywhere;
       }
       .option input {
         margin-top: 3px;
@@ -292,12 +297,133 @@
         }
       }
       @media (max-width: 620px) {
+        .wrap {
+          width: min(100% - 20px, 100%);
+        }
+        .top-inner {
+          gap: 12px;
+          padding: 12px 0;
+        }
+        .brand {
+          align-items: flex-start;
+          gap: 9px;
+        }
+        .brand-logo {
+          width: 44px;
+          height: 44px;
+          border-radius: 12px;
+        }
+        .brand strong {
+          font-size: 1.05rem;
+          line-height: 1.08;
+        }
+        .eyebrow {
+          font-size: 0.62rem;
+          letter-spacing: 0.11em;
+        }
+        .nav {
+          display: grid;
+          grid-template-columns: 1fr 1fr;
+          width: 100%;
+          gap: 8px;
+        }
+        main {
+          padding: 22px 0 44px;
+        }
+        h1 {
+          margin: 8px 0 12px;
+          font-size: clamp(2rem, 12vw, 3rem);
+          line-height: 0.98;
+        }
+        .lede {
+          font-size: 0.95rem;
+          line-height: 1.55;
+        }
         .proof {
           grid-template-columns: 1fr;
+          gap: 8px;
+          margin-top: 16px;
+        }
+        .proof div,
+        .post-copy,
+        .form-card,
+        .success-card {
+          border-radius: 14px;
+        }
+        .proof div,
+        .post-copy {
+          padding: 13px;
+        }
+        .post-copy {
+          margin-top: 14px;
+        }
+        .post-copy p,
+        .form-head p {
+          line-height: 1.55;
+        }
+        .form-head {
+          padding: 16px;
+        }
+        form {
+          padding: 16px;
+        }
+        fieldset {
+          margin-bottom: 18px;
+        }
+        legend,
+        .label {
+          margin-bottom: 8px;
+          font-size: 0.96rem;
+          line-height: 1.25;
+        }
+        .hint {
+          margin-bottom: 10px;
+        }
+        .options {
+          gap: 7px;
+        }
+        .option {
+          gap: 8px;
+          padding: 10px;
+          border-radius: 10px;
+          font-size: 0.92rem;
+          line-height: 1.32;
+        }
+        input[type="email"],
+        textarea {
+          padding: 11px;
+          font-size: 16px;
+        }
+        .actions {
+          gap: 8px;
+          padding-top: 14px;
         }
         .btn,
         button {
           width: 100%;
+          min-height: 40px;
+          padding: 0 10px;
+          font-size: 0.88rem;
+          white-space: normal;
+        }
+      }
+      @media (max-width: 380px) {
+        .wrap {
+          width: min(100% - 14px, 100%);
+        }
+        .nav {
+          grid-template-columns: 1fr;
+        }
+        h1 {
+          font-size: 2rem;
+        }
+        .form-head,
+        form {
+          padding: 12px;
+        }
+        .option {
+          padding: 9px;
+          font-size: 0.88rem;
         }
       }
     </style>
