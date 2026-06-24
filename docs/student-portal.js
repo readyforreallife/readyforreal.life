@@ -1261,6 +1261,18 @@ function clearStatus(el) {
   el.className = "status-line";
 }
 
+function createConnectionErrorMessage(error) {
+  const message = error?.message || "";
+  if (message !== "Failed to fetch") return message || "Something went wrong.";
+
+  const projectUrl = settings.supabaseUrl || EMBEDDED_SUPABASE_URL || "the saved Supabase project";
+  return `Could not reach Supabase at ${projectUrl}. Check the Supabase project URL in Advanced Connection Settings, then try again.`;
+}
+
+function showErrorStatus(el, error) {
+  showStatus(el, createConnectionErrorMessage(error));
+}
+
 function loadSettings() {
   const defaults = {
     supabaseUrl: EMBEDDED_SUPABASE_URL,
@@ -1860,7 +1872,7 @@ function initializeSupabaseClient() {
     if (passwordRecoveryMode) return;
 
     handleSessionChange(session, { scrollToWelcome: false }).catch((error) => {
-      showStatus(studentLoginStatus, error.message);
+      showErrorStatus(studentLoginStatus, error);
     });
   }).data.subscription;
 
@@ -3207,7 +3219,7 @@ function bindPortalActions() {
         await saveAssignment(button.getAttribute("data-save-assignment"), false);
         showStatus(bioStatus, "Assignment draft saved.", "success");
       } catch (error) {
-        showStatus(studentLoginStatus, error.message);
+        showErrorStatus(studentLoginStatus, error);
       }
     });
   });
@@ -3218,7 +3230,7 @@ function bindPortalActions() {
         await saveAssignment(button.getAttribute("data-ready-assignment"), true);
         showStatus(bioStatus, "Assignment marked ready for review.", "success");
       } catch (error) {
-        showStatus(studentLoginStatus, error.message);
+        showErrorStatus(studentLoginStatus, error);
       }
     });
   });
@@ -3229,7 +3241,7 @@ function bindPortalActions() {
         await saveWorkbookEntry(button.getAttribute("data-save-workbook"));
         showStatus(bioStatus, "Workbook reflection saved.", "success");
       } catch (error) {
-        showStatus(studentLoginStatus, error.message);
+        showErrorStatus(studentLoginStatus, error);
       }
     });
   });
@@ -3679,7 +3691,7 @@ savePortalApiBtn.addEventListener("click", async () => {
     showStatus(portalSetupStatus, "Supabase connection saved on this device.", "success");
     updatePortalSetupVisibility(false);
   } catch (error) {
-    showStatus(portalSetupStatus, error.message);
+    showErrorStatus(portalSetupStatus, error);
   }
 });
 
@@ -3721,7 +3733,7 @@ loginForm.addEventListener("submit", async (event) => {
   try {
     await signInUser(studentIdInput.value, studentCodeInput.value);
   } catch (error) {
-    showStatus(studentLoginStatus, error.message);
+    showErrorStatus(studentLoginStatus, error);
   }
 });
 
@@ -3729,7 +3741,7 @@ restoreLastStudentBtn.addEventListener("click", async () => {
   try {
     await resumeSession();
   } catch (error) {
-    showStatus(studentLoginStatus, error.message);
+    showErrorStatus(studentLoginStatus, error);
   }
 });
 
@@ -3737,7 +3749,7 @@ forgotPasswordBtn?.addEventListener("click", async () => {
   try {
     await requestPasswordReset();
   } catch (error) {
-    showStatus(studentLoginStatus, error.message);
+    showErrorStatus(studentLoginStatus, error);
   }
 });
 
@@ -3746,7 +3758,7 @@ passwordResetForm?.addEventListener("submit", async (event) => {
   try {
     await updatePasswordFromRecovery();
   } catch (error) {
-    showStatus(passwordResetStatus, error.message);
+    showErrorStatus(passwordResetStatus, error);
   }
 });
 
@@ -3764,7 +3776,7 @@ signupForm.addEventListener("submit", async (event) => {
   try {
     await signUpUser();
   } catch (error) {
-    showStatus(signupStatus, error.message);
+    showErrorStatus(signupStatus, error);
   }
 });
 
@@ -3781,7 +3793,7 @@ studentLogoutBtn.addEventListener("click", async () => {
   try {
     await logoutUser();
   } catch (error) {
-    showStatus(studentLoginStatus, error.message);
+    showErrorStatus(studentLoginStatus, error);
   }
 });
 
@@ -3909,6 +3921,6 @@ if (initializeSupabaseClient()) {
       return handleSessionChange(data.session, { scrollToWelcome: false });
     })
     .catch((error) => {
-      showStatus(studentLoginStatus, error.message);
+      showErrorStatus(studentLoginStatus, error);
     });
 }
