@@ -1072,7 +1072,13 @@ const loginForm = document.getElementById("studentLoginForm");
 const studentIdInput = document.getElementById("studentIdInput");
 const studentCodeInput = document.getElementById("studentCodeInput");
 const restoreLastStudentBtn = document.getElementById("restoreLastStudentBtn");
+const forgotPasswordBtn = document.getElementById("forgotPasswordBtn");
 const studentLoginStatus = document.getElementById("studentLoginStatus");
+const passwordResetForm = document.getElementById("passwordResetForm");
+const newPasswordInput = document.getElementById("newPasswordInput");
+const confirmNewPasswordInput = document.getElementById("confirmNewPasswordInput");
+const cancelPasswordResetBtn = document.getElementById("cancelPasswordResetBtn");
+const passwordResetStatus = document.getElementById("passwordResetStatus");
 const loginGate = document.getElementById("loginGate");
 const heroGrid = document.querySelector(".hero-grid");
 const signupForm = document.getElementById("signupForm");
@@ -1197,6 +1203,7 @@ const identityModalSummary = document.getElementById("identityModalSummary");
 let settings = loadSettings();
 let supabaseClient = null;
 let authSubscription = null;
+let passwordRecoveryMode = false;
 const CLASSROOM_HASH_TO_VIEW = {
   "#classroom-overview": "overview",
   "#classroom-contents": "contents",
@@ -1293,6 +1300,24 @@ function getEmailConfirmationRedirectUrl() {
   return DEFAULT_CONFIRMATION_REDIRECT_URL;
 }
 
+function getPasswordRecoveryRedirectUrl() {
+  return getEmailConfirmationRedirectUrl();
+}
+
+function getAuthUrlParam(name) {
+  const searchParams = new URLSearchParams(window.location.search);
+  if (searchParams.has(name)) return searchParams.get(name);
+
+  const hashValue = window.location.hash.startsWith("#")
+    ? window.location.hash.slice(1)
+    : window.location.hash;
+  return new URLSearchParams(hashValue).get(name);
+}
+
+function isPasswordRecoveryLink() {
+  return getAuthUrlParam("type") === "recovery";
+}
+
 function hasSupabaseConfig() {
   return Boolean(settings.supabaseUrl && settings.supabaseAnonKey);
 }
@@ -1356,6 +1381,23 @@ function updateAuthenticatedView(isAuthenticated) {
     clearStatus(studentLoginStatus);
     clearStatus(signupStatus);
   }
+}
+
+function showPasswordResetForm(message = "") {
+  passwordRecoveryMode = true;
+  updateAuthenticatedView(false);
+  studentPortal.classList.remove("visible");
+  if (passwordResetForm) passwordResetForm.hidden = false;
+  if (message) showStatus(passwordResetStatus, message, "success");
+  newPasswordInput?.focus();
+}
+
+function hidePasswordResetForm() {
+  passwordRecoveryMode = false;
+  if (passwordResetForm) passwordResetForm.hidden = true;
+  newPasswordInput.value = "";
+  confirmNewPasswordInput.value = "";
+  clearStatus(passwordResetStatus);
 }
 
 function getSupabase() {
@@ -1810,7 +1852,14 @@ function initializeSupabaseClient() {
     },
   );
 
-  authSubscription = supabaseClient.auth.onAuthStateChange((_event, session) => {
+  authSubscription = supabaseClient.auth.onAuthStateChange((event, session) => {
+    if (event === "PASSWORD_RECOVERY" || isPasswordRecoveryLink()) {
+      showPasswordResetForm("Reset link opened. Enter a new password below.");
+      return;
+    }
+
+    if (passwordRecoveryMode) return;
+
     handleSessionChange(session, { scrollToWelcome: false }).catch((error) => {
       showStatus(studentLoginStatus, error.message);
     });
@@ -2120,6 +2169,7 @@ function renderLoggedOutState() {
   clearStatus(bioStatus);
   clearStatus(fileUploadStatus);
   clearStatus(accountStatus);
+  if (!passwordRecoveryMode) hidePasswordResetForm();
 }
 
 function discussionPostCountForTopic(topicKey) {
@@ -3377,6 +3427,69 @@ async function resumeSession() {
   showStatus(studentLoginStatus, "Saved session restored.", "success");
 }
 
+async function requestPasswordReset() {
+  if (!hasSupabaseConfig()) {
+    showStatus(studentLoginStatus, "Save your Supabase settings first.");
+    return;
+  }
+
+  const email = String(studentIdInput.value || "").trim();
+  if (!email) {
+    showStatus(studentLoginStatus, "Enter your email address first, then reset your password.");
+    studentIdInput.focus();
+    return;
+  }
+
+  const supabase = getSupabase();
+  const { error } = await supabase.auth.resetPasswordForEmail(email, {
+    redirectTo: getPasswordRecoveryRedirectUrl(),
+  });
+  if (error) throw error;
+
+  settings.lastAuthEmail = email;
+  saveSettings();
+  showStatus(
+    studentLoginStatus,
+    "Password reset email sent. Open the link in that email, then set a new password here.",
+    "success",
+  );
+}
+
+async function updatePasswordFromRecovery() {
+  if (!hasSupabaseConfig()) {
+    showStatus(passwordResetStatus, "Save your Supabase settings first.");
+    return;
+  }
+
+  const password = newPasswordInput.value.trim();
+  const confirmPassword = confirmNewPasswordInput.value.trim();
+  if (!password || !confirmPassword) {
+    showStatus(passwordResetStatus, "Enter and confirm your new password first.");
+    return;
+  }
+
+  if (password !== confirmPassword) {
+    showStatus(passwordResetStatus, "Your new password and confirmation need to match.");
+    return;
+  }
+
+  const supabase = getSupabase();
+  const { error } = await supabase.auth.updateUser({ password });
+  if (error) throw error;
+
+  await supabase.auth.signOut({ scope: "local" }).catch(() => {});
+  hidePasswordResetForm();
+  renderLoggedOutState();
+  showStatus(
+    studentLoginStatus,
+    "Password updated. Sign in again with your new password.",
+    "success",
+  );
+
+  const cleanUrl = `${window.location.pathname}${window.location.search}`;
+  window.history.replaceState({}, "", cleanUrl);
+}
+
 async function signUpUser() {
   if (!hasSupabaseConfig()) {
     showStatus(signupStatus, "Save your Supabase settings first.");
@@ -3624,6 +3737,32 @@ restoreLastStudentBtn.addEventListener("click", async () => {
   }
 });
 
+forgotPasswordBtn?.addEventListener("click", async () => {
+  try {
+    await requestPasswordReset();
+  } catch (error) {
+    showStatus(studentLoginStatus, error.message);
+  }
+});
+
+passwordResetForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+  try {
+    await updatePasswordFromRecovery();
+  } catch (error) {
+    showStatus(passwordResetStatus, error.message);
+  }
+});
+
+cancelPasswordResetBtn?.addEventListener("click", async () => {
+  if (supabaseClient) {
+    await supabaseClient.auth.signOut({ scope: "local" }).catch(() => {});
+  }
+  hidePasswordResetForm();
+  renderLoggedOutState();
+  showStatus(studentLoginStatus, "Password reset cancelled.");
+});
+
 signupForm.addEventListener("submit", async (event) => {
   event.preventDefault();
   try {
@@ -3767,6 +3906,10 @@ if (initializeSupabaseClient()) {
     .getSession()
     .then(({ data, error }) => {
       if (error) throw error;
+      if (isPasswordRecoveryLink()) {
+        showPasswordResetForm("Reset link opened. Enter a new password below.");
+        return null;
+      }
       return handleSessionChange(data.session, { scrollToWelcome: false });
     })
     .catch((error) => {

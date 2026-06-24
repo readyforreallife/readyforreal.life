@@ -1883,8 +1883,46 @@
               <button class="btn secondary" id="restoreLastStudentBtn" type="button">
                 Resume Session
               </button>
+              <button class="btn secondary" id="forgotPasswordBtn" type="button">
+                Reset Password
+              </button>
             </div>
             <div class="status-line" id="studentLoginStatus"></div>
+          </form>
+
+          <form class="teacher-entry stack" id="passwordResetForm" hidden>
+            <p class="section-kicker" style="margin-top: 10px">Set New Password</p>
+            <p class="subcopy">
+              After opening the reset link from your email, enter a new password
+              here. Then sign in again with the new password.
+            </p>
+            <label>
+              New password
+              <input
+                id="newPasswordInput"
+                type="password"
+                autocomplete="new-password"
+                placeholder="Create a new password"
+              />
+            </label>
+            <label>
+              Confirm new password
+              <input
+                id="confirmNewPasswordInput"
+                type="password"
+                autocomplete="new-password"
+                placeholder="Re-enter your new password"
+              />
+            </label>
+            <div class="assignment-actions">
+              <button class="btn primary" id="saveNewPasswordBtn" type="submit">
+                Save New Password
+              </button>
+              <button class="btn secondary" id="cancelPasswordResetBtn" type="button">
+                Cancel
+              </button>
+            </div>
+            <div class="status-line" id="passwordResetStatus"></div>
           </form>
 
           <div class="assignment-actions" style="margin-top: 16px">
