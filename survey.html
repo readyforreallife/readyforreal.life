@@ -2,7 +2,10 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta
+      name="viewport"
+      content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover"
+    />
     <title>Community Interest Survey | Ready for Real Life</title>
     <meta
       name="description"
@@ -24,6 +27,9 @@
       }
       * {
         box-sizing: border-box;
+      }
+      html {
+        -webkit-text-size-adjust: 100%;
       }
       body {
         margin: 0;
@@ -297,6 +303,9 @@
         }
       }
       @media (max-width: 620px) {
+        .top {
+          padding-top: max(96px, calc(env(safe-area-inset-top, 0px) + 42px));
+        }
         .wrap {
           width: min(100% - 20px, 100%);
         }
@@ -304,20 +313,10 @@
           flex-direction: column;
           align-items: stretch;
           gap: 12px;
-          padding: calc(12px + env(safe-area-inset-top, 0px)) 0 12px;
+          padding: 10px 0 12px;
         }
         .brand {
-          align-items: flex-start;
-          gap: 9px;
-        }
-        .brand-logo {
-          width: 44px;
-          height: 44px;
-          border-radius: 12px;
-        }
-        .brand strong {
-          font-size: 1.05rem;
-          line-height: 1.08;
+          display: none;
         }
         .eyebrow {
           font-size: 0.62rem;
