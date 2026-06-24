@@ -1,0 +1,1011 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ready for Real Life Instruction and Education – Survey Results</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --ink:      #0e1118;
+    --paper:    #f6f3ec;
+    --slate:    #253044;
+    --gold:     #c49540;
+    --gold-lt:  #f2e4c0;
+    --gold-dim: #e8d198;
+    --teal:     #1b6b6b;
+    --teal-lt:  #cce9e9;
+    --muted:    #697080;
+    --rule:     #ddd7cc;
+    --white:    #ffffff;
+    --teal-dark: #315e67;
+    --slate-dark: #1f293b;
+  }
+
+  body {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    background: #e8e4db;
+    color: var(--ink);
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .page {
+    max-width: 900px;
+    margin: 0 auto;
+    background: var(--paper);
+  }
+
+  /* ── HEADER ── */
+  .header {
+    background: var(--slate);
+    padding: 44px 52px 40px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    width: 400px; height: 400px;
+    top: -120px; right: -80px;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(196,149,64,0.18) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header::after {
+    content: '';
+    position: absolute;
+    width: 260px; height: 260px;
+    bottom: -60px; left: 20%;
+    border-radius: 50%;
+    background: radial-gradient(circle, rgba(27,107,107,0.22) 0%, transparent 70%);
+    pointer-events: none;
+  }
+  .header-eyebrow {
+    font-family: 'DM Mono', monospace;
+    font-size: 12px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 12px;
+  }
+  .header h1 {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 36px;
+    font-weight: 700;
+    color: #f7f3ec;
+    line-height: 1.15;
+    max-width: 480px;
+    margin-bottom: 10px;
+  }
+  .header h1 em {
+    font-style: italic;
+    color: var(--gold);
+  }
+  .header-sub {
+    color: rgba(247,243,236,0.6);
+    font-size: 15px;
+    font-weight: 500;
+    margin-top: 8px;
+  }
+  .header-badge {
+    position: absolute;
+    top: 40px; right: 52px;
+    background: rgba(255,255,255,0.12);
+    border: 1px solid rgba(255,255,255,0.2);
+    color: #f7f3ec;
+    border-radius: 10px;
+    padding: 16px 22px;
+    text-align: center;
+    backdrop-filter: blur(4px);
+  }
+  .badge-num {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 58px;
+    font-weight: 900;
+    line-height: 1;
+    display: block;
+    color: var(--gold);
+  }
+  .badge-label {
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.5px;
+    text-transform: uppercase;
+    opacity: 0.75;
+    display: block;
+    margin-top: 3px;
+  }
+
+  /* ── HERO STATS ── */
+  .hero {
+    background: var(--slate-dark);
+    padding: 32px 52px 36px;
+    display: flex;
+    gap: 0;
+  }
+  .hero-stat {
+    flex: 1;
+    text-align: center;
+    padding: 20px 20px 18px;
+    border-right: 1px solid rgba(255,255,255,0.1);
+  }
+  .hero-stat:last-child { border-right: none; }
+  .hero-pct {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 68px;
+    font-weight: 900;
+    line-height: 1;
+    color: #f7f3ec;
+  }
+  .hero-pct span { color: var(--gold); }
+  .hero-label {
+    font-size: 14px;
+    font-weight: 500;
+    color: rgba(247,243,236,0.55);
+    margin-top: 7px;
+    line-height: 1.4;
+    max-width: 150px;
+    margin-left: auto;
+    margin-right: auto;
+  }
+
+  /* ── SECTIONS ── */
+  .section {
+    padding: 40px 52px 36px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section:last-child { border-bottom: none; }
+  .section-label {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 400;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin-bottom: 5px;
+  }
+  .section-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 26px;
+    font-weight: 700;
+    color: var(--slate);
+    margin-bottom: 26px;
+    line-height: 1.2;
+  }
+
+  /* ── LAYOUT ── */
+  .two-col {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 32px;
+  }
+
+  /* ── BAR CHARTS ── */
+  .bar-row {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    margin-bottom: 14px;
+  }
+  .bar-row:last-child { margin-bottom: 0; }
+  .bar-label {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--muted);
+    width: 160px;
+    flex-shrink: 0;
+    line-height: 1.3;
+  }
+  .bar-label.short { width: 100px; }
+  .bar-label.long  { width: 230px; }
+  .bar-track {
+    flex: 1;
+    height: 18px;
+    background: var(--gold-lt);
+    border-radius: 3px;
+    overflow: hidden;
+  }
+  .bar-fill {
+    height: 100%;
+    border-radius: 3px;
+    background: var(--slate);
+  }
+  .bar-fill.gold  { background: var(--gold); }
+  .bar-fill.teal  { background: var(--teal); }
+  .bar-fill.muted { background: var(--muted); }
+  .bar-pct {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--slate);
+    width: 40px;
+    text-align: right;
+    flex-shrink: 0;
+  }
+
+  /* ── CALLOUT / CARD ── */
+  .dark-card {
+    background: var(--slate-dark);
+    border-radius: 10px;
+    padding: 24px 26px;
+    color: #f7f3ec;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+  }
+  .dark-card-num {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 60px;
+    font-weight: 900;
+    line-height: 1;
+    color: var(--gold);
+  }
+  .dark-card-label {
+    font-size: 15px;
+    font-weight: 500;
+    color: rgba(247,243,236,0.65);
+    line-height: 1.5;
+    margin-top: 6px;
+  }
+
+  .gold-card {
+    background: var(--gold-lt);
+    border-radius: 10px;
+    padding: 22px 24px;
+    border-left: 4px solid var(--gold);
+  }
+  .gold-card-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 15px;
+    color: #3a2e10;
+    line-height: 1.6;
+    font-style: italic;
+  }
+  .gold-card-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 400;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-top: 10px;
+  }
+
+  /* ── TOPIC BARS ── */
+  .topic-row {
+    margin-bottom: 14px;
+  }
+  .topic-row:last-child { margin-bottom: 0; }
+  .topic-top {
+    display: flex;
+    justify-content: space-between;
+    margin-bottom: 6px;
+  }
+  .topic-name {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--slate);
+  }
+  .topic-pct {
+    font-size: 15px;
+    font-weight: 700;
+    color: var(--teal);
+  }
+  .topic-track {
+    height: 7px;
+    background: var(--teal-lt);
+    border-radius: 4px;
+    overflow: hidden;
+  }
+  .topic-fill {
+    height: 100%;
+    border-radius: 4px;
+    background: var(--teal);
+  }
+
+  /* ── SUPPORT PILLS ── */
+  .support-row {
+    display: flex;
+    gap: 16px;
+  }
+  .s-pill {
+    flex: 1;
+    border-radius: 10px;
+    padding: 22px 20px 20px;
+    text-align: center;
+  }
+  .s-pill.dark { background: var(--slate); }
+  .s-pill.light { background: var(--gold-lt); }
+  .s-pill-pct {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 52px;
+    font-weight: 900;
+    line-height: 1;
+  }
+  .s-pill.dark .s-pill-pct { color: var(--gold); }
+  .s-pill.light .s-pill-pct { color: var(--slate); }
+  .s-pill-label {
+    font-size: 14px;
+    font-weight: 600;
+    line-height: 1.4;
+    margin-top: 5px;
+  }
+  .s-pill.dark .s-pill-label { color: rgba(247,243,236,0.65); }
+  .s-pill.light .s-pill-label { color: var(--muted); }
+
+  /* ── TRAINING ── */
+  .training-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+  }
+  .t-item {
+    background: var(--white);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 14px 16px;
+    display: flex;
+    align-items: center;
+    gap: 14px;
+  }
+  .t-pct {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 34px;
+    font-weight: 900;
+    color: var(--slate);
+    flex-shrink: 0;
+    min-width: 60px;
+  }
+  .t-label {
+    font-size: 15px;
+    font-weight: 600;
+    color: var(--muted);
+    line-height: 1.35;
+  }
+
+  /* ── QUOTES ── */
+  .quotes-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 14px;
+  }
+  .q-card {
+    background: var(--white);
+    border: 1px solid var(--rule);
+    border-top: 3px solid var(--gold);
+    border-radius: 0 0 8px 8px;
+    padding: 16px 16px 14px;
+  }
+  .q-text {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 15px;
+    color: var(--muted);
+    line-height: 1.6;
+    font-style: italic;
+  }
+  .q-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 400;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-top: 10px;
+  }
+
+  .note {
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 14px;
+    line-height: 1.55;
+    font-style: italic;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    background: var(--slate-dark);
+    padding: 22px 52px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-brand {
+    font-family: 'DM Sans', system-ui, sans-serif;
+    font-size: 16px;
+    font-weight: 700;
+    color: #f7f3ec;
+  }
+  .footer-brand span { color: var(--gold); }
+  .footer-sub {
+    font-size: 13px;
+    color: rgba(247,243,236,0.4);
+    margin-top: 3px;
+  }
+  .footer-meta {
+    font-size: 13px;
+    color: rgba(247,243,236,0.4);
+    text-align: right;
+    line-height: 1.6;
+  }
+
+
+  /* ── Q&A ── */
+  .qa-item {
+    background: var(--white);
+    border: 1px solid var(--rule);
+    border-radius: 8px;
+    padding: 18px 20px 16px;
+  }
+  .qa-question {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 15px;
+    font-style: italic;
+    color: var(--slate);
+    line-height: 1.5;
+    margin-bottom: 4px;
+  }
+  .qa-role {
+    font-family: 'DM Mono', monospace;
+    font-size: 11.5px;
+    font-weight: 400;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.18em;
+    margin-bottom: 10px;
+  }
+  .qa-answer {
+    font-size: 15px;
+    font-weight: 500;
+    color: var(--ink);
+    line-height: 1.6;
+    padding-left: 14px;
+    border-left: 3px solid var(--teal);
+  }
+
+  @media print {
+    body { background: white; }
+    .page { max-width: 100%; }
+  }
+</style>
+</head>
+<body>
+<div class="page">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-eyebrow">Ready for Real Life Instruction and Education</div>
+    <h1>Are Our Students Ready for Real Life?<br><em>What Our Community Says</em></h1>
+    <div class="header-sub">Ready for Real Life Instruction and Education &bull; Modern Manners and Mental Fortitude &bull; Community Survey Results &bull; June 2026</div>
+    <div class="header-badge">
+      <span class="badge-num">112</span>
+      <span class="badge-label">Total<br>Respondents</span>
+    </div>
+  </div>
+
+  <!-- HERO STATS -->
+  <div class="hero">
+    <div class="hero-stat">
+      <div class="hero-pct"><span>98</span>%</div>
+      <div class="hero-label">say a life skills curriculum is needed in schools</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-pct"><span>87</span>%</div>
+      <div class="hero-label">say it is "absolutely overdue"</div>
+    </div>
+    <div class="hero-stat">
+      <div class="hero-pct"><span>79</span>%</div>
+      <div class="hero-label">would actively advocate for district adoption</div>
+    </div>
+  </div>
+
+  <!-- WHO RESPONDED -->
+  <div class="section">
+    <div class="section-label">Survey Demographics</div>
+    <div class="section-title">Who Weighed In</div>
+    <div class="two-col">
+      <div>
+        <div class="bar-row">
+          <div class="bar-label">Parent / Guardian</div>
+          <div class="bar-track"><div class="bar-fill" style="width:40.2%"></div></div>
+          <div class="bar-pct">40%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Teacher / Educator</div>
+          <div class="bar-track"><div class="bar-fill teal" style="width:30.4%"></div></div>
+          <div class="bar-pct">30%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Community Member</div>
+          <div class="bar-track"><div class="bar-fill muted" style="width:16.1%"></div></div>
+          <div class="bar-pct">16%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">Student</div>
+          <div class="bar-track"><div class="bar-fill gold" style="width:11.6%"></div></div>
+          <div class="bar-pct">12%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label">School Administrator</div>
+          <div class="bar-track"><div class="bar-fill muted" style="width:1.8%"></div></div>
+          <div class="bar-pct">2%</div>
+        </div>
+      </div>
+      <div class="dark-card">
+        <div class="dark-card-num">5</div>
+        <div class="dark-card-label">distinct community voices, parents, teachers, students, community members, and school administrators, all pointing the same direction</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- IS IT NEEDED -->
+  <div class="section">
+    <div class="section-label">Community Consensus</div>
+    <div class="section-title">What the Data Shows</div>
+    <div style="display:flex; flex-direction:column; gap:14px;">
+      <div class="bar-row">
+        <div class="bar-label long">"Absolutely, it is overdue"</div>
+        <div class="bar-track"><div class="bar-fill" style="width:86.6%"></div></div>
+        <div class="bar-pct">87%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label long">"Yes, but needs to fit the curriculum"</div>
+        <div class="bar-track"><div class="bar-fill teal" style="width:11.6%"></div></div>
+        <div class="bar-pct">12%</div>
+      </div>
+      <div class="bar-row">
+        <div class="bar-label long">"I am not sure"</div>
+        <div class="bar-track"><div class="bar-fill muted" style="width:1.8%"></div></div>
+        <div class="bar-pct">2%</div>
+      </div>
+    </div>
+    <p class="note">Combined, 98.2% of respondents said structured life skills instruction belongs in K&ndash;12 schools. Zero respondents said it was not needed.</p>
+  </div>
+
+  <!-- WHERE TO START -->
+  <div class="section">
+    <div class="section-label">Implementation Priority</div>
+    <div class="section-title">Where Should This Start?</div>
+    <div class="two-col">
+      <div>
+        <div class="bar-row">
+          <div class="bar-label short">Grades K&ndash;2</div>
+          <div class="bar-track"><div class="bar-fill gold" style="width:76.8%"></div></div>
+          <div class="bar-pct">38%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label short">Grades 6&ndash;8</div>
+          <div class="bar-track"><div class="bar-fill" style="width:51.8%"></div></div>
+          <div class="bar-pct">26%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label short">Grades 3&ndash;5</div>
+          <div class="bar-track"><div class="bar-fill teal" style="width:42.8%"></div></div>
+          <div class="bar-pct">21%</div>
+        </div>
+        <div class="bar-row">
+          <div class="bar-label short">Grades 9&ndash;12</div>
+          <div class="bar-track"><div class="bar-fill muted" style="width:21.4%"></div></div>
+          <div class="bar-pct">11%</div>
+        </div>
+        <p class="note">Respondents see the greatest need starting in early elementary, build the foundation before behavior patterns form.</p>
+      </div>
+      <div class="gold-card" style="display:flex; flex-direction:column; justify-content:center;">
+        <div style="font-size:12.0px; font-weight:700; letter-spacing:2px; text-transform:uppercase; color:var(--teal); margin-bottom:10px;">Community Voice</div>
+        <div class="gold-card-text">"If more life skills were taught maybe we could get behaviors under control and more learning would take place. We are so worried about kindergartners knowing what an open and closed syllable is instead of learning how to self-regulate."</div>
+        <div class="gold-card-role">Teacher / Educator</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ADVOCACY -->
+  <div class="section">
+    <div class="section-label">Community Readiness</div>
+    <div class="section-title">Would You Advocate for This Program?</div>
+    <div class="support-row">
+      <div class="s-pill dark">
+        <div class="s-pill-pct">78.6%</div>
+        <div class="s-pill-label">Yes, would actively<br>advocate for it</div>
+      </div>
+      <div class="s-pill light">
+        <div class="s-pill-pct">21.4%</div>
+        <div class="s-pill-label">Possibly, want to<br>learn more first</div>
+      </div>
+    </div>
+    <p class="note">Every single respondent indicated at least potential support. Zero said no.</p>
+  </div>
+
+  <!-- TOPICS -->
+  <div class="section">
+    <div class="section-label">Curriculum Priorities</div>
+    <div class="section-title">Top Topics Respondents Want Taught</div>
+    <div style="display:flex; flex-direction:column; gap:15px;">
+      <div class="topic-row">
+        <div class="topic-top">
+          <div class="topic-name">Handling Conflict &amp; Difficult Conversations</div>
+          <div class="topic-pct">82%</div>
+        </div>
+        <div class="topic-track"><div class="topic-fill" style="width:82.4%"></div></div>
+      </div>
+      <div class="topic-row">
+        <div class="topic-top">
+          <div class="topic-name">Respectful Communication &amp; Manners</div>
+          <div class="topic-pct">81%</div>
+        </div>
+        <div class="topic-track"><div class="topic-fill" style="width:80.6%"></div></div>
+      </div>
+      <div class="topic-row">
+        <div class="topic-top">
+          <div class="topic-name">Emotional Intelligence &amp; Self-Regulation</div>
+          <div class="topic-pct">80%</div>
+        </div>
+        <div class="topic-track"><div class="topic-fill" style="width:79.6%"></div></div>
+      </div>
+      <div class="topic-row">
+        <div class="topic-top">
+          <div class="topic-name">Accountability &amp; Decision-Making Under Pressure</div>
+          <div class="topic-pct">80%</div>
+        </div>
+        <div class="topic-track"><div class="topic-fill" style="width:79.6%"></div></div>
+      </div>
+      <div class="topic-row">
+        <div class="topic-top">
+          <div class="topic-name">Digital Citizenship &amp; Online Behavior</div>
+          <div class="topic-pct">57%</div>
+        </div>
+        <div class="topic-track"><div class="topic-fill" style="width:57.4%; background:var(--muted);"></div></div>
+      </div>
+    </div>
+    <p class="note">Ready for Real Life directly addresses all five of these priority areas across the full curriculum.</p>
+  </div>
+
+  <!-- TRAINING INTEREST -->
+  <div class="section">
+    <div class="section-label">Professional Development</div>
+    <div class="section-title">Educator Training Interest</div>
+    <div class="training-grid">
+      <div class="t-item">
+        <div class="t-pct">42%</div>
+        <div class="t-label">Want more information before committing</div>
+      </div>
+      <div class="t-item">
+        <div class="t-pct" style="color:var(--teal);">21%</div>
+        <div class="t-label">Interested in a 2-day seminar</div>
+      </div>
+      <div class="t-item">
+        <div class="t-pct" style="color:var(--gold);">20%</div>
+        <div class="t-label">Interested in certification</div>
+      </div>
+      <div class="t-item">
+        <div class="t-pct" style="color:var(--muted);">18%</div>
+        <div class="t-label">Interested in a conference with breakout sessions</div>
+      </div>
+    </div>
+    <p class="note">76% expressed some form of training interest. The highest response, "want more information", signals readiness, not reluctance.</p>
+  </div>
+
+  <!-- QUOTES -->
+  <div class="section">
+    <div class="section-label">In Their Words</div>
+    <div class="section-title">What Respondents Said</div>
+    <div class="quotes-grid">
+      <div class="q-card">
+        <div class="q-text">"I feel the accountability piece will be huge. Kids who can't admit they made a mistake turn into adults who do the same."</div>
+        <div class="q-role">Teacher / Educator</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">"Behavior and accountability are out of control. No consequences."</div>
+        <div class="q-role">Community Member</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">"This is the type of learning kids with ADHD crave. Active learning, applied to real things."</div>
+        <div class="q-role">Parent / Guardian</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">"I couldn't pick just one. It's all necessary."</div>
+        <div class="q-role">Parent / Guardian</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">"I think teachers would welcome this. It is so difficult for teachers nowadays."</div>
+        <div class="q-role">Community Member</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">"I have two children with ADHD making it already harder for them to regulate emotions. Having this in school would help them learn crucial tools and skills that would help them in the future."</div>
+        <div class="q-role">Parent / Guardian</div>
+      </div>
+      <div class="q-card">
+        <div class="q-text">"This is something we need in every school."</div>
+        <div class="q-role">Community Member</div>
+      </div>
+    </div>
+  </div>
+
+
+
+  <!-- PROGRAM INFO -->
+  <div class="section">
+    <div class="section-label">For Those Who Want to Know More</div>
+    <div class="section-title">Here Is What Ready for Real Life Actually Looks Like</div>
+
+    <p style="font-size:15.0px; line-height:1.75; color:var(--muted); margin-bottom:28px;">
+      42% of respondents said they were interested but needed more information before committing. This is for you. Here is what the program is, what it teaches, and how it works inside a school.
+    </p>
+
+    <!-- WHAT IT IS -->
+    <div style="background:var(--slate); border-radius:10px; padding:24px 28px; margin-bottom:24px; color:#f7f3ec;">
+      <div style="font-family:'DM Mono',monospace; font-size:11.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--gold); margin-bottom:10px;">What It Is</div>
+      <p style="font-size:15.0px; line-height:1.75; color:rgba(247,243,236,0.82);">
+        Ready for Real Life is a research-backed social-emotional learning program designed to teach real-world skills directly and deliberately. It is built around one question: can a student apply what they learned to a situation they have never practiced before? Every lesson, framework, and assessment is designed backward from that outcome. It aligns with Utah CASEL and CCA Core Standards and is built to complement, not replace, what schools are already doing.
+      </p>
+    </div>
+
+    <!-- FOUR PILLARS -->
+    <div style="margin-bottom:24px;">
+      <div style="font-family:'DM Mono',monospace; font-size:11.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-bottom:14px;">Four Core Pillars</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+        <div style="background:var(--white); border:1px solid var(--rule); border-top:3px solid var(--gold); border-radius:0 0 8px 8px; padding:16px 18px;">
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:14px; font-weight:700; color:var(--slate); margin-bottom:6px;">Respectful Communication</div>
+          <div style="font-size:14.0px; color:var(--muted); line-height:1.6;">Tone, body language, active listening, and repair across school, workplace, community, and digital settings.</div>
+        </div>
+        <div style="background:var(--white); border:1px solid var(--rule); border-top:3px solid var(--teal); border-radius:0 0 8px 8px; padding:16px 18px;">
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:14px; font-weight:700; color:var(--slate); margin-bottom:6px;">Emotional Regulation</div>
+          <div style="font-size:14.0px; color:var(--muted); line-height:1.6;">Identifying triggers, managing stress, and applying a structured regulation routine as a performance skill, not a therapy tool.</div>
+        </div>
+        <div style="background:var(--white); border:1px solid var(--rule); border-top:3px solid var(--teal); border-radius:0 0 8px 8px; padding:16px 18px;">
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:14px; font-weight:700; color:var(--slate); margin-bottom:6px;">Decision-Making Under Pressure</div>
+          <div style="font-size:14.0px; color:var(--muted); line-height:1.6;">A structured four-step framework applied to real scenarios with competing priorities and actual stakes.</div>
+        </div>
+        <div style="background:var(--white); border:1px solid var(--rule); border-top:3px solid var(--gold); border-radius:0 0 8px 8px; padding:16px 18px;">
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:14px; font-weight:700; color:var(--slate); margin-bottom:6px;">Accountability and Repair</div>
+          <div style="font-size:14.0px; color:var(--muted); line-height:1.6;">Own it, fix it, follow through. How accountability builds trust and long-term opportunity, and why repair after a mistake is a strength.</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- FIVE MODULES -->
+    <div style="margin-bottom:24px;">
+      <div style="font-family:'DM Mono',monospace; font-size:11.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-bottom:14px;">Five Modules</div>
+      <div style="display:grid; grid-template-columns:repeat(5,1fr); gap:10px;">
+        <div style="background:var(--gold-lt); border-radius:8px; padding:14px 12px; text-align:center;">
+          <div style="font-size:20px; margin-bottom:6px;">🎩</div>
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:13.5px; font-weight:700; color:var(--slate); line-height:1.3;">Modern Manners</div>
+        </div>
+        <div style="background:var(--teal-lt); border-radius:8px; padding:14px 12px; text-align:center;">
+          <div style="font-size:20px; margin-bottom:6px;">🧠</div>
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:13.5px; font-weight:700; color:var(--slate); line-height:1.3;">Emotional Intelligence</div>
+        </div>
+        <div style="background:var(--gold-lt); border-radius:8px; padding:14px 12px; text-align:center;">
+          <div style="font-size:20px; margin-bottom:6px;">🕊️</div>
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:13.5px; font-weight:700; color:var(--slate); line-height:1.3;">Conflict Navigation</div>
+        </div>
+        <div style="background:var(--teal-lt); border-radius:8px; padding:14px 12px; text-align:center;">
+          <div style="font-size:20px; margin-bottom:6px;">📱</div>
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:13.5px; font-weight:700; color:var(--slate); line-height:1.3;">Digital Citizenship</div>
+        </div>
+        <div style="background:var(--gold-lt); border-radius:8px; padding:14px 12px; text-align:center;">
+          <div style="font-size:20px; margin-bottom:6px;">🌱</div>
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:13.5px; font-weight:700; color:var(--slate); line-height:1.3;">Personal Growth</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TWO FRAMEWORKS -->
+    <div style="margin-bottom:24px;">
+      <div style="font-family:'DM Mono',monospace; font-size:11.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-bottom:14px;">Student-Facing Frameworks</div>
+      <div style="display:grid; grid-template-columns:1fr 1fr; gap:16px;">
+        <div style="background:var(--paper); border:1px solid var(--rule); border-radius:8px; padding:18px 20px;">
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:14px; font-weight:700; color:var(--slate); margin-bottom:12px;">Regulation Routine</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <div style="background:var(--slate); color:var(--gold); font-family:'DM Mono',monospace; font-size:12.5px; font-weight:500; padding:3px 8px; border-radius:4px; flex-shrink:0;">P</div>
+              <div style="font-size:14.0px; color:var(--muted); line-height:1.5;"><strong style="color:var(--slate);">Pause.</strong> Stop the automatic reaction.</div>
+            </div>
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <div style="background:var(--slate); color:var(--gold); font-family:'DM Mono',monospace; font-size:12.5px; font-weight:500; padding:3px 8px; border-radius:4px; flex-shrink:0;">L</div>
+              <div style="font-size:14.0px; color:var(--muted); line-height:1.5;"><strong style="color:var(--slate);">Label.</strong> Name what you are feeling.</div>
+            </div>
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <div style="background:var(--slate); color:var(--gold); font-family:'DM Mono',monospace; font-size:12.5px; font-weight:500; padding:3px 8px; border-radius:4px; flex-shrink:0;">R</div>
+              <div style="font-size:14.0px; color:var(--muted); line-height:1.5;"><strong style="color:var(--slate);">Reframe.</strong> What is actually happening?</div>
+            </div>
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <div style="background:var(--slate); color:var(--gold); font-family:'DM Mono',monospace; font-size:12.5px; font-weight:500; padding:3px 8px; border-radius:4px; flex-shrink:0;">R</div>
+              <div style="font-size:14.0px; color:var(--muted); line-height:1.5;"><strong style="color:var(--slate);">Respond.</strong> Choose deliberately, not reactively.</div>
+            </div>
+          </div>
+        </div>
+        <div style="background:var(--paper); border:1px solid var(--rule); border-radius:8px; padding:18px 20px;">
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:14px; font-weight:700; color:var(--slate); margin-bottom:12px;">Decision-Making Framework</div>
+          <div style="display:flex; flex-direction:column; gap:8px;">
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <div style="background:var(--teal); color:#fff; font-family:'DM Mono',monospace; font-size:12.5px; font-weight:500; padding:3px 8px; border-radius:4px; flex-shrink:0;">P</div>
+              <div style="font-size:14.0px; color:var(--muted); line-height:1.5;"><strong style="color:var(--slate);">Pause.</strong> Regulate first. Good decisions need space.</div>
+            </div>
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <div style="background:var(--teal); color:#fff; font-family:'DM Mono',monospace; font-size:12.5px; font-weight:500; padding:3px 8px; border-radius:4px; flex-shrink:0;">O</div>
+              <div style="font-size:14.0px; color:var(--muted); line-height:1.5;"><strong style="color:var(--slate);">Options.</strong> What are the real choices here?</div>
+            </div>
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <div style="background:var(--teal); color:#fff; font-family:'DM Mono',monospace; font-size:12.5px; font-weight:500; padding:3px 8px; border-radius:4px; flex-shrink:0;">C</div>
+              <div style="font-size:14.0px; color:var(--muted); line-height:1.5;"><strong style="color:var(--slate);">Consequences.</strong> Who is affected and how?</div>
+            </div>
+            <div style="display:flex; gap:10px; align-items:flex-start;">
+              <div style="background:var(--teal); color:#fff; font-family:'DM Mono',monospace; font-size:12.5px; font-weight:500; padding:3px 8px; border-radius:4px; flex-shrink:0;">C</div>
+              <div style="font-size:14.0px; color:var(--muted); line-height:1.5;"><strong style="color:var(--slate);">Choose.</strong> Select a response and be able to explain it.</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- MODULES NOTE -->
+    <div style="background:var(--paper); border:1px solid var(--rule); border-left:4px solid var(--gold); border-radius:0 8px 8px 0; padding:16px 20px; margin-bottom:24px;">
+      <div style="font-family:'Playfair Display',Georgia,serif; font-size:15.0px; font-weight:700; color:var(--slate); margin-bottom:6px;">A Note on the Modules</div>
+      <p style="font-size:14.5px; color:var(--muted); line-height:1.7;">The five modules listed here represent a baseline used to gauge community interest and identify priorities. They are not the full picture. Additional modules have been developed and are part of the broader Ready for Real Life curriculum. Digital Citizenship was intentionally included in this survey to measure interest, but it is not necessarily a required component of the core program. The data will help determine what belongs, what is supplemental, and what the community actually wants to see taught.</p>
+    </div>
+
+    <!-- HOW IT DELIVERS -->
+    <div style="background:var(--gold-lt); border:1px solid var(--rule); border-radius:8px; padding:20px 24px;">
+      <div style="font-family:'DM Mono',monospace; font-size:11.5px; letter-spacing:0.18em; text-transform:uppercase; color:var(--muted); margin-bottom:12px;">How It Is Delivered</div>
+      <div style="display:grid; grid-template-columns:repeat(3,1fr); gap:16px;">
+        <div>
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:14.5px; font-weight:700; color:var(--slate); margin-bottom:4px;">Flexible Format</div>
+          <div style="font-size:14.0px; color:var(--muted); line-height:1.6;">Daily elective, A/B block, advisory period, or integrated into existing coursework. Adapted by grade level.</div>
+        </div>
+        <div>
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:14.5px; font-weight:700; color:var(--slate); margin-bottom:4px;">Class Size</div>
+          <div style="font-size:14.0px; color:var(--muted); line-height:1.6;">Adaptive to the classroom. Flexible seating and open space for role-play and simulations.</div>
+        </div>
+        <div>
+          <div style="font-family:'Playfair Display',Georgia,serif; font-size:14.5px; font-weight:700; color:var(--slate); margin-bottom:4px;">Who Teaches It</div>
+          <div style="font-size:14.0px; color:var(--muted); line-height:1.6;">Classroom teachers who complete Ready for Real Life instructor certification. No outside specialist required.</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="font-size:14.0px; color:var(--muted); margin-top:16px; font-style:italic;">
+      Learn more at <strong style="color:var(--slate);">readyforreal.life</strong> or reach out directly at <strong style="color:var(--slate);">readyforreal.life44@gmail.com</strong>
+    </p>
+  </div>
+
+  <!-- Q&A RESPONSES -->
+  <div class="section">
+    <div class="section-label">We Heard You</div>
+    <div class="section-title">Addressing Your Questions &amp; Concerns</div>
+    <div style="display:flex; flex-direction:column; gap:18px;">
+
+      <div class="qa-item">
+        <div class="qa-question">"Is it evidence based? Does it work within the rules about social emotional learning in schools?"</div>
+        <div class="qa-role">Teacher / Educator</div>
+        <div class="qa-answer">Yes on both counts. Ready for Real Life is built on peer-reviewed research, CASEL&#39;s SEL framework, Tyler&#39;s objectives-based design, Bruner&#39;s spiral curriculum model, and Stern et al.&#39;s transfer-focused unit design. It aligns with Utah&#39;s CCA Core Standards and is built to operate within existing school structures, not around them.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question">"TCSD already uses Second Step, is this program different? When would it be taught? Who teaches it?"</div>
+        <div class="qa-role">Community Member</div>
+        <div class="qa-answer">Ready for Real Life and Second Step are complementary, not competing. Second Step is primarily a behavioral support tool for younger grades; Ready for Real Life is a transferable life skills curriculum for K&ndash;12 with a deliberate focus on real-world application. It can run as a standalone elective, within an advisory or enrichment block, or integrated into existing coursework. It is taught by classroom teachers who complete Ready for Real Life instructor certification. No outside specialist or counselor is required.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question">"Not an added extra responsibility for teachers, find a way to incorporate it into the existing curriculum."</div>
+        <div class="qa-role">Teacher / Educator</div>
+        <div class="qa-answer">Agreed, and that shaped how it was built. Ready for Real Life includes ready-to-use lesson plans, scenario cards, assessment rubrics, and a full instructor guide. Teachers facilitate a fully developed curriculum, they don&#39;t build anything from scratch. The goal is to reduce the guesswork, not add to the load.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question">"There is a serious time consideration. The district would have to opt in and allocate time. Many teachers are unwilling to take on another initiative."</div>
+        <div class="qa-role">School Administrator</div>
+        <div class="qa-answer">That&#39;s exactly right, and it&#39;s why this data matters. District-level adoption is the only path to sustainable implementation. Ready for Real Life is designed to be flexible across grade levels, whether that looks like a semester elective in upper grades, integrated weekly lessons in elementary, or a unit-based approach in K-2 classrooms. The structure adapts to fit how a school actually runs. We are not asking individual teachers to find time. We are asking the district to allocate it intentionally.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question">"The topic of cost is what this will come down to. We have no extra money and we&#39;re already making sacrifices just to get by."</div>
+        <div class="qa-role">Community Member</div>
+        <div class="qa-answer">Cost is a fair concern and we take it seriously. Ready for Real Life is built to be a low-overhead program, priced so a school can start with a single class or grade level rather than committing district-wide on day one. That keeps the entry point manageable and lets the program prove its value before asking for a larger investment. The harder cost to calculate is what it costs a district to keep managing behavior, conflict, and disengagement without ever addressing the root.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question">"We refer to our most cognitively challenged students as &#39;Life Skills&#39; students, a descriptive title to the curriculum would be beneficial."</div>
+        <div class="qa-role">Teacher / Educator</div>
+        <div class="qa-answer">This is important feedback and we appreciate it. The curriculum is titled Modern Manners and Mental Fortitude, not &#39;life skills&#39;, specifically to avoid that association and to signal that this program is designed for the full student population, general education and beyond.</div>
+      </div>
+
+      <div class="qa-item">
+        <div class="qa-question">"Get the parents involved somehow, this really should be taught by them in the home."</div>
+        <div class="qa-role">Parent / Guardian</div>
+        <div class="qa-answer">Parents are right, these skills should start at home. But the data shows they often don&#39;t. Ready for Real Life doesn&#39;t replace parental responsibility; it reinforces it. We are developing a family engagement component so that what students learn in school connects directly to what parents can build on at home.</div>
+      </div>
+
+    </div>
+  </div>
+
+
+
+  <!-- AUDIT CROSS-REFERENCE -->
+  <div class="section" style="background:var(--gold-lt);">
+    <div class="section-label">Tooele County School District &bull; 2025 State Legislative Audit</div>
+    <div class="section-title">The Audit Said It. Our Community Already Knew It.</div>
+    <p style="font-size:15px; line-height:1.75; color:var(--muted); margin-bottom:24px;">In June 2025, the Utah Office of the Legislative Auditor General released a systematic performance audit of Tooele County School District. The findings directly mirror what this community survey identified as urgent needs.</p>
+
+    <div style="display:grid; grid-template-columns:1fr 1fr; gap:0; border:1px solid var(--rule); border-radius:10px; overflow:hidden; margin-bottom:20px;">
+      <div style="background:var(--slate); padding:16px 20px;">
+        <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.4); margin-bottom:8px;">What the Audit Found</div>
+      </div>
+      <div style="background:var(--teal); padding:16px 20px;">
+        <div style="font-family:'DM Mono',monospace; font-size:10px; letter-spacing:.18em; text-transform:uppercase; color:rgba(255,255,255,.5); margin-bottom:8px;">What Our Community Said</div>
+      </div>
+
+      <div style="background:var(--white); padding:16px 20px; border-top:1px solid var(--rule);">
+        <div style="font-size:14px; color:var(--muted); line-height:1.6;">Student achievement below state targets on RISE, ACT, Acadience, and graduation rates. ACT results: TCSD at 56% vs. state target of 74%.</div>
+      </div>
+      <div style="background:var(--paper); padding:16px 20px; border-top:1px solid var(--rule);">
+        <div style="font-size:14px; color:var(--slate); font-weight:600; line-height:1.6;">80% want accountability and decision-making under pressure taught directly. Students who cannot self-regulate cannot focus on academic achievement.</div>
+      </div>
+
+      <div style="background:var(--white); padding:16px 20px; border-top:1px solid var(--rule);">
+        <div style="font-size:14px; color:var(--muted); line-height:1.6;">K-3 literacy and numeracy below peer districts. Acadience numeracy gap of 7 percentage points.</div>
+      </div>
+      <div style="background:var(--paper); padding:16px 20px; border-top:1px solid var(--rule);">
+        <div style="font-size:14px; color:var(--slate); font-weight:600; line-height:1.6;">38% of respondents say the greatest need starts in grades K-2 — the same grades the audit flagged first.</div>
+      </div>
+
+      <div style="background:var(--white); padding:16px 20px; border-top:1px solid var(--rule);">
+        <div style="font-size:14px; color:var(--muted); line-height:1.6;">Employee morale below 50%. Culture of noncompliance. District culture described as a barrier to student achievement.</div>
+      </div>
+      <div style="background:var(--paper); padding:16px 20px; border-top:1px solid var(--rule);">
+        <div style="font-size:14px; color:var(--slate); font-weight:600; line-height:1.6;">82% want conflict resolution and 81% want respectful communication taught — the same skills a healthy school culture requires from every adult and student in the building.</div>
+      </div>
+
+      <div style="background:var(--white); padding:16px 20px; border-top:1px solid var(--rule);">
+        <div style="font-size:14px; color:var(--muted); line-height:1.6;">Board rarely discusses student achievement. Audit recommends making student outcomes a standing agenda item.</div>
+      </div>
+      <div style="background:var(--paper); padding:16px 20px; border-top:1px solid var(--rule);">
+        <div style="font-size:14px; color:var(--slate); font-weight:600; line-height:1.6;">79% of community members are ready to bring this directly to the board. The community demand exists. The audit made the case. The time to act is now.</div>
+      </div>
+    </div>
+
+    <p style="font-size:13px; color:var(--muted); font-style:italic; line-height:1.6;">Full audit available at olag.utleg.gov/audits.jsp &bull; Audit released June 18, 2025 &bull; Tooele County School District, 27 schools, 15,000+ students</p>
+  </div>
+
+  <!-- FOUNDERS NOTE -->
+  <div class="section" style="background: var(--slate); color: #f7f3ec;">
+    <div class="section-label" style="color: rgba(255,255,255,0.45);">From the Founders</div>
+    <div class="section-title" style="color: #f7f3ec;">A Note from Mike &amp; Mekenzi</div>
+
+    <p style="font-size:14px; line-height:1.75; color:rgba(247,243,236,0.82); margin-bottom:18px;">
+      Mekenzi and I built Ready for Real Life Instruction and Education from real life. Yes, it was put on paper in a classroom, but every word of it came from personal experience. I have spent nearly two decades in law enforcement, working alongside youth in crisis, in schools, and in communities across Tooele County and the entire state of Utah. Mekenzi has spent hers coaching, directing, and raising our five kids alongside me. Everything in this curriculum came out of what we lived, what we witnessed, and what we knew was missing. Mekenzi is not just my co-founder. She is my best friend, my greatest supporter, and the reason this program exists at all. We do everything together, and this program is no different.
+    </p>
+
+    <p style="font-size:14px; line-height:1.75; color:rgba(247,243,236,0.82); margin-bottom:18px;">
+      To every parent, teacher, student, community member, and administrator who took the time to complete this survey: thank you. You did not have to do that, and it means more than you know. This data is real, it is yours, and it is already being used to make the case for something better for our kids. You confirmed what so many of us already believe. Now we need to act on it together.
+    </p>
+
+    <div style="background:rgba(255,255,255,0.07); border-left:4px solid var(--gold); border-radius:0 8px 8px 0; padding:20px 22px; margin-bottom:18px;">
+      <p style="font-size:14px; line-height:1.75; color:rgba(247,243,236,0.88);">
+        Mekenzi and I will do everything we can to get Ready for Real Life into Tooele County classrooms. But we cannot do it without you. State-level reviews of Tooele County School District have flagged real concerns about student outcomes, school culture, and the behaviors we are all watching play out in our communities every day. Ready for Real Life is a direct, practical response to exactly those gaps. It is not a program layered on top of what already exists. It is the thing that should have already been there.
+      </p>
+    </div>
+
+    <p style="font-size:14px; line-height:1.75; color:rgba(247,243,236,0.82);">
+      If this data reflects what you believe, we are asking you to say so out loud. Talk to your school principals. Contact your board members. Let Superintendent Ernst and district leadership know that as parents, taxpayers, and neighbors, you want something real done for our kids. Communities that speak up are the ones that see change. Our students cannot wait for the right moment. The right moment is now, and your voice is what makes it happen.
+    </p>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div>
+      <div class="footer-brand">Ready for Real Life Instruction and Education</div>
+      <div class="footer-sub">readyforreal.life &bull; readyforreal.life44@gmail.com</div>
+    </div>
+    <div class="footer-meta">
+      112 community respondents<br>
+      Survey conducted June 18&ndash;24, 2026
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

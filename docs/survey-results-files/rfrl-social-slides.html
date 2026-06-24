@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ready for Real Life – Social Media Slides</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  :root{--ink:#0e1118;--paper:#f6f3ec;--slate:#253044;--gold:#c49540;--gold-lt:#f2e4c0;--teal:#1b6b6b;--teal-lt:#cce9e9;--muted:#697080;--rule:#ddd7cc;--white:#fff;--dark:#1f293b;}
+  body{font-family:'DM Sans',sans-serif;background:#e8e4db;padding:40px 24px;}
+
+  .page-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--slate);text-align:center;margin-bottom:6px;font-weight:700;}
+  .instructions{font-size:14px;color:var(--muted);text-align:center;margin-bottom:40px;line-height:1.7;max-width:600px;margin-left:auto;margin-right:auto;}
+
+  .grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;max-width:1000px;margin:0 auto;}
+
+  .slide{
+    width:100%;
+    aspect-ratio:1/1;
+    border-radius:16px;
+    overflow:hidden;
+    display:flex;
+    flex-direction:column;
+    justify-content:space-between;
+    padding:44px 44px 36px;
+    position:relative;
+    box-shadow:0 12px 40px rgba(0,0,0,.18);
+  }
+
+  .tag{font-family:'DM Mono',monospace;font-size:13px;font-weight:500;letter-spacing:.12em;text-transform:uppercase;}
+  .big-num{font-family:'DM Sans',sans-serif;font-weight:900;line-height:1;margin:12px 0 10px;}
+  .slide-label{font-family:'Playfair Display',serif;font-weight:700;line-height:1.2;}
+  .slide-sub{font-size:17px;font-weight:500;line-height:1.5;margin-top:12px;}
+  .handle{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.1em;text-transform:uppercase;opacity:.55;}
+
+  /* Slide 1 – dark slate */
+  .s1{background:var(--slate);}
+  .s1 .tag{color:var(--gold);}
+  .s1 .big-num{font-size:clamp(80px,14vw,130px);color:var(--gold);}
+  .s1 .slide-label{font-size:clamp(20px,3vw,28px);color:#f7f3ec;}
+  .s1 .slide-sub{color:rgba(247,243,236,.6);}
+  .s1 .handle{color:rgba(247,243,236,.4);}
+
+  /* Slide 2 – gold */
+  .s2{background:var(--gold-lt);}
+  .s2 .tag{color:var(--teal);}
+  .s2 .big-num{font-size:clamp(80px,14vw,130px);color:var(--slate);}
+  .s2 .slide-label{font-size:clamp(20px,3vw,28px);color:var(--slate);}
+  .s2 .slide-sub{color:var(--muted);}
+  .s2 .handle{color:var(--muted);}
+
+  /* Slide 3 – teal */
+  .s3{background:var(--teal);}
+  .s3 .tag{color:rgba(255,255,255,.6);}
+  .s3 .big-num{font-size:clamp(80px,14vw,130px);color:#fff;}
+  .s3 .slide-label{font-size:clamp(20px,3vw,28px);color:#f7f3ec;}
+  .s3 .slide-sub{color:rgba(255,255,255,.6);}
+  .s3 .handle{color:rgba(255,255,255,.4);}
+
+  /* Slide 4 – topic list */
+  .s4{background:var(--paper);}
+  .s4 .tag{color:var(--teal);}
+  .s4 .list-title{font-family:'Playfair Display',serif;font-size:clamp(18px,2.5vw,24px);font-weight:700;color:var(--slate);margin:14px 0 18px;}
+  .s4 .handle{color:var(--muted);}
+  .topic-row{display:flex;justify-content:space-between;align-items:center;padding:12px 16px;background:var(--white);border-radius:8px;border:1px solid var(--rule);margin-bottom:10px;}
+  .topic-name{font-size:16px;font-weight:600;color:var(--slate);}
+  .topic-pct{font-family:'DM Sans',sans-serif;font-size:24px;font-weight:900;color:var(--teal);}
+
+  /* Slide 5 – audit */
+  .s5{background:var(--dark);}
+  .s5 .tag{color:var(--gold);}
+  .s5 .big-num{font-size:clamp(70px,12vw,110px);color:var(--gold);}
+  .s5 .slide-label{font-size:clamp(18px,2.5vw,24px);color:#f7f3ec;}
+  .s5 .slide-sub{color:rgba(247,243,236,.6);font-size:16px;}
+  .s5 .handle{color:rgba(247,243,236,.35);}
+
+  /* Slide 6 – CTA */
+  .s6{background:var(--slate);}
+  .s6 .tag{color:var(--gold);}
+  .s6 .cta-head{font-family:'Playfair Display',serif;font-size:clamp(26px,4vw,42px);font-weight:900;color:#f7f3ec;line-height:1.1;margin:14px 0 18px;}
+  .s6 .cta-head em{font-style:italic;color:var(--gold);}
+  .s6 .cta-body{font-size:17px;color:rgba(247,243,236,.7);line-height:1.6;margin-bottom:18px;}
+  .s6 .cta-link{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:500;}
+  .s6 .handle{color:rgba(247,243,236,.35);}
+</style>
+</head>
+<body>
+
+<div class="page-title">Ready for Real Life — Social Media Slides</div>
+<div class="instructions">Six Instagram and Facebook carousel slides. Screenshot or save each slide individually to post. Recommended caption: "112 people in our community took this survey. Here is what they said. Share this."</div>
+
+<div class="grid">
+
+  <!-- Slide 1 -->
+  <div class="slide s1">
+    <div class="tag">Ready for Real Life &bull; Community Survey 2026</div>
+    <div>
+      <div class="big-num">98%</div>
+      <div class="slide-label">of our community says real-world skills need to be taught in Tooele County schools.</div>
+      <div class="slide-sub">112 parents, teachers, students, and community members responded.</div>
+    </div>
+    <div class="handle">readyforreal.life &nbsp;&bull;&nbsp; 1 of 6</div>
+  </div>
+
+  <!-- Slide 2 -->
+  <div class="slide s2">
+    <div class="tag">Ready for Real Life &bull; Community Survey 2026</div>
+    <div>
+      <div class="big-num">87%</div>
+      <div class="slide-label">say teaching these skills in school is absolutely overdue.</div>
+      <div class="slide-sub">Not a nice-to-have. Not someday. Overdue.</div>
+    </div>
+    <div class="handle">readyforreal.life &nbsp;&bull;&nbsp; 2 of 6</div>
+  </div>
+
+  <!-- Slide 3 -->
+  <div class="slide s3">
+    <div class="tag">Ready for Real Life &bull; Community Survey 2026</div>
+    <div>
+      <div class="big-num">79%</div>
+      <div class="slide-label">would actively advocate to the district to get this adopted.</div>
+      <div class="slide-sub">Zero respondents said no.</div>
+    </div>
+    <div class="handle">readyforreal.life &nbsp;&bull;&nbsp; 3 of 6</div>
+  </div>
+
+  <!-- Slide 4 – Topics -->
+  <div class="slide s4">
+    <div class="tag">Ready for Real Life &bull; What Our Community Wants Taught</div>
+    <div class="list-title">The top four topics our community chose:</div>
+    <div>
+      <div class="topic-row">
+        <span class="topic-name">Conflict Resolution</span>
+        <span class="topic-pct">82%</span>
+      </div>
+      <div class="topic-row">
+        <span class="topic-name">Respectful Communication</span>
+        <span class="topic-pct">81%</span>
+      </div>
+      <div class="topic-row">
+        <span class="topic-name">Emotional Intelligence</span>
+        <span class="topic-pct">80%</span>
+      </div>
+      <div class="topic-row">
+        <span class="topic-name">Accountability</span>
+        <span class="topic-pct">80%</span>
+      </div>
+    </div>
+    <div class="handle">readyforreal.life &nbsp;&bull;&nbsp; 4 of 6</div>
+  </div>
+
+  <!-- Slide 5 – Audit -->
+  <div class="slide s5">
+    <div class="tag">Tooele County School District &bull; 2025 State Legislative Audit</div>
+    <div>
+      <div class="big-num">56%</div>
+      <div class="slide-label">of TCSD students scored above 18 on the ACT. The state target is 74%.</div>
+      <div class="slide-sub">The audit also flagged low morale, poor school culture, and K-3 learning gaps. Our community already knows what needs to change.</div>
+    </div>
+    <div class="handle">readyforreal.life &nbsp;&bull;&nbsp; 5 of 6</div>
+  </div>
+
+  <!-- Slide 6 – CTA -->
+  <div class="slide s6">
+    <div class="tag">Ready for Real Life &bull; Take Action</div>
+    <div>
+      <div class="cta-head">Our kids need this.<br><em>Tell the district.</em></div>
+      <div class="cta-body">Contact Superintendent Ernst and your school board members. As a parent and taxpayer, your voice moves districts.</div>
+      <div class="cta-link">readyforreal.life</div>
+    </div>
+    <div class="handle">readyforreal.life &nbsp;&bull;&nbsp; 6 of 6</div>
+  </div>
+
+</div>
+</body>
+</html>

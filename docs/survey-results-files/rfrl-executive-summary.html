@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Ready for Real Life – District Executive Summary</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  :root{
+    --ink:#0e1118;--paper:#f6f3ec;--slate:#253044;--gold:#c49540;
+    --gold-lt:#f2e4c0;--teal:#1b6b6b;--teal-lt:#cce9e9;
+    --muted:#697080;--rule:#ddd7cc;--white:#fff;--dark:#1f293b;
+  }
+  body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);-webkit-print-color-adjust:exact;print-color-adjust:exact;}
+  .page{max-width:860px;margin:0 auto;background:var(--white);}
+
+  .header{background:var(--slate);padding:40px 52px 36px;position:relative;overflow:hidden;}
+  .header::before{content:'';position:absolute;width:400px;height:400px;top:-120px;right:-80px;border-radius:50%;background:radial-gradient(circle,rgba(196,149,64,.18) 0%,transparent 70%);pointer-events:none;}
+  .eyebrow{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+  .header h1{font-family:'Playfair Display',serif;font-size:32px;font-weight:900;color:#f7f3ec;line-height:1.15;margin-bottom:8px;}
+  .header h1 em{font-style:italic;color:var(--gold);}
+  .header-sub{font-size:13.5px;color:rgba(247,243,236,.55);margin-top:8px;}
+  .header-meta{position:absolute;top:36px;right:52px;text-align:right;}
+  .header-meta div{font-size:12px;color:rgba(247,243,236,.5);line-height:1.7;}
+  .header-meta strong{color:var(--gold);font-size:13px;}
+
+  .section{padding:36px 52px;border-bottom:1px solid var(--rule);}
+  .section:last-child{border-bottom:none;}
+  .label{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--slate);font-weight:600;margin-bottom:6px;}
+  h2{font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--slate);margin-bottom:20px;line-height:1.2;}
+  p{font-size:15px;line-height:1.75;color:var(--ink);margin-bottom:14px;}
+  p:last-child{margin-bottom:0;}
+
+  .stat-row{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px;}
+  .stat-box{background:var(--slate);border-radius:8px;padding:20px 18px;text-align:center;}
+  .stat-num{font-family:'DM Sans',sans-serif;font-size:44px;font-weight:900;color:var(--gold);line-height:1;}
+  .stat-label{font-size:12.5px;color:rgba(247,243,236,.65);margin-top:5px;line-height:1.4;}
+
+  .two-col{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+  .audit-box{background:var(--gold-lt);border-left:4px solid var(--gold);border-radius:0 8px 8px 0;padding:18px 20px;}
+  .audit-box .label{color:var(--teal);}
+  .audit-finding{font-size:14px;line-height:1.7;color:var(--ink);margin-bottom:10px;}
+  .audit-finding:last-child{margin-bottom:0;}
+  .audit-finding strong{color:var(--slate);}
+
+  .rfrl-box{background:var(--teal-lt);border-left:4px solid var(--teal);border-radius:0 8px 8px 0;padding:18px 20px;}
+  .rfrl-box .label{color:var(--teal);}
+
+  .map-row{display:grid;grid-template-columns:1fr 1fr;gap:0;margin-top:20px;}
+  .map-item{padding:14px 16px;border:1px solid var(--rule);margin:-1px 0 0 -1px;}
+  .map-audit{font-size:13px;color:var(--muted);line-height:1.55;margin-bottom:6px;font-style:italic;}
+  .map-arrow{font-size:11px;font-weight:700;color:var(--teal);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px;}
+  .map-rfrl{font-size:13px;color:var(--slate);font-weight:600;line-height:1.45;}
+
+  .ask-box{background:var(--slate);border-radius:10px;padding:28px 32px;color:#f7f3ec;}
+  .ask-box h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--gold);margin-bottom:14px;}
+  .ask-box p{font-size:14.5px;color:rgba(247,243,236,.82);margin-bottom:12px;}
+  .ask-list{list-style:none;display:flex;flex-direction:column;gap:10px;margin-top:16px;}
+  .ask-list li{display:flex;gap:12px;align-items:flex-start;font-size:14px;color:rgba(247,243,236,.82);line-height:1.6;}
+  .ask-list li::before{content:'';display:block;width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0;margin-top:8px;}
+
+  .footer{background:var(--dark);padding:20px 52px;display:flex;justify-content:space-between;align-items:center;}
+  .footer-brand{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#f7f3ec;}
+  .footer-brand span{color:var(--gold);}
+  .footer-contact{font-size:12px;color:rgba(247,243,236,.4);text-align:right;line-height:1.6;}
+
+  @media print{body{background:white;}.page{max-width:100%;}}
+</style>
+</head>
+<body>
+<div class="page">
+
+  <div class="header">
+    <div class="eyebrow">Ready for Real Life Instruction and Education</div>
+    <h1>A Community Says Our Students<br><em>Are Not Ready for Real Life</em></h1>
+    <div class="header-sub">Executive Summary for District Leadership &bull; Tooele County School District &bull; June 2026</div>
+    <div class="header-meta">
+      <div>Prepared by</div>
+      <strong>Mike &amp; Mekenzi Terry</strong>
+      <div>readyforreal.life</div>
+      <div style="margin-top:4px;">readyforreal.life44@gmail.com</div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">Purpose of This Document</div>
+    <h2>What Was Surveyed and Why It Matters to This District</h2>
+    <p>Ready for Real Life Instruction and Education is a research-backed social-emotional learning curriculum developed by Mike and Mekenzi Terry of Tooele, Utah. The curriculum, titled Modern Manners and Mental Fortitude, is designed to teach students real-world skills including conflict resolution, emotional regulation, respectful communication, decision-making under pressure, and personal accountability. It is built to align with Utah CASEL and CCA Core Standards and is intended to be delivered inside existing school structures without adding significant burden to teachers.</p>
+    <p>In June 2026, Ready for Real Life Instruction and Education conducted a community survey to measure whether Tooele County residents believe this type of instruction is needed in local schools, which grade levels they would prioritize, which topics matter most to them, and whether they would support district adoption. The survey reached parents, teachers, students, community members, and school administrators. This document presents the findings and connects them to the 2025 Utah Legislative Audit of Tooele County School District.</p>
+  </div>
+
+  <div class="section">
+    <div class="label">The Numbers</div>
+    <h2>What 112 Community Members Told Us</h2>
+    <div class="stat-row">
+      <div class="stat-box">
+        <div class="stat-num">98%</div>
+        <div class="stat-label">say a structured real-world skills curriculum is needed in schools</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">87%</div>
+        <div class="stat-label">say it is "absolutely overdue"</div>
+      </div>
+      <div class="stat-box">
+        <div class="stat-num">79%</div>
+        <div class="stat-label">would actively advocate for district adoption</div>
+      </div>
+    </div>
+    <p>Respondents included parents, teachers, students, community members, and school administrators across Tooele County. Zero respondents said this kind of curriculum was not needed. Every single respondent indicated at least potential support for district adoption.</p>
+  </div>
+
+  <div class="section">
+    <div class="label">The Context</div>
+    <h2>What the State Already Found</h2>
+    <p>In June 2025, the Utah Office of the Legislative Auditor General released a systematic performance audit of Tooele County School District. The findings were significant.</p>
+    <div class="two-col" style="margin-top:4px;">
+      <div class="audit-box">
+        <div class="label">Audit Findings — June 2025</div>
+        <div class="audit-finding"><strong>Student achievement</strong> below state targets and peer districts on RISE, ACT, Acadience, and graduation rates.</div>
+        <div class="audit-finding"><strong>ACT:</strong> State target is 74% above score of 18. State average is 61%. TCSD came in at 56%.</div>
+        <div class="audit-finding"><strong>K-3 literacy and numeracy</strong> below peer districts. Acadience numeracy gap of 7 percentage points.</div>
+        <div class="audit-finding"><strong>Employee morale:</strong> Less than 50% of staff believe morale is high. 15% below other surveyed Utah districts.</div>
+        <div class="audit-finding"><strong>Board governance:</strong> Rarely engages in discussion of student achievement or strategic goals during public meetings.</div>
+      </div>
+      <div class="rfrl-box">
+        <div class="label">What Our Community Said</div>
+        <div class="audit-finding"><strong>82%</strong> want conflict resolution and difficult conversation skills taught in schools.</div>
+        <div class="audit-finding"><strong>80%</strong> want emotional regulation and self-management addressed directly.</div>
+        <div class="audit-finding"><strong>80%</strong> want accountability and decision-making under pressure built into the curriculum.</div>
+        <div class="audit-finding"><strong>38%</strong> say the greatest need starts in grades K-2, where the audit also identified the earliest performance gaps.</div>
+        <div class="audit-finding"><strong>79%</strong> are ready to advocate to the board and district leadership directly.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">The Connection</div>
+    <h2>How the Audit Gaps Map to This Program</h2>
+    <p>The audit identified root causes. Our community survey identified what they want done about them. The table below shows the direct alignment.</p>
+    <div class="map-row">
+      <div class="map-item" style="background:var(--paper);">
+        <div class="map-audit">Audit: Low student achievement tied to lack of strategic district culture and accountability</div>
+        <div class="map-arrow">Ready for Real Life addresses</div>
+        <div class="map-rfrl">Accountability and Repair module — owning mistakes, follow-through, and integrity as a teachable skill</div>
+      </div>
+      <div class="map-item" style="background:var(--white);">
+        <div class="map-audit">Audit: Employee morale below 50%; culture of noncompliance</div>
+        <div class="map-arrow">Ready for Real Life addresses</div>
+        <div class="map-rfrl">Respectful Communication pillar — tone, repair, and accountability modeled and taught school-wide</div>
+      </div>
+      <div class="map-item" style="background:var(--white);">
+        <div class="map-audit">Audit: K-3 literacy and numeracy gaps — students not meeting baseline targets</div>
+        <div class="map-arrow">Ready for Real Life addresses</div>
+        <div class="map-rfrl">Emotional Regulation module — self-management as a prerequisite for academic focus and readiness to learn</div>
+      </div>
+      <div class="map-item" style="background:var(--paper);">
+        <div class="map-audit">Audit: Board not prioritizing student achievement in meetings or strategic planning</div>
+        <div class="map-arrow">Ready for Real Life addresses</div>
+        <div class="map-rfrl">79% of the community is ready to bring this to the board directly. The demand exists. This is the moment to act on it.</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">Community Voices</div>
+    <h2>In Their Own Words</h2>
+    <div style="display:flex; flex-direction:column; gap:16px;">
+      <div style="background:var(--gold-lt); border-left:5px solid var(--gold); border-radius:0 8px 8px 0; padding:20px 24px;">
+        <p style="font-family:'Playfair Display',serif; font-size:17px; font-style:italic; color:var(--slate); line-height:1.65; margin-bottom:8px;">"This is something we need in every school."</p>
+        <div style="font-family:'DM Mono',monospace; font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--teal);">Community Member</div>
+      </div>
+      <div style="background:var(--gold-lt); border-left:5px solid var(--gold); border-radius:0 8px 8px 0; padding:20px 24px;">
+        <p style="font-family:'Playfair Display',serif; font-size:17px; font-style:italic; color:var(--slate); line-height:1.65; margin-bottom:8px;">"I absolutely think this is necessary in today's society. I have two children with ADHD making it already harder for them to regulate emotions. Having this curriculum in a school setting would help them learn crucial tools and skills that would help them in the future."</p>
+        <div style="font-family:'DM Mono',monospace; font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--teal);">Parent / Guardian</div>
+      </div>
+      <div style="background:var(--gold-lt); border-left:5px solid var(--gold); border-radius:0 8px 8px 0; padding:20px 24px;">
+        <p style="font-family:'Playfair Display',serif; font-size:17px; font-style:italic; color:var(--slate); line-height:1.65; margin-bottom:8px;">"I feel the accountability piece will be huge. Kids who can't admit they made a mistake turn into adults who do the same."</p>
+        <div style="font-family:'DM Mono',monospace; font-size:11px; font-weight:600; letter-spacing:.12em; text-transform:uppercase; color:var(--teal);">Teacher / Educator</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="section">
+    <div class="label">The Ask</div>
+    <h2>What We Are Requesting</h2>
+    <div class="ask-box">
+      <h3>A Formal Pilot Opportunity in Tooele County School District</h3>
+      <p>Mekenzi and I are not asking for a district-wide rollout on day one. We are asking for the chance to prove what the community already believes is true. A single school. A single grade level. A real cohort of students with a willing teacher and a measurable outcome.</p>
+      <p>The audit gave the district a roadmap of what is broken. Our community survey gave the district a mandate from its own taxpayers. Ready for Real Life gives the district a practical, low-overhead tool to begin addressing both.</p>
+      <ul class="ask-list">
+        <li>A pilot opportunity at one Tooele County school at the grade level the district identifies as highest need</li>
+        <li>A meeting with district curriculum or instruction leadership to walk through the full program design</li>
+        <li>The chance to present community survey data and audit alignment to the board at an upcoming meeting</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="footer">
+    <div>
+      <div class="footer-brand">Ready for Real Life <span>&middot;</span> Instruction and Education</div>
+      <div style="font-size:11px;color:rgba(247,243,236,.35);margin-top:3px;">readyforreal.life &bull; readyforreal.life44@gmail.com &bull; (435) 840-1896</div>
+    </div>
+    <div class="footer-contact">
+      Mike &amp; Mekenzi Terry<br>
+      Tooele, Utah
+    </div>
+  </div>
+
+</div>
+</body>
+</html>

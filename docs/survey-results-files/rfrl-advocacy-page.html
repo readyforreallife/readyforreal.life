@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Stand With Our Kids – Ready for Real Life</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
+  *{box-sizing:border-box;margin:0;padding:0;}
+  :root{--ink:#0e1118;--paper:#f6f3ec;--slate:#253044;--gold:#c49540;--gold-lt:#f2e4c0;--teal:#1b6b6b;--teal-lt:#cce9e9;--muted:#697080;--rule:#ddd7cc;--white:#fff;--dark:#1f293b;}
+  body{font-family:'DM Sans',sans-serif;background:var(--paper);color:var(--ink);}
+
+  .hero{background:var(--slate);padding:80px 52px 72px;text-align:center;position:relative;overflow:hidden;}
+  .hero::before{content:'';position:absolute;width:500px;height:500px;top:-150px;right:-100px;border-radius:50%;background:radial-gradient(circle,rgba(196,149,64,.18) 0%,transparent 70%);pointer-events:none;}
+  .hero::after{content:'';position:absolute;width:320px;height:320px;bottom:-80px;left:20%;border-radius:50%;background:radial-gradient(circle,rgba(27,107,107,.22) 0%,transparent 70%);pointer-events:none;}
+  .hero-eyebrow{font-family:'DM Mono',monospace;font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+  .hero h1{font-family:'Playfair Display',serif;font-size:clamp(2rem,5vw,3.6rem);font-weight:900;color:#f7f3ec;line-height:1.1;margin-bottom:16px;}
+  .hero h1 em{font-style:italic;color:var(--gold);}
+  .hero-sub{font-size:17px;color:rgba(247,243,236,.65);max-width:540px;margin:0 auto 36px;line-height:1.65;}
+  .hero-stats{display:flex;justify-content:center;gap:0;max-width:600px;margin:0 auto;}
+  .h-stat{flex:1;text-align:center;padding:20px 16px;border-right:1px solid rgba(255,255,255,.1);}
+  .h-stat:last-child{border-right:none;}
+  .h-stat-num{font-family:'DM Sans',sans-serif;font-size:48px;font-weight:900;color:var(--gold);line-height:1;}
+  .h-stat-label{font-size:12px;color:rgba(247,243,236,.55);margin-top:5px;line-height:1.4;}
+
+  .container{max-width:800px;margin:0 auto;padding:0 24px;}
+
+  .section{padding:60px 0;}
+  .label{font-family:'DM Mono',monospace;font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--slate);font-weight:600;margin-bottom:8px;}
+  h2{font-family:'Playfair Display',serif;font-size:28px;font-weight:700;color:var(--slate);margin-bottom:20px;line-height:1.2;}
+  p{font-size:16px;line-height:1.75;color:var(--ink);margin-bottom:16px;}
+
+  .audit-strip{background:var(--gold-lt);border-top:3px solid var(--gold);border-bottom:3px solid var(--gold);padding:32px 0;margin:0;}
+  .audit-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .audit-card{background:var(--white);border-radius:8px;padding:20px;border:1px solid var(--rule);}
+  .audit-card-num{font-family:'DM Sans',sans-serif;font-size:38px;font-weight:900;color:var(--slate);line-height:1;margin-bottom:8px;}
+  .audit-card-label{font-size:13.5px;color:var(--muted);line-height:1.55;}
+  .audit-card-label strong{color:var(--slate);}
+
+  .action-section{background:var(--slate);padding:60px 0;}
+  .action-section h2{color:#f7f3ec;}
+  .action-section .label{color:rgba(255,255,255,.4);}
+  .action-section p{color:rgba(247,243,236,.75);}
+
+  .contact-cards{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-top:28px;}
+  .contact-card{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:10px;padding:22px 22px 18px;}
+  .contact-name{font-family:'Playfair Display',serif;font-size:17px;font-weight:700;color:#f7f3ec;margin-bottom:4px;}
+  .contact-role{font-family:'DM Mono',monospace;font-size:10px;letter-spacing:.15em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;}
+  .contact-how{font-size:13.5px;color:rgba(247,243,236,.65);line-height:1.6;}
+  .contact-script{background:rgba(255,255,255,.05);border-left:3px solid var(--gold);padding:12px 14px;margin-top:12px;border-radius:0 6px 6px 0;}
+  .contact-script p{font-size:13px;color:rgba(247,243,236,.7);font-style:italic;line-height:1.6;margin:0;}
+
+  .qr-section{padding:60px 0;text-align:center;}
+  .qr-section h2{text-align:left;}
+  .qr-section p{text-align:left;}
+  .qr-wrap{display:flex;gap:40px;align-items:center;margin-top:28px;}
+  #qrcode{flex-shrink:0;background:var(--white);padding:16px;border-radius:10px;border:1px solid var(--rule);}
+  .qr-text h3{font-family:'Playfair Display',serif;font-size:20px;font-weight:700;color:var(--slate);margin-bottom:10px;}
+  .qr-text p{font-size:15px;color:var(--muted);line-height:1.7;margin-bottom:0;}
+
+  .footer{background:var(--dark);padding:24px 52px;display:flex;justify-content:space-between;align-items:center;}
+  .footer-brand{font-family:'Playfair Display',serif;font-size:15px;font-weight:700;color:#f7f3ec;}
+  .footer-brand span{color:var(--gold);}
+  .footer-meta{font-size:12px;color:rgba(247,243,236,.4);text-align:right;line-height:1.6;}
+</style>
+</head>
+<body>
+
+<div class="hero">
+  <div class="container">
+    <div class="hero-eyebrow">Tooele County Community &bull; Stand With Our Kids</div>
+    <h1>Our Students Deserve to Be<br><em>Ready for Real Life.</em></h1>
+    <div class="hero-sub">112 of your neighbors took a survey. The state conducted an audit. Both said the same thing: our kids need more than academics. Help us bring this program to Tooele County schools.</div>
+    <div class="hero-stats">
+      <div class="h-stat">
+        <div class="h-stat-num">98%</div>
+        <div class="h-stat-label">say this curriculum is needed</div>
+      </div>
+      <div class="h-stat">
+        <div class="h-stat-num">87%</div>
+        <div class="h-stat-label">say it is overdue</div>
+      </div>
+      <div class="h-stat">
+        <div class="h-stat-num">79%</div>
+        <div class="h-stat-label">ready to advocate</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="audit-strip">
+  <div class="container">
+    <h2 style="font-family:'Playfair Display',serif; font-size:26px; font-weight:700; color:var(--slate); margin-bottom:20px; line-height:1.2;">What the 2025 State Audit Found in Tooele County School District</h2>
+    <div class="audit-grid">
+      <div class="audit-card">
+        <div class="audit-card-num">56%</div>
+        <div class="audit-card-label"><strong>TCSD students</strong> scored above 18 on the ACT. The state target is 74%.</div>
+      </div>
+      <div class="audit-card">
+        <div class="audit-card-num">&lt;50%</div>
+        <div class="audit-card-label"><strong>of TCSD employees</strong> believe morale is high — 15% lower than peer Utah districts.</div>
+      </div>
+      <div class="audit-card">
+        <div class="audit-card-num">K-3</div>
+        <div class="audit-card-label"><strong>Literacy and numeracy gaps</strong> identified in the earliest grades — right where our community says to start.</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="section">
+  <div class="container">
+    <div class="label">Why This Program</div>
+    <h2>Ready for Real Life Is a Direct Response to What the Audit Found</h2>
+    <p>The audit identified student achievement gaps, a broken culture, and a district that rarely discusses what students actually need. The community survey showed that 98% of residents already know something is missing and 79% are ready to say so out loud to the board.</p>
+    <p>Ready for Real Life Instruction and Education is a research-backed curriculum built by two Tooele County residents — Mike and Mekenzi Terry — from nearly two decades of combined experience in law enforcement, youth work, education, and raising five kids in this community. It teaches conflict resolution, emotional regulation, accountability, and real-world decision-making as skills — not attitudes. It is built to complement what teachers already do, not add to their load.</p>
+    <p>The district already raised property taxes by 8% in 2025. Tooele County taxpayers deserve to see that investment move the needle. This program is one concrete step toward doing that.</p>
+  </div>
+</div>
+
+<div class="action-section">
+  <div class="container">
+    <div class="label">Take Action</div>
+    <h2>Here Is How to Make Your Voice Count</h2>
+    <p>The most powerful thing you can do right now is contact district leadership directly. You do not need to write a formal letter. A brief, personal message from a parent or community member carries more weight than you think.</p>
+    <div class="contact-cards">
+      <div class="contact-card">
+        <div class="contact-name">Superintendent Mark Ernst</div>
+        <div class="contact-role">Tooele County School District</div>
+        <div class="contact-how">Reach out through the district website at tooeleschools.org or attend a board meeting and speak during public comment.</div>
+        <div class="contact-script"><p>"I am a Tooele County parent and taxpayer. I am writing to ask the district to seriously consider piloting the Ready for Real Life program in our schools. The community survey data and state audit both point to the same gaps. This program addresses them directly."</p></div>
+      </div>
+      <div class="contact-card">
+        <div class="contact-name">Your School Board Members</div>
+        <div class="contact-role">Tooele County Board of Education</div>
+        <div class="contact-how">Board meetings are open to the public. You can also email board members through the district website. Public comment matters.</div>
+        <div class="contact-script"><p>"As a taxpayer in this district I want to see our students get real-world skills instruction. 98% of the community agrees. I am asking the board to prioritize this."</p></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="qr-section">
+  <div class="container">
+    <div class="label">Learn More</div>
+    <h2>See the Full Program</h2>
+    <p>Scan the QR code or visit <strong>readyforreal.life</strong> to see the full curriculum, the research behind it, and how to get involved.</p>
+    <div class="qr-wrap">
+      <div id="qrcode"></div>
+      <div class="qr-text">
+        <h3>readyforreal.life</h3>
+        <p>The full curriculum, module details, the two student frameworks, research foundation, and contact information are all at the site. Share it with your neighbors, your school principal, and your board members.</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="footer">
+  <div>
+    <div class="footer-brand">Ready for Real Life <span>&middot;</span> Instruction and Education</div>
+    <div style="font-size:11px;color:rgba(247,243,236,.35);margin-top:3px;">readyforreal.life &bull; readyforreal.life44@gmail.com &bull; (435) 840-1896</div>
+  </div>
+  <div class="footer-meta">Mike &amp; Mekenzi Terry<br>Tooele, Utah</div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcodejs/1.0.0/qrcode.min.js"></script>
+<script>
+  new QRCode(document.getElementById("qrcode"), {
+    text: "https://readyforreal.life",
+    width: 160,
+    height: 160,
+    colorDark: "#253044",
+    colorLight: "#ffffff",
+    correctLevel: QRCode.CorrectLevel.H
+  });
+</script>
+</body>
+</html>

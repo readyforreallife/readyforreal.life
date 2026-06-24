@@ -160,6 +160,47 @@
       .folder {
         display: none;
       }
+      .resource-panel {
+        margin-bottom: 18px;
+      }
+      .resource-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 12px;
+        margin-top: 16px;
+      }
+      .resource-card {
+        display: grid;
+        gap: 10px;
+        min-height: 178px;
+        border: 1px solid var(--line);
+        border-radius: 14px;
+        background: #fff;
+        padding: 16px;
+        text-decoration: none;
+        color: var(--ink);
+      }
+      .resource-card:hover,
+      .resource-card:focus-visible {
+        border-color: rgba(54, 127, 123, 0.55);
+        box-shadow: 0 12px 24px rgba(36, 51, 75, 0.09);
+      }
+      .resource-card strong {
+        color: var(--navy2);
+        font-family: "Playfair Display", serif;
+        font-size: 1.25rem;
+        line-height: 1.1;
+      }
+      .resource-card span {
+        color: var(--muted);
+        line-height: 1.55;
+      }
+      .resource-card em {
+        align-self: end;
+        color: var(--teal);
+        font-style: normal;
+        font-weight: 800;
+      }
       .summary {
         display: grid;
         grid-template-columns: repeat(4, minmax(0, 1fr));
@@ -289,6 +330,7 @@
         line-height: 1.6;
       }
       @media (max-width: 760px) {
+        .resource-grid,
         .summary {
           grid-template-columns: 1fr;
         }
@@ -322,6 +364,48 @@
     </header>
 
     <main class="wrap">
+      <section class="panel resource-panel">
+        <div class="actions">
+          <div>
+            <div class="eyebrow">Published Survey Packets</div>
+            <h2>Open presentation-ready results</h2>
+          </div>
+          <a class="btn primary" href="survey-results-files/ready-for-real-life-survey-results.pdf">Download PDF</a>
+        </div>
+        <p class="small">
+          These files are prepared for review, advocacy, executive summaries,
+          and social sharing. The protected table below remains the editable
+          live-response workspace.
+        </p>
+        <div class="resource-grid">
+          <a class="resource-card" href="survey-results-files/mmmf-survey-results.html">
+            <strong>Full Survey Results</strong>
+            <span>Interactive community survey results packet for Modern Manners and Mental Fortitude.</span>
+            <em>Open HTML</em>
+          </a>
+          <a class="resource-card" href="survey-results-files/ready-for-real-life-survey-results.pdf">
+            <strong>Printable Results PDF</strong>
+            <span>Downloadable PDF version of the Ready for Real Life survey results.</span>
+            <em>Open PDF</em>
+          </a>
+          <a class="resource-card" href="survey-results-files/rfrl-executive-summary.html">
+            <strong>Executive Summary</strong>
+            <span>Concise leadership-facing summary of survey findings and program implications.</span>
+            <em>Open HTML</em>
+          </a>
+          <a class="resource-card" href="survey-results-files/rfrl-advocacy-page.html">
+            <strong>Advocacy Page</strong>
+            <span>Community-facing advocacy page built from the results and action items.</span>
+            <em>Open HTML</em>
+          </a>
+          <a class="resource-card" href="survey-results-files/rfrl-social-slides.html">
+            <strong>Social Slides</strong>
+            <span>Shareable slide-style story cards for communicating survey takeaways.</span>
+            <em>Open HTML</em>
+          </a>
+        </div>
+      </section>
+
       <section class="panel gate" id="gate">
         <div class="eyebrow">Admin Access</div>
         <h2>Open survey results</h2>
