@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1, user-scalable=no, viewport-fit=cover">
 <title>Ready for Real Life Instruction and Education – Survey Results</title>
 <style>
   @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:ital,wght@0,300;0,400;0,500;0,600;1,400&family=DM+Mono:wght@400;500&display=swap');
@@ -31,6 +31,7 @@
     color: var(--ink);
     -webkit-print-color-adjust: exact;
     print-color-adjust: exact;
+    overflow-x: hidden;
   }
 
   .page {
@@ -501,6 +502,173 @@
     background: #fff;
     color: var(--slate);
     border: 1px solid var(--rule);
+  }
+
+  @media (max-width: 720px) {
+    .survey-doc-nav {
+      position: sticky;
+      top: 0;
+      justify-content: stretch;
+      gap: 8px;
+      padding: max(54px, calc(env(safe-area-inset-top, 0px) + 18px)) 10px 10px;
+    }
+    .survey-doc-nav a {
+      flex: 1 1 0;
+      min-width: 0;
+      min-height: 40px;
+      padding: 0 10px;
+      font-size: 13px;
+      line-height: 1.15;
+      text-align: center;
+      white-space: normal;
+    }
+    .page {
+      width: 100%;
+      max-width: 100%;
+      overflow: hidden;
+    }
+    .header,
+    .hero,
+    .section,
+    .footer {
+      padding-left: 22px;
+      padding-right: 22px;
+    }
+    .header {
+      padding-top: 34px;
+      padding-bottom: 30px;
+    }
+    .header h1 {
+      max-width: 100%;
+      font-size: clamp(2.35rem, 13vw, 3.2rem);
+      line-height: 1.08;
+    }
+    .header-sub {
+      font-size: 14px;
+      line-height: 1.45;
+    }
+    .header-badge {
+      position: static;
+      display: inline-block;
+      margin-top: 18px;
+      padding: 12px 16px;
+      max-width: 100%;
+    }
+    .badge-num {
+      font-size: 48px;
+    }
+    .hero {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 0;
+    }
+    .hero-stat {
+      border-right: 0;
+      border-bottom: 1px solid rgba(255,255,255,0.1);
+      padding: 18px 10px;
+    }
+    .hero-stat:last-child {
+      grid-column: 1 / -1;
+      border-bottom: 0;
+    }
+    .hero-pct {
+      font-size: clamp(3.5rem, 18vw, 5rem);
+    }
+    .hero-label {
+      max-width: 220px;
+      font-size: 14px;
+    }
+    .section {
+      padding-top: 34px;
+      padding-bottom: 32px;
+    }
+    .section-label {
+      letter-spacing: 0.14em;
+      overflow-wrap: anywhere;
+    }
+    .section-title {
+      font-size: clamp(2rem, 10vw, 2.8rem);
+      margin-bottom: 20px;
+    }
+    .two-col,
+    .training-grid,
+    .quotes-grid,
+    div[style*="grid-template-columns"] {
+      grid-template-columns: 1fr !important;
+    }
+    .bar-row {
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 8px 12px;
+      align-items: center;
+    }
+    .bar-label,
+    .bar-label.short,
+    .bar-label.long {
+      width: auto;
+      min-width: 0;
+      font-size: 14px;
+      overflow-wrap: anywhere;
+    }
+    .bar-track {
+      grid-column: 1 / -1;
+      grid-row: 2;
+      width: 100%;
+    }
+    .bar-pct {
+      width: auto;
+      grid-column: 2;
+      grid-row: 1;
+    }
+    .dark-card {
+      padding: 22px;
+    }
+    .dark-card-num {
+      font-size: 54px;
+    }
+    .support-row,
+    .footer {
+      display: grid;
+      grid-template-columns: 1fr;
+    }
+    .t-item {
+      align-items: flex-start;
+      padding: 14px;
+    }
+    .t-pct {
+      font-size: 32px;
+      min-width: 54px;
+    }
+    .topic-top {
+      gap: 12px;
+    }
+    .topic-name {
+      min-width: 0;
+      overflow-wrap: anywhere;
+    }
+    .footer-meta {
+      text-align: left;
+    }
+  }
+
+  @media (max-width: 380px) {
+    .survey-doc-nav {
+      grid-template-columns: 1fr;
+      flex-direction: column;
+    }
+    .header,
+    .hero,
+    .section,
+    .footer {
+      padding-left: 16px;
+      padding-right: 16px;
+    }
+    .header h1 {
+      font-size: 2.15rem;
+    }
+    .section-title {
+      font-size: 1.85rem;
+    }
   }
 </style>
 </head>
