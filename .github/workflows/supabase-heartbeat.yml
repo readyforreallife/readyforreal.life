@@ -1,0 +1,28 @@
+name: Supabase Heartbeat
+
+on:
+  schedule:
+    # Keep the free Supabase project active with a real API request twice weekly.
+    - cron: "0 15 * * 1,4"
+  workflow_dispatch:
+
+jobs:
+  ping:
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    steps:
+      - name: Ping portal Supabase project
+        env:
+          SUPABASE_URL: https://dwliijpjplrdgdvaaoak.supabase.co
+          SUPABASE_ANON_KEY: sb_publishable_6BJeJE-TYfqry9V6mnixGQ_s5M7wNnh
+        run: |
+          set -euo pipefail
+
+          response="$(curl --silent --show-error --fail-with-body \
+            --request POST "${SUPABASE_URL}/rest/v1/rpc/can_create_portal_account" \
+            --header "apikey: ${SUPABASE_ANON_KEY}" \
+            --header "Authorization: Bearer ${SUPABASE_ANON_KEY}" \
+            --header "Content-Type: application/json" \
+            --data '{"account_email":"heartbeat@readyforreal.life","requested_role":"student"}')"
+
+          echo "Supabase heartbeat response: ${response}"
