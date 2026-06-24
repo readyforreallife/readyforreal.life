@@ -467,12 +467,48 @@
   }
 
   @media print {
+    .survey-doc-nav { display: none; }
     body { background: white; }
     .page { max-width: 100%; }
+  }
+
+  .survey-doc-nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: max(12px, env(safe-area-inset-top)) 16px 12px;
+    background: rgba(246, 243, 236, 0.96);
+    border-bottom: 1px solid var(--rule);
+    backdrop-filter: blur(10px);
+  }
+  .survey-doc-nav a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    border-radius: 999px;
+    padding: 0 18px;
+    background: var(--slate);
+    color: #f7f3ec;
+    font-size: 14px;
+    font-weight: 800;
+    text-decoration: none;
+  }
+  .survey-doc-nav a.secondary {
+    background: #fff;
+    color: var(--slate);
+    border: 1px solid var(--rule);
   }
 </style>
 </head>
 <body>
+<nav class="survey-doc-nav" aria-label="Survey packet navigation">
+  <a href="../survey-results.html" data-survey-back>Back to Survey Results</a>
+  <a class="secondary" href="../app.html">App Home</a>
+</nav>
 <div class="page">
 
   <!-- HEADER -->
@@ -1007,5 +1043,13 @@
   </div>
 
 </div>
+<script>
+  document.querySelector("[data-survey-back]")?.addEventListener("click", (event) => {
+    if (window.history.length > 1) {
+      event.preventDefault();
+      window.history.back();
+    }
+  });
+</script>
 </body>
 </html>

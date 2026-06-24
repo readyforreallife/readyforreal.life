@@ -9,6 +9,9 @@
   *{box-sizing:border-box;margin:0;padding:0;}
   :root{--ink:#0e1118;--paper:#f6f3ec;--slate:#253044;--gold:#c49540;--gold-lt:#f2e4c0;--teal:#1b6b6b;--teal-lt:#cce9e9;--muted:#697080;--rule:#ddd7cc;--white:#fff;--dark:#1f293b;}
   body{font-family:'DM Sans',sans-serif;background:#e8e4db;padding:40px 24px;}
+  .survey-doc-nav{position:sticky;top:0;z-index:20;display:flex;justify-content:center;gap:10px;margin:-40px -24px 34px;padding:max(12px,env(safe-area-inset-top)) 16px 12px;background:rgba(246,243,236,.96);border-bottom:1px solid var(--rule);backdrop-filter:blur(10px);}
+  .survey-doc-nav a{display:inline-flex;align-items:center;justify-content:center;min-height:42px;border-radius:999px;padding:0 18px;background:var(--slate);color:#f7f3ec;font-size:14px;font-weight:800;text-decoration:none;}
+  .survey-doc-nav a.secondary{background:#fff;color:var(--slate);border:1px solid var(--rule);}
 
   .page-title{font-family:'Playfair Display',serif;font-size:22px;color:var(--slate);text-align:center;margin-bottom:6px;font-weight:700;}
   .instructions{font-size:14px;color:var(--muted);text-align:center;margin-bottom:40px;line-height:1.7;max-width:600px;margin-left:auto;margin-right:auto;}
@@ -83,9 +86,14 @@
   .s6 .cta-body{font-size:17px;color:rgba(247,243,236,.7);line-height:1.6;margin-bottom:18px;}
   .s6 .cta-link{font-family:'DM Mono',monospace;font-size:14px;letter-spacing:.12em;text-transform:uppercase;color:var(--gold);font-weight:500;}
   .s6 .handle{color:rgba(247,243,236,.35);}
+  @media print{.survey-doc-nav{display:none;}body{padding:0;}}
 </style>
 </head>
 <body>
+<nav class="survey-doc-nav" aria-label="Survey packet navigation">
+  <a href="../survey-results.html" data-survey-back>Back to Survey Results</a>
+  <a class="secondary" href="../app.html">App Home</a>
+</nav>
 
 <div class="page-title">Ready for Real Life — Social Media Slides</div>
 <div class="instructions">Six Instagram and Facebook carousel slides. Screenshot or save each slide individually to post. Recommended caption: "112 people in our community took this survey. Here is what they said. Share this."</div>
@@ -173,5 +181,13 @@
   </div>
 
 </div>
+<script>
+  document.querySelector("[data-survey-back]")?.addEventListener("click", (event) => {
+    if (window.history.length > 1) {
+      event.preventDefault();
+      window.history.back();
+    }
+  });
+</script>
 </body>
 </html>
