@@ -301,8 +301,10 @@
           width: min(100% - 20px, 100%);
         }
         .top-inner {
+          flex-direction: column;
+          align-items: stretch;
           gap: 12px;
-          padding: 12px 0;
+          padding: calc(12px + env(safe-area-inset-top, 0px)) 0 12px;
         }
         .brand {
           align-items: flex-start;
@@ -326,14 +328,15 @@
           grid-template-columns: 1fr 1fr;
           width: 100%;
           gap: 8px;
+          justify-content: stretch;
         }
         main {
           padding: 22px 0 44px;
         }
         h1 {
           margin: 8px 0 12px;
-          font-size: clamp(2rem, 12vw, 3rem);
-          line-height: 0.98;
+          font-size: clamp(2rem, 10vw, 2.45rem);
+          line-height: 1.02;
         }
         .lede {
           font-size: 0.95rem;
@@ -415,7 +418,7 @@
           grid-template-columns: 1fr;
         }
         h1 {
-          font-size: 2rem;
+          font-size: 1.86rem;
         }
         .form-head,
         form {
