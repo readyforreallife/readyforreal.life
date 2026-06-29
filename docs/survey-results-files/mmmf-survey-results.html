@@ -484,6 +484,7 @@
     background: rgba(246, 243, 236, 0.96);
     border-bottom: 1px solid var(--rule);
     backdrop-filter: blur(10px);
+    flex-wrap: wrap;
   }
   .survey-doc-nav a {
     display: inline-flex;
@@ -503,6 +504,14 @@
     color: var(--slate);
     border: 1px solid var(--rule);
   }
+  .live-status {
+    align-self: center;
+    color: var(--muted);
+    font-size: 12px;
+    font-weight: 700;
+  }
+  .live-status[data-state="live"] { color: var(--teal); }
+  .live-status[data-state="error"] { color: #a33a2b; }
 
   @media (max-width: 720px) {
     .survey-doc-nav {
@@ -521,6 +530,10 @@
       line-height: 1.15;
       text-align: center;
       white-space: normal;
+    }
+    .live-status {
+      flex: 1 0 100%;
+      text-align: center;
     }
     .page {
       width: 100%;
@@ -676,6 +689,7 @@
 <nav class="survey-doc-nav" aria-label="Survey packet navigation">
   <a href="../survey-results.html" data-survey-back>Back to Survey Results</a>
   <a class="secondary" href="../app.html">App Home</a>
+  <span class="live-status" id="liveStatus" role="status" aria-live="polite">Checking live data...</span>
 </nav>
 <div class="page">
 
@@ -1212,12 +1226,277 @@
 
 </div>
 <script>
-  document.querySelector("[data-survey-back]")?.addEventListener("click", (event) => {
-    if (window.history.length > 1) {
-      event.preventDefault();
-      window.history.back();
+  (() => {
+    const ENDPOINT =
+      "https://flat-flower-4af8mmmf-agreement-admin.mikeyterry44.workers.dev";
+    const SESSION_KEY = "rrl_survey_results_admin_session";
+    const status = document.getElementById("liveStatus");
+    let loading = false;
+
+    const optionSets = {
+      roles: [
+        "Parent / Guardian",
+        "Teacher / Educator",
+        "Community Member",
+        "Student",
+        "School Administrator",
+      ],
+      needs: [
+        "Absolutely - it is overdue",
+        "Yes, but it needs to fit the curriculum",
+        "I am not sure",
+        "I do not think it is a priority",
+      ],
+      grades: [
+        "Kindergarten - Grade 2",
+        "Grades 6-8",
+        "Grades 3-5",
+        "Grades 9-12",
+        "I am not sure",
+      ],
+      support: [
+        "Yes - I would advocate for it",
+        "Possibly - I would want to learn more",
+        "I am neutral",
+        "Probably not",
+      ],
+      topics: [
+        "Handling conflict and difficult conversations",
+        "Respectful communication and manners",
+        "Emotional intelligence and self-regulation",
+        "Accountability and decision-making under pressure",
+        "Digital citizenship and online behavior",
+      ],
+      training: [
+        "Interested, but I would need more information",
+        "Interested in a 2-day seminar",
+        "Interested in certification",
+        "Interested in a conference with breakout sessions",
+        "Not interested at this time",
+      ],
+    };
+
+    function setStatus(message, state) {
+      status.textContent = message;
+      status.dataset.state = state || "";
     }
-  });
+
+    function parseDetails(entry) {
+      try {
+        return entry.detailsJson ? JSON.parse(entry.detailsJson) : {};
+      } catch (_error) {
+        return {};
+      }
+    }
+
+    function isSurvey(entry, details) {
+      return [
+        entry.program,
+        entry.organization,
+        entry.detailsJson,
+        details.source,
+        details.need,
+      ]
+        .join(" ")
+        .toLowerCase()
+        .includes("survey");
+    }
+
+    function toRow(entry) {
+      const details = parseDetails(entry);
+      return {
+        submittedAt: entry.submittedAt || "",
+        role: details.role || entry.role || "",
+        need: details.need || "",
+        gradeStart: details.gradeStart || "",
+        support: details.support || "",
+        trainingInterest: details.trainingInterest || "",
+        topics: details.topics || "",
+      };
+    }
+
+    function section(title) {
+      return Array.from(document.querySelectorAll(".section")).find(
+        (item) => item.querySelector(".section-title")?.textContent.trim() === title,
+      );
+    }
+
+    function count(rows, field, option) {
+      return rows.filter((row) => String(row[field] || "").includes(option)).length;
+    }
+
+    function percentage(value, total, digits = 0) {
+      return total ? ((value / total) * 100).toFixed(digits) : (0).toFixed(digits);
+    }
+
+    function updateBarRows(container, rows, field, options) {
+      const bars = container ? Array.from(container.querySelectorAll(".bar-row")) : [];
+      options.forEach((option, index) => {
+        const value = count(rows, field, option);
+        const exact = percentage(value, rows.length, 1);
+        const bar = bars[index];
+        if (!bar) return;
+        const fill = bar.querySelector(".bar-fill");
+        const label = bar.querySelector(".bar-pct");
+        if (fill) fill.style.width = `${exact}%`;
+        if (label) label.textContent = `${Math.round(Number(exact))}%`;
+      });
+    }
+
+    function updateTopicRows(container, rows) {
+      const topics = container ? Array.from(container.querySelectorAll(".topic-row")) : [];
+      optionSets.topics.forEach((option, index) => {
+        const exact = percentage(count(rows, "topics", option), rows.length, 1);
+        const item = topics[index];
+        if (!item) return;
+        const fill = item.querySelector(".topic-fill");
+        const label = item.querySelector(".topic-pct");
+        if (fill) fill.style.width = `${exact}%`;
+        if (label) label.textContent = `${Math.round(Number(exact))}%`;
+      });
+    }
+
+    function replaceFirstText(container, pattern, replacement) {
+      if (!container) return;
+      const walker = document.createTreeWalker(container, NodeFilter.SHOW_TEXT);
+      let node;
+      while ((node = walker.nextNode())) {
+        if (pattern.test(node.nodeValue)) {
+          node.nodeValue = node.nodeValue.replace(pattern, replacement);
+          return;
+        }
+      }
+    }
+
+    function render(rows) {
+      const total = rows.length;
+      if (!total) throw new Error("No survey responses were returned.");
+
+      const overdue = count(rows, "need", optionSets.needs[0]);
+      const fit = count(rows, "need", optionSets.needs[1]);
+      const needed = overdue + fit;
+      const advocates = count(rows, "support", optionSets.support[0]);
+      const possible = count(rows, "support", optionSets.support[1]);
+      const roles = optionSets.roles.filter((option) => count(rows, "role", option)).length;
+
+      document.querySelector(".badge-num").textContent = total;
+      const hero = Array.from(document.querySelectorAll(".hero-pct span"));
+      hero[0].textContent = Math.round(Number(percentage(needed, total, 1)));
+      hero[1].textContent = Math.round(Number(percentage(overdue, total, 1)));
+      hero[2].textContent = Math.round(Number(percentage(advocates, total, 1)));
+
+      const demographics = section("Who Weighed In");
+      updateBarRows(demographics, rows, "role", optionSets.roles);
+      demographics.querySelector(".dark-card-num").textContent = roles;
+
+      const consensus = section("What the Data Shows");
+      updateBarRows(consensus, rows, "need", optionSets.needs.slice(0, 3));
+      consensus.querySelector(".note").textContent =
+        `Combined, ${percentage(needed, total, 1)}% of respondents said structured life skills instruction belongs in K-12 schools. ` +
+        `${count(rows, "need", optionSets.needs[3])} respondent${count(rows, "need", optionSets.needs[3]) === 1 ? "" : "s"} said it was not a priority.`;
+
+      const grades = section("Where Should This Start?");
+      updateBarRows(grades, rows, "gradeStart", optionSets.grades.slice(0, 4));
+      const leadingGrade = optionSets.grades
+        .slice(0, 4)
+        .map((option) => ({ option, value: count(rows, "gradeStart", option) }))
+        .sort((a, b) => b.value - a.value)[0];
+      grades.querySelector(".note").textContent =
+        `${percentage(leadingGrade.value, total, 0)}% selected ${leadingGrade.option.replace("Kindergarten - Grade 2", "grades K-2")} as the best place to begin.`;
+
+      const advocacy = section("Would You Advocate for This Program?");
+      const supportValues = advocacy.querySelectorAll(".s-pill-pct");
+      supportValues[0].textContent = `${percentage(advocates, total, 1)}%`;
+      supportValues[1].textContent = `${percentage(possible, total, 1)}%`;
+      const noSupport = count(rows, "support", optionSets.support[3]);
+      advocacy.querySelector(".note").textContent =
+        `${percentage(advocates + possible, total, 1)}% indicated active or potential support. ${noSupport} respondent${noSupport === 1 ? "" : "s"} selected probably not.`;
+
+      updateTopicRows(section("Top Topics Respondents Want Taught"), rows);
+
+      const training = section("Educator Training Interest");
+      const trainingValues = training.querySelectorAll(".t-pct");
+      optionSets.training.slice(0, 4).forEach((option, index) => {
+        trainingValues[index].textContent = `${percentage(count(rows, "trainingInterest", option), total, 0)}%`;
+      });
+      const interested = rows.filter((row) =>
+        optionSets.training.slice(0, 4).some((option) => row.trainingInterest.includes(option)),
+      ).length;
+      training.querySelector(".note").textContent =
+        `${percentage(interested, total, 0)}% expressed some form of training interest.`;
+
+      const info = section("Here Is What Ready for Real Life Actually Looks Like");
+      replaceFirstText(
+        info,
+        /\d+% of respondents said they were interested but needed more information before committing\./,
+        `${percentage(count(rows, "trainingInterest", optionSets.training[0]), total, 0)}% of respondents said they were interested but needed more information before committing.`,
+      );
+
+      const audit = section("The Audit Said It. Our Community Already Knew It.");
+      const auditCommunity = audit.querySelectorAll('div[style*="background:var(--paper)"]');
+      const accountability = percentage(count(rows, "topics", optionSets.topics[3]), total, 0);
+      const conflict = percentage(count(rows, "topics", optionSets.topics[0]), total, 0);
+      const manners = percentage(count(rows, "topics", optionSets.topics[1]), total, 0);
+      if (auditCommunity[0]) auditCommunity[0].firstElementChild.textContent = `${accountability}% want accountability and decision-making under pressure taught directly. Students who cannot self-regulate cannot focus on academic achievement.`;
+      if (auditCommunity[1]) auditCommunity[1].firstElementChild.textContent = `${percentage(count(rows, "gradeStart", optionSets.grades[0]), total, 0)}% of respondents say the greatest need starts in grades K-2 - the same grades the audit flagged first.`;
+      if (auditCommunity[2]) auditCommunity[2].firstElementChild.textContent = `${conflict}% want conflict resolution and ${manners}% want respectful communication taught - the same skills a healthy school culture requires from every adult and student in the building.`;
+      if (auditCommunity[3]) auditCommunity[3].firstElementChild.textContent = `${percentage(advocates, total, 0)}% of community members are ready to bring this directly to the board. The community demand exists. The audit made the case. The time to act is now.`;
+
+      const dates = rows
+        .map((row) => new Date(row.submittedAt))
+        .filter((date) => !Number.isNaN(date.valueOf()))
+        .sort((a, b) => a - b);
+      const dateFormat = new Intl.DateTimeFormat("en-US", { month: "short", day: "numeric", year: "numeric" });
+      const range = dates.length
+        ? dates.length === 1 || dateFormat.format(dates[0]) === dateFormat.format(dates.at(-1))
+          ? dateFormat.format(dates[0])
+          : `${dateFormat.format(dates[0])}-${dateFormat.format(dates.at(-1))}`
+        : "Date unavailable";
+      document.querySelector(".footer-meta").innerHTML =
+        `${total} community respondents<br>Survey responses through ${range}`;
+    }
+
+    async function loadLiveData() {
+      if (loading) return;
+      const token = sessionStorage.getItem(SESSION_KEY) || "";
+      if (!token) {
+        setStatus("Snapshot shown - open from the unlocked Results Folder for live data", "error");
+        return;
+      }
+      loading = true;
+      setStatus("Updating live data...", "");
+      try {
+        const response = await fetch(ENDPOINT, {
+          method: "POST",
+          headers: { "Content-Type": "text/plain;charset=utf-8" },
+          body: JSON.stringify({ action: "registration_list", session_token: token }),
+        });
+        const data = await response.json();
+        if (!response.ok || !data.ok) throw new Error(data.error || "Live update failed.");
+        const rows = (Array.isArray(data.entries) ? data.entries : [])
+          .filter((entry) => isSurvey(entry, parseDetails(entry)))
+          .map(toRow);
+        render(rows);
+        setStatus(`Live - ${rows.length} responses - updated ${new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`, "live");
+      } catch (error) {
+        setStatus(error.message || "Live update failed", "error");
+      } finally {
+        loading = false;
+      }
+    }
+
+    document.querySelector("[data-survey-back]")?.addEventListener("click", (event) => {
+      if (window.history.length > 1) {
+        event.preventDefault();
+        window.history.back();
+      }
+    });
+    document.addEventListener("visibilitychange", () => {
+      if (!document.hidden) loadLiveData();
+    });
+    loadLiveData();
+    window.setInterval(loadLiveData, 30000);
+  })();
 </script>
 </body>
 </html>
