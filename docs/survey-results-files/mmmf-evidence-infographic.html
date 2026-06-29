@@ -1,0 +1,795 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MMMF Evidence Infographic | Ready for Real Life</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Big+Shoulders+Display:wght@700;900&family=Lora:ital,wght@0,400;0,700;1,400&family=Instrument+Sans:wght@400;500;600&family=Jura:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #253044;
+    --navy-deep: #1a2232;
+    --gold: #C9AC70;
+    --gold-light: #E8D9B5;
+    --gold-pale: #F7F1E3;
+    --white: #FFFFFF;
+    --off-white: #F5F3EE;
+    --body-text: #1e2b3c;
+    --muted: #6B7A8D;
+    --rule: #d8d0c0;
+  }
+
+  body {
+    font-family: 'Instrument Sans', sans-serif;
+    background: var(--off-white);
+    color: var(--body-text);
+    width: 100%;
+    max-width: 900px;
+    margin: 0 auto;
+  }
+
+  .site-nav {
+    position: sticky;
+    top: 0;
+    z-index: 20;
+    display: flex;
+    justify-content: center;
+    gap: 10px;
+    padding: max(12px, env(safe-area-inset-top)) 16px 12px;
+    background: rgba(245,243,238,0.96);
+    border-bottom: 1px solid var(--rule);
+    backdrop-filter: blur(10px);
+  }
+  .site-nav a {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    min-height: 42px;
+    padding: 0 18px;
+    border: 1px solid var(--rule);
+    border-radius: 6px;
+    background: var(--white);
+    color: var(--navy);
+    font-size: 13px;
+    font-weight: 700;
+    text-decoration: none;
+  }
+  .site-nav a:first-child {
+    border-color: var(--navy);
+    background: var(--navy);
+    color: var(--white);
+  }
+
+  .infographic {
+    background: var(--white);
+    box-shadow: 0 4px 40px rgba(0,0,0,0.12);
+  }
+
+  /* HEADER */
+  .header {
+    background: var(--navy);
+    padding: 36px 48px 32px;
+    position: relative;
+    overflow: hidden;
+  }
+  .header::before {
+    content: '';
+    position: absolute;
+    top: 0; right: 0;
+    width: 280px; height: 100%;
+    background: linear-gradient(135deg, transparent 40%, rgba(201,172,112,0.08) 100%);
+    pointer-events: none;
+  }
+  .header-eyebrow {
+    font-family: 'Jura', sans-serif;
+    font-weight: 400;
+    font-size: 10px;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 18px;
+    opacity: 0.85;
+  }
+  .header-questions {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    margin-bottom: 22px;
+    border-top: 1px solid rgba(201,172,112,0.25);
+    border-bottom: 1px solid rgba(201,172,112,0.25);
+    padding: 16px 0;
+  }
+  .question-item {
+    padding-right: 24px;
+  }
+  .question-item + .question-item {
+    padding-left: 24px;
+    padding-right: 0;
+    border-left: 1px solid rgba(201,172,112,0.25);
+  }
+  .question-label {
+    font-family: 'Jura', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(201,172,112,0.6);
+    margin-bottom: 5px;
+  }
+  .question-text {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 15px;
+    color: rgba(255,255,255,0.9);
+    line-height: 1.4;
+  }
+  .header-answer {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+  }
+  .answer-mark {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 900;
+    font-size: 56px;
+    color: var(--gold);
+    line-height: 1;
+    flex-shrink: 0;
+  }
+  .answer-text {
+    font-family: 'Lora', serif;
+    font-size: 13px;
+    color: rgba(255,255,255,0.75);
+    line-height: 1.55;
+    max-width: 460px;
+  }
+  .answer-text strong {
+    color: var(--white);
+    font-weight: 700;
+  }
+
+  /* STATS BAND */
+  .stats-band {
+    background: var(--navy-deep);
+    padding: 28px 48px;
+    display: grid;
+    grid-template-columns: 1fr 1px 1fr 1px 1fr;
+    gap: 0;
+    align-items: center;
+  }
+  .stat-divider {
+    background: rgba(201,172,112,0.2);
+    height: 48px;
+    align-self: center;
+  }
+  .stat-block {
+    padding: 0 28px;
+    text-align: center;
+  }
+  .stat-block:first-child { padding-left: 0; text-align: left; }
+  .stat-block:last-child { padding-right: 0; text-align: right; }
+  .stat-number {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 900;
+    font-size: 52px;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+  }
+  .stat-unit {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 22px;
+    color: var(--gold);
+    vertical-align: super;
+    font-size: 28px;
+  }
+  .stat-desc {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    color: rgba(255,255,255,0.6);
+    margin-top: 4px;
+    line-height: 1.4;
+  }
+  .stats-source {
+    border-top: 1px solid rgba(201,172,112,0.15);
+    margin-top: 20px;
+    padding-top: 10px;
+    grid-column: 1 / -1;
+    text-align: center;
+    font-family: 'Jura', sans-serif;
+    font-size: 9.5px;
+    letter-spacing: 0.1em;
+    color: rgba(201,172,112,0.5);
+    text-transform: uppercase;
+  }
+
+  /* TIMELINE */
+  .timeline-section {
+    background: var(--white);
+    padding: 40px 48px 36px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .section-eyebrow {
+    font-family: 'Jura', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 24px;
+  }
+  .timeline-track {
+    position: relative;
+    padding: 0 0 0 0;
+  }
+  .timeline-line {
+    position: absolute;
+    top: 20px;
+    left: 0; right: 0;
+    height: 2px;
+    background: var(--gold-light);
+  }
+  .timeline-nodes {
+    display: grid;
+    grid-template-columns: repeat(7, 1fr);
+    gap: 0;
+    position: relative;
+    z-index: 1;
+  }
+  .timeline-node {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 0 4px;
+  }
+  .node-dot {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    background: var(--white);
+    border: 2.5px solid var(--gold);
+    flex-shrink: 0;
+    margin-bottom: 10px;
+    position: relative;
+    z-index: 2;
+  }
+  .node-dot.first {
+    background: var(--gold);
+  }
+  .node-year {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 15px;
+    color: var(--navy);
+    line-height: 1;
+    margin-bottom: 3px;
+  }
+  .node-author {
+    font-family: 'Lora', serif;
+    font-style: italic;
+    font-size: 10px;
+    color: var(--muted);
+    margin-bottom: 3px;
+    line-height: 1.3;
+  }
+  .node-title {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 9px;
+    color: var(--body-text);
+    line-height: 1.35;
+    opacity: 0.7;
+  }
+  .timeline-caption {
+    margin-top: 16px;
+    text-align: center;
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    font-style: italic;
+  }
+
+  /* EVIDENCE COLUMNS */
+  .evidence-section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 0;
+    background: var(--off-white);
+  }
+
+  .evidence-col {
+    padding: 36px 36px 36px 48px;
+    border-right: 1px solid var(--rule);
+  }
+  .evidence-col:last-child {
+    border-right: none;
+    padding-left: 36px;
+    padding-right: 48px;
+  }
+  .col-header {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-bottom: 22px;
+    padding-bottom: 14px;
+    border-bottom: 2px solid var(--gold);
+  }
+  .col-icon {
+    width: 32px;
+    height: 32px;
+    background: var(--navy);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+  .col-icon svg {
+    width: 16px; height: 16px; fill: var(--gold);
+  }
+  .col-title {
+    font-family: 'Lora', serif;
+    font-weight: 700;
+    font-size: 14px;
+    color: var(--navy);
+    line-height: 1.2;
+  }
+
+  .evidence-item {
+    margin-bottom: 18px;
+    padding-bottom: 18px;
+    border-bottom: 1px solid var(--rule);
+  }
+  .evidence-item:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .evidence-item-label {
+    font-family: 'Jura', sans-serif;
+    font-size: 8.5px;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .evidence-item-text {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--body-text);
+  }
+
+  .policy-check {
+    display: flex;
+    gap: 10px;
+    margin-bottom: 16px;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--rule);
+    align-items: flex-start;
+  }
+  .policy-check:last-child {
+    margin-bottom: 0;
+    padding-bottom: 0;
+    border-bottom: none;
+  }
+  .check-badge {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: var(--gold);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    margin-top: 1px;
+  }
+  .check-badge svg {
+    width: 10px; height: 10px; stroke: var(--navy); stroke-width: 2.5; fill: none;
+  }
+  .check-content {}
+  .check-title {
+    font-family: 'Instrument Sans', sans-serif;
+    font-weight: 600;
+    font-size: 11.5px;
+    color: var(--navy);
+    margin-bottom: 2px;
+  }
+  .check-body {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    color: var(--muted);
+    line-height: 1.5;
+  }
+
+  /* DESIGN FOUNDATIONS */
+  .foundations-section {
+    background: var(--white);
+    padding: 32px 48px;
+    border-top: 1px solid var(--rule);
+    border-bottom: 1px solid var(--rule);
+  }
+  .foundations-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 16px;
+    margin-top: 18px;
+  }
+  .foundation-card {
+    border: 1px solid var(--rule);
+    border-radius: 4px;
+    padding: 14px 16px;
+    background: var(--off-white);
+  }
+  .foundation-source {
+    font-family: 'Jura', sans-serif;
+    font-size: 9px;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 4px;
+  }
+  .foundation-title {
+    font-family: 'Lora', serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--navy);
+    margin-bottom: 4px;
+  }
+  .foundation-desc {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 10.5px;
+    color: var(--muted);
+    line-height: 1.45;
+  }
+
+  /* CAVEAT BAND */
+  .caveat-band {
+    background: var(--gold-pale);
+    border-top: 2px solid var(--gold-light);
+    border-bottom: 2px solid var(--gold-light);
+    padding: 24px 48px;
+    display: grid;
+    grid-template-columns: auto 1fr 1fr;
+    gap: 24px;
+    align-items: start;
+  }
+  .caveat-label {
+    font-family: 'Big Shoulders Display', sans-serif;
+    font-weight: 700;
+    font-size: 11px;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    color: var(--navy);
+    writing-mode: vertical-lr;
+    transform: rotate(180deg);
+    align-self: center;
+    opacity: 0.5;
+  }
+  .caveat-col-head {
+    font-family: 'Lora', serif;
+    font-weight: 700;
+    font-size: 11px;
+    color: var(--navy);
+    margin-bottom: 5px;
+  }
+  .caveat-col-body {
+    font-family: 'Instrument Sans', sans-serif;
+    font-size: 11px;
+    line-height: 1.55;
+    color: var(--body-text);
+  }
+
+  /* FOOTER */
+  .footer {
+    background: var(--navy);
+    padding: 20px 48px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .footer-brand {
+    font-family: 'Lora', serif;
+    font-weight: 700;
+    font-size: 12px;
+    color: var(--gold);
+  }
+  .footer-sub {
+    font-family: 'Jura', sans-serif;
+    font-size: 9px;
+    letter-spacing: 0.1em;
+    color: rgba(201,172,112,0.5);
+    margin-top: 3px;
+  }
+  .footer-url {
+    font-family: 'Jura', sans-serif;
+    font-size: 10px;
+    letter-spacing: 0.08em;
+    color: rgba(201,172,112,0.6);
+    text-decoration: none;
+  }
+  .footer-url:hover { color: var(--gold); }
+
+  @media (max-width: 700px) {
+    .site-nav { padding-top: max(54px, calc(env(safe-area-inset-top) + 18px)); }
+    .site-nav a { flex: 1 1 0; min-width: 0; padding: 0 8px; text-align: center; }
+    .header, .timeline-section, .foundations-section { padding-left: 22px; padding-right: 22px; }
+    .header-questions, .evidence-section, .foundations-grid { grid-template-columns: 1fr; }
+    .question-item { padding-right: 0; }
+    .question-item + .question-item { border-left: 0; border-top: 1px solid rgba(201,172,112,0.25); margin-top: 14px; padding: 14px 0 0; }
+    .header-answer { align-items: flex-start; }
+    .answer-mark { font-size: 46px; }
+    .stats-band { grid-template-columns: 1fr; padding: 26px 22px; gap: 18px; }
+    .stat-block, .stat-block:first-child, .stat-block:last-child { padding: 0; text-align: left !important; }
+    .stat-divider { width: 100%; height: 1px; }
+    .stats-source { margin-top: 4px; text-align: left; }
+    .timeline-line { display: none; }
+    .timeline-nodes { grid-template-columns: 1fr; gap: 18px; }
+    .timeline-node { display: grid; grid-template-columns: 18px 54px 1fr; gap: 4px 10px; align-items: start; text-align: left; padding: 0; }
+    .node-dot { margin-top: 2px; }
+    .node-year { margin-top: 0; grid-column: 2; grid-row: 1; }
+    .node-author { margin-top: 0; grid-column: 3; grid-row: 1; text-align: left; }
+    .node-title { grid-column: 2 / -1; grid-row: 2; }
+    .evidence-col, .evidence-col:last-child { padding: 28px 22px; border-right: 0; border-bottom: 1px solid var(--rule); }
+    .caveat-band { grid-template-columns: 1fr; padding: 24px 22px; }
+    .caveat-label { writing-mode: horizontal-tb; transform: none; }
+    .footer { align-items: flex-start; flex-direction: column; gap: 12px; padding: 20px 22px; }
+  }
+
+  @media print {
+    body { width: 100%; background: white; }
+    .infographic { box-shadow: none; }
+  }
+</style>
+</head>
+<body>
+<nav class="site-nav" aria-label="Infographic navigation">
+  <a href="../index.html">Home</a>
+  <a href="../survey-results.html">Survey Results</a>
+</nav>
+<div class="infographic">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="header-eyebrow">Modern Manners and Mental Fortitude (MMMF) &nbsp;|&nbsp; Evidence and Policy Brief</div>
+    <div class="header-questions">
+      <div class="question-item">
+        <div class="question-label">Educator Question 1</div>
+        <div class="question-text">"Is this curriculum evidence-based?"</div>
+      </div>
+      <div class="question-item">
+        <div class="question-label">Educator Question 2</div>
+        <div class="question-text">"Does it operate within the rules about social emotional learning in schools?"</div>
+      </div>
+    </div>
+    <div class="header-answer">
+      <div class="answer-mark">YES.</div>
+      <div class="answer-text">
+        <strong>Both answers are yes.</strong> MMMF is grounded in peer-reviewed research spanning nearly a century of educational scholarship, CASEL-aligned competencies, and active Utah state policy. Below is the data behind that claim.
+      </div>
+    </div>
+  </div>
+
+  <!-- STATS BAND -->
+  <div class="stats-band">
+    <div class="stat-block">
+      <span class="stat-number">213</span>
+      <div class="stat-desc">SEL programs examined in<br>the landmark Durlak study</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-block" style="text-align:center;">
+      <span class="stat-number">270,034</span>
+      <div class="stat-desc">K-12 students included across those studies</div>
+    </div>
+    <div class="stat-divider"></div>
+    <div class="stat-block" style="text-align:right;">
+      <span class="stat-number"><span class="stat-unit">+</span>11<span style="font-size:28px;font-family:'Big Shoulders Display';font-weight:700;color:var(--gold);">pts</span></span>
+      <div class="stat-desc">Academic achievement gain for<br>SEL participants vs. controls</div>
+    </div>
+    <div class="stats-source">Source: Durlak, Weissberg, Dymnicki, Taylor and Schellinger &nbsp;|&nbsp; Child Development &nbsp;|&nbsp; January 2011</div>
+  </div>
+
+  <!-- TIMELINE -->
+  <div class="timeline-section">
+    <div class="section-eyebrow">Research Foundation &nbsp;&bull;&nbsp; 87 Years of Accumulated Scholarship</div>
+    <div class="timeline-track">
+      <div class="timeline-line"></div>
+      <div class="timeline-nodes">
+        <div class="timeline-node">
+          <div class="node-dot first"></div>
+          <div class="node-year">1938</div>
+          <div class="node-author">Dewey</div>
+          <div class="node-title">Experience and Education: learning grounded in real-world application</div>
+        </div>
+        <div class="timeline-node">
+          <div class="node-dot"></div>
+          <div class="node-year">1949</div>
+          <div class="node-author">Tyler</div>
+          <div class="node-title">Objectives-based design: measurable goals aligned backward from outcomes</div>
+        </div>
+        <div class="timeline-node">
+          <div class="node-dot"></div>
+          <div class="node-year">1960</div>
+          <div class="node-author">Bruner</div>
+          <div class="node-title">Spiral curriculum: core concepts revisit at increasing complexity</div>
+        </div>
+        <div class="timeline-node">
+          <div class="node-dot"></div>
+          <div class="node-year">2011</div>
+          <div class="node-author">Durlak et al.</div>
+          <div class="node-title">270,034-student meta-analysis: SEL produces measurable academic and behavioral gains</div>
+        </div>
+        <div class="timeline-node">
+          <div class="node-dot"></div>
+          <div class="node-year">2020</div>
+          <div class="node-author">CASEL</div>
+          <div class="node-title">Updated framework: five SEL competency domains with Utah state alignment</div>
+        </div>
+        <div class="timeline-node">
+          <div class="node-dot"></div>
+          <div class="node-year">2021</div>
+          <div class="node-author">Stern et al.</div>
+          <div class="node-title">Learning that transfers: anchoring concepts and dissimilar transfer tasks</div>
+        </div>
+        <div class="timeline-node">
+          <div class="node-dot"></div>
+          <div class="node-year">2025</div>
+          <div class="node-author">Utah Law</div>
+          <div class="node-title">53G-7-1307: state pilot for self-government skills and decision-making in schools</div>
+        </div>
+      </div>
+    </div>
+    <div class="timeline-caption">Each source above directly informs an MMMF module, framework, or assessment design</div>
+  </div>
+
+  <!-- EVIDENCE COLUMNS -->
+  <div class="evidence-section">
+
+    <div class="evidence-col">
+      <div class="col-header">
+        <div class="col-icon">
+          <svg viewBox="0 0 20 20"><path d="M4 4h12v2H4V4zm0 4h12v2H4V8zm0 4h8v2H4v-2z"/></svg>
+        </div>
+        <div class="col-title">The SEL Research Base</div>
+      </div>
+
+      <div class="evidence-item">
+        <div class="evidence-item-label">Durlak et al. (2011) &nbsp;|&nbsp; Child Development</div>
+        <div class="evidence-item-text">Across 213 school-based SEL programs and 270,034 students, participants showed significantly improved social and emotional skills, attitudes, behavior, and academic performance. Academic gains rivaled programs focused exclusively on academics.</div>
+      </div>
+
+      <div class="evidence-item">
+        <div class="evidence-item-label">2022 Updated Meta-Analysis &nbsp;|&nbsp; CASEL / Yale</div>
+        <div class="evidence-item-text">A follow-up review screened more than 31,000 studies. The resulting dataset of 450 qualifying studies confirmed and extended the 2011 findings into the current decade, reinforcing the durability of SEL outcomes.</div>
+      </div>
+
+      <div class="evidence-item">
+        <div class="evidence-item-label">Independent Replication &nbsp;|&nbsp; US, UK, Netherlands</div>
+        <div class="evidence-item-text">Three separate research groups, working independently across three countries, reached the same conclusion: universal school-based SEL programs produce positive benefits on behavioral, attitudinal, emotional, and academic outcomes, both immediately after the program and across follow-up periods.</div>
+      </div>
+
+      <div class="evidence-item">
+        <div class="evidence-item-label">Behavioral Outcomes</div>
+        <div class="evidence-item-text">SEL participants demonstrated measurable reductions in conduct problems and emotional distress compared to control groups. These outcomes are consistent across student populations with and without behavioral or emotional risk factors.</div>
+      </div>
+    </div>
+
+    <div class="evidence-col">
+      <div class="col-header">
+        <div class="col-icon">
+          <svg viewBox="0 0 20 20"><path d="M10 2L3 7v11h5v-5h4v5h5V7l-7-5z"/></svg>
+        </div>
+        <div class="col-title">Utah Policy Alignment</div>
+      </div>
+
+      <div class="policy-check">
+        <div class="check-badge">
+          <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+        </div>
+        <div class="check-content">
+          <div class="check-title">CASEL: Utah is an active SEL guidance state</div>
+          <div class="check-body">The Utah State Board of Education provides SEL resources including the Personalized Competency-based Learning Framework and SEL Microcredentials for Teachers.</div>
+        </div>
+      </div>
+
+      <div class="policy-check">
+        <div class="check-badge">
+          <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+        </div>
+        <div class="check-content">
+          <div class="check-title">Utah Code 53E-4-202: Core Standards</div>
+          <div class="check-body">The USBE must establish core standards identifying the competencies each student is expected to acquire across grade levels, including civic and character education, which MMMF directly addresses.</div>
+        </div>
+      </div>
+
+      <div class="policy-check">
+        <div class="check-badge">
+          <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+        </div>
+        <div class="check-content">
+          <div class="check-title">Utah Admin Code R277-400-8: LEA Directive</div>
+          <div class="check-body">Utah law directs Local Education Agencies to develop or incorporate programs related to digital citizenship and social and emotional learning. Two of MMMF's five modules address these areas directly.</div>
+        </div>
+      </div>
+
+      <div class="policy-check">
+        <div class="check-badge">
+          <svg viewBox="0 0 12 12"><polyline points="2,6 5,9 10,3"/></svg>
+        </div>
+        <div class="check-content">
+          <div class="check-title">Utah Code 53G-7-1307 (2025): State Pilot</div>
+          <div class="check-body">Utah law created a formal three-year pilot for teaching self-government skills, classroom communication, and personal problem-solving in schools. This mirrors MMMF's PLRR and POCC frameworks by design.</div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- CURRICULUM DESIGN FOUNDATIONS -->
+  <div class="foundations-section">
+    <div class="section-eyebrow">Curriculum Design Foundations &nbsp;&bull;&nbsp; How MMMF Is Built</div>
+    <div class="foundations-grid">
+      <div class="foundation-card">
+        <div class="foundation-source">Tyler, 1949</div>
+        <div class="foundation-title">Objectives-Based Design</div>
+        <div class="foundation-desc">All MMMF goals are measurable and aligned backward from the capstone task. Meets ESSA requirements for clear, verifiable student outcomes.</div>
+      </div>
+      <div class="foundation-card">
+        <div class="foundation-source">Bruner, 1960</div>
+        <div class="foundation-title">Spiral Curriculum</div>
+        <div class="foundation-desc">All four core pillars revisit at increasing complexity across every module. Skills are reinforced, not introduced once and abandoned.</div>
+      </div>
+      <div class="foundation-card">
+        <div class="foundation-source">Stern et al., 2021</div>
+        <div class="foundation-title">Transfer-Focused Design</div>
+        <div class="foundation-desc">Students apply skills to novel, high-stakes scenarios they have never practiced. Coverage is never the goal. Independent transfer is.</div>
+      </div>
+      <div class="foundation-card">
+        <div class="foundation-source">Dewey, 1938</div>
+        <div class="foundation-title">Experience and Reflection</div>
+        <div class="foundation-desc">Role-play and simulations ground every lesson in experience. Weekly reflection journals connect that experience to concept and future action.</div>
+      </div>
+      <div class="foundation-card">
+        <div class="foundation-source">CASEL, 2020</div>
+        <div class="foundation-title">Five Core Competencies</div>
+        <div class="foundation-desc">Self-awareness, self-management, social awareness, relationship skills, and responsible decision-making are all addressed across MMMF's five modules.</div>
+      </div>
+      <div class="foundation-card">
+        <div class="foundation-source">Wiles and Bondi, 2015</div>
+        <div class="foundation-title">Curriculum Planning Model</div>
+        <div class="foundation-desc">CMP links context, goals, implementation, and evaluation into a coherent whole with continuous improvement built into the design.</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- HONEST CAVEAT -->
+  <div class="caveat-band">
+    <div class="caveat-label">Transparency</div>
+    <div>
+      <div class="caveat-col-head">What MMMF claims now</div>
+      <div class="caveat-col-body">MMMF is built on peer-reviewed research frameworks, CASEL-aligned competencies, and Utah state policy. The SEL field has demonstrated positive outcomes across hundreds of thousands of students. These are the foundations MMMF applies.</div>
+    </div>
+    <div>
+      <div class="caveat-col-head">What formal tiering will add</div>
+      <div class="caveat-col-body">ESSA evidence tier certification and CASEL Program Guide listing are in progress. A formal pilot will produce program-specific outcome data. That work is underway. Pilot inquiries are welcome at readyforreal.life.</div>
+    </div>
+  </div>
+
+  <!-- FOOTER -->
+  <div class="footer">
+    <div>
+      <div class="footer-brand">Ready for Real Life Instruction and Education</div>
+      <div class="footer-sub">Michael R. Terry and Mekenzi G. Terry, Founders &nbsp;&bull;&nbsp; Tooele, Utah</div>
+    </div>
+    <a class="footer-url" href="https://readyforreal.life">readyforreal.life</a>
+  </div>
+
+</div>
+</body>
+</html>
