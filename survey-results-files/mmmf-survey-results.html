@@ -1368,7 +1368,44 @@
       }
     }
 
-    function render(rows) {
+    function rowsFromSummary(summary) {
+      const rows = Array.from({ length: Number(summary.total) || 0 }, () => ({
+        submittedAt: "",
+        role: "",
+        need: "",
+        gradeStart: "",
+        support: "",
+        topics: "",
+        trainingInterest: "",
+      }));
+      const assign = (field, values, multi = false) => {
+        let offset = 0;
+        Object.entries(values || {}).forEach(([option, rawCount]) => {
+          const value = Math.max(0, Math.min(rows.length, Number(rawCount) || 0));
+          for (let index = 0; index < value; index += 1) {
+            const target = multi ? index : offset + index;
+            if (!rows[target]) continue;
+            rows[target][field] = rows[target][field]
+              ? `${rows[target][field]}, ${option}`
+              : option;
+          }
+          if (!multi) offset += value;
+        });
+      };
+      assign("role", summary.roles);
+      assign("need", summary.needs);
+      assign("gradeStart", summary.grades);
+      assign("support", summary.support);
+      assign("topics", summary.topics, true);
+      assign("trainingInterest", summary.training, true);
+      if (rows.length) {
+        rows[0].submittedAt = summary.last_submitted_at || "";
+        rows[rows.length - 1].submittedAt = summary.first_submitted_at || "";
+      }
+      return rows;
+    }
+
+    function render(rows, aggregate = null) {
       const total = rows.length;
       if (!total) throw new Error("No survey responses were returned.");
 
@@ -1419,9 +1456,11 @@
       optionSets.training.slice(0, 4).forEach((option, index) => {
         trainingValues[index].textContent = `${percentage(count(rows, "trainingInterest", option), total, 0)}%`;
       });
-      const interested = rows.filter((row) =>
-        optionSets.training.slice(0, 4).some((option) => row.trainingInterest.includes(option)),
-      ).length;
+      const interested = aggregate
+        ? Number(aggregate.training_interested_count) || 0
+        : rows.filter((row) =>
+            optionSets.training.slice(0, 4).some((option) => row.trainingInterest.includes(option)),
+          ).length;
       training.querySelector(".note").textContent =
         `${percentage(interested, total, 0)}% expressed some form of training interest.`;
 
@@ -1458,25 +1497,18 @@
 
     async function loadLiveData() {
       if (loading) return;
-      const token = sessionStorage.getItem(SESSION_KEY) || "";
-      if (!token) {
-        setStatus("Snapshot shown - open from the unlocked Results Folder for live data", "error");
-        return;
-      }
       loading = true;
       setStatus("Updating live data...", "");
       try {
         const response = await fetch(ENDPOINT, {
           method: "POST",
           headers: { "Content-Type": "text/plain;charset=utf-8" },
-          body: JSON.stringify({ action: "registration_list", session_token: token }),
+          body: JSON.stringify({ action: "survey_summary" }),
         });
         const data = await response.json();
         if (!response.ok || !data.ok) throw new Error(data.error || "Live update failed.");
-        const rows = (Array.isArray(data.entries) ? data.entries : [])
-          .filter((entry) => isSurvey(entry, parseDetails(entry)))
-          .map(toRow);
-        render(rows);
+        const rows = rowsFromSummary(data);
+        render(rows, data);
         setStatus(`Live - ${rows.length} responses - updated ${new Date().toLocaleTimeString([], { hour: "numeric", minute: "2-digit" })}`, "live");
       } catch (error) {
         setStatus(error.message || "Live update failed", "error");
