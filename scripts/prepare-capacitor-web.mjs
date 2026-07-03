@@ -176,6 +176,22 @@ const appRoutePatch = `
     "readyforreallife.github.io",
     "localhost",
   ]);
+  const BLOCKED_PURCHASE_HOSTS = new Set(["buy.stripe.com", "checkout.stripe.com"]);
+  const BLOCKED_APP_PATHS = new Set(["/billing.html", "/offer.html", "/website-home.html"]);
+
+  function explainStorePolicy() {
+    window.alert(
+      "Enrollment and account provisioning are arranged by participating organizations outside the app. If you already have an account, use Portal Login.",
+    );
+  }
+
+  function isBlockedPurchaseRoute(url) {
+    return (
+      BLOCKED_PURCHASE_HOSTS.has(url.hostname) ||
+      BLOCKED_APP_PATHS.has(url.pathname) ||
+      (url.pathname.endsWith("/index.html") && url.hash === "#get-access")
+    );
+  }
 
   function toAppPath(url) {
     if (
@@ -203,6 +219,7 @@ const appRoutePatch = `
   }
 
   function shouldIgnore(link) {
+    if (link.hasAttribute("data-license-file")) return true;
     const rawHref = String(link.getAttribute("href") || "").trim();
     if (!rawHref) return true;
     if (
@@ -240,6 +257,12 @@ const appRoutePatch = `
         return;
       }
 
+      if (isBlockedPurchaseRoute(url)) {
+        event.preventDefault();
+        explainStorePolicy();
+        return;
+      }
+
       const nextPath = toAppPath(url);
       if (!nextPath) return;
 
@@ -253,6 +276,10 @@ const appRoutePatch = `
   window.open = function patchedOpen(url, target, features) {
     try {
       const parsed = new URL(String(url), window.location.href);
+      if (isBlockedPurchaseRoute(parsed)) {
+        explainStorePolicy();
+        return null;
+      }
       const nextPath = toAppPath(parsed);
       if (nextPath) {
         window.location.href = nextPath;
