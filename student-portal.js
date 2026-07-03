@@ -3362,12 +3362,24 @@ function previewSelectedProfileImage() {
   }
 
   selectedProfileImagePreviewUrl = URL.createObjectURL(file);
-  profileImagePreview.src = selectedProfileImagePreviewUrl;
-  profileImagePreview.hidden = false;
-  profileImagePreview.style.display = "";
-  profileImageFallback.hidden = true;
-  profileImageFallback.style.display = "none";
-  showStatus(profileImageStatus, "Photo selected. Tap Save Profile Image to keep it.", "success");
+  if (profileImagePreview) {
+    profileImagePreview.src = selectedProfileImagePreviewUrl;
+    profileImagePreview.hidden = false;
+    profileImagePreview.style.display = "";
+  }
+  if (profileImageFallback) {
+    profileImageFallback.hidden = true;
+    profileImageFallback.style.display = "none";
+  }
+  if (welcomeProfileImage) {
+    welcomeProfileImage.src = selectedProfileImagePreviewUrl;
+    welcomeProfileImage.hidden = false;
+    welcomeProfileImage.style.display = "";
+  }
+  if (welcomeProfileFallback) {
+    welcomeProfileFallback.hidden = true;
+    welcomeProfileFallback.style.display = "none";
+  }
 }
 
 async function uploadProfileImage() {
@@ -3840,7 +3852,7 @@ uploadFileBtn.addEventListener("click", async () => {
   }
 });
 
-uploadProfileImageBtn.addEventListener("click", async () => {
+uploadProfileImageBtn?.addEventListener("click", async () => {
   try {
     await uploadProfileImage();
   } catch (error) {
@@ -3848,7 +3860,25 @@ uploadProfileImageBtn.addEventListener("click", async () => {
   }
 });
 
-profileImageInput?.addEventListener("change", previewSelectedProfileImage);
+profileImageInput?.addEventListener("change", async () => {
+  if (!profileImageInput.files?.[0]) return;
+
+  previewSelectedProfileImage();
+  editWelcomeProfileBtn.disabled = true;
+  editWelcomeProfileBtn.textContent = "Saving...";
+  showStatus(profileImageStatus, "Saving your new profile image...");
+
+  try {
+    await uploadProfileImage();
+  } catch (error) {
+    profileImageInput.value = "";
+    renderProfileImage(state.communityProfile || state.profile);
+    showStatus(profileImageStatus, error.message);
+  } finally {
+    editWelcomeProfileBtn.disabled = false;
+    editWelcomeProfileBtn.textContent = "Edit My Image";
+  }
+});
 
 documentSubmissionTemplate?.addEventListener("change", renderDocumentSubmissionFields);
 

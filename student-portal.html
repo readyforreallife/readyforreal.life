@@ -2056,6 +2056,8 @@
                 <img id="welcomeProfileImage" class="welcome-profile-photo" alt="Your profile photo" hidden />
                 <div id="welcomeProfileFallback" class="welcome-profile-photo welcome-profile-fallback" aria-label="Profile image placeholder">🚀</div>
                 <button class="welcome-profile-edit" id="editWelcomeProfileBtn" type="button">Edit My Image</button>
+                <input id="profileImageInput" type="file" accept="image/*" hidden />
+                <div class="status-line" id="profileImageStatus" aria-live="polite"></div>
               </div>
               <strong id="identityCardName">Student Name</strong>
               <p id="identityCardTrack" class="subtle"></p>
@@ -2248,26 +2250,7 @@
                 </div>
               </div>
               <div class="classroom-two-col">
-                <section class="classroom-subpanel">
-                  <div class="identity-profile">
-                    <div class="identity-avatar-card">
-                      <img id="profileImagePreview" class="profile-avatar" alt="Your profile photo" hidden />
-                      <div id="profileImageFallback" class="profile-avatar profile-avatar-fallback" aria-label="Profile image placeholder">🚀</div>
-                      <div class="identity-note" id="profileImageNote">
-                        Add a current photo so enrolled users can recognize you.
-                      </div>
-                      <label>
-                        Profile image
-                        <input id="profileImageInput" type="file" accept="image/*" />
-                      </label>
-                      <div class="assignment-actions">
-                        <button class="btn secondary" id="uploadProfileImageBtn" type="button">Save Profile Image</button>
-                      </div>
-                      <div class="status-line" id="profileImageStatus"></div>
-                    </div>
-                  </div>
-                </section>
-                <section class="classroom-subpanel">
+                <section class="classroom-subpanel" style="grid-column: 1 / -1">
                   <form class="stack" id="bioForm">
                     <label>
                       What are you proud to be building in your life right now?
