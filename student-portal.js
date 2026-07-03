@@ -3351,6 +3351,25 @@ async function uploadSelectedFile() {
   showStatus(fileUploadStatus, "File uploaded to your private storage.", "success");
 }
 
+let selectedProfileImagePreviewUrl = "";
+
+function previewSelectedProfileImage() {
+  const file = profileImageInput?.files?.[0];
+  if (!file || !String(file.type || "").startsWith("image/")) return;
+
+  if (selectedProfileImagePreviewUrl) {
+    URL.revokeObjectURL(selectedProfileImagePreviewUrl);
+  }
+
+  selectedProfileImagePreviewUrl = URL.createObjectURL(file);
+  profileImagePreview.src = selectedProfileImagePreviewUrl;
+  profileImagePreview.hidden = false;
+  profileImagePreview.style.display = "";
+  profileImageFallback.hidden = true;
+  profileImageFallback.style.display = "none";
+  showStatus(profileImageStatus, "Photo selected. Tap Save Profile Image to keep it.", "success");
+}
+
 async function uploadProfileImage() {
   if (!state.user) {
     showStatus(profileImageStatus, "Sign in before saving a profile image.");
@@ -3397,6 +3416,10 @@ async function uploadProfileImage() {
   state.communityProfiles = await loadCommunityProfiles();
   state.communityProfile =
     state.communityProfiles.find((item) => item.user_id === state.user.id) || data;
+  if (selectedProfileImagePreviewUrl) {
+    URL.revokeObjectURL(selectedProfileImagePreviewUrl);
+    selectedProfileImagePreviewUrl = "";
+  }
   renderPortal();
   profileImageInput.value = "";
   showStatus(profileImageStatus, portalCopyForRole(state.profile?.role).imageStatusSuccess, "success");
@@ -3824,6 +3847,8 @@ uploadProfileImageBtn.addEventListener("click", async () => {
     showStatus(profileImageStatus, error.message);
   }
 });
+
+profileImageInput?.addEventListener("change", previewSelectedProfileImage);
 
 documentSubmissionTemplate?.addEventListener("change", renderDocumentSubmissionFields);
 
