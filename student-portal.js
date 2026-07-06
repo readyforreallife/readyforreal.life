@@ -3810,7 +3810,7 @@ cancelPasswordResetBtn?.addEventListener("click", async () => {
   showStatus(studentLoginStatus, "Password reset cancelled.");
 });
 
-signupForm.addEventListener("submit", async (event) => {
+signupForm?.addEventListener("submit", async (event) => {
   event.preventDefault();
   try {
     await signUpUser();

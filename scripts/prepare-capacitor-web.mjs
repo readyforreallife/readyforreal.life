@@ -21,11 +21,9 @@ const entries = [
   "flyer.html",
   "flyer-social.css",
   "flyer-social.html",
-  "index.html",
   "manifest.json",
   "offline.html",
   "pwa-gestures.js",
-  "resume.html",
   "scenarios.json",
   "rubric.json",
   "site-search.css",
@@ -52,24 +50,16 @@ const entries = [
   "ModernManners Community Revenue.pdf",
   "ModernManners School Revenue.pdf",
   "assets",
-  "docs",
-  "worker",
 ];
 
 const docMirrors = [
   ["app.html", "app-home.html"],
-  ["index.html", "website-home.html"],
-  ["docs/access-gate.js", "access-gate.js"],
   ["docs/admin/index.html", "admin/index.html"],
-  ["docs/billing.html", "billing.html"],
   ["docs/bio.html", "bio.html"],
   ["docs/game-data.js", "game-data.js"],
   ["docs/game.html", "game.html"],
   ["docs/game.js", "game.js"],
-  ["docs/index.html", "full-curriculum.html"],
-  ["docs/offer.html", "offer.html"],
   ["docs/program.html", "program.html"],
-  ["docs/resume.html", "curriculum-resume.html"],
 ];
 
 function resetDir(dir) {
@@ -117,6 +107,93 @@ function copyFromExternalBase(
 
   fs.mkdirSync(path.dirname(destination), { recursive: true });
   fs.copyFileSync(source, destination);
+}
+
+function removeElementByMarker(html, marker, closingTag) {
+  const markerIndex = html.indexOf(marker);
+  if (markerIndex < 0) return html;
+
+  const startIndex = html.lastIndexOf("<", markerIndex);
+  const endIndex = html.indexOf(closingTag, markerIndex);
+  if (startIndex < 0 || endIndex < 0) return html;
+
+  return `${html.slice(0, startIndex)}${html.slice(endIndex + closingTag.length)}`;
+}
+
+function sanitizeNativePages() {
+  const appHomePath = path.join(outDir, "app.html");
+  const indexPath = path.join(outDir, "index.html");
+  if (fs.existsSync(appHomePath)) {
+    fs.copyFileSync(appHomePath, indexPath);
+  }
+
+  const appHomeFiles = [appHomePath, indexPath, path.join(outDir, "app-home.html")];
+  appHomeFiles.forEach((filePath) => {
+    if (!fs.existsSync(filePath)) return;
+    let html = fs.readFileSync(filePath, "utf8");
+    html = removeElementByMarker(html, 'href="/resume.html"', "</a>");
+    fs.writeFileSync(filePath, html);
+  });
+
+  const portalPath = path.join(outDir, "student-portal.html");
+  if (fs.existsSync(portalPath)) {
+    let html = fs.readFileSync(portalPath, "utf8");
+    html = removeElementByMarker(html, 'id="signupForm"', "</form>");
+    html = removeElementByMarker(html, '>Main Website</a>', "</a>");
+    fs.writeFileSync(portalPath, html);
+  }
+
+  ["program.html", "bio.html"].forEach((filename) => {
+    const filePath = path.join(outDir, filename);
+    if (!fs.existsSync(filePath)) return;
+    const html = fs
+      .readFileSync(filePath, "utf8")
+      .replace(/\s*<script\s+src=["']access-gate\.js["']\s+defer><\/script>/gi, "");
+    fs.writeFileSync(filePath, html);
+  });
+
+  const surveyPath = path.join(outDir, "survey.html");
+  if (fs.existsSync(surveyPath)) {
+    let html = fs.readFileSync(surveyPath, "utf8");
+    html = removeElementByMarker(html, 'href="offer.html"', "</a>");
+    fs.writeFileSync(surveyPath, html);
+  }
+
+  const blockedAnchorMarkers = [
+    ">Main Website</a>",
+    'href="website-home.html"',
+    'href="../../website-home.html"',
+    'href="resume.html"',
+    'href="/resume.html"',
+    'href="offer.html"',
+  ];
+  walkFiles(outDir)
+    .filter((filePath) => filePath.endsWith(".html"))
+    .forEach((filePath) => {
+      let html = fs.readFileSync(filePath, "utf8");
+      blockedAnchorMarkers.forEach((marker) => {
+        while (html.includes(marker)) {
+          const updated = removeElementByMarker(html, marker, "</a>");
+          if (updated === html) break;
+          html = updated;
+        }
+      });
+      html = html.replace(
+        /\s*<script\s+src=["']access-gate\.js["']\s+defer><\/script>/gi,
+        "",
+      );
+      fs.writeFileSync(filePath, html);
+    });
+
+  [
+    "mmmf-hub/assets/access-gate.js",
+    "mmmf-hub/docs/index.html",
+    "mmmf-hub/docs/registration-intake-form.html",
+    "mmmf-hub/docs/viewer.html",
+    "mmmf-hub/web",
+  ].forEach((relativePath) => {
+    fs.rmSync(path.join(outDir, relativePath), { recursive: true, force: true });
+  });
 }
 
 function walkFiles(dir, files = []) {
@@ -176,18 +253,16 @@ const appRoutePatch = `
     "readyforreallife.github.io",
     "localhost",
   ]);
-  const BLOCKED_PURCHASE_HOSTS = new Set(["buy.stripe.com", "checkout.stripe.com"]);
   const BLOCKED_APP_PATHS = new Set(["/billing.html", "/offer.html", "/website-home.html"]);
 
   function explainStorePolicy() {
     window.alert(
-      "Enrollment and account provisioning are arranged by participating organizations outside the app. If you already have an account, use Portal Login.",
+      "This feature is not available in the iOS app. Approved users can use Portal Login.",
     );
   }
 
-  function isBlockedPurchaseRoute(url) {
+  function isUnavailableAppRoute(url) {
     return (
-      BLOCKED_PURCHASE_HOSTS.has(url.hostname) ||
       BLOCKED_APP_PATHS.has(url.pathname) ||
       (url.pathname.endsWith("/index.html") && url.hash === "#get-access")
     );
@@ -247,7 +322,7 @@ const appRoutePatch = `
     "click",
     (event) => {
       const link = event.target.closest("a[href]");
-      if (!link || shouldIgnore(link)) return;
+      if (!link) return;
       const targetLink = findPreferredInAppTarget(link);
 
       let url;
@@ -257,11 +332,13 @@ const appRoutePatch = `
         return;
       }
 
-      if (isBlockedPurchaseRoute(url)) {
+      if (isUnavailableAppRoute(url)) {
         event.preventDefault();
         explainStorePolicy();
         return;
       }
+
+      if (shouldIgnore(link)) return;
 
       const nextPath = toAppPath(url);
       if (!nextPath) return;
@@ -276,7 +353,7 @@ const appRoutePatch = `
   window.open = function patchedOpen(url, target, features) {
     try {
       const parsed = new URL(String(url), window.location.href);
-      if (isBlockedPurchaseRoute(parsed)) {
+      if (isUnavailableAppRoute(parsed)) {
         explainStorePolicy();
         return null;
       }
@@ -329,6 +406,8 @@ if (hubRoot) {
     path.join(hubPreviewOut, "MMMF_Teach_the_Teacher.qlpreview"),
   );
 }
+
+sanitizeNativePages();
 
 walkFiles(outDir)
   .filter((filePath) => filePath.endsWith(".html"))
