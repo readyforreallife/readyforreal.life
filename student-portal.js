@@ -1142,6 +1142,16 @@ const fileUploadInput = document.getElementById("fileUploadInput");
 const uploadFileBtn = document.getElementById("uploadFileBtn");
 const fileUploadStatus = document.getElementById("fileUploadStatus");
 const fileList = document.getElementById("fileList");
+const taxUploadForm = document.getElementById("taxUploadForm");
+const taxYearInput = document.getElementById("taxYearInput");
+const taxPeriodInput = document.getElementById("taxPeriodInput");
+const taxAgencyInput = document.getElementById("taxAgencyInput");
+const taxDocumentTypeInput = document.getElementById("taxDocumentTypeInput");
+const taxAmountInput = document.getElementById("taxAmountInput");
+const taxFileInput = document.getElementById("taxFileInput");
+const taxNotesInput = document.getElementById("taxNotesInput");
+const taxUploadStatus = document.getElementById("taxUploadStatus");
+const taxFileList = document.getElementById("taxFileList");
 const communitySectionLabel = document.getElementById("communitySectionLabel");
 const communitySectionTitle = document.getElementById("communitySectionTitle");
 const communitySectionCopy = document.getElementById("communitySectionCopy");
@@ -1161,6 +1171,7 @@ const classroomDiscussionCount = document.getElementById("classroomDiscussionCou
 const classroomQuizCount = document.getElementById("classroomQuizCount");
 const classroomDocumentCount = document.getElementById("classroomDocumentCount");
 const classroomFileCount = document.getElementById("classroomFileCount");
+const classroomTaxFileCount = document.getElementById("classroomTaxFileCount");
 const classroomFeedbackCount = document.getElementById("classroomFeedbackCount");
 const classroomCommunityCount = document.getElementById("classroomCommunityCount");
 const classroomResourceCount = document.getElementById("classroomResourceCount");
@@ -1212,6 +1223,7 @@ const CLASSROOM_HASH_TO_VIEW = {
   "#classroom-quizzes": "quizzes",
   "#classroom-documents": "documents",
   "#classroom-submissions": "submissions",
+  "#classroom-tax-vault": "tax-vault",
   "#classroom-grades": "grades",
   "#classroom-community": "community",
   "#classroom-resources": "resources",
@@ -1668,6 +1680,91 @@ function formatBytes(bytes) {
   return `${(value / (1024 * 1024)).toFixed(1)} MB`;
 }
 
+function taxFiles() {
+  return state.files.filter(
+    (file) =>
+      String(file.storage_path || "").includes("/tax-records/") ||
+      String(file.file_name || "").startsWith("Tax Record |"),
+  );
+}
+
+function nonTaxFiles() {
+  const taxFileIds = new Set(taxFiles().map((file) => file.id));
+  return state.files.filter((file) => !taxFileIds.has(file.id));
+}
+
+function createTaxFileName({ year, period, agency, documentType, amount, notes, originalName }) {
+  return [
+    "Tax Record",
+    year,
+    period,
+    agency,
+    documentType,
+    amount,
+    notes,
+    originalName,
+  ]
+    .map((part) => String(part || "").trim())
+    .join(" | ");
+}
+
+function parseTaxFileName(fileName) {
+  const parts = String(fileName || "").split(" | ");
+  if (parts[0] !== "Tax Record") {
+    return {
+      title: fileName || "Tax record",
+      year: "",
+      period: "",
+      agency: "",
+      documentType: "",
+      amount: "",
+      notes: "",
+      originalName: fileName || "",
+    };
+  }
+
+  return {
+    title: [parts[1], parts[2], parts[3], parts[4]].filter(Boolean).join(" - "),
+    year: parts[1] || "",
+    period: parts[2] || "",
+    agency: parts[3] || "",
+    documentType: parts[4] || "",
+    amount: parts[5] || "",
+    notes: parts[6] || "",
+    originalName: parts.slice(7).join(" | "),
+  };
+}
+
+function renderTaxFileList() {
+  if (!taxFileList) return;
+  const files = taxFiles();
+  taxFileList.innerHTML = files.length
+    ? files
+        .map((file) => {
+          const taxRecord = parseTaxFileName(file.file_name);
+          return `
+            <article class="resource-card">
+              <div class="mini-label">Private tax record</div>
+              <h4>${escapeHtml(taxRecord.title || file.file_name)}</h4>
+              <div class="tax-record-meta">
+                ${taxRecord.year ? `<span>${escapeHtml(taxRecord.year)}</span>` : ""}
+                ${taxRecord.period ? `<span>${escapeHtml(taxRecord.period)}</span>` : ""}
+                ${taxRecord.agency ? `<span>${escapeHtml(taxRecord.agency)}</span>` : ""}
+                ${taxRecord.amount ? `<span>${escapeHtml(taxRecord.amount)}</span>` : ""}
+              </div>
+              <p>${escapeHtml(taxRecord.notes || "No tax-time notes added yet.")}</p>
+              <p>${escapeHtml(file.mime_type || "Stored file")} · ${escapeHtml(formatBytes(file.file_size_bytes))}</p>
+              <div class="assignment-actions">
+                <button class="btn secondary" type="button" data-open-file="${file.id}">Open File</button>
+                <button class="btn secondary" type="button" data-delete-file="${file.id}">Delete File</button>
+              </div>
+            </article>
+          `;
+        })
+        .join("")
+    : `<div class="empty">No tax records have been uploaded yet.</div>`;
+}
+
 function computeProgress(assignments, workbookEntries, documentSubmissions = []) {
   const completedAssignments = assignments.filter((assignment) =>
     ["Approved", "Exceeds expectations"].includes(assignment.review_status),
@@ -1785,13 +1882,16 @@ function selectClassroomWeek(weekNumber, options = {}) {
 
 function renderClassroomDashboard(progress, profile) {
   const reviewedCount = countReviewedItems(state.assignments, state.documentSubmissions);
+  const taxFileCount = taxFiles().length;
+  const privateFileCount = nonTaxFiles().length;
 
   if (classroomWeekCount) classroomWeekCount.textContent = String(COURSE_WEEKS.length);
   if (classroomAssignmentCount) classroomAssignmentCount.textContent = String(state.assignments.length);
   if (classroomDiscussionCount) classroomDiscussionCount.textContent = String(DISCUSSION_TOPICS.length);
   if (classroomQuizCount) classroomQuizCount.textContent = String(CASEL_QUIZ_ADMINISTRATIONS.length);
   if (classroomDocumentCount) classroomDocumentCount.textContent = String(state.documentSubmissions.length);
-  if (classroomFileCount) classroomFileCount.textContent = String(state.files.length);
+  if (classroomFileCount) classroomFileCount.textContent = String(privateFileCount);
+  if (classroomTaxFileCount) classroomTaxFileCount.textContent = String(taxFileCount);
   if (classroomFeedbackCount) classroomFeedbackCount.textContent = String(reviewedCount);
   if (classroomCommunityCount) classroomCommunityCount.textContent = String(state.communityProfiles.length);
   if (classroomResourceCount) classroomResourceCount.textContent = String(DEFAULT_RESOURCES.length);
@@ -2180,6 +2280,7 @@ function renderLoggedOutState() {
   studentPortal.classList.remove("visible");
   clearStatus(bioStatus);
   clearStatus(fileUploadStatus);
+  clearStatus(taxUploadStatus);
   clearStatus(accountStatus);
   if (!passwordRecoveryMode) hidePasswordResetForm();
 }
@@ -2802,8 +2903,9 @@ function renderPortal(options = {}) {
       ? `${assignmentFeedbackHtml}${documentFeedbackHtml}`
       : `<div class="empty">No feedback has been saved on this account yet.</div>`;
 
-  fileList.innerHTML = state.files.length
-    ? state.files
+  const privateFiles = nonTaxFiles();
+  fileList.innerHTML = privateFiles.length
+    ? privateFiles
         .map(
           (file) => `
             <article class="resource-card">
@@ -2819,6 +2921,7 @@ function renderPortal(options = {}) {
         )
         .join("")
     : `<div class="empty">No private files have been uploaded yet.</div>`;
+  renderTaxFileList();
 
   communityDirectoryList.innerHTML = state.communityProfiles.length
     ? state.communityProfiles
@@ -3302,6 +3405,27 @@ function bindPortalActions() {
     });
   });
 
+  taxFileList?.querySelectorAll("[data-open-file]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      try {
+        await openFile(button.getAttribute("data-open-file"));
+      } catch (error) {
+        showStatus(taxUploadStatus, error.message);
+      }
+    });
+  });
+
+  taxFileList?.querySelectorAll("[data-delete-file]").forEach((button) => {
+    button.addEventListener("click", async () => {
+      try {
+        await deleteFile(button.getAttribute("data-delete-file"));
+        showStatus(taxUploadStatus, "Tax record deleted from your private storage.", "success");
+      } catch (error) {
+        showStatus(taxUploadStatus, error.message);
+      }
+    });
+  });
+
   communityDirectoryList.querySelectorAll("[data-open-community], [data-learn-community]").forEach((button) => {
     button.addEventListener("click", () => {
       const userId =
@@ -3349,6 +3473,65 @@ async function uploadSelectedFile() {
   fileUploadInput.value = "";
   await loadPortalData();
   showStatus(fileUploadStatus, "File uploaded to your private storage.", "success");
+}
+
+async function uploadTaxRecord(event) {
+  event.preventDefault();
+  if (!state.user) {
+    showStatus(taxUploadStatus, "Sign in before uploading tax records.");
+    return;
+  }
+
+  const file = taxFileInput?.files?.[0];
+  if (!file) {
+    showStatus(taxUploadStatus, "Choose a tax document first.");
+    return;
+  }
+
+  const year = taxYearInput?.value || String(new Date().getFullYear());
+  const period = taxPeriodInput?.value || "Annual";
+  const agency = taxAgencyInput?.value || "Other";
+  const documentType = taxDocumentTypeInput?.value || "Other tax document";
+  const amount = taxAmountInput?.value.trim() || "";
+  const notes = taxNotesInput?.value.trim() || "";
+  const originalName = safeFileName(file.name);
+  const storagePath = `${state.user.id}/tax-records/${safeFileName(year)}/${safeFileName(period)}/${Date.now()}-${safeFileName(documentType)}-${originalName}`;
+  const displayName = createTaxFileName({
+    year,
+    period,
+    agency,
+    documentType,
+    amount,
+    notes,
+    originalName: file.name,
+  });
+
+  showStatus(taxUploadStatus, "Uploading tax record to your private vault...");
+  const supabase = getSupabase();
+  const { error: uploadError } = await supabase.storage
+    .from(settings.storageBucket)
+    .upload(storagePath, file, {
+      cacheControl: "3600",
+      upsert: false,
+    });
+  if (uploadError) throw uploadError;
+
+  const { error: rowError } = await supabase.from("user_files").insert({
+    user_id: state.user.id,
+    file_name: displayName,
+    storage_path: storagePath,
+    mime_type: file.type || "application/octet-stream",
+    file_size_bytes: file.size || 0,
+  });
+  if (rowError) throw rowError;
+
+  taxUploadForm?.reset();
+  if (taxYearInput) taxYearInput.value = "2026";
+  if (taxPeriodInput) taxPeriodInput.value = "Q2";
+  if (taxAgencyInput) taxAgencyInput.value = "Utah State Tax Commission";
+  if (taxAmountInput) taxAmountInput.value = "$0.00";
+  await loadPortalData();
+  showStatus(taxUploadStatus, "Tax record saved in your private vault.", "success");
 }
 
 let selectedProfileImagePreviewUrl = "";
@@ -3849,6 +4032,14 @@ uploadFileBtn.addEventListener("click", async () => {
     await uploadSelectedFile();
   } catch (error) {
     showStatus(fileUploadStatus, error.message);
+  }
+});
+
+taxUploadForm?.addEventListener("submit", async (event) => {
+  try {
+    await uploadTaxRecord(event);
+  } catch (error) {
+    showStatus(taxUploadStatus, error.message);
   }
 });
 
