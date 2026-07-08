@@ -620,6 +620,36 @@
         font-size: 12px;
       }
 
+      .tax-vault-form {
+        display: grid;
+        gap: 16px;
+      }
+
+      .tax-vault-grid {
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 14px;
+      }
+
+      .tax-record-meta {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin: 10px 0 0;
+      }
+
+      .tax-record-meta span {
+        display: inline-flex;
+        align-items: center;
+        min-height: 30px;
+        padding: 0 10px;
+        border-radius: 999px;
+        background: rgba(24, 48, 79, 0.08);
+        color: var(--navy);
+        font-size: 12px;
+        font-weight: 800;
+      }
+
       .classroom-week-nav {
         display: grid;
         gap: 2px;
@@ -1693,6 +1723,10 @@
           grid-template-columns: 1fr;
         }
 
+        .tax-vault-grid {
+          grid-template-columns: 1fr;
+        }
+
         .classroom-sidebar {
           position: static;
         }
@@ -2032,6 +2066,7 @@
             <a class="classroom-tab" href="#classroom-quizzes" data-classroom-nav="quizzes">Quizzes</a>
             <a class="classroom-tab" href="#classroom-documents" data-classroom-nav="documents">Document Studio</a>
             <a class="classroom-tab" href="#classroom-submissions" data-classroom-nav="submissions">Submissions</a>
+            <a class="classroom-tab" href="#classroom-tax-vault" data-classroom-nav="tax-vault">Tax Vault</a>
             <a class="classroom-tab" href="#classroom-grades" data-classroom-nav="grades">Grades</a>
             <a class="classroom-tab" href="#classroom-community" data-classroom-nav="community">Classlist</a>
             <a class="classroom-tab" href="#classroom-resources" data-classroom-nav="resources">Resources</a>
@@ -2052,6 +2087,7 @@
               <a href="#classroom-quizzes" data-classroom-nav="quizzes">Quizzes <span class="classroom-nav-count" id="classroomQuizCount">3</span></a>
               <a href="#classroom-documents" data-classroom-nav="documents">Document Studio <span class="classroom-nav-count" id="classroomDocumentCount">0</span></a>
               <a href="#classroom-submissions" data-classroom-nav="submissions">Submissions <span class="classroom-nav-count" id="classroomFileCount">0</span></a>
+              <a href="#classroom-tax-vault" data-classroom-nav="tax-vault">Tax Vault <span class="classroom-nav-count" id="classroomTaxFileCount">0</span></a>
               <a href="#classroom-grades" data-classroom-nav="grades">Grades & Feedback <span class="classroom-nav-count" id="classroomFeedbackCount">0</span></a>
               <a href="#classroom-community" data-classroom-nav="community">Classlist <span class="classroom-nav-count" id="classroomCommunityCount">0</span></a>
               <a href="#classroom-resources" data-classroom-nav="resources">Resources <span class="classroom-nav-count" id="classroomResourceCount">0</span></a>
@@ -2296,6 +2332,90 @@
               </div>
               <div class="status-line" id="fileUploadStatus"></div>
               <div class="section-grid" id="fileList"></div>
+            </section>
+
+            <section class="classroom-section panel" id="classroom-tax-vault" data-classroom-view="tax-vault">
+              <div class="classroom-section-head">
+                <div>
+                  <div class="mini-label">Private Tax Vault</div>
+                  <h3>Business tax records</h3>
+                  <p class="classroom-section-copy">
+                    Store quarterly tax filings, transcripts, receipts, and confirmations in your private portal.
+                    Each file is labeled for tax year, quarter, agency, and form so it is easy to find at filing time.
+                  </p>
+                </div>
+              </div>
+              <form class="tax-vault-form" id="taxUploadForm">
+                <div class="tax-vault-grid">
+                  <label>
+                    Tax year
+                    <select id="taxYearInput">
+                      <option value="2026">2026</option>
+                      <option value="2025">2025</option>
+                      <option value="2024">2024</option>
+                    </select>
+                  </label>
+                  <label>
+                    Period
+                    <select id="taxPeriodInput">
+                      <option value="Q1">Q1 - Jan to Mar</option>
+                      <option value="Q2" selected>Q2 - Apr to Jun</option>
+                      <option value="Q3">Q3 - Jul to Sep</option>
+                      <option value="Q4">Q4 - Oct to Dec</option>
+                      <option value="Annual">Annual</option>
+                    </select>
+                  </label>
+                  <label>
+                    Agency
+                    <select id="taxAgencyInput">
+                      <option value="Utah State Tax Commission">Utah State Tax Commission</option>
+                      <option value="IRS">IRS</option>
+                      <option value="Utah Department of Commerce">Utah Department of Commerce</option>
+                      <option value="Other">Other</option>
+                    </select>
+                  </label>
+                </div>
+                <div class="tax-vault-grid">
+                  <label>
+                    Document type
+                    <select id="taxDocumentTypeInput">
+                      <option value="TC-941E Employer Withholding Return Transcript">TC-941E Employer Withholding Return Transcript</option>
+                      <option value="TC-62M Sales and Use Tax Return Transcript">TC-62M Sales and Use Tax Return Transcript</option>
+                      <option value="Tax payment receipt">Tax payment receipt</option>
+                      <option value="Filing confirmation">Filing confirmation</option>
+                      <option value="Business registration">Business registration</option>
+                      <option value="Other tax document">Other tax document</option>
+                    </select>
+                  </label>
+                  <label>
+                    Amount or status
+                    <input id="taxAmountInput" value="$0.00" placeholder="Example: $0.00 filed / paid" />
+                  </label>
+                  <label>
+                    PDF or document
+                    <input id="taxFileInput" type="file" accept=".pdf,.png,.jpg,.jpeg,.heic,.doc,.docx" />
+                  </label>
+                </div>
+                <label>
+                  Notes for tax time
+                  <textarea id="taxNotesInput" placeholder="Example: Q2 2026 Utah withholding transcript. No wages or withholding reported."></textarea>
+                </label>
+                <div class="assignment-actions">
+                  <button class="btn primary" type="submit">Upload Tax Record</button>
+                </div>
+                <div class="status-line" id="taxUploadStatus"></div>
+              </form>
+              <div class="student-help-box" style="margin-top:18px">
+                <strong>Suggested labels for the files you added today</strong>
+                <ol>
+                  <li>2026 Q2 - Utah State Tax Commission - TC-941E Employer Withholding Return Transcript - $0.00</li>
+                  <li>2026 Q2 - Utah State Tax Commission - TC-62M Sales and Use Tax Return Transcript - $0.00</li>
+                </ol>
+              </div>
+              <div style="margin-top: 18px">
+                <div class="mini-label">Saved tax records</div>
+                <div class="section-grid" id="taxFileList"></div>
+              </div>
             </section>
 
             <section class="classroom-section panel" id="classroom-grades" data-classroom-view="grades">
