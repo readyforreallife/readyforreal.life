@@ -1230,6 +1230,7 @@
     const ENDPOINT =
       "https://flat-flower-4af8mmmf-agreement-admin.mikeyterry44.workers.dev";
     const SESSION_KEY = "rrl_survey_results_admin_session";
+    const EDITS_KEY = "rrl_survey_result_edits_v1";
     const status = document.getElementById("liveStatus");
     let loading = false;
 
@@ -1289,6 +1290,14 @@
       }
     }
 
+    function readLocalEdits() {
+      try {
+        return JSON.parse(localStorage.getItem(EDITS_KEY) || "{}");
+      } catch (_error) {
+        return {};
+      }
+    }
+
     function isSurvey(entry, details) {
       return [
         entry.program,
@@ -1304,7 +1313,12 @@
 
     function toRow(entry) {
       const details = parseDetails(entry);
-      return {
+      const id =
+        entry.registrationId ||
+        entry.registration_id ||
+        `${entry.submittedAt || ""}-${entry.email || ""}`;
+      const base = {
+        id,
         submittedAt: entry.submittedAt || "",
         role: details.role || entry.role || "",
         need: details.need || "",
@@ -1312,6 +1326,10 @@
         support: details.support || "",
         trainingInterest: details.trainingInterest || "",
         topics: details.topics || "",
+      };
+      return {
+        ...base,
+        ...(readLocalEdits()[id] || {}),
       };
     }
 
@@ -1428,9 +1446,13 @@
 
       const consensus = section("What the Data Shows");
       updateBarRows(consensus, rows, "need", optionSets.needs.slice(0, 3));
+      const remaining = Math.max(0, total - needed);
+      const remainingSentence = remaining
+        ? `${remaining} response${remaining === 1 ? " was" : "s were"} outside those two direct-support categories.`
+        : "Every response fell into one of those two direct-support categories.";
       consensus.querySelector(".note").textContent =
         `Combined, ${percentage(needed, total, 1)}% of respondents said structured life skills instruction belongs in K-12 schools. ` +
-        `${count(rows, "need", optionSets.needs[3])} respondent${count(rows, "need", optionSets.needs[3]) === 1 ? "" : "s"} said it was not a priority.`;
+        remainingSentence;
 
       const grades = section("Where Should This Start?");
       updateBarRows(grades, rows, "gradeStart", optionSets.grades.slice(0, 4));
