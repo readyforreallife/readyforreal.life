@@ -4,7 +4,6 @@
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Our Philosophy | Ready for Real Life</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
 <style>
   :root {
     --ink: #0f1623;
@@ -21,7 +20,7 @@
   html { scroll-behavior: smooth; }
   @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
   body {
-    font-family: "DM Sans", sans-serif;
+    font-family: "Times New Roman", Times, serif;
     color: var(--ink);
     background:
       radial-gradient(circle at top left, rgba(200, 152, 68, 0.16), transparent 30%),
@@ -39,8 +38,8 @@
   .btn:focus-visible, a:focus-visible, button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
 
   .eyebrow, .section-label {
-    font-family: "DM Mono", monospace; font-size: 10.5px;
-    letter-spacing: 0.16em; text-transform: uppercase;
+    font-family: "Times New Roman", Times, serif; font-size: 15px;
+    letter-spacing: 0.04em; text-transform: none;
   }
 
   .hero {
@@ -75,9 +74,14 @@
     object-fit: contain;
     filter: drop-shadow(0 18px 24px rgba(10, 14, 22, 0.28));
   }
-  .hero .eyebrow { color: var(--gold); margin-bottom: 14px; }
+  .hero .eyebrow {
+    color: var(--gold);
+    margin-bottom: 16px;
+    font-size: clamp(1.15rem, 2.4vw, 1.55rem);
+    font-weight: 700;
+  }
   .hero h1 {
-    font-family: "Playfair Display", serif; font-weight: 900;
+    font-family: "Times New Roman", Times, serif; font-weight: 700;
     font-size: clamp(2rem, 6.5vw, 3.3rem); line-height: 1.08; margin-bottom: 16px;
   }
   .hero h1 em { font-style: italic; color: var(--gold); }
@@ -89,7 +93,7 @@
     box-shadow: 0 14px 30px rgba(36, 50, 75, 0.07);
   }
   .section-label { color: var(--gold); margin-bottom: 10px; font-weight: 500; }
-  h2 { font-family: "Playfair Display", serif; color: var(--slate); font-size: clamp(1.4rem, 4vw, 1.8rem); line-height: 1.2; margin-bottom: 14px; }
+  h2 { font-family: "Times New Roman", Times, serif; color: var(--slate); font-size: clamp(1.4rem, 4vw, 1.8rem); line-height: 1.2; margin-bottom: 14px; }
   .section p { line-height: 1.75; color: #3c4658; margin-bottom: 14px; font-size: 15.5px; }
   .section p:last-child { margin-bottom: 0; }
 
@@ -100,14 +104,14 @@
   }
   .statement .section-label { margin-bottom: 14px; }
   .statement blockquote {
-    font-family: "Playfair Display", serif; font-size: clamp(1.15rem, 3.6vw, 1.55rem);
+    font-family: "Times New Roman", Times, serif; font-size: clamp(1.15rem, 3.6vw, 1.55rem);
     font-weight: 700; line-height: 1.5; max-width: 680px; margin: 0 auto;
   }
   .statement blockquote em { color: var(--gold); font-style: italic; }
 
   .q-grid { display: grid; gap: 14px; margin-top: 6px; }
   .q-card { border: 1px solid var(--rule); border-radius: 18px; background: var(--white); padding: 20px; }
-  .q-card h3 { font-family: "Playfair Display", serif; color: var(--slate); font-size: 1.15rem; margin-bottom: 8px; }
+  .q-card h3 { font-family: "Times New Roman", Times, serif; color: var(--slate); font-size: 1.15rem; margin-bottom: 8px; }
   .q-card p { color: var(--muted); line-height: 1.7; font-size: 14.5px; margin: 0; }
 
   .ledger { margin-top: 8px; display: grid; gap: 10px; }
@@ -139,8 +143,8 @@
   .pillar {
     border-radius: 16px; background: var(--slate); color: #fff; padding: 18px 16px;
   }
-  .pillar .num { font-family: "DM Mono", monospace; font-size: 11px; color: var(--gold); letter-spacing: 0.14em; }
-  .pillar h3 { font-family: "DM Sans", sans-serif; font-size: 15px; margin-top: 6px; line-height: 1.35; }
+  .pillar .num { font-family: "Times New Roman", Times, serif; font-size: 13px; color: var(--gold); letter-spacing: 0.04em; }
+  .pillar h3 { font-family: "Times New Roman", Times, serif; font-size: 16px; margin-top: 6px; line-height: 1.35; }
 
   .callout {
     margin-top: 16px; border-left: 4px solid var(--gold); background: var(--gold-soft);
@@ -155,13 +159,13 @@
     box-shadow: 0 14px 30px rgba(36, 50, 75, 0.06);
   }
   .pullquote blockquote {
-    font-family: "Playfair Display", serif; font-weight: 700; font-style: italic;
+    font-family: "Times New Roman", Times, serif; font-weight: 700; font-style: italic;
     color: var(--slate); font-size: clamp(1.1rem, 3.4vw, 1.4rem); line-height: 1.5;
   }
   .pullquote cite {
     display: block; margin-top: 12px; font-style: normal;
-    font-family: "DM Mono", monospace; font-size: 11px;
-    letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+    font-family: "Times New Roman", Times, serif; font-size: 14px;
+    letter-spacing: 0.03em; text-transform: none; color: var(--muted);
   }
   .pullquote cite strong { color: var(--gold); font-weight: 500; }
 
@@ -170,7 +174,7 @@
     padding: 24px 22px; display: flex; flex-wrap: wrap; gap: 14px;
     justify-content: space-between; align-items: center;
   }
-  .footer-brand { font-family: "Playfair Display", serif; font-size: 15px; font-weight: 700; color: #f7f3ec; }
+  .footer-brand { font-family: "Times New Roman", Times, serif; font-size: 16px; font-weight: 700; color: #f7f3ec; }
   .footer-brand span { color: var(--gold); }
   .footer-contact { font-size: 12px; color: rgba(247,243,236,0.55); line-height: 1.7; }
   .footer-meta { font-size: 12px; color: rgba(247,243,236,0.4); text-align: right; line-height: 1.6; }
