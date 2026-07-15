@@ -1,0 +1,332 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Our Philosophy | Ready for Real Life</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;0,900;1,700&family=DM+Sans:wght@400;500;600;700&family=DM+Mono:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  :root {
+    --ink: #0f1623;
+    --paper: #f6f2e8;
+    --slate: #24324b;
+    --slate-deep: #1c2739;
+    --gold: #c89844;
+    --gold-soft: #f2e4c0;
+    --rule: #ddd5c6;
+    --muted: #667286;
+    --white: #ffffff;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) { html { scroll-behavior: auto; } }
+  body {
+    font-family: "DM Sans", sans-serif;
+    color: var(--ink);
+    background:
+      radial-gradient(circle at top left, rgba(200, 152, 68, 0.16), transparent 30%),
+      linear-gradient(180deg, #f8f4eb 0%, #f3ede2 100%);
+  }
+  .page { max-width: 940px; margin: 0 auto; padding: calc(env(safe-area-inset-top, 0px) + 18px) 16px calc(env(safe-area-inset-bottom, 0px) + 28px); }
+
+  .topbar { display: flex; flex-wrap: wrap; gap: 10px; margin-bottom: 16px; }
+  .btn {
+    display: inline-flex; align-items: center; justify-content: center;
+    min-height: 44px; padding: 0 16px; border-radius: 999px;
+    border: 1px solid var(--rule); background: rgba(255,255,255,0.92);
+    color: var(--slate); text-decoration: none; font-weight: 700; font-size: 14px;
+  }
+  .btn:focus-visible, a:focus-visible, button:focus-visible { outline: 3px solid var(--gold); outline-offset: 2px; }
+
+  .eyebrow, .section-label {
+    font-family: "DM Mono", monospace; font-size: 10.5px;
+    letter-spacing: 0.16em; text-transform: uppercase;
+  }
+
+  .hero {
+    border-radius: 24px;
+    background: linear-gradient(135deg, #24324b 0%, #314868 100%);
+    color: #fff; padding: 40px 24px 34px;
+    box-shadow: 0 18px 42px rgba(25, 35, 54, 0.14);
+    text-align: center;
+  }
+  .hero-logo {
+    width: 96px;
+    height: 96px;
+    margin: 0 auto 18px;
+    border-radius: 24px;
+    border: 1px solid rgba(200, 152, 68, 0.42);
+    background: rgba(255, 255, 255, 0.08);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 16px 34px rgba(15, 22, 35, 0.2);
+  }
+  .hero-logo img {
+    width: 84px;
+    height: 84px;
+    object-fit: contain;
+  }
+  .hero .eyebrow { color: var(--gold); margin-bottom: 14px; }
+  .hero h1 {
+    font-family: "Playfair Display", serif; font-weight: 900;
+    font-size: clamp(2rem, 6.5vw, 3.3rem); line-height: 1.08; margin-bottom: 16px;
+  }
+  .hero h1 em { font-style: italic; color: var(--gold); }
+  .hero p { color: rgba(255,255,255,0.86); line-height: 1.7; max-width: 620px; margin: 0 auto; font-size: 17px; }
+
+  .section {
+    margin-top: 18px; border-radius: 22px; border: 1px solid var(--rule);
+    background: rgba(255,255,255,0.92); padding: 26px 22px;
+    box-shadow: 0 14px 30px rgba(36, 50, 75, 0.07);
+  }
+  .section-label { color: var(--gold); margin-bottom: 10px; font-weight: 500; }
+  h2 { font-family: "Playfair Display", serif; color: var(--slate); font-size: clamp(1.4rem, 4vw, 1.8rem); line-height: 1.2; margin-bottom: 14px; }
+  .section p { line-height: 1.75; color: #3c4658; margin-bottom: 14px; font-size: 15.5px; }
+  .section p:last-child { margin-bottom: 0; }
+
+  .statement {
+    margin-top: 18px; border-radius: 22px; padding: 34px 26px;
+    background: var(--slate-deep); color: #fff; text-align: center;
+    border: 1px solid rgba(200,152,68,0.35);
+  }
+  .statement .section-label { margin-bottom: 14px; }
+  .statement blockquote {
+    font-family: "Playfair Display", serif; font-size: clamp(1.15rem, 3.6vw, 1.55rem);
+    font-weight: 700; line-height: 1.5; max-width: 680px; margin: 0 auto;
+  }
+  .statement blockquote em { color: var(--gold); font-style: italic; }
+
+  .q-grid { display: grid; gap: 14px; margin-top: 6px; }
+  .q-card { border: 1px solid var(--rule); border-radius: 18px; background: var(--white); padding: 20px; }
+  .q-card h3 { font-family: "Playfair Display", serif; color: var(--slate); font-size: 1.15rem; margin-bottom: 8px; }
+  .q-card p { color: var(--muted); line-height: 1.7; font-size: 14.5px; margin: 0; }
+
+  .ledger { margin-top: 8px; display: grid; gap: 10px; }
+  .ledger-row {
+    display: grid; grid-template-columns: 170px 1fr; gap: 6px 20px;
+    padding: 16px 18px; border: 1px solid var(--rule); border-radius: 14px;
+    background: var(--white); align-items: start;
+  }
+  .ledger-tradition {
+    font-family: "Playfair Display", serif; font-weight: 700;
+    color: var(--slate); font-size: 16px; line-height: 1.3;
+    grid-row: span 2; padding-top: 2px;
+  }
+  .ledger-keeps, .ledger-lives { font-size: 14px; line-height: 1.6; }
+  .ledger-keeps { color: #3c4658; }
+  .ledger-lives { color: var(--muted); }
+  .ledger-tag {
+    font-family: "DM Mono", monospace; font-size: 9.5px;
+    letter-spacing: 0.12em; text-transform: uppercase;
+    color: var(--gold); display: block; margin-bottom: 2px; font-weight: 500;
+  }
+  @media (max-width: 680px) {
+    .ledger-row { grid-template-columns: 1fr; gap: 10px; }
+    .ledger-tradition { grid-row: auto; border-bottom: 1px solid var(--rule); padding-bottom: 8px; }
+  }
+
+  .pillar-grid { display: grid; gap: 12px; grid-template-columns: 1fr 1fr; margin-top: 6px; }
+  .pillar {
+    border-radius: 16px; background: var(--slate); color: #fff; padding: 18px 16px;
+  }
+  .pillar .num { font-family: "DM Mono", monospace; font-size: 11px; color: var(--gold); letter-spacing: 0.14em; }
+  .pillar h3 { font-family: "DM Sans", sans-serif; font-size: 15px; margin-top: 6px; line-height: 1.35; }
+
+  .callout {
+    margin-top: 16px; border-left: 4px solid var(--gold); background: var(--gold-soft);
+    border-radius: 0 14px 14px 0; padding: 16px 18px;
+  }
+  .callout p { margin: 0; color: var(--slate); font-weight: 600; line-height: 1.65; font-size: 15px; }
+
+  .pullquote {
+    margin-top: 18px; padding: 26px 24px 22px;
+    border-radius: 20px; background: var(--white);
+    border: 1px solid var(--rule); border-left: 5px solid var(--gold);
+    box-shadow: 0 14px 30px rgba(36, 50, 75, 0.06);
+  }
+  .pullquote blockquote {
+    font-family: "Playfair Display", serif; font-weight: 700; font-style: italic;
+    color: var(--slate); font-size: clamp(1.1rem, 3.4vw, 1.4rem); line-height: 1.5;
+  }
+  .pullquote cite {
+    display: block; margin-top: 12px; font-style: normal;
+    font-family: "DM Mono", monospace; font-size: 11px;
+    letter-spacing: 0.14em; text-transform: uppercase; color: var(--muted);
+  }
+  .pullquote cite strong { color: var(--gold); font-weight: 500; }
+
+  .footer {
+    margin-top: 22px; border-radius: 20px; background: var(--slate-deep);
+    padding: 24px 22px; display: flex; flex-wrap: wrap; gap: 14px;
+    justify-content: space-between; align-items: center;
+  }
+  .footer-brand { font-family: "Playfair Display", serif; font-size: 15px; font-weight: 700; color: #f7f3ec; }
+  .footer-brand span { color: var(--gold); }
+  .footer-contact { font-size: 12px; color: rgba(247,243,236,0.55); line-height: 1.7; }
+  .footer-meta { font-size: 12px; color: rgba(247,243,236,0.4); text-align: right; line-height: 1.6; }
+
+  @media (max-width: 680px) {
+    .ledger-row { grid-template-columns: 1fr; gap: 4px; padding: 14px 4px; }
+    .ledger-row.head { display: none; }
+    .pillar-grid { grid-template-columns: 1fr; }
+    .footer { flex-direction: column; align-items: flex-start; }
+    .footer-meta { text-align: left; }
+  }
+  @media (min-width: 681px) {
+    .q-grid { grid-template-columns: repeat(3, 1fr); }
+  }
+</style>
+</head>
+<body>
+<main class="page">
+
+  <nav class="topbar" aria-label="Site navigation">
+    <a class="btn" href="index.html">Main Homepage</a>
+    <a class="btn" href="program.html">Program Overview</a>
+    <a class="btn" href="app.html">App Home</a>
+    <a class="btn" href="curriculum-library.html">Curriculum Library</a>
+    <a class="btn" href="survey.html">Community Survey</a>
+  </nav>
+
+  <section class="hero">
+    <div class="hero-logo">
+      <img
+        src="assets/rfrlei-logo.jpg"
+        alt="Ready for Real Life Instruction and Education logo"
+      />
+    </div>
+    <div class="eyebrow">Our Philosophy &bull; Ready for Real Life</div>
+    <h1>Prepared to Know.<br /><em>Ready to Live Well.</em></h1>
+    <p>Ready for Real Life Instruction and Education is built on one conviction: education should prepare students not only to know, but to live well.</p>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Where It Comes From</div>
+    <h2>This philosophy did not start in a classroom. It started on patrol.</h2>
+    <p>Co-founder Mike Terry spent nearly two decades in law enforcement and public service, including school resource officer work and youth instruction. Across thousands of calls, one pattern kept repeating: most crises did not begin with a lack of academic knowledge. They began with unmanaged emotion, a communication breakdown, an impulsive decision, or a refusal to take accountability.</p>
+    <p>Mike and Mekenzi Terry built Ready for Real Life on the belief that many of those outcomes can change when students learn decision-making, emotional regulation, respectful communication, accountability, and repair before adulthood, not after. Law enforcement responds after the bad decision. Education gets to work before it.</p>
+  </section>
+
+  <aside class="pullquote">
+    <blockquote><strong>&ldquo;If the world students will enter is real, then preparation for that world belongs in the curriculum.&rdquo;</strong></blockquote>
+    <cite><strong>Mike Terry</strong> &bull; Co-founder, Ready for Real Life</cite>
+  </aside>
+
+  <section class="statement" aria-label="Philosophy statement">
+    <div class="section-label">The Core Statement</div>
+    <blockquote>Education should develop judgment, character, communication, emotional regulation, accountability, and the ability to <em>transfer learning into real pressure moments</em>. Academic learning and life readiness are not competing goals. They are the same job, done completely.</blockquote>
+  </section>
+
+  <section class="section">
+    <div class="section-label">Three Questions Every Curriculum Answers</div>
+    <h2>What is real, how do students learn, and what is worth teaching on purpose</h2>
+    <div class="q-grid">
+      <div class="q-card">
+        <h3>What is real for students?</h3>
+        <p>Real life includes pressure, conflict, emotion, digital permanence, family, work, and consequences. A curriculum that treats these as distractions from real learning has it backwards. This curriculum treats them as legitimate educational content.</p>
+      </div>
+      <div class="q-card">
+        <h3>How do students learn these skills?</h3>
+        <p>Not by hearing them described once. Skills are named and taught explicitly, practiced in realistic scenarios, processed through reflection, and assessed in unfamiliar situations. The design standard is transfer, not coverage.</p>
+      </div>
+      <div class="q-card">
+        <h3>What is worth teaching on purpose?</h3>
+        <p>Every classroom teaches values through what it rewards, tolerates, and ignores. This curriculum teaches respect, dignity, self-control, accountability, and repair intentionally, so they become observable and practiced rather than assumed.</p>
+      </div>
+    </div>
+  </section>
+
+  <aside class="pullquote">
+    <blockquote><strong>&ldquo;Foundational knowledge and skills must be taught directly, and hoping students absorb them is not a method.&rdquo;</strong></blockquote>
+    <cite><strong>Mike Terry</strong> &bull; Co-founder, Ready for Real Life</cite>
+  </aside>
+
+  <section class="section">
+    <div class="section-label">Ten Traditions, One Philosophy</div>
+    <h2>Built deliberately from the strongest ideas in educational thought</h2>
+    <p>No single tradition of educational philosophy fully prepares students for the world they will enter. Each contributes something the others lack. Ready for Real Life draws deliberately from ten of them.</p>
+    <div class="ledger">
+      <div class="ledger-row">
+        <div class="ledger-tradition">Idealism</div>
+        <div class="ledger-keeps"><span class="ledger-tag">What it contributes</span>Character, truth, and moral formation</div>
+        <div class="ledger-lives"><span class="ledger-tag">Where it lives in the curriculum</span>Respect and dignity woven through every module</div>
+      </div>
+      <div class="ledger-row">
+        <div class="ledger-tradition">Realism</div>
+        <div class="ledger-keeps"><span class="ledger-tag">What it contributes</span>Preparation for the world as it actually is</div>
+        <div class="ledger-lives"><span class="ledger-tag">Where it lives in the curriculum</span>Practical skills and real consequences</div>
+      </div>
+      <div class="ledger-row">
+        <div class="ledger-tradition">Perennialism</div>
+        <div class="ledger-keeps"><span class="ledger-tag">What it contributes</span>Values that do not expire</div>
+        <div class="ledger-lives"><span class="ledger-tag">Where it lives in the curriculum</span>Manners, honesty, and accountability</div>
+      </div>
+      <div class="ledger-row">
+        <div class="ledger-tradition">Essentialism</div>
+        <div class="ledger-keeps"><span class="ledger-tag">What it contributes</span>Explicit instruction and clear standards</div>
+        <div class="ledger-lives"><span class="ledger-tag">Where it lives in the curriculum</span>Structured, sequenced, measurable curriculum</div>
+      </div>
+      <div class="ledger-row">
+        <div class="ledger-tradition">Pragmatism</div>
+        <div class="ledger-keeps"><span class="ledger-tag">What it contributes</span>Learning tested by doing</div>
+        <div class="ledger-lives"><span class="ledger-tag">Where it lives in the curriculum</span>Scenario practice and role play</div>
+      </div>
+      <div class="ledger-row">
+        <div class="ledger-tradition">Progressivism</div>
+        <div class="ledger-keeps"><span class="ledger-tag">What it contributes</span>Learning connected to students' lives</div>
+        <div class="ledger-lives"><span class="ledger-tag">Where it lives in the curriculum</span>Relevant, active participation</div>
+      </div>
+      <div class="ledger-row">
+        <div class="ledger-tradition">Social Reconstruction</div>
+        <div class="ledger-keeps"><span class="ledger-tag">What it contributes</span>Schools serve their communities</div>
+        <div class="ledger-lives"><span class="ledger-tag">Where it lives in the curriculum</span>Conflict navigation and digital citizenship</div>
+      </div>
+      <div class="ledger-row">
+        <div class="ledger-tradition">Humanism</div>
+        <div class="ledger-keeps"><span class="ledger-tag">What it contributes</span>The whole person matters</div>
+        <div class="ledger-lives"><span class="ledger-tag">Where it lives in the curriculum</span>Emotional intelligence and personal growth</div>
+      </div>
+      <div class="ledger-row">
+        <div class="ledger-tradition">Existentialism</div>
+        <div class="ledger-keeps"><span class="ledger-tag">What it contributes</span>Choice, ownership, and responsibility</div>
+        <div class="ledger-lives"><span class="ledger-tag">Where it lives in the curriculum</span>Decision frameworks, accountability, and repair</div>
+      </div>
+      <div class="ledger-row">
+        <div class="ledger-tradition">Emerging Reform</div>
+        <div class="ledger-keeps"><span class="ledger-tag">What it contributes</span>Evidence, measurement, and the whole child</div>
+        <div class="ledger-lives"><span class="ledger-tag">Where it lives in the curriculum</span>CASEL informed design with pre and post assessment</div>
+      </div>
+    </div>
+  </section>
+
+  <aside class="pullquote">
+    <blockquote><strong>&ldquo;Students learn best when their dignity and emotional state are taken seriously.&rdquo;</strong></blockquote>
+    <cite><strong>Mike Terry</strong> &bull; Co-founder, Ready for Real Life</cite>
+  </aside>
+
+  <section class="section">
+    <div class="section-label">Philosophy in Practice</div>
+    <h2>How the philosophy shows up in Modern Manners and Mental Fortitude</h2>
+    <p>The curriculum is organized around four core pillars, delivered through five modules and reinforced with two student frameworks for regulation and decision-making. Every skill is taught explicitly, practiced under realistic pressure, and assessed for transfer to situations students have not rehearsed.</p>
+    <div class="pillar-grid">
+      <div class="pillar"><span class="num">01</span><h3>Respectful Communication</h3></div>
+      <div class="pillar"><span class="num">02</span><h3>Emotional Regulation</h3></div>
+      <div class="pillar"><span class="num">03</span><h3>Decision-Making Under Pressure</h3></div>
+      <div class="pillar"><span class="num">04</span><h3>Accountability &amp; Repair</h3></div>
+    </div>
+    <div class="callout">
+      <p>Modern Manners and Mental Fortitude is designed to complement what teachers and existing programs already do, never to replace them, and never to add to a teacher's load.</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <div>
+      <div class="footer-brand">Ready for Real Life <span>&middot;</span> Instruction and Education</div>
+      <div class="footer-contact">readyforreal.life &bull; readyforreal.life44@gmail.com</div>
+    </div>
+    <div class="footer-meta">Mike &amp; Mekenzi Terry<br />Tooele, Utah</div>
+  </footer>
+
+</main>
+</body>
+</html>
