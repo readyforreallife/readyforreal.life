@@ -589,6 +589,14 @@
         padding: 60px;
         border-bottom: 1px solid var(--rule);
       }
+      .safety-offer-grid { display: grid; grid-template-columns: 1.1fr 1fr; gap: 48px; align-items: center; }
+      .safety-review-details { background: var(--paper); border: 1px solid var(--rule); border-top: 4px solid var(--teal); border-radius: 16px; padding: 28px; color: var(--slate); }
+      .safety-review-details h3 { font-family: "Playfair Display", serif; font-size: 1.5rem; margin: 0 0 18px; }
+      .safety-review-details ul { padding-left: 20px; margin: 0; line-height: 1.65; }
+      .safety-review-details li { padding: 4px 0; }
+      .safety-review-details li::marker { color: var(--teal); }
+      .safety-review-followup { margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--rule); color: var(--sage); font-weight: 600; line-height: 1.6; }
+      @media (max-width: 900px) { .safety-offer-grid { grid-template-columns: 1fr; gap: 28px; } .safety-review-details { padding: 24px; } }
       .section.alt {
         background: var(--white);
       }
@@ -2703,6 +2711,8 @@
       </div>
 
       <section class="section gold-bg" id="safety-preparedness" aria-labelledby="safety-preparedness-title">
+        <div class="safety-offer-grid">
+        <div>
         <p class="section-label">Safety &amp; Preparedness</p>
         <h2 class="section-title" id="safety-preparedness-title">Ready for Real Life Safety</h2>
         <p style="max-width: 680px; line-height: 1.7; margin-bottom: 20px;">
@@ -2712,6 +2722,18 @@
           <strong>Founding Client Remote Safety &amp; Preparedness Review: $499</strong>
         </p>
         <a class="access-btn" href="https://ready-for-real-life-safety.netlify.app">Learn About Safety &amp; Preparedness</a>
+        </div>
+        <aside class="safety-review-details" aria-labelledby="safety-review-includes">
+          <h3 id="safety-review-includes">What your review includes</h3>
+          <ul>
+            <li>Executive summary of preparedness gaps and inconsistencies</li>
+            <li>Roles, responsibilities, and emergency communications</li>
+            <li>General access, accountability, and training observations</li>
+            <li>Prioritized recommendations and a 30/60/90-day improvement roadmap</li>
+          </ul>
+          <p class="safety-review-followup">Includes a 30-minute virtual findings review to walk through your next steps.</p>
+        </aside>
+        </div>
       </section>
 
       <div class="protected-shell">
