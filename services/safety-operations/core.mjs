@@ -47,7 +47,8 @@ export function createSafety({config,supabase,stripe,sendEmail,now=Date.now}){
  CREATE TABLE IF NOT EXISTS engagements(id TEXT PRIMARY KEY,session_id TEXT UNIQUE NOT NULL,status TEXT NOT NULL DEFAULT 'Paid',intake TEXT,ack_version TEXT,ack_at INTEGER,created_at INTEGER NOT NULL,email_sent INTEGER,attempts INTEGER NOT NULL DEFAULT 0,next_attempt INTEGER NOT NULL);
  CREATE TABLE IF NOT EXISTS grants(hash TEXT PRIMARY KEY,engagement_id TEXT NOT NULL,expires_at INTEGER NOT NULL);
  CREATE TABLE IF NOT EXISTS uploads(id TEXT PRIMARY KEY,engagement_id TEXT NOT NULL,name TEXT NOT NULL,path TEXT NOT NULL,mime TEXT NOT NULL,category TEXT NOT NULL,ready INTEGER NOT NULL DEFAULT 0);
- CREATE TABLE IF NOT EXISTS audit(id INTEGER PRIMARY KEY,engagement_id TEXT,actor TEXT NOT NULL,action TEXT NOT NULL,created_at INTEGER NOT NULL);`);
+ CREATE TABLE IF NOT EXISTS audit(id INTEGER PRIMARY KEY,engagement_id TEXT,actor TEXT NOT NULL,action TEXT NOT NULL,created_at INTEGER NOT NULL);
+ CREATE TABLE IF NOT EXISTS lead_confirmations(submission_id TEXT PRIMARY KEY,email TEXT NOT NULL,created_at INTEGER NOT NULL,sent_at INTEGER);`);
  async function staff(jwt){
   if(!jwt)throw new HttpError(401,'Sign in required');
   const {data,error}=await supabase.auth.getUser(jwt);
@@ -90,6 +91,32 @@ export function createSafety({config,supabase,stripe,sendEmail,now=Date.now}){
    }
   }finally{running=false;}
  }
+
+ async function formSubmission(submission){
+  if(!submission||submission.form_name!=='safety-review-request')return {accepted:true};
+  const id=String(submission.id||'').trim();
+  const data=submission.data||{};
+  const email=String(data.email||submission.email||'').trim();
+  const name=String(data.name||submission.name||'').trim().slice(0,120);
+  if(!id||!email||!/^[^\\s<>@,;]+@[^\\s<>@,;]+\\.[^\\s<>@,;]+$/.test(email))throw new HttpError(400,'Invalid form submission');
+  const prior=db.prepare('SELECT sent_at FROM lead_confirmations WHERE submission_id=?').get(id);
+  if(prior?.sent_at)return {accepted:true,duplicate:true};
+  db.prepare('INSERT OR IGNORE INTO lead_confirmations(submission_id,email,created_at) VALUES(?,?,?)').run(id,email,now());
+  try{
+   const greeting=name?name+',':'Hello,';
+   await sendEmail({
+    to:{address:email},
+    subject:'Ready for Real Life Safety — Request Received',
+    text:greeting+'\\n\\nThank you for requesting a Ready for Real Life Safety review. Your request has been received.\\n\\nI will personally review the information you submitted and follow up with you regarding next steps. If the review appears to be a good fit for your organization, I will send you a secure link to complete the $499 Founding Client payment and begin the review process.\\n\\nNo payment has been collected at this point.\\n\\nPlease avoid sending sensitive operational information by email.\\n\\nMike\\nReady for Real Life Safety'
+   });
+   db.prepare('UPDATE lead_confirmations SET sent_at=? WHERE submission_id=?').run(now(),id);
+   return {accepted:true,confirmed:true};
+  }catch{
+   db.prepare('DELETE FROM lead_confirmations WHERE submission_id=? AND sent_at IS NULL').run(id);
+   throw new HttpError(503,'Confirmation email temporarily unavailable');
+  }
+ }
+
  async function client(token){
   if(!token||!/^[A-Za-z0-9_-]{43}$/.test(token))throw new HttpError(401,'Use the private link emailed after payment');
   const e=db.prepare('SELECT e.* FROM engagements e JOIN grants g ON g.engagement_id=e.id WHERE g.hash=? AND g.expires_at>?').get(hash(token),now());
@@ -136,5 +163,5 @@ export function createSafety({config,supabase,stripe,sendEmail,now=Date.now}){
   }
   throw new HttpError(404,'Not found');
  }
- return {route,webhook,queue,db,staff,client,paid};
+ return {route,webhook,formSubmission,queue,db,staff,client,paid};
 }
