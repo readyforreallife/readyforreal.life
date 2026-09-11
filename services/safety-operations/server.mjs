@@ -1,5 +1,5 @@
 import {createServer} from 'node:http';
-import {mkdirSync,realpathSync} from 'node:fs';
+import {mkdirSync,realpathSync,statSync,writeFileSync,unlinkSync} from 'node:fs';
 import {dirname,resolve,relative,isAbsolute} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import Stripe from 'stripe';
@@ -64,6 +64,22 @@ async function main(){
   return sb;
  });
 
+ await stage('Private data filesystem check',async()=>{
+  const dir=dirname(dbPath);
+  const s=statSync(dir);
+  const mode=(s.mode & 0o777).toString(8).padStart(3,'0');
+  console.info('Private data filesystem diagnostic: exists=yes uid='+s.uid+' gid='+s.gid+' mode='+mode);
+  const probe=resolve(dir,'.write-probe-'+process.pid);
+  try{
+   writeFileSync(probe,'ok',{flag:'wx',mode:0o600});
+   console.info('Private data filesystem diagnostic: write=yes');
+  }catch(error){
+   console.error('Private data filesystem diagnostic: write=no code='+(error?.code||'no-code'));
+   throw error;
+  }finally{
+   try{unlinkSync(probe);}catch{}
+  }
+ });
  const sendEmail=await stage('Gmail authorization',()=>createMailer());
  const service=await stage('Safety database initialization',async()=>{
   try { return createSafety({config,supabase:sb,stripe,sendEmail}); }
