@@ -65,7 +65,13 @@ async function main(){
  });
 
  const sendEmail=await stage('Gmail authorization',()=>createMailer());
- const service=await stage('Safety database initialization',async()=>createSafety({config,supabase:sb,stripe,sendEmail}));
+ const service=await stage('Safety database initialization',async()=>{
+  try { return createSafety({config,supabase:sb,stripe,sendEmail}); }
+  catch (error) {
+    console.error('Safety database diagnostic:', error?.name || 'Error', error?.code || 'no-code', error?.message || 'no-message');
+    throw error;
+  }
+});
 
  await stage('HTTP server startup',async()=>{
   const server=httpServer(service,site.origin);server.requestTimeout=60000;server.headersTimeout=15000;
