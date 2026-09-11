@@ -2,16 +2,19 @@ import nodemailer from 'nodemailer';
 
 // Credentials stay in the hosting environment. Never include provider responses in errors.
 export async function createMailer(env=process.env, request=fetch){
- const need=k=>{if(!env[k])throw Error('Missing '+k);return env[k];};
+ const need=k=>{if(!env[k]){console.error('Gmail authorization diagnostic: missing '+k);throw Error('Missing '+k);}return env[k];};
+ const provider=env.MAIL_PROVIDER||'smtp';
+ console.info('Mail provider selected: '+provider);
  const from=need('MAIL_FROM');
- if((env.MAIL_PROVIDER||'smtp')==='smtp'){
+ if(provider==='smtp'){
   const port=Number(need('SMTP_PORT'));if(![465,587].includes(port))throw Error('SMTP requires TLS');
   const mail=nodemailer.createTransport({host:need('SMTP_HOST'),port,secure:port===465,requireTLS:true,auth:{user:need('SMTP_USER'),pass:need('SMTP_PASS')},connectionTimeout:15000,socketTimeout:30000});
   await mail.verify();
   return async message=>{const r=await mail.sendMail({...message,from});if(!r.accepted?.length||r.rejected?.length)throw Error('Email rejected');};
  }
- if(env.MAIL_PROVIDER!=='gmail')throw Error('Invalid mail provider');
+ if(provider!=='gmail'){console.error('Gmail authorization diagnostic: invalid MAIL_PROVIDER');throw Error('Invalid mail provider');}
  const client=need('GMAIL_CLIENT_ID'),secret=need('GMAIL_CLIENT_SECRET'),refresh=need('GMAIL_REFRESH_TOKEN');
+ console.info('Gmail credential names present: client_id=yes client_secret=yes refresh_token=yes');
  let token,expires=0;
  async function access(){
   if(token&&Date.now()<expires)return token;
