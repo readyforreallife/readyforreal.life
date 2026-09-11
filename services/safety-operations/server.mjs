@@ -1,4 +1,5 @@
 import {createServer} from 'node:http';
+import {createHash,createHmac,timingSafeEqual} from 'node:crypto';
 import {mkdirSync,realpathSync,statSync,writeFileSync,unlinkSync} from 'node:fs';
 import {dirname,resolve,relative,isAbsolute} from 'node:path';
 import {fileURLToPath} from 'node:url';
@@ -6,6 +7,19 @@ import Stripe from 'stripe';
 import {createMailer} from './mail.mjs';
 import {createClient} from '@supabase/supabase-js';
 import {createSafety,HttpError} from './core.mjs';
+
+
+function verifyNetlifyFormSignature(token,raw,secret){
+ if(!secret||typeof token!=='string')return false;
+ const parts=token.split('.');if(parts.length!==3)return false;
+ let header,payload;
+ try{header=JSON.parse(Buffer.from(parts[0],'base64url').toString());payload=JSON.parse(Buffer.from(parts[1],'base64url').toString());}catch{return false;}
+ if(header.alg!=='HS256'||payload.iss!=='netlify')return false;
+ const expected=createHmac('sha256',secret).update(parts[0]+'.'+parts[1]).digest();
+ let actual;try{actual=Buffer.from(parts[2],'base64url');}catch{return false;}
+ if(actual.length!==expected.length||!timingSafeEqual(actual,expected))return false;
+ return payload.sha256===createHash('sha256').update(raw).digest('hex');
+}
 
 export function httpServer(service,siteOrigin){return createServer(async(req,res)=>{
  const origin=req.headers.origin;
@@ -22,6 +36,11 @@ export function httpServer(service,siteOrigin){return createServer(async(req,res
   for await(const chunk of req){size+=chunk.length;if(size>max)throw new HttpError(413,'Request too large');chunks.push(chunk);}
   const raw=Buffer.concat(chunks);
   if(path==='/stripe/webhook'&&req.method==='POST')return send(200,await service.webhook(raw,req.headers['stripe-signature']));
+  if(path==='/netlify/review-request'&&req.method==='POST'){
+   if(!verifyNetlifyFormSignature(req.headers['x-webhook-signature'],raw,process.env.NETLIFY_FORM_WEBHOOK_SECRET))throw new HttpError(403,'Invalid signature');
+   let submission;try{submission=JSON.parse(raw.toString());}catch{throw new HttpError(400,'Invalid request');}
+   return send(200,await service.formSubmission(submission));
+  }
   let body={};if(raw.length){try{body=JSON.parse(raw.toString());}catch{throw new HttpError(400,'Invalid request');}}
   const auth=req.headers.authorization||'',token=auth.startsWith('Bearer ')?auth.slice(7):'';
   const result=await service.route(req.method,path,token,body);
