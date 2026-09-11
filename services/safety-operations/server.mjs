@@ -6,6 +6,7 @@ import Stripe from 'stripe';
 import {createMailer} from './mail.mjs';
 import {createClient} from '@supabase/supabase-js';
 import {createSafety,HttpError} from './core.mjs';
+
 export function httpServer(service,siteOrigin){return createServer(async(req,res)=>{
  const origin=req.headers.origin;
  const headers={'Cache-Control':'no-store','Referrer-Policy':'no-referrer','X-Content-Type-Options':'nosniff','Content-Security-Policy':"default-src 'none'; frame-ancestors 'none'",'Vary':'Origin'};
@@ -28,27 +29,52 @@ export function httpServer(service,siteOrigin){return createServer(async(req,res
   send(200,result);
  }catch(e){send(e.status||503,{error:e.status?e.message:'Safety service temporarily unavailable'});}
  });}
+
+async function stage(name,fn){
+ console.info(`Safety startup stage: ${name}`);
+ try{return await fn();}
+ catch{console.error(`Safety startup stage failed: ${name}`);throw new Error('startup stage failed');}
+}
+
 async function main(){
  process.umask(0o077);
  const need=k=>{if(!process.env[k])throw new Error('Missing '+k);return process.env[k];};
- const site=new URL(need('SITE_ORIGIN'));if(site.protocol!=='https:'||site.pathname!=='/'||site.search||site.hash||site.username||site.password)throw new Error('Use an HTTPS site origin');
- const dbPath=need('DATABASE_PATH');if(!isAbsolute(dbPath))throw new Error('Use an absolute private database path');
- const checkout=resolve(dirname(fileURLToPath(import.meta.url)),'../..');mkdirSync(dirname(dbPath),{recursive:true,mode:0o700});
- if(!relative(checkout,realpathSync(dirname(dbPath))).startsWith('../'))throw new Error('Database must be outside website');
- const mode=need('STRIPE_MODE');if(!['live','test'].includes(mode))throw new Error('Invalid mode');
- const config={dbPath,siteOrigin:site.origin,live:mode==='live',paymentLinkId:need('SAFETY_STRIPE_PAYMENT_LINK_ID'),priceId:need('SAFETY_STRIPE_PRICE_ID'),webhookSecret:need('SAFETY_STRIPE_WEBHOOK_SECRET')};
- const stripe=new Stripe(need('STRIPE_RESTRICTED_KEY'),{timeout:15000,maxNetworkRetries:2});
- const link=await stripe.paymentLinks.retrieve(config.paymentLinkId),price=await stripe.prices.retrieve(config.priceId);
- const items=await stripe.paymentLinks.listLineItems(config.paymentLinkId,{limit:2});
- if(!link.active||link.livemode!==config.live||price.livemode!==config.live||price.unit_amount!==49900||price.currency!=='usd'||price.type!=='one_time'||items.has_more||items.data.length!==1||items.data[0].price.id!==config.priceId||items.data[0].quantity!==1)throw new Error('Incorrect Safety checkout configuration');
- const sb=createClient(need('SUPABASE_URL'),need('SUPABASE_SERVICE_ROLE_KEY'),{auth:{persistSession:false,autoRefreshToken:false}});
- for(const bucket of ['safety-operations','safety-client-uploads']){const {data,error}=await sb.storage.getBucket(bucket);if(error||!data||data.public)throw new Error('Required private bucket unavailable');}
- const sendEmail=await createMailer();
+
+ const {site,dbPath,config}=await stage('environment validation',async()=>{
+  const site=new URL(need('SITE_ORIGIN'));if(site.protocol!=='https:'||site.pathname!=='/'||site.search||site.hash||site.username||site.password)throw new Error('Use an HTTPS site origin');
+  const dbPath=need('DATABASE_PATH');if(!isAbsolute(dbPath))throw new Error('Use an absolute private database path');
+  const checkout=resolve(dirname(fileURLToPath(import.meta.url)),'../..');mkdirSync(dirname(dbPath),{recursive:true,mode:0o700});
+  if(!relative(checkout,realpathSync(dirname(dbPath))).startsWith('../'))throw new Error('Database must be outside website');
+  const mode=need('STRIPE_MODE');if(!['live','test'].includes(mode))throw new Error('Invalid mode');
+  const config={dbPath,siteOrigin:site.origin,live:mode==='live',paymentLinkId:need('SAFETY_STRIPE_PAYMENT_LINK_ID'),priceId:need('SAFETY_STRIPE_PRICE_ID'),webhookSecret:need('SAFETY_STRIPE_WEBHOOK_SECRET')};
+  return {site,dbPath,config};
+ });
+
+ const stripe=await stage('Stripe configuration check',async()=>{
+  const stripe=new Stripe(need('STRIPE_RESTRICTED_KEY'),{timeout:15000,maxNetworkRetries:2});
+  const link=await stripe.paymentLinks.retrieve(config.paymentLinkId),price=await stripe.prices.retrieve(config.priceId);
+  const items=await stripe.paymentLinks.listLineItems(config.paymentLinkId,{limit:2});
+  if(!link.active||link.livemode!==config.live||price.livemode!==config.live||price.unit_amount!==49900||price.currency!=='usd'||price.type!=='one_time'||items.has_more||items.data.length!==1||items.data[0].price.id!==config.priceId||items.data[0].quantity!==1)throw new Error('Incorrect Safety checkout configuration');
+  return stripe;
+ });
+
+ const sb=await stage('Supabase private bucket checks',async()=>{
+  const sb=createClient(need('SUPABASE_URL'),need('SUPABASE_SERVICE_ROLE_KEY'),{auth:{persistSession:false,autoRefreshToken:false}});
+  for(const bucket of ['safety-operations','safety-client-uploads']){const {data,error}=await sb.storage.getBucket(bucket);if(error||!data||data.public)throw new Error('Required private bucket unavailable');}
+  return sb;
+ });
+
+ const sendEmail=await stage('Gmail authorization',()=>createMailer());
  const service=createSafety({config,supabase:sb,stripe,sendEmail});
- const server=httpServer(service,site.origin);server.requestTimeout=60000;server.headersTimeout=15000;
- server.listen(Number(process.env.PORT||8789),process.env.HOST||'127.0.0.1');
- const run=()=>service.queue().catch(()=>console.warn('Safety invitation queue needs attention'));
- const interval=setInterval(run,15000);run();
- process.on('SIGTERM',()=>{clearInterval(interval);server.close(()=>process.exit(0));});console.info('Safety operations service started');
+
+ await stage('HTTP server startup',async()=>{
+  const server=httpServer(service,site.origin);server.requestTimeout=60000;server.headersTimeout=15000;
+  server.listen(Number(process.env.PORT||8789),process.env.HOST||'127.0.0.1');
+  const run=()=>service.queue().catch(()=>console.warn('Safety invitation queue needs attention'));
+  const interval=setInterval(run,15000);run();
+  process.on('SIGTERM',()=>{clearInterval(interval);server.close(()=>process.exit(0));});
+  console.info('Safety operations service started');
+ });
 }
-if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))main().catch(()=>{console.error('Safety service startup failed; check private configuration and provider connections');process.exitCode=1;});
+
+if(process.argv[1]&&resolve(process.argv[1])===fileURLToPath(import.meta.url))main().catch(()=>{console.error('Safety service startup failed; see stage label above');process.exitCode=1;});
