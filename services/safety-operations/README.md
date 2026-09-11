@@ -54,3 +54,29 @@ The included Dockerfile builds only backend runtime code and production dependen
 Run `npm run preflight` with server configuration injected privately. It checks required names, DNS, staff allowlist, bucket privacy, library completeness, Stripe price/link, and SMTP connectivity without sending email or charging. Run `npm run test:deployed` with `SAFETY_ACCEPTANCE_API_ORIGIN`, `SAFETY_ACCEPTANCE_SUPABASE_ORIGIN`, privately supplied `SAFETY_ACCEPTANCE_STUDENT_JWT` and `SAFETY_ACCEPTANCE_OWNER_JWT`, and a known existing sandbox `SAFETY_ACCEPTANCE_UPLOAD_OBJECT_PATH`. These read-only probes return BLOCKED for missing configuration; neither script alone grants release approval. Never place test JWTs in source or shell history.
 
 Stripe still required: server restricted key with read access to Checkout Sessions, Payment Links, Prices, PaymentIntents and Charges; the Safety $499 USD one-time Price and Payment Link IDs; webhook endpoint `/stripe/webhook` subscribed to `checkout.session.completed` and `checkout.session.async_payment_succeeded`; its endpoint-specific signing secret; matching `STRIPE_MODE`. Keep sandbox and live values separate. Email still required: TLS SMTP host/port, username/password, verified `MAIL_FROM`, provider sender-domain verification, and actual delivery/bounce testing. Supabase still required: accessible project, private service-role credential, migration applied, verified Mike/staff UUIDs, and private library upload. Backend host/HTTPS origin and persistent disk remain required.
+
+### Gmail API on Railway trial (setup in progress)
+
+Railway Free/Trial/Hobby blocks SMTP. Set `MAIL_PROVIDER=gmail` and supply
+`GMAIL_CLIENT_ID`, `GMAIL_CLIENT_SECRET`, `GMAIL_REFRESH_TOKEN` privately in Railway,
+plus `MAIL_FROM=Ready for Real Life <readyforreal.life44@gmail.com>`.
+SMTP variables are ignored in Gmail mode; the Google app password is not an OAuth token.
+Google project `fiery-catwalk-508323-v8` (Ready for Real Life Safety) was created under
+the sender account. Gmail API is enabled; OAuth setup and owner consent remain pending.
+Request only `https://www.googleapis.com/auth/gmail.send`, with offline access.
+Store the refresh token and client secret only in host secrets. Do not put tokens in
+URLs, repository files, screenshots, logs, or frontend configuration. Google testing
+status can cause refresh tokens to expire after seven days; resolve the application's
+production/personal-use authorization requirements before launch.
+
+The adapter refreshes access tokens over HTTPS and sends base64url MIME to Gmail's
+`users.messages.send` endpoint. Startup/preflight refreshes credentials without sending
+mail; this is not proof of delivery or sender identity. Actual owner-authorized delivery
+and the full purchase/intake cycle must still pass. Provider failures are redacted and
+propagate to the existing durable invitation retry queue.
+
+The verified live Safety link is https://buy.stripe.com/aFa4gz9pb6ei4Cp3AgdIA02,
+`plink_1UEHEiHxARbOlLQylbAjhLjg`, price `price_1UEHEPHxARbOlLQy0u9HWc4F`.
+Do not combine these live IDs with `STRIPE_MODE=test`; provision separate sandbox
+configuration for acceptance. The live link has automatic tax enabled; payment
+verification must be tested with applicable tax before release.

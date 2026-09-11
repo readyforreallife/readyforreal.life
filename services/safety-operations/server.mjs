@@ -3,7 +3,7 @@ import {mkdirSync,realpathSync} from 'node:fs';
 import {dirname,resolve,relative,isAbsolute} from 'node:path';
 import {fileURLToPath} from 'node:url';
 import Stripe from 'stripe';
-import nodemailer from 'nodemailer';
+import {createMailer} from './mail.mjs';
 import {createClient} from '@supabase/supabase-js';
 import {createSafety,HttpError} from './core.mjs';
 export function httpServer(service,siteOrigin){return createServer(async(req,res)=>{
@@ -43,10 +43,8 @@ async function main(){
  if(!link.active||link.livemode!==config.live||price.livemode!==config.live||price.unit_amount!==49900||price.currency!=='usd'||price.type!=='one_time'||items.has_more||items.data.length!==1||items.data[0].price.id!==config.priceId||items.data[0].quantity!==1)throw new Error('Incorrect Safety checkout configuration');
  const sb=createClient(need('SUPABASE_URL'),need('SUPABASE_SERVICE_ROLE_KEY'),{auth:{persistSession:false,autoRefreshToken:false}});
  for(const bucket of ['safety-operations','safety-client-uploads']){const {data,error}=await sb.storage.getBucket(bucket);if(error||!data||data.public)throw new Error('Required private bucket unavailable');}
- const port=Number(need('SMTP_PORT'));if(![465,587].includes(port))throw new Error('SMTP requires TLS');
- const mail=nodemailer.createTransport({host:need('SMTP_HOST'),port,secure:port===465,requireTLS:true,auth:{user:need('SMTP_USER'),pass:need('SMTP_PASS')},connectionTimeout:15000,socketTimeout:30000});await mail.verify();
- const from=need('MAIL_FROM');
- const service=createSafety({config,supabase:sb,stripe,sendEmail:async message=>{const r=await mail.sendMail({from,...message});if(!r.accepted?.length||r.rejected?.length)throw new Error('Email rejected');}});
+ const sendEmail=await createMailer();
+ const service=createSafety({config,supabase:sb,stripe,sendEmail});
  const server=httpServer(service,site.origin);server.requestTimeout=60000;server.headersTimeout=15000;
  server.listen(Number(process.env.PORT||8789),process.env.HOST||'127.0.0.1');
  const run=()=>service.queue().catch(()=>console.warn('Safety invitation queue needs attention'));

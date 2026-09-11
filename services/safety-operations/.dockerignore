@@ -3,3 +3,4 @@
 !package-lock.json
 !core.mjs
 !server.mjs
+!mail.mjs
