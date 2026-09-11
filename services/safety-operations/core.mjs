@@ -93,12 +93,14 @@ export function createSafety({config,supabase,stripe,sendEmail,now=Date.now}){
  }
 
  async function formSubmission(submission){
-  if(!submission||submission.form_name!=='safety-review-request')return {accepted:true};
+  if(!submission||submission.form_name!=='safety-review-request'){console.info('Netlify review webhook ignored: unexpected form');return {accepted:true};}
+  console.info('Netlify review webhook accepted for safety-review-request');
   const id=String(submission.id||'').trim();
   const data=submission.data||{};
   const email=String(data.email||submission.email||'').trim();
   const name=String(data.name||submission.name||'').trim().slice(0,120);
-  if(!id||!email||!/^[^\\s<>@,;]+@[^\\s<>@,;]+\\.[^\\s<>@,;]+$/.test(email))throw new HttpError(400,'Invalid form submission');
+  const at=email.indexOf('@'),dot=email.lastIndexOf('.');
+  if(!id||!email||email.includes(' ')||email.includes('<')||email.includes('>')||at<1||dot<at+2||dot===email.length-1)throw new HttpError(400,'Invalid form submission');
   const prior=db.prepare('SELECT sent_at FROM lead_confirmations WHERE submission_id=?').get(id);
   if(prior?.sent_at)return {accepted:true,duplicate:true};
   db.prepare('INSERT OR IGNORE INTO lead_confirmations(submission_id,email,created_at) VALUES(?,?,?)').run(id,email,now());
@@ -110,8 +112,10 @@ export function createSafety({config,supabase,stripe,sendEmail,now=Date.now}){
     text:greeting+'\\n\\nThank you for requesting a Ready for Real Life Safety review. Your request has been received.\\n\\nI will personally review the information you submitted and follow up with you regarding next steps. If the review appears to be a good fit for your organization, I will send you a secure link to complete the $499 Founding Client payment and begin the review process.\\n\\nNo payment has been collected at this point.\\n\\nPlease avoid sending sensitive operational information by email.\\n\\nMike\\nReady for Real Life Safety'
    });
    db.prepare('UPDATE lead_confirmations SET sent_at=? WHERE submission_id=?').run(now(),id);
+   console.info('Safety review confirmation email sent');
    return {accepted:true,confirmed:true};
   }catch{
+   console.error('Safety review confirmation email failed');
    db.prepare('DELETE FROM lead_confirmations WHERE submission_id=? AND sent_at IS NULL').run(id);
    throw new HttpError(503,'Confirmation email temporarily unavailable');
   }
