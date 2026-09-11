@@ -109,7 +109,7 @@ export function createSafety({config,supabase,stripe,sendEmail,now=Date.now}){
    await sendEmail({
     to:{address:email},
     subject:'Ready for Real Life Safety — Request Received',
-    text:greeting+'\\n\\nThank you for requesting a Ready for Real Life Safety review. Your request has been received.\\n\\nI will personally review the information you submitted and follow up with you regarding next steps. If the review appears to be a good fit for your organization, I will send you a secure link to complete the $499 Founding Client payment and begin the review process.\\n\\nNo payment has been collected at this point.\\n\\nPlease avoid sending sensitive operational information by email.\\n\\nMike\\nReady for Real Life Safety'
+    text:greeting+'\n\nThank you for requesting a Ready for Real Life Safety review. Your request has been received.\n\nI will personally review the information you submitted and follow up with you regarding next steps. If the review appears to be a good fit for your organization, I will send you a secure link to complete the $499 Founding Client payment and begin the review process.\n\nNo payment has been collected at this point.\n\nPlease avoid sending sensitive operational information by email.\n\nMike\nReady for Real Life Safety'
    });
    db.prepare('UPDATE lead_confirmations SET sent_at=? WHERE submission_id=?').run(now(),id);
    console.info('Safety review confirmation email sent');
