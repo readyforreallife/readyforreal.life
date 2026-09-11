@@ -19,8 +19,18 @@ export async function createMailer(env=process.env, request=fetch){
   try{
    response=await request('https://oauth2.googleapis.com/token',{method:'POST',redirect:'error',signal:AbortSignal.timeout(15000),body:new URLSearchParams({client_id:client,client_secret:secret,refresh_token:refresh,grant_type:'refresh_token'})});
    data=await response.json();
-  }catch{throw Error('Gmail authorization unavailable');}
-  if(!response.ok||!data.access_token||!(Number(data.expires_in)>60))throw Error('Gmail authorization unavailable');
+  }catch{
+   console.error('Gmail authorization diagnostic: token endpoint request failed');
+   throw Error('Gmail authorization unavailable');
+  }
+  if(!response.ok){
+   console.error('Gmail authorization diagnostic: token endpoint rejected refresh credentials (HTTP '+response.status+')');
+   throw Error('Gmail authorization unavailable');
+  }
+  if(!data.access_token||!(Number(data.expires_in)>60)){
+   console.error('Gmail authorization diagnostic: token endpoint response was missing a usable access token');
+   throw Error('Gmail authorization unavailable');
+  }
   token=data.access_token;expires=Date.now()+(Number(data.expires_in)-60)*1000;return token;
  }
  await access(); // Validates refresh credentials without sending a message.
