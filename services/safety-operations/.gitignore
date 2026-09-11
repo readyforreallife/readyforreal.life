@@ -1,0 +1,25 @@
+node_modules/
+.env*
+*.sqlite*
+*.pdf
+*.docx
+*.zip
+
+.projects/cache
+.projects/vault
+.projects/state.test.json
+.projects/state.local.test.json
+.env
+.env.*
+!.env.example
+
+# Local provisioning state and generated tooling
+.projects/
+.agents/
+.claude/
+.cursor/
+.cursorignore
+AGENTS.md
+CLAUDE.md
+.env.*
+!.env.example
