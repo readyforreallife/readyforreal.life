@@ -7,9 +7,9 @@
   document.getElementById('private-safety-entry')?.remove();
   const {data}=await auth.auth.getSession();if(!data.session)return;
   const origin=new URL(c.apiOrigin);if(origin.protocol!=='https:')return;
-  const r=await fetch(origin.origin+'/staff/session',{headers:{Authorization:'Bearer '+data.session.access_token},cache:'no-store'});if(!r.ok)return;
-  const link=document.createElement('a');link.id='private-safety-entry';link.href='safety-operations.html';link.className='util-btn';link.textContent='Safety Operations — Client Delivery System';
-  const parent=document.querySelector('.teacher-shortcuts')||document.getElementById('studentPortal');parent?.append(link);
+  const r=await fetch(origin.origin+'/staff/session',{headers:{Authorization:'Bearer '+data.session.access_token},cache:'no-store'});if(!r.ok)return;const access=await r.json();if(access.role!=='owner')return;
+  const link=document.createElement('a');link.id='private-safety-entry';link.href='safety-operations.html';link.className='util-btn';link.textContent='Safety Review Dashboard';
+  const parent=document.querySelector('.top-actions')||document.querySelector('.teacher-shortcuts')||document.getElementById('studentPortal');parent?.append(link);
  };
  await refresh();auth.auth.onAuthStateChange(()=>setTimeout(()=>refresh().catch(()=>{}),0));
 })().catch(()=>{});

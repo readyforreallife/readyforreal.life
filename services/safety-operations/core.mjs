@@ -55,7 +55,7 @@ export function createSafety({config,supabase,stripe,sendEmail,now=Date.now}){
   if(error||!data?.user)throw new HttpError(401,'Sign in required');
   const member=await supabase.from('safety_staff').select('user_id,role').eq('user_id',data.user.id).eq('enabled',true).maybeSingle();
   if(member.error)throw new HttpError(503,'Safety authorization is not configured');
-  if(!member.data||!['owner','instructor'].includes(member.data.role))deny();
+  if(!member.data||member.data.role!=='owner')deny();
   return data.user.id;
  }
  async function paid(sessionId){
@@ -132,13 +132,13 @@ export function createSafety({config,supabase,stripe,sendEmail,now=Date.now}){
  async function route(method,path,token,body={}){
   if(path.startsWith('/staff/')){
    const actor=await staff(token);
-   if(method==='GET'&&path==='/staff/session')return {authorized:true};
+   if(method==='GET'&&path==='/staff/session')return {authorized:true,role:'owner'};
    if(method==='GET'&&path==='/staff/library')return {items:library.map(([id,title])=>({id,title}))};
    if(method==='GET'&&path.startsWith('/staff/library/')){const item=library.find(x=>x[0]===path.split('/').at(-1));if(!item)throw new HttpError(404,'Not found');return privateFile('safety-operations',item[0]==='complete'?'complete.zip':item[0]+'.docx',item[2],item[0]==='complete'?'application/zip':'application/vnd.openxmlformats-officedocument.wordprocessingml.document');}
-   if(method==='GET'&&path==='/staff/engagements')return {engagements:db.prepare('SELECT id,status,created_at,intake FROM engagements ORDER BY created_at DESC').all().map(e=>({...e,intake:e.intake?JSON.parse(e.intake):null})),statuses};
+   if(method==='GET'&&path==='/staff/engagements')return {engagements:db.prepare('SELECT id,status,created_at,intake,ack_at,(SELECT COUNT(*) FROM uploads WHERE engagement_id=engagements.id AND ready=1) AS document_count FROM engagements ORDER BY created_at DESC').all().map(e=>({...e,intake:e.intake?JSON.parse(e.intake):null})),statuses};
    const match=path.match(/^\/staff\/engagements\/([0-9a-f-]+)$/);
    if(match){const e=db.prepare('SELECT * FROM engagements WHERE id=?').get(match[1]);if(!e)throw new HttpError(404,'Not found');
-    if(method==='GET')return {id:e.id,status:e.status,intake:e.intake?JSON.parse(e.intake):null,ack_version:e.ack_version,ack_at:e.ack_at,uploads:db.prepare('SELECT id,name,category FROM uploads WHERE engagement_id=? AND ready=1').all(e.id)};
+    if(method==='GET'){let paymentStatus='Unable to verify currently';try{paymentStatus=await paid(e.session_id)?'Verified paid':'Payment requires attention';}catch{}return {paymentStatus,paymentMode:config.live?'Live':'Sandbox',created_at:e.created_at,history:db.prepare('SELECT action,created_at FROM audit WHERE engagement_id=? ORDER BY created_at DESC,id DESC').all(e.id),id:e.id,status:e.status,intake:e.intake?JSON.parse(e.intake):null,ack_version:e.ack_version,ack_at:e.ack_at,uploads:db.prepare('SELECT id,name,category FROM uploads WHERE engagement_id=? AND ready=1').all(e.id)};}
     if(method==='PATCH'){if(!statuses.includes(body.status))throw new HttpError(400,'Invalid status');db.prepare('UPDATE engagements SET status=? WHERE id=?').run(body.status,e.id);db.prepare('INSERT INTO audit(engagement_id,actor,action,created_at) VALUES(?,?,?,?)').run(e.id,actor,'Status: '+body.status,now());return {saved:true};}
    }
    if(method==='GET'&&path.startsWith('/staff/uploads/')){const f=db.prepare('SELECT * FROM uploads WHERE id=? AND ready=1').get(path.split('/').at(-1));if(!f)throw new HttpError(404,'Not found');return privateFile('safety-client-uploads',f.path,f.name,f.mime);}
