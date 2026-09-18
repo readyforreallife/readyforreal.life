@@ -87,9 +87,17 @@ async function main(){
 
  const stripe=await stage('Stripe configuration check',async()=>{
   const stripe=new Stripe(need('STRIPE_RESTRICTED_KEY'),{timeout:15000,maxNetworkRetries:2});
-  const link=await stripe.paymentLinks.retrieve(config.paymentLinkId),price=await stripe.prices.retrieve(config.priceId);
-  const items=await stripe.paymentLinks.listLineItems(config.paymentLinkId,{limit:2});
-  if(!link.active||link.livemode!==config.live||price.livemode!==config.live||price.unit_amount!==49900||price.currency!=='usd'||price.type!=='one_time'||items.has_more||items.data.length!==1||items.data[0].price.id!==config.priceId||items.data[0].quantity!==1)throw new Error('Incorrect Safety checkout configuration');
+  let link,price,items;
+  try{link=await stripe.paymentLinks.retrieve(config.paymentLinkId);}
+  catch(error){console.error('Stripe diagnostic: payment-link retrieve failed type='+(error?.type||'unknown')+' code='+(error?.code||'none')+' status='+(error?.statusCode||'none'));throw error;}
+  try{price=await stripe.prices.retrieve(config.priceId);}
+  catch(error){console.error('Stripe diagnostic: price retrieve failed type='+(error?.type||'unknown')+' code='+(error?.code||'none')+' status='+(error?.statusCode||'none'));throw error;}
+  try{items=await stripe.paymentLinks.listLineItems(config.paymentLinkId,{limit:2});}
+  catch(error){console.error('Stripe diagnostic: payment-link line-items failed type='+(error?.type||'unknown')+' code='+(error?.code||'none')+' status='+(error?.statusCode||'none'));throw error;}
+  const checks={active:link.active===true,linkMode:link.livemode===config.live,priceMode:price.livemode===config.live,amount:price.unit_amount===49900,currency:price.currency==='usd',type:price.type==='one_time',singleItem:!items.has_more&&items.data.length===1,priceMatch:items.data.length===1&&items.data[0].price.id===config.priceId,quantity:items.data.length===1&&items.data[0].quantity===1};
+  const failed=Object.entries(checks).filter(([,ok])=>!ok).map(([name])=>name);
+  if(failed.length){console.error('Stripe diagnostic: checkout validation failed checks='+failed.join(','));throw new Error('Incorrect Safety checkout configuration');}
+  console.info('Stripe diagnostic: checkout configuration verified');
   return stripe;
  });
 
