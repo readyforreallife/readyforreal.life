@@ -49,6 +49,22 @@ export function httpServer(service,siteOrigin){return createServer(async(req,res
  }catch(e){send(e.status||503,{error:e.status?e.message:'Safety service temporarily unavailable'});}
  });}
 
+// Wait for the socket before declaring startup successful. Railway routes to PORT
+// on the container network interface; a loopback-only listener is unreachable.
+export async function startHttpServer(service,siteOrigin,{port=process.env.PORT??8789,log=console.info}={}){
+ if(!/^\d+$/.test(String(port))||Number(port)>65535)throw new Error('Invalid HTTP listening port');
+ const server=httpServer(service,siteOrigin);
+ server.requestTimeout=60000;server.headersTimeout=15000;
+ await new Promise((resolve,reject)=>{
+  const failed=error=>{server.off('listening',listening);reject(error);};
+  const listening=()=>{server.off('error',failed);resolve();};
+  server.once('error',failed);server.once('listening',listening);
+  server.listen({port:Number(port),host:'0.0.0.0'});
+ });
+ log('Safety HTTP server listening on 0.0.0.0:'+server.address().port);
+ return server;
+}
+
 async function stage(name,fn){
  console.info(`Safety startup stage: ${name}`);
  try{return await fn();}
@@ -109,8 +125,7 @@ async function main(){
 });
 
  await stage('HTTP server startup',async()=>{
-  const server=httpServer(service,site.origin);server.requestTimeout=60000;server.headersTimeout=15000;
-  server.listen(Number(process.env.PORT||8789),process.env.HOST||'127.0.0.1');
+  const server=await startHttpServer(service,site.origin);
   const run=()=>service.queue().catch(()=>console.warn('Safety invitation queue needs attention'));
   const interval=setInterval(run,15000);run();
   process.on('SIGTERM',()=>{clearInterval(interval);server.close(()=>process.exit(0));});
